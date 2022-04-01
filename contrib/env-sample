@@ -1,0 +1,3 @@
+SECRET_KEY=Chave secreta aqui
+DEBUG=False
+ALLOWED_HOSTS=localhost,127.0.01
