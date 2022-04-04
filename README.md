@@ -1,7 +1,15 @@
 # web_server
 
 
-## Preparando o Ambiente de desenvolvimento
+Aplicação responsável por receber as requisições dos usuários.
+
+
+### Status
+
+Desenvolvimento das funcionalidades
+
+
+### Preparando o Ambiente de desenvolvimento
 ---
 
 Criando o ambiente virtual e instalando as dependências
@@ -12,7 +20,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Variaveis de ambiente com o **python-decouple**
+### Variaveis de ambiente com o **python-decouple**
 ---
 
 As variáveis de ambiente tem que ser definidas no arquivo **.env**. Este arquivo não pode ser versionado pois ele armazenará informações sensiveis. Um exemplo de arquivo .env pode ser encontrado na pasta **contrib/env-sample**.
