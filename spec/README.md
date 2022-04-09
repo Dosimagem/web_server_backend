@@ -23,14 +23,21 @@ Serviços são as opções de consumo que o usuário possui na plataforma.
 
 Atributos do modelo: 
 
-- Solicitante: Usuário que realizou a solicitação do serviço 
-- Data da solicitação: Data em que a solicitação foi realizada 
-- Data de conclusão: Data em que a solicitação foi concluída 
-- Status: [ Aguardando pagamento ; Aguardando processamento ; Processando ; Concluído ]
-- Tipo de serviço: [ Dosimetria clínica; Dosimetria pré-clínica ; Segmentação,  Radiosinoviorteses ; Modelagem Computacional ] 
-- Preço: Valor cobrado pelo serviço
-- Link para o relatório: URL para o relatório da solicitação
-- Informações técnicas: Toda informação necessária para a geração do relatório. Específico ao tipo do serviço
+- **Solicitante: Usuário** que realizou a solicitação do serviço 
+- **Data da solicitação:** Data em que a solicitação foi realizada 
+- **Data de conclusão:** Data em que a solicitação foi concluída 
+- **Status:** [ Aguardando pagamento ; Aguardando processamento ; Processando ; Concluído ]
+- **Tipo de serviço:** [ Dosimetria clínica; Dosimetria pré-clínica ; Segmentação,  Radiosinoviorteses ; Modelagem Computacional ] 
+- **Preço:** Valor cobrado pelo serviço
+- **Link para o relatório:** URL para o relatório da solicitação
+- **Informações técnicas:** Toda informação necessária para a geração do relatório. Específico ao tipo do serviço
+
+#### Parâmetros necessários para cada tipo de serviço
+
+- **Dosimetria clínica:** Conjunto de imagens, Fator de câmera, Radionuclídeo, Atividade injetada, Tempo de injeção
+- **Dosimetria pré-clínica:** Conjunto de imagens, Fator de câmera, Radionuclídeo, Atividade injetada, Tempo de injeção
+- **Segmentação e Radiosinoviorteses:** Imagem, Observações(Texto)
+- **Modelagem Computacional:** Imagem, especificação do equipamento [Opções: CT, SPECT]
 
 
 ## Funcionalidades 
@@ -48,7 +55,7 @@ Neste painel o usuário é capaz de acompanhar todas as suas solicitações. Som
 
 ### 1.4. Solicitação de serviço
 
-Cada um dos 4 tipos de serviço poderá ser solicitado na plataforma. Todo serviço solicitado necessita de dados específicos para ser realizado.( Ver seção 1.3 )
+Cada um dos 4 tipos de serviço poderá ser solicitado na plataforma. Todo serviço solicitado necessita de dados específicos para ser realizado.( Ver seção 'Parâmetros necessários para cada tipo de serviço' )
 
 Logo após a submissão do formulário com os dados específicos da solicitação de serviço, as instruções de pagamento serão exibidas.
 
@@ -64,7 +71,7 @@ O pagamento do serviço será feito através da transferência direta para a con
 
 Envio das informações do serviço solicitado:
 
-- (Quando) Após a confirmação do pagamento, o administrador do sistema irá alterar o status do serviço para Aguardando processamento;
-- (Como) Esta alteração irá acionar o gatilho para enviar as informações para o servidor de processamento.
+- **(Quando)** Após a confirmação do pagamento, o administrador do sistema irá alterar o status do serviço para Aguardando processamento;
+- **(Como)** Esta alteração irá acionar o gatilho para enviar as informações para o servidor de processamento.
 
 - Atualização do processamento: Será disponibilizado um endpoint para recebimento do novo status.
