@@ -12,4 +12,4 @@ Desenvolvimento das funcionalidades
 
 ### Informações técnicas
 
-- Especificação: [link]()
+- Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
