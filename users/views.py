@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 
 def index(request):
-    pass
+    return render(request, 'users/index.html')
 
 def signup(request):
     pass
