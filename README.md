@@ -22,17 +22,10 @@ Desenvolvimento das funcionalidades
 - <domain>/accounts/logout/
 - <domain>/auth-example/
 
-#### Executando o projeto pela primeira vez
+### Docker
 
 ```
-python manage.py migrate
-
-python manage.py makemigrations <app>
-
-python manage.py runserver
+docker build --tag django_server:dosimagem .
+docker run --name django_server -d -p 8000:8000 django_server:dosimagem 
+docker start django_server
 ```
-
-
-
-
-
