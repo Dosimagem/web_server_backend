@@ -1,15 +1,21 @@
 FROM python:3.6.9
 
+ARG USER_DIR=/user/app
+
 # set work directory
-WORKDIR /user/app
+WORKDIR $USER_DIR
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN pip install --upgrade pip 
-COPY ./requirements.txt /user/app
+COPY ./requirements.txt $USER_DIR
 RUN pip install -r requirements.txt
 
 # copy project
-COPY . /user/app
+COPY . $USER_DIR
 
 EXPOSE 8000
 
