@@ -1,5 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.http import HttpResponse
+
 from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from users.forms import SignUpForm
 
@@ -29,3 +33,8 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'users/signup.html', {'form': form})
+
+
+@login_required
+def auth_example(request):
+    return HttpResponse("You are autorized")
