@@ -8,7 +8,7 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
 
 Desenvolvimento das funcionalidades
 
-- Usuários [ nOK ]
+- Usuários [ OK ]
 - Serviços [ nOK ]
 
 
@@ -28,4 +28,11 @@ Desenvolvimento das funcionalidades
 docker build --tag django_server:dosimagem .
 docker run --name django_server -d -p 8000:8000 django_server:dosimagem 
 docker start django_server
+```
+
+### Tests
+
+```
+python manage.py test users.tests.SignUpFormTests
+python manage.py test users.tests.SignupViewsTests
 ```
