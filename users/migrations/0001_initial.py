@@ -21,7 +21,8 @@ class Migration(migrations.Migration):
                 ('phone', models.CharField(blank=True, max_length=30)),
                 ('institution', models.CharField(blank=True, max_length=30)),
                 ('role', models.CharField(blank=True, max_length=30)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                              to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]
