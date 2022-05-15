@@ -11,12 +11,12 @@ class SignUpFormTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.form_payload = {"username": "User",
-                        "phone": "(11)999111213",
-                        "email": "test@email.com",
-                        "institution": "Institution_A",
-                        "role": "Engineer",
-                        "password1": "123456!!!###",
-                        "password2": "123456!!!###"}
+                            "phone": "(11)999111213",
+                            "email": "test@email.com",
+                            "institution": "Institution_A",
+                            "role": "Engineer",
+                            "password1": "123456!!!###",
+                            "password2": "123456!!!###"}
 
     def test_successfull_case(self):
         form = SignUpForm(data=self.form_payload)
@@ -38,12 +38,12 @@ class SignupViewsTests(TestCase):
     def setUpTestData(cls):
         cls.URL_SIGNUP = "/accounts/signup/"
         cls.form_payload = {"username": "User",
-                        "phone": "(11)999111213",
-                        "email": "test@email.com",
-                        "institution": "Institution_A",
-                        "role": "Engineer",
-                        "password1": "123456!!!###",
-                        "password2": "123456!!!###"}
+                            "phone": "(11)999111213",
+                            "email": "test@email.com",
+                            "institution": "Institution_A",
+                            "role": "Engineer",
+                            "password1": "123456!!!###",
+                            "password2": "123456!!!###"}
 
     def test_successful_signup(self):
         response = self.client.post(self.URL_SIGNUP, data=self.form_payload)
