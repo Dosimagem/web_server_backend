@@ -1,3 +1,2 @@
+-c requirements.txt
 flake8
-
--r requirements.txt
