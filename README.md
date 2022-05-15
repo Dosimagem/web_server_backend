@@ -48,12 +48,13 @@ Criando o ambiente:
 ```console
 python -m venv .venv --upgrade-deps
 source .venv/bin/active
+pip install pip-tools
 ```
 
 Intalando as dependências de desenvolvimento:
 
 ```console
-pip install -r requeriments-dev.txt
+pip-sync requirements.txt requirements-dev.txt
 ```
 
 Atualizando a lista de dependências com o **pip-tools**:
