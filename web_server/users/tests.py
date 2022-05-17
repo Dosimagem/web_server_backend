@@ -2,8 +2,8 @@ import copy
 
 from django.test import TestCase
 
-from users.forms import SignUpForm
-from users.models import User
+from web_server.users.forms import SignUpForm
+from web_server.users.models import User
 
 
 class SignUpFormTests(TestCase):
