@@ -32,6 +32,17 @@ docker start django_server
 
 ## 3) Desenvolvimento
 
+### 3.1) Inicinando o ambiente de desenvolvimento
+
+```
+python -m venv .venv --upgrade-deps
+source .venv/bin/active
+pip install pip-tools
+pip-sync requirements.txt requirements-dev.txt
+cp contrib/env-sample .env
+python manage.py runserver
+```
+
 ### 3.1) Tests
 
 ```console
@@ -62,4 +73,16 @@ Atualizando a lista de dependências com o **pip-tools**:
 ```console
 pip-compile --generate-hashes requirements.in
 pip-compile --generate-hashes requirements-dev.in
+```
+
+### 3.3) Python-decouple
+
+A lib python-decouple serve para gerenciar diferentes ambientes. Primiro ela procura as variaveis de ambiente no arquivo .env, caso não encontre ela procura na varicaveis de ambiente do sistema.
+
+Um exemplo .env pode ser encontrado na pasta contrib.
+
+```console
+SECRET_KEY=Sua chave secreta aqui!
+DEBUG=False
+ALLOWED_HOSTS=127.0.0.1,localhost
 ```
