@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #
     'web_server.users',
-
+    #
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -60,6 +61,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'web_server.wsgi.application'
+
+
+INTERNAL_IPS = config('INTERNAL_IPS', cast=Csv(), default=None)
+
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 
 # Database
