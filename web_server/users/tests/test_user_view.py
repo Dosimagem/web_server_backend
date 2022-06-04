@@ -1,53 +1,33 @@
+from http import HTTPStatus
+
 import pytest
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
+from django.urls import reverse
 from web_server.users.models import User
 
 
-URL_SINUP = "/accounts/signup/"
+URL_SINUP = reverse('signup')
 
 
 @pytest.fixture
-def form_user(db):
-    return {"username": "User",
-            "phone": "(11)999111213",
-            "email": "test@email.com",
-            "institution": "Institution_A",
-            "role": "Engineer",
-            "password1": "123456!!!###",
-            "password2": "123456!!!###"
-            }
+def response(client, user_form):
+    return client.post(URL_SINUP, data=user_form)
 
 
 @pytest.fixture
-def form_user_wrong(db):
-    return {"username": "User",
-            "phone": "(11)999111213",
-            "email": "test@email.com",
-            "institution": "Institution_A",
-            "role": "Engineer",
-            "password1": "123456!!!###",
-            "password2": "123456!!!###++"
-            }
-
-
-@pytest.fixture
-def response(client, form_user):
-    return client.post(URL_SINUP, data=form_user)
-
-
-@pytest.fixture
-def response_fail_signup(client, form_user_wrong):
-    return client.post(URL_SINUP, data=form_user_wrong)
+def response_fail_signup(client, user_form_wrong_password):
+    return client.post(URL_SINUP, data=user_form_wrong_password)
 
 
 def test_successful_signup(response):
-    assertRedirects(response, '/', status_code=302)
+    url = reverse('index')
+    assertRedirects(response, url, status_code=HTTPStatus.FOUND)
     assert User.objects.count() == 1
 
 
 def test_failed_signup(response_fail_signup):
 
-    assert response_fail_signup.status_code == 200
+    assert response_fail_signup.status_code == HTTPStatus.OK
 
     assertTemplateUsed(response_fail_signup, 'users/signup.html')
 
