@@ -30,4 +30,4 @@ jobs:
         flake8
     - name: Tests
       run: |
-        python manage.py test
+        pytest
