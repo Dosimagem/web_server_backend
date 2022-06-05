@@ -3,7 +3,7 @@ from http import HTTPStatus
 import pytest
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
 from django.urls import reverse
-from web_server.users.models import User
+from web_server.users.models import CostumUser as User
 
 
 URL_SINUP = reverse('signup')

@@ -44,6 +44,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'web_server.urls'
 
+AUTH_USER_MODEL = 'users.CostumUser'
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -61,7 +64,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'web_server.wsgi.application'
-
 
 INTERNAL_IPS = config('INTERNAL_IPS', cast=Csv(), default=None)
 
