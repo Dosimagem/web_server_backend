@@ -19,13 +19,13 @@ def response_fail_signup(client, user_form_wrong_password):
     return client.post(URL_SINUP, data=user_form_wrong_password)
 
 
-def test_successful_signup(response):
+def test_successful_signup(response):  # TODO: write comment
     url = reverse('index')
     assertRedirects(response, url, status_code=HTTPStatus.FOUND)
     assert User.objects.count() == 1
 
 
-def test_failed_signup(response_fail_signup):
+def test_failed_signup(response_fail_signup):  # TODO: write comment
 
     assert response_fail_signup.status_code == HTTPStatus.OK
 
@@ -34,7 +34,8 @@ def test_failed_signup(response_fail_signup):
     assert User.objects.count() == 0
 
 
-def test_success_get_signup_page(client):
+def test_success_get_signup_page(client):  # TODO: write comment
+
     response = client.get(URL_SINUP)
 
     assertTemplateUsed(response, 'users/signup.html')
