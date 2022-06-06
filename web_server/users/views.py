@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -29,5 +28,5 @@ def signup(request):
 
 
 @login_required
-def auth_example(request):
-    return HttpResponse("You are autorized")
+def profile(request):
+    return render(request, 'users/profile.html')

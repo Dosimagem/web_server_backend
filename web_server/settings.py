@@ -17,6 +17,11 @@ DEBUG = config('DEBUG', cast=bool, default=False)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
+AUTH_USER_MODEL = 'users.CostumUser'
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/profile'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,8 +48,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'web_server.urls'
-
-AUTH_USER_MODEL = 'users.CostumUser'
 
 
 TEMPLATES = [
