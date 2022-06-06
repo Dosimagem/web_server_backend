@@ -1,5 +1,7 @@
 # web_server
 
+[![Python application](https://github.com/Dosimagem/web_server_backend/actions/workflows/CI.yml/badge.svg)](https://github.com/Dosimagem/web_server_backend/actions/workflows/CI.yml)
+
 Aplicação responsável por receber as requisições dos usuários.
 
 Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
