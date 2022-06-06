@@ -9,6 +9,8 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
 Desenvolvimento das funcionalidades
 
 - Usuários [ OK ]
+  - Esqueceu a senha
+  - Alteracao de informações do usuario 
 - Serviços [ nOK ]
 
 
@@ -20,7 +22,7 @@ Desenvolvimento das funcionalidades
 - <domain>/accounts/signup/
 - <domain>/accounts/login/
 - <domain>/accounts/logout/
-- <domain>/auth-example/
+- <domain>/profile/
 
 ### 2.2) Docker
 
