@@ -12,6 +12,7 @@ def index(request):
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+
         if form.is_valid():
 
             user = form.save()
