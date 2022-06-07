@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture
 def user_form(db):
-    return {"username": "User",
+    return {"name": "User",
             "phone": "(11)999111213",
             "email": "test@email.com",
             "institution": "Institution_A",
@@ -15,7 +15,7 @@ def user_form(db):
 
 @pytest.fixture
 def user_form_wrong_password(db):
-    return {"username": "User",
+    return {"name": "User",
             "phone": "(11)999111213",
             "email": "test@email.com",
             "institution": "Institution_A",
