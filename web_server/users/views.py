@@ -22,7 +22,7 @@ def signup(request):
             user = authenticate(email=email, password=raw_password)
             login(request, user)
 
-            return redirect('index')
+            return redirect('login')
     else:
         form = SignUpForm()
     return render(request, 'users/signup.html', {'form': form})
