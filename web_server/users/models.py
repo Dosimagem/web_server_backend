@@ -43,7 +43,7 @@ class CostumUser(AbstractBaseUser, PermissionsMixin):
     Email and password are required. Other fields are optional.
     """
 
-    username = models.CharField(_('username'), max_length=150, blank=True)
+    name = models.CharField(_('name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), unique=True)
     is_staff = models.BooleanField(
         _('staff status'),
@@ -81,16 +81,9 @@ class CostumUser(AbstractBaseUser, PermissionsMixin):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
 
-    def get_full_name(self):
-        """
-        Return the first_name plus, with a space in between.
-        """
-        full_name = '%s %s' % (self.first_name)
-        return full_name.strip()
-
-    def get_short_name(self):
-        """Return the short name for the user."""
-        return self.first_name
+    def get_name(self):
+        """Return the name for the user."""
+        return self.name
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""

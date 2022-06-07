@@ -26,7 +26,7 @@ def test_field_isnot_optional(user_form, field):
 
 def test_username_is_optional(user_form):
 
-    del user_form['username']
+    del user_form['name']
     form = SignUpForm(data=user_form)
 
     assert form.is_valid()
