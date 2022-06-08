@@ -1,17 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Starting a session</title>
-</head>
-<body>
-  {% if user.is_authenticated %}
-    <p>Hi {{ user.username }}!</p>
-    <p>You are logged in.</p>
-    <p><a href="{% url 'logout' %}">Log Out</a></p>
-  {% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a>
-  {% endif %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+  {%include 'nav.html'%}
+  <div class="container m-5">
+    <h2>Rotas disponiveis</h2>
+    <ul>
+      <li>
+        home &#10140; /
+      </li>
+      <li>
+        profile ( rota protegida) &#10140; /profile/
+      </li>
+      <li>
+        Cadastro &#10140; /accounts/signup
+      </li>
+      <li>
+        login &#10140; /accounts/login
+      </li>
+      <li>
+        logout &#10140; /accounts/logoug
+      </li>
+    </ul>
+  </div>
+  {%include 'footer.html'%}
+{% endblock %}
