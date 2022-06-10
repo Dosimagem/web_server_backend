@@ -5,6 +5,20 @@ from django.contrib.auth.decorators import login_required
 from web_server.users.forms import SignUpForm
 
 
+class Solicitation:
+
+    def __init__(self, user, status, type_service, report_link, request_data):
+        self.user = user
+        self.status = status
+        self.type_service = type_service
+        self.report_link = report_link
+        self.request_data = request_data
+
+
+SOLICITATIONS = [Solicitation('Henrique', 'Processando', 'Dosimetria Clinica', 'link', '10/10/2022'),
+                 Solicitation('Henrique', 'Concluído', 'Dosimetria Pré-clinica', 'link', '06/10/2022')]
+
+
 def index(request):
     return render(request, 'users/index.html')
 
@@ -30,4 +44,4 @@ def signup(request):
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html')
+    return render(request, 'users/profile.html', context={'solicitations': SOLICITATIONS})

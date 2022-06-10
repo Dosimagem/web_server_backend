@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}User progileSignup{% endblock %}
+{% block title %}User profile{% endblock %}
 {% block content %}
 
   {%include 'nav.html'%}
@@ -20,20 +20,15 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {% for s in solicitations %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Dosimetria</td>
-                        <td>Em execução</td>
-                        <td>10/02/2022</td>
-                        <td><a href="#">link</a></td>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{s.type_service}}</td>
+                        <td>{{s.status}}</td>
+                        <td>{{s.request_data}}</td>
+                        <td><a href="#">{{s.report_link}}</a></td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Dosimetria pre clinica</td>
-                        <td>Finalizado</td>
-                        <td>10/02/2022</td>
-                        <td><a href="#">link</a></td>
-                    </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
