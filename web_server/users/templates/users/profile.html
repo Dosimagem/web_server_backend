@@ -1,12 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Profile User</title>
-</head>
-<body>
-    <p>Hi {{ user.email }}!</p>
-    <p>You are logged in.</p>
-    <p><a href="{% url 'logout' %}">Log Out</a></p>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}User progileSignup{% endblock %}
+{% block content %}
+
+  {%include 'nav.html'%}
+
+  <div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="mt-5 border p-4 bg-ligth shadow">
+                <h2>Tabela com os pedidos:</h2>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">N° pedido</th>
+                        <th scope="col">serviço</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Data do pedido</th>
+                        <th scope="col">Relatório</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Dosimetria</td>
+                        <td>Em execução</td>
+                        <td>10/02/2022</td>
+                        <td><a href="#">link</a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Dosimetria pre clinica</td>
+                        <td>Finalizado</td>
+                        <td>10/02/2022</td>
+                        <td><a href="#">link</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="mt-5 border p-3 bg-ligth shadow">
+                <span class="badge bg-primary">Client:</span><span class="badge bg-secondary">{{ user.name }} </span>
+                <span class="badge bg-primary">Role: </span><span class="badge bg-secondary">{{ user.role }}</span>
+                <span class="badge bg-primary">Institution: </span><span class="badge bg-secondary">{{ user.institution }}</span>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  {%include 'footer.html'%}
+{% endblock %}
