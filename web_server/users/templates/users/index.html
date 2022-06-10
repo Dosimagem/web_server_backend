@@ -6,19 +6,19 @@
     <h2>Rotas disponiveis</h2>
     <ul>
       <li>
-        home &#10140; /
+        home &#10140; <a href="{% url 'index' %}">/</a>
       </li>
       <li>
-        profile ( rota protegida) &#10140; /profile/
+        profile ( rota protegida) &#10140;  <a href="{% url 'profile' %}">/profile</a>
       </li>
       <li>
-        Cadastro &#10140; /accounts/signup
+        Cadastro &#10140; <a href="{% url 'signup' %}"> /accounts/signup</a>
       </li>
       <li>
-        login &#10140; /accounts/login
+        login &#10140; <a href="{% url 'login' %}"> /accounts/login</a>
       </li>
       <li>
-        logout &#10140; /accounts/logoug
+        logout &#10140;  <a href="{% url 'logout' %}">/accounts/logout</a>
       </li>
     </ul>
   </div>

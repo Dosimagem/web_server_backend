@@ -87,6 +87,8 @@ class CostumUser(AbstractBaseUser, PermissionsMixin):
 
     def get_first_name(self):
         """Return the name for the user."""
+        if not self.name:
+            return 'Not have a name'  # TODO test this
         return self.name.split()[0]
 
     def email_user(self, subject, message, from_email=None, **kwargs):
