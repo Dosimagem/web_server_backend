@@ -32,6 +32,14 @@ def test_success_get_signup_template_page(resp_get):
     assertTemplateUsed(resp_get, 'users/signup.html')
 
 
+@pytest.mark.parametrize(
+    'field',
+    ['name', 'email', 'phone', 'institution', 'role', 'password1', 'password1'],
+)
+def test_field_in_signup_template(resp_get, field):
+    assertContains(resp_get, f'name="{field}"')
+
+
 def test_successful_signup(response):
     '''
     After registration the user must be redirected to login
@@ -80,3 +88,30 @@ def test_failed_signup_same_email_twice(client, user_form):
     assert User.objects.count() == 1
 
     assertFormError(resp, 'form', field='email', errors=['User with this Email address already exists.'])
+
+
+def test_profile_redirect_for_login_page_user_not_login(client):
+    '''
+    User not logged in trying to access the profile must be redirected to login
+    '''
+    url = reverse('profile')
+    resp = client.get(url)
+
+    assert resp.status_code == HTTPStatus.FOUND
+    assert resp.url == f'{reverse("login")}?next={url}'
+
+
+def test_profile_for_login(client, django_user_model):
+    '''
+    Profile page must be accessible to logged in users
+    '''
+
+    email, password = 'test@email.com', '1234'
+
+    django_user_model.objects.create_user(email=email, password=password)
+
+    client.login(email=email, password=password)
+
+    response = client.get(reverse('profile'))
+
+    assert response.status_code == HTTPStatus.OK
