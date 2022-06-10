@@ -9,5 +9,5 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
     path('accounts/signup/', signup, name='signup'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(template_name='users/login.html'), name='logout'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
