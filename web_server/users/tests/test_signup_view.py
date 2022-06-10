@@ -64,3 +64,19 @@ def test_failed_signup_input_filled(response_fail_signup):
         assertContains(response_fail_signup, 'value="{}"'.format(form.data[field]))
 
     assert User.objects.count() == 0
+
+
+def test_failed_signup_same_email_twice(client, user_form):
+    '''
+    Trying to register the same email twice is not possible.
+    '''
+
+    resp = client.post(URL_SINUP, data=user_form)
+
+    assert User.objects.count() == 1
+
+    resp = client.post(URL_SINUP, data=user_form)
+
+    assert User.objects.count() == 1
+
+    assertFormError(resp, 'form', field='email', errors=['User with this Email address already exists.'])
