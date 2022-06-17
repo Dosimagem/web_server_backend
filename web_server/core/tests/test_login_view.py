@@ -15,7 +15,7 @@ def test_login_status(response):
 
 
 def test_template_login(response):
-    assertTemplateUsed(response, 'users/login.html')
+    assertTemplateUsed(response, 'registration/login.html')
 
 
 @pytest.mark.parametrize(

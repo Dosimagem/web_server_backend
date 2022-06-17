@@ -17,7 +17,7 @@ DEBUG = config('DEBUG', cast=bool, default=False)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
-AUTH_USER_MODEL = 'users.CostumUser'
+AUTH_USER_MODEL = 'core.CostumUser'
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/profile'
@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #
-    'web_server.users',
+    'web_server.core',
     #
     'django_extensions'
 ]

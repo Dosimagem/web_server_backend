@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from web_server.users.forms import SignUpForm
+from web_server.core.forms import SignUpForm
 
 
 class Solicitation:
@@ -20,7 +20,7 @@ SOLICITATIONS = [Solicitation('Henrique', 'Processando', 'Dosimetria Clinica', '
 
 
 def index(request):
-    return render(request, 'users/index.html')
+    return render(request, 'core/index.html')
 
 
 def signup(request):
@@ -39,9 +39,9 @@ def signup(request):
             return redirect('login')
     else:
         form = SignUpForm()
-    return render(request, 'users/signup.html', {'form': form})
+    return render(request, 'registration/signup.html', {'form': form})
 
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html', context={'solicitations': SOLICITATIONS})
+    return render(request, 'core/profile.html', context={'solicitations': SOLICITATIONS})

@@ -1,5 +1,5 @@
 import pytest
-from web_server.users.forms import SignUpForm
+from web_server.core.forms import SignUpForm
 
 
 def test_valid_form(user_form):
