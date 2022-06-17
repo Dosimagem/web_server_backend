@@ -40,3 +40,8 @@ def test_login_page_redirect(client, django_user_model):
 
     assert resp.status_code == HTTPStatus.FOUND
     assert f'{resp.url}/' == f'{reverse("profile")}'
+
+
+def test_link_forget_password(response):
+
+    assertContains(response, '<a href="{}">'.format(reverse('password_reset')))
