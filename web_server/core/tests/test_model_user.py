@@ -1,4 +1,4 @@
-from web_server.users.models import CostumUser
+from web_server.core.models import CostumUser
 
 
 def test_user_get_name(user_form):

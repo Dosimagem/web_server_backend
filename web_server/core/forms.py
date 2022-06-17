@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 
-from web_server.users.models import CostumUser
+from web_server.core.models import CostumUser
 
 
 class SignUpForm(UserCreationForm):

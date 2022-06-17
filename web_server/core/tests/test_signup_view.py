@@ -3,7 +3,7 @@ from http import HTTPStatus
 import pytest
 from pytest_django.asserts import assertRedirects, assertTemplateUsed, assertFormError, assertContains
 from django.urls import reverse
-from web_server.users.models import CostumUser as User
+from web_server.core.models import CostumUser as User
 
 
 URL_SINUP = reverse('signup')
@@ -29,7 +29,7 @@ def test_success_get_signup_page_status(resp_get):
 
 
 def test_success_get_signup_template_page(resp_get):
-    assertTemplateUsed(resp_get, 'users/signup.html')
+    assertTemplateUsed(resp_get, 'registration/signup.html')
 
 
 @pytest.mark.parametrize(
@@ -54,7 +54,7 @@ def test_failed_signup(response_fail_signup):
     When the password does not match in the registration,
     it must fail and return to the registration page
     '''
-    assertTemplateUsed(response_fail_signup, 'users/signup.html')
+    assertTemplateUsed(response_fail_signup, 'registration/signup.html')
 
     assertFormError(response_fail_signup, 'form', field='password2', errors=['The two password fields didn’t match.'])
 
