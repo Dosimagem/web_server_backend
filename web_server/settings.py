@@ -28,6 +28,7 @@ LOGOUT_REDIRECT_URL = '/'
 INSTALLED_APPS = [
     #
     'web_server.core',
+    'web_server.service',
     #
     'django.contrib.admin',
     'django.contrib.auth',
