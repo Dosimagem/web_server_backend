@@ -1,6 +1,14 @@
+from audioop import reverse
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from web_server.service.models import Info, Order, Service
+
+
+#@admin.register(Info)
+class InfoInLine(admin.TabularInline):
+    model = Info
+    #list_display = ('camera_factor', 'radionuclide', 'injected_activity', 'injection_datetime', 'images')
 
 
 @admin.register(Service)
@@ -11,11 +19,9 @@ class ServiceModelAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderModelAdmin(admin.ModelAdmin):
-    list_display = ('requester', 'service', 'amount', 'status', 'total_price', 'info')
+    list_display = ('requester', 'service', 'amount', 'status', 'total_price', 'info', 'report',)
     list_display_links = ('requester',)
     exclude = ('total_price',)
 
-
-@admin.register(Info)
-class InfoModelAdmin(admin.ModelAdmin):
-    pass
+    # Add it to the details view:
+    inlines =  (InfoInLine,)

@@ -8,35 +8,6 @@ from web_server.service.models import Info, Order, Service
 from web_server.core.models import CostumUser as User
 
 
-@pytest.fixture
-def service(db):
-    return Service.objects.create(name='Dosimetria Clinica',
-                                  description='Serviço de dosimentria',
-                                  unit_price=Decimal('1855.21'))
-
-
-@pytest.fixture
-def user(django_user_model):
-    email, password = 'test@email.com', '1234'  # TODO: Extrair isso para uma fixture
-    user = django_user_model.objects.create_user(email=email, password=password)
-    return user
-
-
-@pytest.fixture
-def info():
-    info = Info.objects.create(camera_factor=50.0)
-    return info
-
-
-@pytest.fixture
-def order(user, service, info):
-    return Order.objects.create(requester=user,
-                                service=service,
-                                info=info,
-                                amount=2,
-                                status=Order.PROCESSING)
-
-
 def test_type_services(order):
     '''
     There nust be only one entry in the db
