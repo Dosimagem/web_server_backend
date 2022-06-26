@@ -1,34 +1,37 @@
 from decimal import Decimal
+from functools import partial
 import os
 
 from django.db import models
-from django.db.models.signals import post_delete
-from django.dispatch import receiver
 from django.utils.timezone import now
 
 
 def _normalize_email(email):
-    return email.replace('@','_').replace('.', '_')
+    return email.replace('@', '_').replace('.', '_')
 
-def upload_to(instance, filename):
+
+def upload_to(instance, filename, type):
 
     datetime_now = now()
     time = f'{datetime_now:%H%M%S}'
     date = f'{datetime_now:%Y/%m/%d}'
-    base, extension = os.path.splitext(filename)
+    _, extension = os.path.splitext(filename)
 
-    if isinstance(instance, Info):
-        user = _normalize_email(instance.order.requester.email)
+    if type == 'img':
+        user = _normalize_email(instance.requester.email)
         type = 'images'
         filename = f'images_{time}{extension}'
 
-    if isinstance(instance, Order):
-        user =  _normalize_email(instance.requester.email)
+    if type == 'report':
+        user = _normalize_email(instance.requester.email)
         type = 'report'
         filename = f'report_{time}{extension}'
 
     return f'{user}/{type}/{date}/{filename}'
 
+
+upload_img_to = partial(upload_to, type='img')
+upload_report_to = partial(upload_to, type='report')
 
 
 class Service(models.Model):
@@ -44,7 +47,7 @@ class Service(models.Model):
         return self.name
 
 
-class Order(models.Model):
+class BaseAbstractOrder(models.Model):
 
     AWAITING_PAYMENT = 'APG'
     AWAITTING_PROCESSING = 'APR'
@@ -58,13 +61,11 @@ class Order(models.Model):
         (CONCLUDED, 'Concluído'),
     )
 
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         if isinstance(self.amount, int) and isinstance(self.service.unit_price, Decimal):
             self.total_price = self.service.unit_price * self.amount
-
 
     requester = models.ForeignKey('core.CostumUser', on_delete=models.CASCADE)
     service = models.ForeignKey('Service', on_delete=models.CASCADE)
@@ -75,35 +76,61 @@ class Order(models.Model):
     # this field is automatically filled in by amount and unit price of the service
     total_price = models.DecimalField('Total price', max_digits=14, decimal_places=2, null=True, blank=True)
 
-    report = models.FileField('Report', upload_to=upload_to, blank=True)
+    report = models.FileField('Report', upload_to=upload_report_to, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        abstract = True
+
+
+class DosimetryOrder(BaseAbstractOrder):
+
+    CLINICAL = 'C'
+    PRECLINICAL = 'P'
+
+    TYPES = (
+        (CLINICAL, 'Clinical'),
+        (PRECLINICAL, 'Pre Clinical'),
+    )
+
+    type = models.CharField('Dosimetry Type', max_length=1, choices=TYPES)
+    camera_factor = models.FloatField('Camera Factor')
+    radionuclide = models.CharField('Radionuclide', max_length=6)
+    injected_activity = models.FloatField('Injected Activity')
+    injection_datetime = models.DateTimeField('Injection datetime')
+    images = models.FileField('Images', upload_to=upload_img_to)
 
     def __str__(self):
-        return f'Order(id={self.id})'
+        if self.type == self.CLINICAL:
+            msg = f'Clinical Dosimetry (id={self.pk})'
+        elif self.type == self.PRECLINICAL:
+            msg = f'Preclinical Dosimetry (id={self.pk})'
+
+        return msg
 
 
-class Info(models.Model):
-
-    order = models.OneToOneField('Order', on_delete=models.CASCADE)
-
-    camera_factor = models.FloatField('Camera Factor', null=True, blank=True)
-    radionuclide = models.CharField('Radionuclide', max_length=6, null=True, blank=True)
-    injected_activity = models.FloatField('Injected Activity', null=True, blank=True)
-    injection_datetime = models.DateTimeField('Injection datetime', null=True, blank=True)
-    images = models.FileField('Images', upload_to=upload_to, blank=True)
-    obs = models.TextField('Obervations',max_length=2048, null=True, blank=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+class SegmentationOrder(BaseAbstractOrder):
+    images = models.FileField('Images', upload_to=upload_img_to)
+    observations = models.TextField('Obeservations', max_length=5000)
 
     def __str__(self):
-        return f'Infos {self.order.service.name}'
+        return f'Segmentantion (id={self.pk})'
 
 
-@receiver(post_delete, sender=Info)
-def post_delete_info(sender, instance, *args, **kwargs):
-    if instance.order:
-        instance.order.delete()
+class ComputationalModelOrder(BaseAbstractOrder):
+
+    CT = 'C'
+    SPECT = 'S'
+
+    OPTIONS = (
+        (CT, 'CT'),
+        (SPECT, 'SPECT'),
+    )
+
+    images = models.FileField('Images', upload_to=upload_img_to)
+    equipment_specification = models.CharField('Equipment Specification', max_length=1, choices=OPTIONS)
+
+    def __str__(self):
+        return f'Computational Modeling (id={self.pk})'

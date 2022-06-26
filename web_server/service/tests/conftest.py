@@ -1,7 +1,14 @@
 from decimal import Decimal
+
 import pytest
 
-from web_server.service.models import Info, Order, Service
+from django.utils.timezone import make_aware
+from django.utils.datetime_safe import datetime
+
+from web_server.service.models import (ComputationalModelOrder,
+                                       DosimetryOrder,
+                                       SegmentationOrder,
+                                       Service)
 
 
 @pytest.fixture
@@ -11,21 +18,80 @@ def user(django_user_model):
     return user
 
 
-@pytest.fixture
-def service(db):
-    return Service.objects.create(name='Dosimetria Clinica',
-                                  description='Serviço de dosimentria',
-                                  unit_price=Decimal('1855.21'))
+INDEX_DOSIMETRY = 0
+INDEX_SEGMENTANTION = 1
+INDEX_COMPUTATIONAL_MODELING = 2
 
 
 @pytest.fixture
-def order(user, service):
-    return Order.objects.create(requester=user,
-                                service=service,
-                                amount=2,
-                                status=Order.PROCESSING)
+def services(db):
+
+    Service(name='Dosimetria Clinica',
+            description='Serviço de dosimentria',
+            unit_price=Decimal('1855.21')).save()
+
+    Service(name='Segmentação',
+            description='Serviço de Segmentação',
+            unit_price=Decimal('2000.50')).save()
+
+    Service(name='Modelagem Computacinal',
+            description='Serviço de modelagem computacional',
+            unit_price=Decimal('4000.55')).save()
+
+    return Service.objects.all()
 
 
 @pytest.fixture
-def info(order):
-    return Info.objects.create(order=order, camera_factor=50.0)
+def dosimetry_service(services):
+    return services[INDEX_DOSIMETRY]
+
+
+@pytest.fixture
+def segmentantion_service(services):
+    return services[INDEX_SEGMENTANTION]
+
+
+@pytest.fixture
+def computational_modeling_service(services):
+    return services[INDEX_COMPUTATIONAL_MODELING]
+
+
+@pytest.fixture
+def dosimetry_order(user, dosimetry_service):
+
+    datetime_timezone = make_aware(datetime(2016, 12, 14, 11, 2, 51))
+
+    return DosimetryOrder.objects.create(requester=user,
+                                         service=dosimetry_service,
+                                         amount=2,
+                                         status=DosimetryOrder.PROCESSING,
+                                         type=DosimetryOrder.CLINICAL,
+                                         camera_factor=10.0,
+                                         radionuclide='L-177',
+                                         injected_activity=50.0,
+                                         injection_datetime=datetime_timezone,
+                                         images='images.zip'
+                                         )
+
+
+@pytest.fixture
+def segmentantion_order(user, segmentantion_service):
+
+    return SegmentationOrder.objects.create(requester=user,
+                                            service=segmentantion_service,
+                                            amount=1,
+                                            status=DosimetryOrder.PROCESSING,
+                                            images='images.zip',
+                                            observations='Texto de observação',
+                                            )
+
+
+@pytest.fixture
+def computational_modeling(user, computational_modeling_service):
+    return ComputationalModelOrder.objects.create(requester=user,
+                                                  service=computational_modeling_service,
+                                                  amount=3,
+                                                  status=DosimetryOrder.PROCESSING,
+                                                  images='images.zip',
+                                                  equipment_specification=ComputationalModelOrder.CT,
+                                                  )

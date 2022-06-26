@@ -3,7 +3,7 @@ from datetime import datetime
 
 import pytest
 
-from web_server.service.models import upload_to, _normalize_email
+from web_server.service.models import upload_img_to, upload_report_to, _normalize_email
 
 
 @pytest.fixture
@@ -20,25 +20,43 @@ def test_normalize_email(user):
     assert 'test_email_com' == _normalize_email(user.email)
 
 
-
-
-
 @mock.patch('web_server.service.models.now')
-def test_upload_name_to_info(mock, info, datetime_now):
-    t, date, time =  datetime_now
+def test_upload_name_images_dosimetry_order(mock, dosimetry_order, datetime_now):
+    t, date, time = datetime_now
 
     mock.return_value = t
 
-    user = _normalize_email(info.order.requester.email)
+    user = _normalize_email(dosimetry_order.requester.email)
 
-    assert upload_to(info, 'filename.zip') == f'{user}/images/{date}/images_{time}.zip'
+    assert upload_img_to(dosimetry_order, filename='filename.zip') == f'{user}/images/{date}/images_{time}.zip'
 
 
 @mock.patch('web_server.service.models.now')
-def test_upload_name_to_service(mock, order, datetime_now):
-    t, date, time =  datetime_now
+def test_upload_name_report_dosimetry_order(mock, dosimetry_order, datetime_now):
+    t, date, time = datetime_now
 
     mock.return_value = t
-    user = _normalize_email(order.requester.email)
+    user = _normalize_email(dosimetry_order.requester.email)
 
-    assert upload_to(order, 'filename.pdf') == f'{user}/report/{date}/report_{time}.pdf'
+    assert upload_report_to(dosimetry_order, 'filename.pdf') == f'{user}/report/{date}/report_{time}.pdf'
+
+
+@mock.patch('web_server.service.models.now')
+def test_upload_name_images_segmentantion_order(mock, segmentantion_order, datetime_now):
+    t, date, time = datetime_now
+
+    mock.return_value = t
+
+    user = _normalize_email(segmentantion_order.requester.email)
+
+    assert upload_img_to(segmentantion_order, filename='filename.zip') == f'{user}/images/{date}/images_{time}.zip'
+
+
+@mock.patch('web_server.service.models.now')
+def test_upload_name_report_segmentantion_order(mock, segmentantion_order, datetime_now):
+    t, date, time = datetime_now
+
+    mock.return_value = t
+    user = _normalize_email(segmentantion_order.requester.email)
+
+    assert upload_report_to(segmentantion_order, 'filename.pdf') == f'{user}/report/{date}/report_{time}.pdf'
