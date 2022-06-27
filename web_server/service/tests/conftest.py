@@ -19,8 +19,9 @@ def user(django_user_model):
 
 
 INDEX_DOSIMETRY = 0
-INDEX_SEGMENTANTION = 1
-INDEX_COMPUTATIONAL_MODELING = 2
+INDEX_DOSIMETRY_PRECLINICAL = 1
+INDEX_SEGMENTANTION = 2
+INDEX_COMPUTATIONAL_MODELING = 3
 
 
 @pytest.fixture
@@ -29,6 +30,10 @@ def services(db):
     Service(name='Dosimetria Clinica',
             description='Serviço de dosimentria',
             unit_price=Decimal('1855.21')).save()
+
+    Service(name='Dosimetria Preclinica',
+            description='Serviço de dosimetria preclinica',
+            unit_price=Decimal('1000.01')).save()
 
     Service(name='Segmentação',
             description='Serviço de Segmentação',
@@ -42,8 +47,13 @@ def services(db):
 
 
 @pytest.fixture
-def dosimetry_service(services):
+def dosimetry_clinical_service(services):
     return services[INDEX_DOSIMETRY]
+
+
+@pytest.fixture
+def dosimetry_preclinical_service(services):
+    return services[INDEX_DOSIMETRY_PRECLINICAL]
 
 
 @pytest.fixture
@@ -57,15 +67,31 @@ def computational_modeling_service(services):
 
 
 @pytest.fixture
-def dosimetry_order(user, dosimetry_service):
+def dosimetry_clinical_order(user, dosimetry_clinical_service):
 
     datetime_timezone = make_aware(datetime(2016, 12, 14, 11, 2, 51))
 
     return DosimetryOrder.objects.create(requester=user,
-                                         service=dosimetry_service,
+                                         service=dosimetry_clinical_service,
                                          amount=2,
                                          status=DosimetryOrder.PROCESSING,
-                                         type=DosimetryOrder.CLINICAL,
+                                         camera_factor=10.0,
+                                         radionuclide='Lu-177',
+                                         injected_activity=50.0,
+                                         injection_datetime=datetime_timezone,
+                                         images='images.zip'
+                                         )
+
+
+@pytest.fixture
+def dosimetry_preclinical_order(user, dosimetry_preclinical_service):
+
+    datetime_timezone = make_aware(datetime(2016, 12, 14, 11, 2, 51))
+
+    return DosimetryOrder.objects.create(requester=user,
+                                         service=dosimetry_preclinical_service,
+                                         amount=2,
+                                         status=DosimetryOrder.PROCESSING,
                                          camera_factor=10.0,
                                          radionuclide='L-177',
                                          injected_activity=50.0,

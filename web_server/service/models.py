@@ -1,4 +1,3 @@
-from decimal import Decimal
 from functools import partial
 import os
 
@@ -61,11 +60,10 @@ class BaseAbstractOrder(models.Model):
         (CONCLUDED, 'Concluído'),
     )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        if isinstance(self.amount, int) and isinstance(self.service.unit_price, Decimal):
+    def save(self, *args, **kwargs):
+        if not self.total_price:
             self.total_price = self.service.unit_price * self.amount
+        super().save(*args, **kwargs)
 
     requester = models.ForeignKey('core.CostumUser', on_delete=models.CASCADE)
     service = models.ForeignKey('Service', on_delete=models.CASCADE)
@@ -95,14 +93,25 @@ class DosimetryOrder(BaseAbstractOrder):
         (PRECLINICAL, 'Pre Clinical'),
     )
 
-    type = models.CharField('Dosimetry Type', max_length=1, choices=TYPES)
+    # this field is automatically filled in by service name
+    type = models.CharField('Dosimetry Type', max_length=1, choices=TYPES, blank=True)
     camera_factor = models.FloatField('Camera Factor')
     radionuclide = models.CharField('Radionuclide', max_length=6)
     injected_activity = models.FloatField('Injected Activity')
     injection_datetime = models.DateTimeField('Injection datetime')
     images = models.FileField('Images', upload_to=upload_img_to)
 
+    def save(self, *args, **kwargs):
+        if not self.type:
+            if 'preclinica' in self.service.name.lower():
+                self.type = self.PRECLINICAL
+            else:
+                self.type = self.CLINICAL
+
+        super().save(*args, **kwargs)
+
     def __str__(self):
+        msg = ''
         if self.type == self.CLINICAL:
             msg = f'Clinical Dosimetry (id={self.pk})'
         elif self.type == self.PRECLINICAL:

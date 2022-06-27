@@ -21,24 +21,24 @@ def test_normalize_email(user):
 
 
 @mock.patch('web_server.service.models.now')
-def test_upload_name_images_dosimetry_order(mock, dosimetry_order, datetime_now):
+def test_upload_name_images_dosimetry_order(mock, dosimetry_clinical_order, datetime_now):
     t, date, time = datetime_now
 
     mock.return_value = t
 
-    user = _normalize_email(dosimetry_order.requester.email)
+    user = _normalize_email(dosimetry_clinical_order.requester.email)
 
-    assert upload_img_to(dosimetry_order, filename='filename.zip') == f'{user}/images/{date}/images_{time}.zip'
+    assert upload_img_to(dosimetry_clinical_order, filename='filename.zip') == f'{user}/images/{date}/images_{time}.zip'
 
 
 @mock.patch('web_server.service.models.now')
-def test_upload_name_report_dosimetry_order(mock, dosimetry_order, datetime_now):
+def test_upload_name_report_dosimetry_order(mock, dosimetry_clinical_order, datetime_now):
     t, date, time = datetime_now
 
     mock.return_value = t
-    user = _normalize_email(dosimetry_order.requester.email)
+    user = _normalize_email(dosimetry_clinical_order.requester.email)
 
-    assert upload_report_to(dosimetry_order, 'filename.pdf') == f'{user}/report/{date}/report_{time}.pdf'
+    assert upload_report_to(dosimetry_clinical_order, 'filename.pdf') == f'{user}/report/{date}/report_{time}.pdf'
 
 
 @mock.patch('web_server.service.models.now')

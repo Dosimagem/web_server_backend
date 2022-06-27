@@ -15,8 +15,9 @@ def test_type_services(services):
 
 @pytest.mark.parametrize('index, price', [
     (0, Decimal('1855.21')),
-    (1, Decimal('2000.50')),
-    (2, Decimal('4000.55')),
+    (1, Decimal('1000.01')),
+    (2, Decimal('2000.50')),
+    (3, Decimal('4000.55')),
 ])
 def test_get_price(index, price, services):
     '''
@@ -37,8 +38,9 @@ def test_service_modified_at(services):
 
 @pytest.mark.parametrize('index, name', [
     (0, 'Dosimetria Clinica'),
-    (1, 'Segmentação'),
-    (2, 'Modelagem Computacinal'),
+    (1, 'Dosimetria Preclinica'),
+    (2, 'Segmentação'),
+    (3, 'Modelagem Computacinal'),
 ])
 def test_str(index, name, services):
     assert str(services[index]) == name
