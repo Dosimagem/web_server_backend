@@ -7,7 +7,7 @@ from django.urls import reverse
 
 @pytest.fixture
 def logged_user(client, django_user_model):
-    email, password = 'test@email.com', '1234'  # TODO: Extrair isso para umq fixture
+    email, password = 'test@email.com', '1234'  # TODO: Extrair isso para uma fixture
 
     user = django_user_model.objects.create_user(email=email, password=password)
 
