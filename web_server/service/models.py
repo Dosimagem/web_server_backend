@@ -82,6 +82,9 @@ class BaseAbstractOrder(models.Model):
     class Meta:
         abstract = True
 
+    def get_path_report(self):
+        return str(self.report)
+
 
 class DosimetryOrder(BaseAbstractOrder):
 
