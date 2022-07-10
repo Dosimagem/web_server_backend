@@ -47,14 +47,13 @@ cp contrib/env-sample .env
 python manage.py runserver
 ```
 
-### 3.1) Tests
+### 3.2) Tests
 
 ```console
-python manage.py test users.tests.SignUpFormTests
-python manage.py test users.tests.SignupViewsTests
+pytest
 ```
 
-### 3.2) Dependências
+### 3.3) Dependências
 
 As dependêcias do projeto foram gerencias usando o **pip-tools** e **pip**.
 
@@ -79,7 +78,7 @@ pip-compile --generate-hashes requirements.in
 pip-compile --generate-hashes requirements-dev.in
 ```
 
-### 3.3) Python-decouple
+### 3.4) Python-decouple
 
 A lib python-decouple serve para gerenciar diferentes ambientes. Primiro ela procura as variaveis de ambiente no arquivo .env, caso não encontre ela procura na varicaveis de ambiente do sistema.
 
