@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}User profile{% endblock %}
 {% block content %}
 
@@ -28,7 +29,11 @@
                         <td>{{s.get_status_display}}</td>
                         <td>{{s.created_at}}</td>
                         <td>{{s.total_price}}</td>
-                        <td><a href="{{s.report}}">{{s.report}}</a></td>
+                        {%if s.report %}
+                            <td><a href="{%get_media_prefix%}{{s.get_path_report}} ">link</a></td>
+                        {%else%}
+                            <td>Não disponivel</td>
+                        {%endif%}
                     </tr>
                     {% endfor %}
                     </tbody>
