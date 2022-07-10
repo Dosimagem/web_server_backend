@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     #
     'web_server.core',
     'web_server.service',
+    'web_server.client',
     #
     'django.contrib.admin',
     'django.contrib.auth',

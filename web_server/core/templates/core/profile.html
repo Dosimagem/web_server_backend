@@ -16,6 +16,7 @@
                         <th scope="col">serviço</th>
                         <th scope="col">Status</th>
                         <th scope="col">Data do pedido</th>
+                        <th scope="col">Preco Total</th>
                         <th scope="col">Relatório</th>
                     </tr>
                     </thead>
@@ -23,10 +24,11 @@
                     {% for s in solicitations %}
                     <tr>
                         <th scope="row">{{forloop.counter}}</th>
-                        <td>{{s.type_service}}</td>
-                        <td>{{s.status}}</td>
-                        <td>{{s.request_data}}</td>
-                        <td><a href="#">{{s.report_link}}</a></td>
+                        <td>{{s.service.name}}</td>
+                        <td>{{s.get_status_display}}</td>
+                        <td>{{s.created_at}}</td>
+                        <td>{{s.total_price}}</td>
+                        <td><a href="{{s.report}}">{{s.report}}</a></td>
                     </tr>
                     {% endfor %}
                     </tbody>

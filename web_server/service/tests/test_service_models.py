@@ -40,7 +40,7 @@ def test_service_modified_at(services):
     (0, 'Dosimetria Clinica'),
     (1, 'Dosimetria Preclinica'),
     (2, 'Segmentação'),
-    (3, 'Modelagem Computacinal'),
+    (3, 'Modelagem Computacional'),
 ])
 def test_str(index, name, services):
     assert str(services[index]) == name
