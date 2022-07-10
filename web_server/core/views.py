@@ -1,22 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 
 from web_server.core.forms import SignUpForm
-
-
-class Solicitation:
-
-    def __init__(self, user, status, type_service, report_link, request_data):
-        self.user = user
-        self.status = status
-        self.type_service = type_service
-        self.report_link = report_link
-        self.request_data = request_data
-
-
-SOLICITATIONS = [Solicitation('Henrique', 'Processando', 'Dosimetria Clinica', 'link', '10/10/2022'),
-                 Solicitation('Henrique', 'Concluído', 'Dosimetria Pré-clinica', 'link', '06/10/2022')]
 
 
 def index(request):
@@ -40,8 +25,3 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
-
-
-@login_required
-def profile(request):
-    return render(request, 'core/profile.html', context={'solicitations': SOLICITATIONS})

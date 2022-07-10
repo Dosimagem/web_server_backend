@@ -18,6 +18,12 @@ def user(django_user_model):
     return user
 
 
+@pytest.fixture
+def logged_user(client, user):
+    client.force_login(user)
+    return user
+
+
 INDEX_DOSIMETRY = 0
 INDEX_DOSIMETRY_PRECLINICAL = 1
 INDEX_SEGMENTANTION = 2
@@ -39,7 +45,7 @@ def services(db):
             description='Serviço de Segmentação',
             unit_price=Decimal('2000.50')).save()
 
-    Service(name='Modelagem Computacinal',
+    Service(name='Modelagem Computacional',
             description='Serviço de modelagem computacional',
             unit_price=Decimal('4000.55')).save()
 
@@ -121,3 +127,8 @@ def computational_modeling(user, computational_modeling_service):
                                                   images='images.zip',
                                                   equipment_specification=ComputationalModelOrder.CT,
                                                   )
+
+
+@pytest.fixture
+def orders_user(dosimetry_clinical_order, dosimetry_preclinical_order, segmentantion_order, computational_modeling):
+    return [dosimetry_clinical_order, dosimetry_preclinical_order, segmentantion_order, computational_modeling]
