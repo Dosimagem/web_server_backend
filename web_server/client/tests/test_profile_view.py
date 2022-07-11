@@ -15,7 +15,7 @@ def test_profile_status_code(resp):
 
 
 def test_profile_template(resp):
-    assertTemplateUsed(resp, 'core/profile.html')
+    assertTemplateUsed(resp, 'profile/profile.html')
 
 
 def test_services_in_context(resp):

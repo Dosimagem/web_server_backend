@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
-  {%include 'nav.html'%}
+  {%include 'base/nav.html'%}
   <div class="container m-5">
     <h2>Rotas disponiveis</h2>
     <ul>
@@ -28,5 +28,5 @@
       </li>
     </ul>
   </div>
-  {%include 'footer.html'%}
+  {%include 'base/footer.html'%}
 {% endblock %}
