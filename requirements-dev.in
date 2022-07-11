@@ -4,3 +4,4 @@ ipython
 django-extensions
 django-debug-toolbar
 pytest-django
+pre-commit
