@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from .views import index, signup
 
-#  TODO: app namespace
+app_name = 'core'
 urlpatterns = [
     path('', index, name='index'),
     path('accounts/signup/', signup, name='signup'),

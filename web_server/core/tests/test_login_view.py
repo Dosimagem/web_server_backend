@@ -7,7 +7,7 @@ from pytest_django.asserts import assertContains, assertTemplateUsed
 
 @pytest.fixture
 def response(client):
-    return client.get(reverse('login'))
+    return client.get(reverse('core:login'))
 
 
 def test_login_status(response):
@@ -36,12 +36,12 @@ def test_login_page_redirect(client, django_user_model):
     django_user_model.objects.create_user(email=user_form_login['username'],
                                           password=user_form_login['password'])
 
-    resp = client.post(reverse('login'), data=user_form_login)
+    resp = client.post(reverse('core:login'), data=user_form_login)
 
     assert resp.status_code == HTTPStatus.FOUND
-    assert f'{resp.url}/' == f'{reverse("profile")}'
+    assert f'{resp.url}/' == f'{reverse("client:profile")}'
 
 
 def test_link_forget_password(response):
 
-    assertContains(response, '<a href="{}">'.format(reverse('password_reset')))
+    assertContains(response, '<a href="{}">'.format(reverse('core:password_reset')))

@@ -6,7 +6,7 @@ from django.urls import reverse
 from web_server.core.models import CostumUser as User
 
 
-URL_SINUP = reverse('signup')
+URL_SINUP = reverse('core:signup')
 
 
 @pytest.fixture
@@ -44,7 +44,7 @@ def test_successful_signup(response):
     '''
     After registration the user must be redirected to login
     '''
-    url = reverse('login')
+    url = reverse('core:login')
     assertRedirects(response, url, status_code=HTTPStatus.FOUND)
     assert User.objects.count() == 1
 

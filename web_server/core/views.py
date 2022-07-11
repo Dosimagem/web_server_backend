@@ -21,7 +21,7 @@ def signup(request):
             user = authenticate(email=email, password=raw_password)
             login(request, user)
 
-            return redirect('login')
+            return redirect('core:login')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
