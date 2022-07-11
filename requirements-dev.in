@@ -4,3 +4,5 @@ ipython
 django-extensions
 django-debug-toolbar
 pytest-django
+codecov
+pytest-codecov

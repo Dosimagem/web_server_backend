@@ -12,7 +12,7 @@ Desenvolvimento das funcionalidades
 
 - Usuários [ OK ]
   - Esqueceu a senha
-  - Alteracao de informações do usuario 
+  - Alteracao de informações do usuario
 - Serviços [ nOK ]
 
 
@@ -51,6 +51,12 @@ python manage.py runserver
 
 ```console
 pytest
+```
+
+Para ver a cobertura de testes
+
+```
+pytest --cov=web_server --cov-report html
 ```
 
 ### 3.3) Dependências
