@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import profile
 
-#  TODO: app namespace
+app_name = 'client'
 urlpatterns = [
     path('profile/', profile, name='profile'),
 ]

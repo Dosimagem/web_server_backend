@@ -7,11 +7,11 @@ def test_profile_redirect_for_login_page_user_not_login(client):
     '''
     User not logged in trying to access the profile must be redirected to login
     '''
-    url = reverse('profile')
+    url = reverse('client:profile')
     resp = client.get(url)
 
     assert resp.status_code == HTTPStatus.FOUND
-    assert resp.url == f'{reverse("login")}?next={url}'
+    assert resp.url == f'{reverse("core:login")}?next={url}'
 
 
 def test_profile_for_login(client, django_user_model):
@@ -25,6 +25,6 @@ def test_profile_for_login(client, django_user_model):
 
     client.login(email=email, password=password)
 
-    response = client.get(reverse('profile'))
+    response = client.get(reverse('client:profile'))
 
     assert response.status_code == HTTPStatus.OK

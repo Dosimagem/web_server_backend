@@ -7,7 +7,7 @@ from django.urls import reverse
 
 @pytest.fixture
 def resp(client, logged_user, orders_user):
-    return client.get(reverse('profile'))
+    return client.get(reverse('client:profile'))
 
 
 def test_profile_status_code(resp):
