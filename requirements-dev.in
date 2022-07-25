@@ -6,3 +6,4 @@ django-debug-toolbar
 pytest-django
 codecov
 pytest-codecov
+pre_commit
