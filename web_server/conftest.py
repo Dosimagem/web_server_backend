@@ -72,10 +72,11 @@ def computational_modeling_service(services):
     return services[INDEX_COMPUTATIONAL_MODELING]
 
 
+DATETIME_TIMEZONE = make_aware(datetime(2016, 12, 14, 11, 2, 51))
+
+
 @pytest.fixture
 def dosimetry_clinical_order(user, dosimetry_clinical_service):
-
-    datetime_timezone = make_aware(datetime(2016, 12, 14, 11, 2, 51))
 
     return DosimetryOrder.objects.create(requester=user,
                                          service=dosimetry_clinical_service,
@@ -84,15 +85,13 @@ def dosimetry_clinical_order(user, dosimetry_clinical_service):
                                          camera_factor=10.0,
                                          radionuclide='Lu-177',
                                          injected_activity=50.0,
-                                         injection_datetime=datetime_timezone,
+                                         injection_datetime=DATETIME_TIMEZONE,
                                          images='images.zip'
                                          )
 
 
 @pytest.fixture
 def dosimetry_preclinical_order(user, dosimetry_preclinical_service):
-
-    datetime_timezone = make_aware(datetime(2016, 12, 14, 11, 2, 51))
 
     return DosimetryOrder.objects.create(requester=user,
                                          service=dosimetry_preclinical_service,
@@ -101,7 +100,7 @@ def dosimetry_preclinical_order(user, dosimetry_preclinical_service):
                                          camera_factor=10.0,
                                          radionuclide='L-177',
                                          injected_activity=50.0,
-                                         injection_datetime=datetime_timezone,
+                                         injection_datetime=DATETIME_TIMEZONE,
                                          images='images.zip'
                                          )
 

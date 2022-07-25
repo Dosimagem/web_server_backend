@@ -4,6 +4,7 @@ from datetime import datetime
 import pytest
 
 from django.forms import ValidationError
+from web_server.conftest import DATETIME_TIMEZONE
 
 from web_server.service.models import DosimetryOrder, Service
 from web_server.core.models import CostumUser as User
@@ -101,3 +102,17 @@ def test_dosimetry_order_set_type(dosimetry_clinical_order):
 
 def test_str(dosimetry_clinical_order):
     assert str(dosimetry_clinical_order) == 'Clinical Dosimetry (id=1)'
+
+
+def test_default_status_is_awaiting_payment(user, dosimetry_clinical_service):
+
+    order = DosimetryOrder.objects.create(requester=user,
+                                          service=dosimetry_clinical_service,
+                                          amount=2,
+                                          camera_factor=10.0,
+                                          radionuclide='Lu-177',
+                                          injected_activity=50.0,
+                                          injection_datetime=DATETIME_TIMEZONE,
+                                          images='images.zip')
+
+    assert order.status == DosimetryOrder.AWAITING_PAYMENT
