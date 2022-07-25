@@ -69,7 +69,7 @@ class BaseAbstractOrder(models.Model):
     service = models.ForeignKey('Service', on_delete=models.CASCADE)
     amount = models.IntegerField('Amount')
 
-    status = models.CharField('status', max_length=3, choices=STATUS)
+    status = models.CharField('status', max_length=3, choices=STATUS, default=AWAITING_PAYMENT)
 
     # this field is automatically filled in by amount and unit price of the service
     total_price = models.DecimalField('Total price', max_digits=14, decimal_places=2, null=True, blank=True)
