@@ -1,10 +1,18 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from web_server.core.models import CostumUser
 
 
-class SignUpForm(UserCreationForm):
+class UserForm(UserCreationForm):
 
     class Meta:
         model = CostumUser
-        fields = ('name', 'email', 'phone', 'institution', 'role', 'password1', 'password2',)
+        fields = ('email', 'password1', 'password2',)
+
+
+class ProfileForm(forms.ModelForm):
+    ...
+
+class SignUpForm:
+    pass

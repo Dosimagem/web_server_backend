@@ -1,22 +1,22 @@
 import pytest
-from web_server.core.forms import SignUpForm
+from web_server.core.forms import UserForm
 
 
-def test_valid_form(user_form):
+def test_valid_user_form(user_form, db):
 
-    form = SignUpForm(data=user_form)
+    form = UserForm(data=user_form)
 
     assert form.is_valid()
 
 
 @pytest.mark.parametrize(
     'field',
-    ['email', 'phone', 'institution', 'role'],
+    ['email', 'password1', 'password2'],
 )
-def test_field_isnot_optional(user_form, field):
+def test_field_is_not_optional(user_form, field, db):
 
     del user_form[field]
-    form = SignUpForm(data=user_form)
+    form = UserForm(data=user_form)
 
     assert not form.is_valid()
 
@@ -24,19 +24,36 @@ def test_field_isnot_optional(user_form, field):
     assert expected == form.errors[field]
 
 
-def test_username_is_optional(user_form):
+def test_password_ditnot_mach(user_form_wrong_password, db):
 
-    del user_form['name']
-    form = SignUpForm(data=user_form)
-
-    assert form.is_valid()
-
-
-def test_password_ditnot_mach(user_form_wrong_password):
-
-    form = SignUpForm(data=user_form_wrong_password)
+    form = UserForm(data=user_form_wrong_password)
 
     assert not form.is_valid()
 
     expected = ['The two password fields didn’t match.']
     assert expected == form.errors['password2']
+
+
+@pytest.mark.parametrize(
+    'password, error_validation',[
+        ( '1', ['This password is too short. It must contain at least 8 characters.',
+             'This password is too common.',
+             'This password is entirely numeric.']),
+        ( '12345678', ['This password is too common.',
+                       'This password is entirely numeric.']),
+        ( '45268748', ['This password is entirely numeric.']),
+    ]
+)
+def test_password_validation(password, error_validation, db):
+
+    payload = {
+        'email': 'test1@email.com',
+        'password1': password,
+        'password2': password,
+    }
+
+    form = UserForm(data=payload)
+
+    assert not form.is_valid()
+
+    assert error_validation == form.errors['password2']
