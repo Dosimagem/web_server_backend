@@ -1,9 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
 from django.db import models
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.db.models.signals import post_save
 
 
 class UserManager(BaseUserManager):
@@ -43,7 +46,6 @@ class CostumUser(AbstractBaseUser, PermissionsMixin):
     Email and password are required. Other fields are optional.
     """
 
-    name = models.CharField(_('name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), unique=True)
     is_staff = models.BooleanField(
         _('staff status'),
@@ -60,11 +62,6 @@ class CostumUser(AbstractBaseUser, PermissionsMixin):
     )
 
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-
-    #  Dosimagem fields
-    phone = models.CharField(_('phone'), max_length=30)
-    institution = models.CharField(_('institution'), max_length=30)
-    role = models.CharField(_('role'), max_length=30)
 
     objects = UserManager()
 
@@ -83,14 +80,29 @@ class CostumUser(AbstractBaseUser, PermissionsMixin):
 
     def get_name(self):
         """Return the name for the user."""
-        return self.name
+        return self.profile.name
 
     def get_first_name(self):
         """Return the name for the user."""
-        if not self.name:
+        name = self.profile.name
+        if not name:
             return 'This user have not a name'  # TODO test this
-        return self.name.split()[0]
+        return name.split()[0]
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class UserProfile(models.Model):
+
+    #  Dosimagem fields
+    name = models.CharField(_('name'), max_length=150)
+    phone = models.CharField(_('phone'), max_length=30)
+    institution = models.CharField(_('institution'), max_length=30)
+    role = models.CharField(_('role'), max_length=30)
+
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
+
+    def __str__(self):
+        return self.name
