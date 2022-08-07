@@ -3,7 +3,9 @@ from http import HTTPStatus
 import pytest
 from pytest_django.asserts import assertRedirects, assertTemplateUsed, assertFormError, assertContains
 from django.urls import reverse
-from web_server.core.models import CostumUser as User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 URL_SINUP = reverse('core:signup')
@@ -15,13 +17,13 @@ def resp_get(client):
 
 
 @pytest.fixture
-def response(client, user_form):
-    return client.post(URL_SINUP, data=user_form)
+def resp_post(client, user_signup, db):
+    return client.post(URL_SINUP, data=user_signup)
 
 
 @pytest.fixture
-def response_fail_signup(client, user_form_wrong_password):
-    return client.post(URL_SINUP, data=user_form_wrong_password)
+def response_fail_signup(client, user_wrong_signup, db):
+    return client.post(URL_SINUP, data=user_wrong_signup)
 
 
 def test_success_get_signup_page_status(resp_get):
@@ -40,12 +42,12 @@ def test_field_in_signup_template(resp_get, field):
     assertContains(resp_get, f'name="{field}"')
 
 
-def test_successful_signup(response):
+def test_successful_signup(resp_post):
     '''
     After registration the user must be redirected to login
     '''
     url = reverse('core:login')
-    assertRedirects(response, url, status_code=HTTPStatus.FOUND)
+    assertRedirects(resp_post, url, status_code=HTTPStatus.FOUND)
     assert User.objects.count() == 1
 
 
@@ -66,24 +68,25 @@ def test_failed_signup_input_filled(response_fail_signup):
     When the password does not match in the registration,
     it must fail and return to the registration page, but the entry must be filled.
     '''
+
     form = response_fail_signup.context['form']
 
-    for field in ['name', 'email', 'phone', 'role', 'institution']:
+    for field in ['name', 'email', 'role', 'institution', 'phone']:
         assertContains(response_fail_signup, 'value="{}"'.format(form.data[field]))
 
     assert User.objects.count() == 0
 
 
-def test_failed_signup_same_email_twice(client, user_form):
+def test_failed_signup_same_email_twice(client, user_signup, db):
     '''
     Trying to register the same email twice is not possible.
     '''
 
-    resp = client.post(URL_SINUP, data=user_form)
+    resp = client.post(URL_SINUP, data=user_signup)
 
     assert User.objects.count() == 1
 
-    resp = client.post(URL_SINUP, data=user_form)
+    resp = client.post(URL_SINUP, data=user_signup)
 
     assert User.objects.count() == 1
 

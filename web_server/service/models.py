@@ -65,7 +65,7 @@ class BaseAbstractOrder(models.Model):
             self.total_price = self.service.unit_price * self.amount
         super().save(*args, **kwargs)
 
-    requester = models.ForeignKey('core.CostumUser', on_delete=models.CASCADE)
+    requester = models.ForeignKey('core.CustomUser', on_delete=models.CASCADE)
     service = models.ForeignKey('Service', on_delete=models.CASCADE)
     amount = models.IntegerField('Amount')
 

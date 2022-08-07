@@ -6,7 +6,7 @@ import pytest
 from django.forms import ValidationError
 
 from web_server.service.models import ComputationalModelOrder, Service
-from web_server.core.models import CostumUser as User
+from web_server.core.models import CustomUser as User
 
 
 def test_type_services(computational_modeling):
