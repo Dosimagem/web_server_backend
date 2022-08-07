@@ -17,7 +17,7 @@ DEBUG = config('DEBUG', cast=bool, default=False)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
-AUTH_USER_MODEL = 'core.CostumUser'
+AUTH_USER_MODEL = 'core.CustomUser'
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/profile'

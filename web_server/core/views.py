@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 
-from web_server.core.forms import SignUpForm
+from web_server.core.forms import SignupForm
 
 
 def index(request):
@@ -10,18 +10,27 @@ def index(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
 
-        if form.is_valid():
+        form_user = SignupForm(data=request.POST)
 
-            user = form.save()
+        if form_user.is_valid():
 
-            email = form.cleaned_data.get('email')
-            raw_password = form.cleaned_data.get('password1')
+            user = form_user.save()
+            # user.profile.name = form_user.cleaned_data['name']
+            # user.profile.institution = form_user.cleaned_data['institution']
+            # user.profile.role = form_user.cleaned_data['role']
+            # user.profile.phone = form_user.cleaned_data['phone']
+            # user.save()
+
+            email = form_user.cleaned_data.get('email')
+            raw_password = form_user.cleaned_data.get('password1')
             user = authenticate(email=email, password=raw_password)
             login(request, user)
 
             return redirect('core:login')
     else:
-        form = SignUpForm()
-    return render(request, 'registration/signup.html', {'form': form})
+        form_user = SignupForm()
+
+    context = {'form': form_user}
+
+    return render(request, 'registration/signup.html', context=context)
