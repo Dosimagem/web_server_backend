@@ -9,6 +9,7 @@ def _normalize_email(email):
     return email.replace('@', '_').replace('.', '_')
 
 
+# TODO:  Usar o id do usuario em vez do email
 def upload_to(instance, filename, type):
 
     datetime_now = now()

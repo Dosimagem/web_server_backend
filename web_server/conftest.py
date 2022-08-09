@@ -131,3 +131,13 @@ def computational_modeling(user, computational_modeling_service):
 @pytest.fixture
 def orders_user(dosimetry_clinical_order, dosimetry_preclinical_order, segmentantion_order, computational_modeling):
     return [dosimetry_clinical_order, dosimetry_preclinical_order, segmentantion_order, computational_modeling]
+
+
+@pytest.fixture
+def datetime_now():
+    t = datetime(year=2022, month=1, day=1)
+
+    date = f'{t:%Y/%m/%d}'
+    time = f'{t:%H%M%S}'
+
+    return t, date, time

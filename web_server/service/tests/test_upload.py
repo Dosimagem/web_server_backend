@@ -1,19 +1,6 @@
 from unittest import mock
-from datetime import datetime
-
-import pytest
 
 from web_server.service.models import upload_img_to, upload_report_to, _normalize_email
-
-
-@pytest.fixture
-def datetime_now():
-    t = datetime(year=2022, month=1, day=1)
-
-    date = f'{t:%Y/%m/%d}'
-    time = f'{t:%H%M%S}'
-
-    return t, date, time
 
 
 def test_normalize_email(user):

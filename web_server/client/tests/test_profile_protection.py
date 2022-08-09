@@ -3,6 +3,9 @@ from http import HTTPStatus
 from django.urls import reverse
 
 
+# TODO: Cola estes testes profile_view
+
+
 def test_profile_redirect_for_login_page_user_not_login(client):
     '''
     User not logged in trying to access the profile must be redirected to login
