@@ -16,7 +16,7 @@ def test_valid_signup_form(register_infos, db):
 
 @pytest.mark.parametrize(
     'field',
-    ['email', 'confirm_email', 'password1', 'password2', 'name', 'phone', 'institution', 'role'],
+    ['email', 'confirmed_email', 'password1', 'password2', 'name', 'phone', 'institution', 'role'],
 )
 def test_field_is_not_optional(register_infos, field, db):
 
@@ -46,7 +46,7 @@ def test_email_did_not_mach(user_wrong_signup, db):
     assert not form.is_valid()
 
     expected = ['The two email fields didn’t match.']
-    assert expected == form.errors['confirm_email']
+    assert expected == form.errors['confirmed_email']
 
 
 @pytest.mark.parametrize(

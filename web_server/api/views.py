@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 
 from web_server.core.forms import SignupForm
 
@@ -21,21 +22,25 @@ def register(request):
     if user := form.save():
         Token.objects.create(user=user)
 
-    data = _userToDict(user)
+    data = {'id': user.id, 'token': user.auth_token.key, 'is_staff': user.is_staff}
 
     return Response(data, status=HTTPStatus.CREATED)
 
 
-def _userToDict(user):
-    return {
-        'id': user.id,
-        'email': user.email,
-        'token': user.auth_token.key,
-        'name': user.profile.name,
-        'phone': user.profile.phone,
-        'institution': user.profile.institution,
-        'role': user.profile.role,
+class MyObtainAuthToken(ObtainAuthToken):
+    '''
+    Error response example
+    {
+    "errors": ["Username field is required.", "Password field is required."]
     }
+    '''
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid(raise_exception=False):
+            return Response({'errors': _list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'id': user.id, 'token': token.key, 'is_staff': user.is_staff})
 
 
 def _list_errors(errors):
