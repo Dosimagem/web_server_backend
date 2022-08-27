@@ -26,7 +26,7 @@ def test_successfull_register(client_api, register_infos):
 
     body = response.json()
 
-    assert body == {'id': user.id, 'token': user.auth_token.key, 'is_staff': user.is_staff}
+    assert body == {'id': str(user.uuid), 'token': user.auth_token.key, 'is_staff': user.is_staff}
 
 
 def test_fail_register_user_already_exist(client_api, register_infos):

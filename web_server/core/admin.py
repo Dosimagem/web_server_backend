@@ -5,7 +5,7 @@ from .models import CustomUser, UserProfile
 
 @admin.register(CustomUser)
 class CustomUserModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'email', 'is_active', 'is_staff', 'date_joined')
+    list_display = ('id', 'uuid', 'email', 'is_active', 'is_staff', 'date_joined')
     list_display_links = ('email',)
 
 
