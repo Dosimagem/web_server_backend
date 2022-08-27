@@ -27,7 +27,7 @@ def test_successfull_login(client_api, user_info, user):
 
     assert response.status_code == HTTPStatus.OK
 
-    assert body['id'] == user.id
+    assert body['id'] == str(user.uuid)
     assert body['token'] == user.auth_token.key
     assert body['is_staff'] == user.is_staff
 

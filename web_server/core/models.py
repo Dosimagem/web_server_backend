@@ -1,3 +1,4 @@
+from uuid import uuid4
 from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -43,7 +44,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     App base User class.
     Email and password are required. Other fields are optional.
     """
-
+    uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     email = models.EmailField(_('email address'), unique=True)
     is_staff = models.BooleanField(
         _('staff status'),

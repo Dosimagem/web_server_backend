@@ -22,7 +22,7 @@ def register(request):
     if user := form.save():
         Token.objects.create(user=user)
 
-    data = {'id': user.id, 'token': user.auth_token.key, 'is_staff': user.is_staff}
+    data = {'id': user.uuid, 'token': user.auth_token.key, 'is_staff': user.is_staff}
 
     return Response(data, status=HTTPStatus.CREATED)
 
@@ -40,7 +40,7 @@ class MyObtainAuthToken(ObtainAuthToken):
             return Response({'errors': _list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        return Response({'id': user.id, 'token': token.key, 'is_staff': user.is_staff})
+        return Response({'id': user.uuid, 'token': token.key, 'is_staff': user.is_staff})
 
 
 def _list_errors(errors):
