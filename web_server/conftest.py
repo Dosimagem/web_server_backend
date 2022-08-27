@@ -4,6 +4,7 @@ import pytest
 
 from django.utils.timezone import make_aware
 from django.utils.datetime_safe import datetime
+from web_server.core.models import UserProfile
 
 from web_server.service.models import (ComputationalModelOrder,
                                        DosimetryOrder,
@@ -12,9 +13,37 @@ from web_server.service.models import (ComputationalModelOrder,
 
 
 @pytest.fixture
-def user(django_user_model):
-    email, password = 'test@email.com', '1234'  # TODO: Extrair isso para uma fixture
-    user = django_user_model.objects.create_user(email=email, password=password)
+def register_infos():
+    return dict(
+        email='test1@email.com',
+        confirmed_email='test1@email.com',
+        password1='123456!!',
+        password2='123456!!',
+        name='João Silva',
+        phone='1111111',
+        institution='UFRJ',
+        role='Medico'
+    )
+
+
+@pytest.fixture
+def user_info():
+    return {'email': 'test@email.com', 'password': '123456'}
+
+
+@pytest.fixture
+def user_profile_info():
+    return {'name': 'User Surname',
+            'phone': '(11)999111213',
+            'institution': 'Institution Asc',
+            'role': 'Medico'
+            }
+
+
+@pytest.fixture
+def user(django_user_model, user_info, user_profile_info):
+    user = django_user_model.objects.create_user(**user_info)
+    UserProfile.objects.update(**user_profile_info)
     return user
 
 

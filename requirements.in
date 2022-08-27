@@ -1,2 +1,4 @@
 django<4
 python-decouple
+djangorestframework
+django-cors-headers
