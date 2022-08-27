@@ -17,8 +17,8 @@ def resp_get(client):
 
 
 @pytest.fixture
-def resp_post(client, user_signup, db):
-    return client.post(URL_SINUP, data=user_signup)
+def resp_post(client, register_infos, db):
+    return client.post(URL_SINUP, data=register_infos)
 
 
 @pytest.fixture
@@ -77,16 +77,16 @@ def test_failed_signup_input_filled(response_fail_signup):
     assert User.objects.count() == 0
 
 
-def test_failed_signup_same_email_twice(client, user_signup, db):
+def test_failed_signup_same_email_twice(client, register_infos, db):
     '''
     Trying to register the same email twice is not possible.
     '''
 
-    resp = client.post(URL_SINUP, data=user_signup)
+    resp = client.post(URL_SINUP, data=register_infos)
 
     assert User.objects.count() == 1
 
-    resp = client.post(URL_SINUP, data=user_signup)
+    resp = client.post(URL_SINUP, data=register_infos)
 
     assert User.objects.count() == 1
 

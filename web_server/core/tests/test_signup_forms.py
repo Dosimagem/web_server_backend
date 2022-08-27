@@ -7,21 +7,21 @@ from web_server.core.models import UserProfile
 User = get_user_model()
 
 
-def test_valid_signup_form(user_signup, db):
+def test_valid_signup_form(register_infos, db):
 
-    form = SignupForm(data=user_signup)
+    form = SignupForm(data=register_infos)
 
     assert form.is_valid()
 
 
 @pytest.mark.parametrize(
     'field',
-    ['email', 'password1', 'password2', 'name', 'phone', 'institution', 'role'],
+    ['email', 'confirm_email', 'password1', 'password2', 'name', 'phone', 'institution', 'role'],
 )
-def test_field_is_not_optional(user_signup, field, db):
+def test_field_is_not_optional(register_infos, field, db):
 
-    del user_signup[field]
-    form = SignupForm(data=user_signup)
+    del register_infos[field]
+    form = SignupForm(data=register_infos)
 
     assert not form.is_valid()
 
@@ -29,7 +29,7 @@ def test_field_is_not_optional(user_signup, field, db):
     assert expected == form.errors[field]
 
 
-def test_password_ditnot_mach(user_wrong_signup, db):
+def test_password_did_not_mach(user_wrong_signup, db):
 
     form = SignupForm(data=user_wrong_signup)
 
@@ -37,6 +37,16 @@ def test_password_ditnot_mach(user_wrong_signup, db):
 
     expected = ['The two password fields didn’t match.']
     assert expected == form.errors['password2']
+
+
+def test_email_did_not_mach(user_wrong_signup, db):
+
+    form = SignupForm(data=user_wrong_signup)
+
+    assert not form.is_valid()
+
+    expected = ['The two email fields didn’t match.']
+    assert expected == form.errors['confirm_email']
 
 
 @pytest.mark.parametrize(
@@ -87,9 +97,9 @@ def test_form_clean():
     assert form.cleaned_data['role'] == d['role'].lower()
 
 
-def test_save(user_signup, db):
+def test_save(register_infos, db):
 
-    form = SignupForm(user_signup)
+    form = SignupForm(register_infos)
     form.save()
 
     assert User.objects.exists()

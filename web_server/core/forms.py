@@ -6,6 +6,7 @@ from web_server.core.models import CustomUser
 
 class SignupForm(UserCreationForm):
 
+    confirm_email = forms.EmailField(label='confirm_email')
     name = forms.CharField(label='name', max_length=150)
     phone = forms.CharField(label='phone', max_length=30)
     institution = forms.CharField(label='institution', max_length=30)
@@ -27,6 +28,13 @@ class SignupForm(UserCreationForm):
     def clean_phone(self):
         return ''.join(d for d in self.cleaned_data['phone'] if d.isdigit())
 
+    def clean_confirm_email(self):
+        email = self.cleaned_data.get('email')
+        confim_email = self.cleaned_data['confirm_email']
+
+        if email != confim_email:
+            raise forms.ValidationError(['The two email fields didn’t match.'])
+
     def save(self):
         super().save()
         self.instance.profile.name = self.cleaned_data['name']
@@ -34,3 +42,4 @@ class SignupForm(UserCreationForm):
         self.instance.profile.role = self.cleaned_data['role']
         self.instance.profile.phone = self.cleaned_data['phone']
         self.instance.save()
+        return self.instance

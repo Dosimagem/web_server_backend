@@ -12,6 +12,20 @@ from web_server.service.models import (ComputationalModelOrder,
 
 
 @pytest.fixture
+def register_infos():
+    return dict(
+        email='test1@email.com',
+        confirm_email='test1@email.com',
+        password1='123456!!',
+        password2='123456!!',
+        name='João Silva',
+        phone='1111111',
+        institution='UFRJ',
+        role='Medico'
+    )
+
+
+@pytest.fixture
 def user(django_user_model):
     email, password = 'test@email.com', '1234'  # TODO: Extrair isso para uma fixture
     user = django_user_model.objects.create_user(email=email, password=password)
