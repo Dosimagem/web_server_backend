@@ -7,3 +7,4 @@ pytest-django
 codecov
 pytest-codecov
 pre_commit
+pip-audit

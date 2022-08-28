@@ -3,6 +3,7 @@ from decimal import Decimal
 import pytest
 
 from django.utils.timezone import make_aware
+# from django.utils.timezone import utc
 from django.utils.datetime_safe import datetime
 from web_server.core.models import UserProfile
 from rest_framework.authtoken.models import Token
@@ -104,6 +105,7 @@ def computational_modeling_service(services):
 
 
 DATETIME_TIMEZONE = make_aware(datetime(2016, 12, 14, 11, 2, 51))
+# DATETIME_TIMEZONE = make_aware(utc(2016, 12, 14, 11, 2, 51))
 
 
 @pytest.fixture
