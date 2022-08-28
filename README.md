@@ -12,6 +12,7 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
   - [2) Rotas](#2-rotas)
     - [2.1) Rota de cadastro](#21-rota-de-cadastro)
     - [2.2) Rota de login](#22-rota-de-login)
+    - [2.2) Rota para obter informações do usuário](#23-rota-informações-do-usuario)
   - [3) Desenvolvimento](#3-desenvolvimento)
     - [3.1) Setup inicial](#31-setup-inicial)
     - [3.2) Rodando o servido](#32-rodando-o-servido)
@@ -37,6 +38,7 @@ Rotas disponiveis
 
 - POST /api/v1/register/
 - POST /api/v1/login
+- GET /api/v1/users/\<uuid>
 
 ---
 
@@ -46,11 +48,13 @@ Rotas disponiveis
 
 * endpoint /api/v1/register/ - POST
 
- Rota para registrar um usuario via o método post. Caso o `payload` seja válido e o usuario não exista esta rota ira salvar usuario e gera o `token`. O `email` foi usado como `username`. Exemplo de requisição:
+ Rota para registrar um usuario via o método post. Caso o `payload` seja válido e o usuario não exista esta rota ira salvar usuario e gera o `token`. O `email` foi usado como `username`.
+
+Requisição:
 
 ```json
 {
-  "name": "João Sliva",
+  "name": "João Silva",
   "email": "test1@email.com",
   "confirm_email": "test1@email.com",
   "password1": "123456!!",
@@ -61,11 +65,11 @@ Rotas disponiveis
 }
 ```
 
-> Reposta:
+Reposta:
 
 ```json
 {
-  "id": 5,
+  "id": "c8023f13-b259-4f50-809d-c969b2509ab6",
   "token": "6af2689dc22bc175a2e3eeea5cf7cf93fb3f6c83",
   "is_staff": false
 }
@@ -80,16 +84,45 @@ Rotas disponiveis
 
 * /api/v2/login/ - POST
 
-Rota serve para obter o token de um usuario cadastrado. Caso o `payload` seja valido será retornado o `token`. Exemplo de requisição:
+Rota serve para obter o token de um usuario cadastrado. Caso o `payload` seja valido será retornado o `token`.
+
+Requisição:
 
 ```json
 {
-  "id": 3,
+  "username": "test1@email.com",
+  "password": "123456!!",
+}
+```
+
+Resposta:
+
+```json
+{
+  "id": "c8023f13-b259-4f50-809d-c969b2509ab6",
   "token": "d80052eb1154fdf07d5bf148a916c4fd849c11cb",
   "is_staff": false
 }
 ```
 ---
+
+### 2.3) Rota informações do usuario
+
+* /api/v2/users/uuid - GET
+
+Rota para obter informação do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`.
+
+Resposta
+
+```json
+{
+  "name": "João Silva",
+  "phone": "12323234",
+  "role": "medico",
+  "institution": "Ufrj",
+  "email": "test1@email.com
+}
+```
 
 ## 3) Desenvolvimento
 

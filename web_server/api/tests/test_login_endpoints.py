@@ -99,4 +99,5 @@ def test_fail_login_missing_username_and_password(client_api):
 def test_login_not_allowed_method(method):
 
     resp = HTTP_METHODS[method](URL_LOGIN, format='json')
+
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED

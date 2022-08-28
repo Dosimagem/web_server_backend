@@ -5,6 +5,7 @@ import pytest
 from django.utils.timezone import make_aware
 from django.utils.datetime_safe import datetime
 from web_server.core.models import UserProfile
+from rest_framework.authtoken.models import Token
 
 from web_server.service.models import (ComputationalModelOrder,
                                        DosimetryOrder,
@@ -44,7 +45,8 @@ def user_profile_info():
 def user(django_user_model, user_info, user_profile_info):
     user = django_user_model.objects.create_user(**user_info)
     UserProfile.objects.update(**user_profile_info)
-    return user
+    Token.objects.create(user=user)
+    return django_user_model.objects.get(id=user.id)
 
 
 @pytest.fixture
