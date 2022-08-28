@@ -13,6 +13,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 
 from web_server.core.forms import SignupForm
+from web_server.service.forms import QuotasForm
+from web_server.service.models import UserQuotas
+
 
 User = get_user_model()
 
@@ -62,6 +65,34 @@ def users(request, id):
         return Response(data=_user_to_dict(user))
 
     return Response({}, status=HTTPStatus.NOT_FOUND)
+
+
+@api_view(['POST'])
+@authentication_classes([MyTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def quotas(request, user_id):
+
+    payload = {
+        'clinic_dosimetry': request.data.get('clinic_dosimetry', 0)
+    }
+
+    form = QuotasForm(payload)
+    if not form.is_valid():
+        return Response(data={'errors': _list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+    new_quotas = {
+        'user': request.user,
+        'clinic_dosimetry': form.cleaned_data['clinic_dosimetry']
+    }
+
+    quotas_create = UserQuotas.objects.create(**new_quotas)
+
+    data = {
+        'id': quotas_create.uuid,
+        'clinic_dosimetry': quotas_create.clinic_dosimetry
+    }
+
+    return Response(data=data, status=HTTPStatus.CREATED)
 
 
 def _user_to_dict(user):
