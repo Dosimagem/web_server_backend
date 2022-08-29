@@ -1,6 +1,6 @@
 from django import forms
 
-from web_server.service.models import UserQuotas
+# from web_server.service.models import UserQuotas
 
 
 class QuotasForm(forms.Form):

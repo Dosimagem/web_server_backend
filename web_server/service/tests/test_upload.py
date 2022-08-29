@@ -28,7 +28,8 @@
 
 #     user = _normalize_email(dosimetry_clinical_order.requester.email)
 
-#     assert upload_img_to(dosimetry_clinical_order, filename='filename.zip') == f'{user}/images/{date}/images_{time}.zip'
+#     assert upload_img_to(dosimetry_clinical_order,
+# filename='filename.zip') == f'{user}/images/{date}/images_{time}.zip'
 
 
 # @mock.patch('web_server.service.models.now')

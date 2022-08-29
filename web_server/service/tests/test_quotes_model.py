@@ -48,9 +48,19 @@ def test_quotas_str(user_quotas):
 def test_quotas_default_values(user):
     quotas = UserQuotas.objects.create(user=user)
 
-    assert quotas.clinic_dosimetry== 0
+    assert quotas.clinic_dosimetry == 0
 
 
 def test_quotas_positive_integer_constraint(user):
     with pytest.raises(IntegrityError):
         UserQuotas.objects.create(user=user, clinic_dosimetry=-1)
+
+
+def test_user_must_be_only_one_quotas(user):
+
+    UserQuotas.objects.create(user=user)
+
+    assert UserQuotas.objects.count() == 1
+
+    with pytest.raises(IntegrityError):
+        UserQuotas.objects.create(user=user)

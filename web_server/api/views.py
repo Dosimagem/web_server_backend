@@ -67,32 +67,56 @@ def users(request, id):
     return Response({}, status=HTTPStatus.NOT_FOUND)
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET', 'PATCH'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def quotas(request, user_id):
 
-    payload = {
-        'clinic_dosimetry': request.data.get('clinic_dosimetry', 0)
-    }
+    if request.method == 'POST':
+        payload = {
+            'clinic_dosimetry': request.data.get('clinic_dosimetry', 0)
+        }
 
-    form = QuotasForm(payload)
-    if not form.is_valid():
-        return Response(data={'errors': _list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+        form = QuotasForm(payload)
+        if not form.is_valid():
+            return Response(data={'errors': _list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-    new_quotas = {
-        'user': request.user,
-        'clinic_dosimetry': form.cleaned_data['clinic_dosimetry']
-    }
+        new_quotas = {
+            'user': request.user,
+            'clinic_dosimetry': form.cleaned_data['clinic_dosimetry']
+        }
 
-    quotas_create = UserQuotas.objects.create(**new_quotas)
+        quotas_create = UserQuotas.objects.create(**new_quotas)
 
-    data = {
-        'id': quotas_create.uuid,
-        'clinic_dosimetry': quotas_create.clinic_dosimetry
-    }
+        data = {
+            'id': quotas_create.uuid,
+            'clinic_dosimetry': quotas_create.clinic_dosimetry
+        }
 
-    return Response(data=data, status=HTTPStatus.CREATED)
+        return Response(data=data, status=HTTPStatus.CREATED)
+
+    elif request.method == 'GET':
+
+        if quota := UserQuotas.objects.filter(user=request.user).first():
+            return Response(data={'clinic_dosimetry': quota.clinic_dosimetry})
+
+        data = {'error': ['This user has no quota record.']}
+        return Response(data=data, status=HTTPStatus.NOT_FOUND)
+
+    elif request.method == 'PATCH':
+
+        form = QuotasForm(request.data)
+
+        if not form.is_valid():
+            return Response(data={'errors': _list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+        if quota := UserQuotas.objects.filter(user=request.user).first():
+            quota.clinic_dosimetry = form.cleaned_data['clinic_dosimetry']
+            quota.save()
+            return Response(status=HTTPStatus.NO_CONTENT)
+
+        data = {'error': ['This user has no quota record.']}
+        return Response(data=data, status=HTTPStatus.NOT_FOUND)
 
 
 def _user_to_dict(user):

@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     #
     'web_server.core',
     'web_server.service',
-#    'web_server.client',
+    'web_server.client',
     'web_server.api',
     #
     'rest_framework',

@@ -1,10 +1,10 @@
-from functools import partial
-import os
+# from functools import partial
+# import os
 from uuid import uuid4
 
 from django.db import models
 from django.conf import settings
-from django.utils.timezone import now
+# from django.utils.timezone import now
 
 
 class UserQuotas(models.Model):
@@ -18,7 +18,6 @@ class UserQuotas(models.Model):
 
     def __str__(self):
         return self.user.profile.name
-
 
 
 # def _normalize_email(email):
