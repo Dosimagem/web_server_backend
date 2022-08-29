@@ -1,6 +1,9 @@
 from django.urls import path
 
-from .views import register, MyObtainAuthToken, users, quotas
+from .views.register import register, MyObtainAuthToken
+from .views.users import users
+from .views.quotas import quotas
+
 
 app_name = 'api'
 urlpatterns = [

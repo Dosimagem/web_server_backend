@@ -1,10 +1,18 @@
 
-# from django.contrib import admin
+from django.contrib import admin
 
 # from web_server.service.models import (ComputationalModelOrder,
 #                                        DosimetryOrder,
 #                                        SegmentationOrder,
 #                                        Service)
+
+from web_server.service.models import UserQuotas
+
+
+@admin.register(UserQuotas)
+class UserQuotasModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'uuid', 'user', 'clinic_dosimetry', 'created_at', 'modified_at')
+    list_display_links = ('user',)
 
 
 # @admin.register(Service)

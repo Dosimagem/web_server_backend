@@ -19,6 +19,10 @@ class UserQuotas(models.Model):
     def __str__(self):
         return self.user.profile.name
 
+    class Meta:
+        verbose_name = 'User Quota'
+        verbose_name_plural = 'User Ouotas'
+
 
 # def _normalize_email(email):
 #     return email.replace('@', '_').replace('.', '_')
