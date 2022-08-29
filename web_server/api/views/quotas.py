@@ -9,8 +9,8 @@ from rest_framework.decorators import (
                                         )
 from rest_framework.permissions import IsAuthenticated
 
-from web_server.service.forms import QuotasForm
-from web_server.service.models import UserQuotas
+from web_server.service.forms import CreateQuotasForm
+from web_server.service.models import UserQuota
 from .utils import MyTokenAuthentication, list_errors
 
 
@@ -42,7 +42,7 @@ def quotas(request, user_id):
 
 def _delete_quotas(request, user_id):
 
-    if quota := UserQuotas.objects.filter(user=request.user).first():
+    if quota := UserQuota.objects.filter(user=request.user).first():
         quota.delete()
         return Response(status=HTTPStatus.NO_CONTENT)
 
@@ -51,11 +51,11 @@ def _delete_quotas(request, user_id):
 
 
 def _update_quotas(request, user_id):
-    form = QuotasForm(request.data)
+    form = CreateQuotasForm(request.data)
     if not form.is_valid():
         return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-    if quota := UserQuotas.objects.filter(user=request.user).first():
+    if quota := UserQuota.objects.filter(user=request.user).first():
         quota.clinic_dosimetry = form.cleaned_data['clinic_dosimetry']
         quota.save()
         return Response(status=HTTPStatus.NO_CONTENT)
@@ -66,35 +66,38 @@ def _update_quotas(request, user_id):
 
 def _create_quotas(request,  user_id):
 
-    payload = {
-        'clinic_dosimetry': request.data.get('clinic_dosimetry', 0)
-    }
+    form = CreateQuotasForm(request.data)
 
-    form = QuotasForm(payload)
     if not form.is_valid():
         return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-    new_quotas = {
-        'user': request.user,
-        'clinic_dosimetry': form.cleaned_data['clinic_dosimetry']
-    }
+    new_quota = {'user': request.user}
 
-    if UserQuotas.objects.filter(user=request.user):
-        return Response(data={'errors': ['This user already have quota register']}, status=HTTPStatus.BAD_REQUEST)
+    new_quota.update(form.cleaned_data)
 
-    quotas_create = UserQuotas.objects.create(**new_quotas)
+    quota_create = UserQuota.objects.create(**new_quota)
 
-    data = {
-        'id': quotas_create.uuid,
-        'clinic_dosimetry': quotas_create.clinic_dosimetry
-    }
-
-    return Response(data=data, status=HTTPStatus.CREATED)
+    return Response(data=_quota_to_dict(quota_create), status=HTTPStatus.CREATED)
 
 
 def _read_quotas(request, user_id):
-    if quota := UserQuotas.objects.filter(user=request.user).first():
-        return Response(data={'clinic_dosimetry': quota.clinic_dosimetry})
+    if quota := UserQuota.objects.filter(user=request.user):
+
+        quota_list = [_quota_to_dict(q) for q in quota ]
+
+        return Response(data={'quotas': quota_list})
 
     data = {'errors': MSG_ERROR}
     return Response(data=data, status=HTTPStatus.NOT_FOUND)
+
+
+def _quota_to_dict(quota):
+    return {
+        'id': quota.uuid,
+        'user_id': quota.user.uuid,
+        'amount': quota.amount,
+        'price': quota.price,
+        'service_type': quota.get_service_type_display(),
+        'status_payment': quota.get_status_payment_display(),
+        'created_at': quota.created_at.date()
+    }

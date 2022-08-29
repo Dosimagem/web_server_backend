@@ -1,16 +1,10 @@
-# from decimal import Decimal
+from decimal import Decimal
 
 import pytest
-
-# from django.utils.timezone import make_aware
-# from django.utils.datetime_safe import datetime
 from web_server.core.models import UserProfile
 from rest_framework.authtoken.models import Token
 
-# from web_server.service.models import (ComputationalModelOrder,
-#                                        DosimetryOrder,
-#                                        SegmentationOrder,
-#                                        Service)
+from web_server.service.models import UserQuota
 
 
 @pytest.fixture
@@ -34,19 +28,62 @@ def user_info():
 
 @pytest.fixture
 def user_profile_info():
-    return {'name': 'User Surname',
-            'phone': '(11)999111213',
-            'institution': 'Institution Asc',
-            'role': 'Medico'
-            }
+    return {
+        'name': 'User Surname',
+        'phone': '(11)999111213',
+        'institution': 'Institution Asc',
+        'role': 'Medico'
+    }
+
+@pytest.fixture
+def second_user_info():
+    return {'email': 'test2@email.com', 'password': '123456##'}
+
+
+@pytest.fixture
+def second_user_profile_info():
+    return {
+        'name': 'Second User',
+        'phone': '(22)999111213',
+        'institution': 'Institution Bsc',
+        'role': 'Fisico'
+    }
+
 
 
 @pytest.fixture
 def user(django_user_model, user_info, user_profile_info):
     user = django_user_model.objects.create_user(**user_info)
-    UserProfile.objects.update(**user_profile_info)
+    UserProfile.objects.filter(user=user).update(**user_profile_info)
     Token.objects.create(user=user)
     return django_user_model.objects.get(id=user.id)
+
+
+@pytest.fixture
+def second_user(user, django_user_model, second_user_info, second_user_profile_info):
+    new_user = django_user_model.objects.create_user(**second_user_info)
+    UserProfile.objects.filter(user=new_user).update(**second_user_profile_info)
+    Token.objects.create(user=new_user)
+    return django_user_model.objects.get(id=new_user.id)
+
+
+@pytest.fixture
+def create_quota_data():
+    return {
+        'amount': 10,
+        'price': '1000.00',
+        'service_type': UserQuota.DOSIMETRY_CLINIC
+    }
+
+
+@pytest.fixture
+def user_quotas(user, create_quota_data):
+    return UserQuota.objects.create(user=user,
+        amount=create_quota_data['amount'],
+        service_type=create_quota_data['service_type'],
+        price=create_quota_data['price'],
+        status_payment=UserQuota.CONFIRMED,
+        )
 
 
 @pytest.fixture

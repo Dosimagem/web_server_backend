@@ -7,11 +7,32 @@ from django.conf import settings
 # from django.utils.timezone import now
 
 
-class UserQuotas(models.Model):
+class UserQuota(models.Model):
+
+    DOSIMETRY_CLINIC  = 'DC'
+    DOSIMETRY_PRECLINIC = 'DPC'
+
+    SERVICES_TYPES = (
+        (DOSIMETRY_CLINIC, 'Dosimetria Clinica'),
+        (DOSIMETRY_PRECLINIC, 'Dosimetrica Preclinica')
+    )
+
+    AWAITING_PAYMENT = 'APG'
+    CONFIRMED = 'CON'
+    ANALYSIS = 'ALY'
+
+    STATUS_PAYMENT = (
+        (AWAITING_PAYMENT, 'Aguardando pagamento'),
+        (CONFIRMED, 'CONFIRMED'),
+        (ANALYSIS, 'Analise'),
+    )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='quotas')
-    clinic_dosimetry = models.PositiveIntegerField('Clinic Dosimetry', default=0)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='quotas')
+    amount = models.PositiveIntegerField('Amount of analysis', default=0)
+    price = models.DecimalField('Unit price', max_digits=14, decimal_places=2)
+    status_payment = models.CharField('Status payment', max_length=3, choices=STATUS_PAYMENT, default=AWAITING_PAYMENT)
+    service_type = models.CharField('Service type', max_length=3, choices=SERVICES_TYPES)
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
