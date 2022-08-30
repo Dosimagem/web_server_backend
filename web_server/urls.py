@@ -6,8 +6,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('dosimagem/admin/', admin.site.urls),
-    path('', include('web_server.core.urls')),
-    path('', include('web_server.client.urls')),
     path('api/v1/', include('web_server.api.urls')),
 ]
 

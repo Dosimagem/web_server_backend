@@ -25,17 +25,6 @@ def test_read_users_info_by_id(client_api, user):
     assert body['role'] == user.profile.role
 
 
-def test_read_users_not_found(client_api, user):
-
-    url = resolve_url('api:users', id=uuid4())
-
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
-    response = client_api.get(url)
-
-    assert response.status_code == HTTPStatus.NOT_FOUND
-    assert response.json() == {}
-
-
 def test_read_users_without_token(client_api):
 
     url = resolve_url('api:users', id=uuid4())
