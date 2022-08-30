@@ -14,3 +14,9 @@ HTTP_METHODS = {
     'patch': APIClient().patch,
     'delete': APIClient().delete
 }
+
+
+@pytest.fixture
+def client_api_auth(client_api, user):
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
+    return client_api

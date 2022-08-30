@@ -35,6 +35,7 @@ def user_profile_info():
         'role': 'Medico'
     }
 
+
 @pytest.fixture
 def second_user_info():
     return {'email': 'test2@email.com', 'password': '123456##'}
@@ -48,7 +49,6 @@ def second_user_profile_info():
         'institution': 'Institution Bsc',
         'role': 'Fisico'
     }
-
 
 
 @pytest.fixture
@@ -77,19 +77,47 @@ def create_quota_data():
 
 
 @pytest.fixture
-def user_quotas(user, create_quota_data):
+def user_and_quota(user, create_quota_data):
     return UserQuota.objects.create(user=user,
-        amount=create_quota_data['amount'],
-        service_type=create_quota_data['service_type'],
-        price=create_quota_data['price'],
-        status_payment=UserQuota.CONFIRMED,
-        )
+                                    amount=create_quota_data['amount'],
+                                    service_type=create_quota_data['service_type'],
+                                    price=create_quota_data['price'],
+                                    status_payment=UserQuota.CONFIRMED)
 
 
 @pytest.fixture
-def logged_user(client, user):
-    client.force_login(user)
-    return user
+def users_and_quotas(user, second_user):
+    '''
+    UserQuota Table:
+
+    ID_USER  Type               Number    Value   Status Payment
+    1        Dosimetry Clinic     10     10.000   Confirmed
+    1        Dosimetry Preclinic   5      5.000   Analysis
+    2        Dosimetry Clinic      3      3.000   Confimed
+    '''
+
+    UserQuota.objects.create(user=user,
+                             amount=10,
+                             service_type=UserQuota.DOSIMETRY_CLINIC,
+                             price=Decimal('10000.00'),
+                             status_payment=UserQuota.CONFIRMED,
+                             )
+
+    UserQuota.objects.create(user=user,
+                             amount=5,
+                             service_type=UserQuota.DOSIMETRY_PRECLINIC,
+                             price=Decimal('5000.00'),
+                             status_payment=UserQuota.ANALYSIS,
+                             )
+
+    UserQuota.objects.create(user=second_user,
+                             amount=3,
+                             service_type=UserQuota.DOSIMETRY_CLINIC,
+                             price=Decimal('3000.00'),
+                             status_payment=UserQuota.AWAITING_PAYMENT,
+                             )
+
+    return list(UserQuota.objects.all())
 
 
 # INDEX_DOSIMETRY = 0

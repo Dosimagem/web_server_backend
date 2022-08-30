@@ -9,15 +9,11 @@ from web_server.service.models import UserQuota
 
 
 @pytest.fixture
-def client_api_auth(client_api, user):
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
-    return client_api
-
-
-@pytest.fixture
 def url(user):
-    return resolve_url('api:quotas', user.uuid)
+    return resolve_url('api:create-list', user.uuid)
 
+
+# CREATE - POST
 
 def test_create_quotas_successfully_with(client_api_auth, create_quota_data, url):
     '''
@@ -46,7 +42,7 @@ def test_create_quotas_successfully_with(client_api_auth, create_quota_data, url
     assert quota_db.status_payment == UserQuota.AWAITING_PAYMENT
 
 
-def test_create_quotas_invalid_amount_negative(client_api_auth, create_quota_data, url):
+def test_invalid_create_quotas_negative_amount(client_api_auth, create_quota_data, url):
     '''
     endpoint: /api/v1/users/<uuid>/quotas/ - POST
     '''
@@ -64,7 +60,7 @@ def test_create_quotas_invalid_amount_negative(client_api_auth, create_quota_dat
     assert not UserQuota.objects.exists()
 
 
-def test_create_quotas_invalid_amount_not_number(client_api_auth, create_quota_data, url):
+def test_invalid_create_quotas_amount_is_not_number(client_api_auth, create_quota_data, url):
 
     create_quota_data['amount'] = '10A0.1'
 
@@ -79,7 +75,7 @@ def test_create_quotas_invalid_amount_not_number(client_api_auth, create_quota_d
     assert not UserQuota.objects.exists()
 
 
-def test_create_quotas_invalid_price(client_api_auth, create_quota_data, url):
+def test_invalid_create_quotas_price_is_not_number(client_api_auth, create_quota_data, url):
 
     create_quota_data['price'] = '100.00.0'
 
@@ -94,7 +90,7 @@ def test_create_quotas_invalid_price(client_api_auth, create_quota_data, url):
     assert not UserQuota.objects.exists()
 
 
-def test_create_quotas_invalid_service_choices(client_api_auth, create_quota_data, url):
+def test_invalid_create_quotas_service_choices(client_api_auth, create_quota_data, url):
 
     create_quota_data['service_type'] = 'AA'
 
@@ -109,7 +105,9 @@ def test_create_quotas_invalid_service_choices(client_api_auth, create_quota_dat
     assert not UserQuota.objects.exists()
 
 
-def test_read_quotas(client_api_auth, user_quotas, url):
+# List - GET
+
+def test_list_quotas_of_user(client_api_auth, user_and_quota, url):
     '''
     endpoint: /api/v1/users/<uuid>/quotas/ - GET
     '''
@@ -120,22 +118,23 @@ def test_read_quotas(client_api_auth, user_quotas, url):
 
     assert response.status_code == HTTPStatus.OK
 
-    quota_db_list = list(UserQuota.objects.filter(user=user_quotas.user))
+    quota_db_list = list(UserQuota.objects.filter(user=user_and_quota.user))
 
     quota_response_list = body['quotas']
 
     assert len(quota_response_list) == len(quota_db_list)
 
     for quota_response, quota_db in zip(quota_response_list, quota_db_list):
-        assert quota_response['amount'] ==  quota_db.amount
-        assert quota_response['price'] ==  quota_db.price
-        assert quota_response['service_type'] ==  quota_db.get_service_type_display()
-        assert quota_response['status_payment'] ==  quota_db.get_status_payment_display()
-        assert quota_response['id'] ==  str(quota_db.uuid)
-        assert quota_response['user_id'] ==  str(quota_db.user.uuid)
+        assert quota_response['amount'] == quota_db.amount
+        assert quota_response['price'] == quota_db.price
+        assert quota_response['service_type'] == quota_db.get_service_type_display()
+        assert quota_response['status_payment'] == quota_db.get_status_payment_display()
+        assert quota_response['id'] == str(quota_db.uuid)
+        assert quota_response['user_id'] == str(quota_db.user.uuid)
         assert quota_response['created_at'] == str(quota_db.created_at.date())
 
-def test_try_to_read_quotas_for_user_without_qoutas(client_api_auth, user, url):
+
+def test_try_list_quotas_for_user_without_qoutas(client_api_auth, user, url):
     '''
     endpoint: /api/v1/users/<uuid>/quotas/ - GET
     '''
@@ -149,131 +148,151 @@ def test_try_to_read_quotas_for_user_without_qoutas(client_api_auth, user, url):
     assert body == {'errors': ['This user has no quota record.']}
 
 
-# def test_update_quotas(client_api_auth, user, url):
-#     '''
-#     endpoint: /api/v1/users/<uuid>/quotas/ - PATCH
+def test_read_quota_by_id(client_api_auth, user_and_quota):
+    '''
+    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - GET
+    '''
 
-#     request body:
+    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
 
-#     {
-#         "clinic_dosimetry": "20"
-#     }
+    response = client_api_auth.get(url)
 
-#     '''
+    assert response.status_code == HTTPStatus.OK
 
-#     UserQuota.objects.create(user=user, clinic_dosimetry=2)
+    body = response.json()
 
-#     quota = UserQuota.objects.first()
+    quota_db = UserQuota.objects.get(id=user_and_quota.id)
 
-#     assert quota.clinic_dosimetry == 2
-
-#     payload = {'clinic_dosimetry': 20}
-
-#     response = client_api_auth.patch(url, data=payload)
-
-#     assert response.status_code == HTTPStatus.NO_CONTENT
-
-#     quota = UserQuota.objects.first()
-
-#     assert quota.clinic_dosimetry == payload['clinic_dosimetry']
+    assert body['amount'] == quota_db.amount
+    assert body['price'] == quota_db.price
+    assert body['service_type'] == quota_db.get_service_type_display()
+    assert body['status_payment'] == quota_db.get_status_payment_display()
+    assert body['id'] == str(quota_db.uuid)
+    assert body['user_id'] == str(quota_db.user.uuid)
+    assert body['created_at'] == str(quota_db.created_at.date())
 
 
-# def test_try_to_update_quotas_for_user_without_qoutas(client_api_auth, user, url):
-#     '''
-#     endpoint: /api/v1/users/<uuid>/quotas/ - PATCH
+def test_read_quota_by_wrong_id(client_api_auth, user_and_quota):
+    '''
+    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - GET
+    '''
 
-#     request body:
+    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=uuid4())
 
-#     {
-#         "clinic_dosimetry": "20"
-#     }
+    response = client_api_auth.get(url)
 
-#     '''
+    assert response.status_code == HTTPStatus.NOT_FOUND
 
-#     payload = {'clinic_dosimetry': 20}
+    body = response.json()
 
-#     response = client_api_auth.patch(url, data=payload)
-
-#     assert response.status_code == HTTPStatus.NOT_FOUND
-
-#     body = response.json()
-
-#     assert body == {'errors': ['This user has no quota record.']}
+    assert body['errors'] == ['There is no information for this pair of ids']
 
 
-# def test_try_to_update_quotas_negative_number(client_api_auth, user, url):
-#     '''
-#     endpoint: /api/v1/users/<uuid>/quotas/ - PATCH
+def test_try_read_quota_for_user_without_qoutas(client_api_auth, user, url):
+    '''
+    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - GET
 
-#     request body:
+    The user does not have a quota registration
+    '''
 
-#     {
-#         "clinic_dosimetry": "20"
-#     }
+    url = resolve_url('api:read-patch-delete', user_id=user.uuid, quota_id=uuid4())
 
-#     '''
+    response = client_api_auth.get(url)
 
-#     UserQuota.objects.create(user=user, clinic_dosimetry=2)
+    assert response.status_code == HTTPStatus.NOT_FOUND
 
-#     quota = UserQuota.objects.first()
+    body = response.json()
 
-#     assert quota.clinic_dosimetry == 2
-
-#     payload = {'clinic_dosimetry': -20}
-
-#     response = client_api_auth.patch(url, data=payload)
-
-#     assert response.status_code == HTTPStatus.BAD_REQUEST
-
-#     body = response.json()
-
-#     assert body['errors'] == ['Ensure this value is greater than or equal to 0.']
-
-#     quota = UserQuota.objects.first()
-
-#     assert quota.clinic_dosimetry == 2
+    assert body == {'errors': ['This user has no quota record.']}
 
 
-# def test_update_must_be_at_least_one_field_valid(client_api_auth, user, url):
-#     '''
-#     endpoint: /api/v1/users/<uuid>/quotas/ - PATCH
+# Update - PATCH
 
-#     request body:
+def test_update_quota_amount(client_api_auth, user_and_quota):
+    '''
+    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - PATCH
+    '''
 
-#     {
-#         "clinic_dosimetry": "20"
-#     }
+    quota = UserQuota.objects.first()
 
-#     '''
+    assert quota.amount == 10
 
-#     payload = {'dosimetry': 20}
+    payload = {'amount': 20}
 
-#     response = client_api_auth.patch(url, data=payload)
+    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
 
-#     assert response.status_code == HTTPStatus.BAD_REQUEST
+    response = client_api_auth.patch(url, data=payload)
 
-#     body = response.json()
+    assert response.status_code == HTTPStatus.NO_CONTENT
 
-#     assert body == {'errors': ['Must be at least once in these fields: [clinic_dosimetry]']}
+    quota = UserQuota.objects.first()
+
+    assert quota.amount == payload['amount']
 
 
-# def test_delete_user_qoutes(client_api_auth, user, url):
-#     '''
-#     endpoint: /api/v1/users/<uuid>/quotas/ - DELETE
+def test_invalid_update_quota_negative_amount(client_api_auth, user_and_quota):
+    '''
+    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - PATCH
+    '''
 
-#     no request body:
+    quota_db = UserQuota.objects.first()
 
-#     '''
+    assert quota_db.amount == user_and_quota.amount
 
-#     UserQuota.objects.create(user=user, clinic_dosimetry=2)
+    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
 
-#     assert UserQuota.objects.exists()
+    response = client_api_auth.patch(url, data={'amount': -20})
 
-#     response = client_api_auth.delete(url)
+    assert response.status_code == HTTPStatus.BAD_REQUEST
 
-#     assert response.status_code == HTTPStatus.NO_CONTENT
+    body = response.json()
 
-#     assert not UserQuota.objects.exists()
+    quota_db = UserQuota.objects.first()
+
+    assert quota_db.amount == user_and_quota.amount
+
+    assert body['errors'] == ['Ensure this value is greater than or equal to 0.']
+
+
+def test_invalid_update_quota_empty_body(client_api_auth, user_and_quota):
+    '''
+    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - PATCH
+    '''
+
+    quota_db = UserQuota.objects.first()
+
+    assert quota_db.amount == user_and_quota.amount
+
+    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
+
+    response = client_api_auth.patch(url)
+
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    body = response.json()
+
+    quota_db = UserQuota.objects.first()
+
+    assert quota_db.amount == user_and_quota.amount
+
+    assert body['errors'] == ['Amount field is required.']
+
+
+# Delete - delete
+
+
+def test_delete_user_qoutes(client_api_auth, user_and_quota):
+    '''
+    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - DELETE
+    '''
+
+    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
+
+    response = client_api_auth.delete(url)
+
+    assert response.status_code == HTTPStatus.NO_CONTENT
+
+    assert not UserQuota.objects.exists()
 
 
 # def test_try_to_delete_user_qoutes_for_user_without_qoutas(client_api_auth, user, url):
@@ -293,15 +312,32 @@ def test_try_to_read_quotas_for_user_without_qoutas(client_api_auth, user, url):
 #     assert body['errors'] == ['This user has no quota record.']
 
 
-# def test_token_and_user_id_dont_match(client_api_auth, user, url):
+def test_create_list_token_view_and_user_id_dont_match(client_api_auth, user_and_quota):
+    '''
+    The token does not belong to the user
+    '''
 
-#     UserQuota.objects.create(user=user, clinic_dosimetry=2)
+    url = resolve_url('api:create-list', uuid4())
+    response = client_api_auth.get(url)
 
-#     url = resolve_url('api:quotas', uuid4())
-#     response = client_api_auth.get(url)
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
 
-#     assert response.status_code == HTTPStatus.UNAUTHORIZED
+    body = response.json()
 
-#     body = response.json()
+    assert body['errors'] == ['Token and User id do not match.']
 
-#     assert body['errors'] == ['Token and User id do not match.']
+
+def test_read_patch_delete_view_token_and_user_id_dont_match(client_api_auth, user_and_quota):
+    '''
+    The token does not belong to the user
+    '''
+
+    url = resolve_url('api:read-patch-delete', user_id=uuid4(), quota_id=user_and_quota.uuid)
+
+    response = client_api_auth.get(url)
+
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+
+    body = response.json()
+
+    assert body['errors'] == ['Token and User id do not match.']

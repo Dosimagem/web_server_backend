@@ -6,77 +6,109 @@
 # from web_server.service.models import UserQuota
 # from web_server.core.models import UserProfile
 # from web_server.core.models import CustomUser as User
+from http import HTTPStatus
+from django.shortcuts import resolve_url
 
 
+def test_scenario_read_quotas_of_users(client_api, users_and_quotas, user, second_user):
+    '''
+    UserQuota Table:
 
-# @pytest.fixture
-# def case1(user_profile_info):
+    ID_USER  Type               Number    price   Status Payment
+    1        Dosimetry Clinic     10     10.000   Confirmado
+    1        Dosimetry Preclinic   5      5.000   Analise
+    2        Dosimetry Clinic      3      3.000   Aguardando pagamento
+    '''
 
-#     user1_infos = {
-#         'email': 'test1@test.com',
-#         'password': '123456!!'
-#     }
+    # User 1
 
-#     user2_info = {
-#         'email': 'test2@test.com',
-#         'password': '123456##'
-#     }
+    url = resolve_url('api:create-list', user.uuid)
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
+    response = client_api.get(url)
 
-#     user1 = User.objects.create_user(**user1_infos)
-#     UserProfile.objects.update(**user_profile_info)
-#     Token.objects.create(user=user1)
+    user_list_quotes = response.json()['quotas']
 
-#     user2 = User.objects.create_user(**user2_info)
-#     UserProfile.objects.update(**user_profile_info)
-#     Token.objects.create(user=user2)
+    assert len(user_list_quotes) == 2
 
-#     user1_q1 = UserQuota(user=user1,
-#                    type=UserQuota.DOSIMETRY_CLINIC,
-#                    number=10,
-#                    value=Decimal('10000.00'),
-#                    status_payment=UserQuotas.CONFIRMED)
+    # quota 1 do usuario 1
+    q1 = user_list_quotes[0]
+    assert q1['service_type'] == 'Dosimetria Clinica'
+    assert q1['amount'] == 10
+    assert q1['price'] == 10000.00
+    assert q1['status_payment'] == 'Confirmado'
 
-#     user1_q2 = UserQuota(user=user1,
-#                    type=UserQuota.DOSIMETRY_PRECLINIC,
-#                    number=10,
-#                    value=Decimal('10000.00'),
-#                    status_payment=UserQuotas.ANALYSIS)
+    # quota 2 do usuario 1
+    q2 = user_list_quotes[1]
+    assert q2['service_type'] == 'Dosimetria Preclinica'
+    assert q2['amount'] == 5
+    assert q2['price'] == 5000.00
+    assert q2['status_payment'] == 'Analise'
 
-#     user2_q2 = UserQuota(user=user1,
-#                    type=UserQuota.DOSIMETRY_CLINIC,
-#                    number=3,
-#                    value=Decimal('1000.00'),
-#                    status_payment=UserQuotas.COMFIRMED)
+    # User 2
 
+    url = resolve_url('api:create-list', second_user.uuid)
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + second_user.auth_token.key)
+    response = client_api.get(url)
+    user_list_quotes = response.json()['quotas']
 
-#     UserQuota.objects.bulk_create([user1_q1, user1_q2, user2_q2])
+    assert len(user_list_quotes) == 1
 
-
-
-
-# def test_scenario_case1():
-#     '''
-
-#     UserQuota Table:
-
-#     ID_USER  Type               Number    Value   Status Payment
-#     1        Dosimetry Clinic     10     10.000   Confirmed
-#     1        Dosimetry Preclinic   5      5.000   Analysis
-#     2        Dosimetry Clinic      3      3.000   Confimed
+    # quota 1 do usuario 2
+    q1 = user_list_quotes[0]
+    assert q1['service_type'] == 'Dosimetria Clinica'
+    assert q1['amount'] == 3
+    assert q1['price'] == 3000.00
+    assert q1['status_payment'] == 'Aguardando pagamento'
 
 
-#     DosimetryClinic Table:
+def test_scenario_read_update_amount(client_api, users_and_quotas, user):
+    '''
+    UserQuota Table:
 
-#     ID_USER ID_QUOTAS Infos
-#     1       1         Info1
-#     1       1         Indo2
-#     2       3         Info1
-#     1       1         Info3
+    ID_USER  Type               Number    price   Status Payment
+    1        Dosimetry Clinic     10     10.000   Confirmado
+    1        Dosimetry Preclinic   5      5.000   Analise
+    2        Dosimetry Clinic      3      3.000   Aguardando pagamento
 
-#     DosimetryPreclinic Table
+    1) Get quotas list of user 1
+    2) Update amount second row of user 1
+    3) Read this quota again
 
-#     ID_USER ID_QUOTAS Infos
-#     1       2          Infos1
-#     1       2          Infos2
+    '''
 
-#     '''
+    # 1) Step 1
+
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
+
+    url = resolve_url('api:create-list', user.uuid)
+    response = client_api.get(url)
+
+    assert response.status_code == HTTPStatus.OK
+
+    user_list_quotes = response.json()['quotas']
+
+    # quota 1 do usuario 2
+    q = user_list_quotes[1]
+    assert q['service_type'] == 'Dosimetria Preclinica'
+    assert q['amount'] == 5
+    assert q['price'] == 5000.00
+    assert q['status_payment'] == 'Analise'
+
+    # 2) Step 2
+
+    url = resolve_url('api:read-patch-delete', q['user_id'], q['id'])
+
+    response = client_api.patch(url, data={'amount': 9})
+    assert response.status_code == HTTPStatus.NO_CONTENT
+
+    # 3) Step 3
+
+    response = client_api.get(url)
+    assert response.status_code == HTTPStatus.OK
+
+    body = response.json()
+
+    assert body['service_type'] == 'Dosimetria Preclinica'
+    assert body['amount'] == 9
+    assert body['price'] == 5000.00
+    assert body['status_payment'] == 'Analise'

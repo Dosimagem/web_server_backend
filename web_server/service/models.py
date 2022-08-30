@@ -9,12 +9,12 @@ from django.conf import settings
 
 class UserQuota(models.Model):
 
-    DOSIMETRY_CLINIC  = 'DC'
+    DOSIMETRY_CLINIC = 'DC'
     DOSIMETRY_PRECLINIC = 'DPC'
 
     SERVICES_TYPES = (
         (DOSIMETRY_CLINIC, 'Dosimetria Clinica'),
-        (DOSIMETRY_PRECLINIC, 'Dosimetrica Preclinica')
+        (DOSIMETRY_PRECLINIC, 'Dosimetria Preclinica')
     )
 
     AWAITING_PAYMENT = 'APG'
@@ -23,7 +23,7 @@ class UserQuota(models.Model):
 
     STATUS_PAYMENT = (
         (AWAITING_PAYMENT, 'Aguardando pagamento'),
-        (CONFIRMED, 'CONFIRMED'),
+        (CONFIRMED, 'Confirmado'),
         (ANALYSIS, 'Analise'),
     )
 
