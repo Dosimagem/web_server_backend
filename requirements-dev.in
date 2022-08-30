@@ -1,7 +1,6 @@
 -c requirements.txt
 flake8
 ipython
-django-extensions
 django-debug-toolbar
 pytest-django
 codecov

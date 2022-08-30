@@ -119,14 +119,9 @@ django==4.1 \
     # via
     #   -c requirements.txt
     #   django-debug-toolbar
-    #   django-extensions
 django-debug-toolbar==3.6.0 \
     --hash=sha256:95fc2fd29c56cc86678aae9f6919ececefe892f2a78c4004b193a223a8380c3d \
     --hash=sha256:fe7fe3f21865218827e2162ecc06eba386dfe8cffe4f3501c49bb4359e06a0e6
-    # via -r requirements-dev.in
-django-extensions==3.2.0 \
-    --hash=sha256:4c234a7236e9e41c17d9036f6dae7a3a9b212527105b8a0d24b2459b267825f0 \
-    --hash=sha256:7dc7cd1da50d83b76447a58f5d7e5c8e6cd83f21e9b7e5f97e6b644f4d4e21a6
     # via -r requirements-dev.in
 executing==0.10.0 \
     --hash=sha256:9c745f80cda11eb22b62cbecf21156491a794eb56ab06f9d286a44e62822b24e \
