@@ -1,0 +1,271 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2022-08-30T18:55:36.833Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "2",
+    "object_repr": "user1@user.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2022-08-30T18:55:49.854Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "2",
+    "object_repr": "user1@user.com",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2022-08-30T18:56:15.404Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "3",
+    "object_repr": "user2@user.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2022-08-30T18:56:24.229Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "3",
+    "object_repr": "user2@user.com",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2022-08-30T18:57:03.735Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "João Silva",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Phone\", \"Institution\", \"Role\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2022-08-30T18:57:36.586Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "Maria Silva",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Phone\", \"Institution\", \"Role\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2022-08-30T18:57:45.456Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "João Silva",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Institution\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2022-08-30T18:58:10.605Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "João Silva",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2022-08-30T18:58:35.048Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "João Silva",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2022-08-30T18:59:48.821Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Maria Silva",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ej80uieyf066b1j99hjn8fh23il50ipl",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-reNQ0nMGa71r4wBypDipEHeHSCmgfTPzXiLitta49bzEicVZaHH63RLSI7cd8B3bbZY0t3WZktwVedAurzPn5-Vw_w4q9vqtCxRUZMaARApQl4QuO0abgx29NzkAW0gGgJW1OmiGAoPzbvCGCJx4fwD3izef:1oT6O8:kcFehvmt5x7qYK2BOssC0oj_zzNvhI3zqMU1a4CxDAg",
+    "expire_date": "2022-09-13T18:55:04.176Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "losgcr5vdcbziw87e4h7hif6yqk545uw",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-reNQ0nMGa71r4wBypDipEHeHSCmgfTPzXiLitta49bzEicVZaHH63RLSI7cd8B3bbZY0t3WZktwVedAurzPn5-Vw_w4q9vqtCxRUZMaARApQl4QuO0abgx29NzkAW0gGgJW1OmiGAoPzbvCGCJx4fwD3izef:1oT737:6kdOy-matQunu_g0RWT3gHRB1r1vxD7YMNzRcgIId70",
+    "expire_date": "2022-09-13T19:37:25.410Z"
+  }
+},
+{
+  "model": "core.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbycygFZ7MEF3X6JHLA5le$R5Xx0t58FberlHPfF/eevVePPs957xU2yTQtwsP8B9Y=",
+    "last_login": "2022-08-30T19:37:25.252Z",
+    "is_superuser": true,
+    "uuid": "ce0c1e68-72a4-451a-9fdc-64fc3c1dd4ac",
+    "email": "admin@admin.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2022-08-30T18:54:26.509Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$CXXZOxV4AAHgeuJ3QyBhoY$jIZnwj2nczaWqgqteVrf6ENXGPGnh17v3c18VulVGkA=",
+    "last_login": null,
+    "is_superuser": false,
+    "uuid": "24d3b887-f903-44ca-bfcf-f8862da91018",
+    "email": "user1@user.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-08-30T18:55:36Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$gr22LZ87KPRuRa1JUNi2Yu$M3b081mxm3+4p8YCJ8lCdJPlsQagB4GwNjv6zW1vHrY=",
+    "last_login": null,
+    "is_superuser": false,
+    "uuid": "cdf40809-b9c0-4c72-bfca-33349480e5c1",
+    "email": "user2@user.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-08-30T18:56:15Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.userprofile",
+  "pk": 1,
+  "fields": {
+    "name": "",
+    "phone": "",
+    "institution": "",
+    "role": "",
+    "user": 1
+  }
+},
+{
+  "model": "core.userprofile",
+  "pk": 2,
+  "fields": {
+    "name": "João Silva",
+    "phone": "2222-2222",
+    "institution": "Ufrj",
+    "role": "Medico",
+    "user": 2
+  }
+},
+{
+  "model": "core.userprofile",
+  "pk": 3,
+  "fields": {
+    "name": "Maria Silva",
+    "phone": "1111-1111",
+    "institution": "Dosimagem",
+    "role": "Fisico Médico",
+    "user": 3
+  }
+},
+{
+  "model": "service.userquota",
+  "pk": 1,
+  "fields": {
+    "uuid": "49c1d8e7-e44b-4680-8fe7-42432df8f1d1",
+    "user": 2,
+    "amount": 10,
+    "price": "20000.00",
+    "status_payment": "CON",
+    "service_type": "DC",
+    "created_at": "2022-08-30T18:58:10.601Z",
+    "modified_at": "2022-08-30T18:58:10.602Z"
+  }
+},
+{
+  "model": "service.userquota",
+  "pk": 2,
+  "fields": {
+    "uuid": "23923dc1-b5bd-4e88-98c7-50292d69672a",
+    "user": 2,
+    "amount": 5,
+    "price": "10000.00",
+    "status_payment": "ALY",
+    "service_type": "DPC",
+    "created_at": "2022-08-30T18:58:35.045Z",
+    "modified_at": "2022-08-30T18:58:35.045Z"
+  }
+},
+{
+  "model": "service.userquota",
+  "pk": 3,
+  "fields": {
+    "uuid": "041ba593-7b41-406e-952b-7d1388dd0c4a",
+    "user": 3,
+    "amount": 3,
+    "price": "1000.00",
+    "status_payment": "CON",
+    "service_type": "DC",
+    "created_at": "2022-08-30T18:59:48.818Z",
+    "modified_at": "2022-08-30T18:59:48.818Z"
+  }
+}
+]
