@@ -65,11 +65,11 @@ Corpo da requisição:
 ```json
 {
   "name": "João Silva",
-  "email": "test1@email.com",
-  "confirm_email": "test1@email.com",
+  "email": "user1@user.com",
+  "confirm_email": "user1@user.com",
   "password1": "123456!!",
   "password2": "123456!!",
-  "phone": "12323234",
+  "phone": "2222-2222",
   "institution": "UFRJ",
   "role": "Medico"
 }
@@ -79,8 +79,8 @@ Corpo da reposta:
 
 ```json
 {
-  "id": "c8023f13-b259-4f50-809d-c969b2509ab6",
-  "token": "6af2689dc22bc175a2e3eeea5cf7cf93fb3f6c83",
+  "id": "24d3b887-f903-44ca-bfcf-f8862da91018",
+  "token": "12df687b3adda8cdcfd0b9b8a77d32b02b721be5",
   "is_staff": false
 }
 ```
@@ -121,8 +121,8 @@ Corpo da resposta:
 
 ```json
 {
-  "id": "6e6f86cc-644a-442e-80d6-471dba2dfc75",
-  "token": "0323d4b041be5306f8b488ccc798cb5349e5fc73",
+  "id": "24d3b887-f903-44ca-bfcf-f8862da91018",
+  "token": "12df687b3adda8cdcfd0b9b8a77d32b02b721be5",
   "is_staff": false
 }
 ```
@@ -141,8 +141,8 @@ Exemplo de `curl`:
 
 ```console
 curl --request GET \
-  --url http://localhost:8000/api/v1/users/6e6f86cc-644a-442e-80d6-471dba2dfc75/ \
-  --header 'Authorization: Bearer 0323d4b041be5306f8b488ccc798cb5349e5fc73'
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/ \
+  --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5'
 ```
 
 Corpo da resposta:
@@ -150,10 +150,10 @@ Corpo da resposta:
 ```json
 {
   "name": "João Silva",
-  "phone": "12323234",
+  "phone": "2222-2222",
   "role": "medico",
   "institution": "Ufrj",
-  "email": "test1@email.com
+  "email": "user1@user.com"
 }
 ```
 
@@ -171,8 +171,8 @@ Exemplo de `curl`:
 
 ```console
 curl --request GET \
-  --url http://localhost:8000/api/v1/users/6e6f86cc-644a-442e-80d6-471dba2dfc75/quotas \
-  --header 'Authorization: Bearer 0323d4b041be5306f8b488ccc798cb5349e5fc73'
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/quotas \
+  --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5'
 ```
 
 Corpo da resposta:
@@ -180,24 +180,24 @@ Corpo da resposta:
 ```json
 {
   "quotas": [
-    {
-      "id": "8f5462eb-2bfe-4007-8346-5346b2b547f2",
-      "user_id": "6e6f86cc-644a-442e-80d6-471dba2dfc75",
-      "amount": 10,
-      "price": 30000.0,
-      "service_type": "Dosimetria Clinica",
-      "status_payment": "Confirmado",
-      "created_at": "2022-08-30"
-    },
-    {
-      "id": "d0d00117-04e7-42a7-9620-6beac2dabe8e",
-      "user_id": "6e6f86cc-644a-442e-80d6-471dba2dfc75",
-      "amount": 5,
-      "price": 10000.0,
-      "service_type": "Dosimetria Preclinica",
-      "status_payment": "Analise",
-      "created_at": "2022-08-30"
-    }
+   {
+     "id": "49c1d8e7-e44b-4680-8fe7-42432df8f1d1",
+     "user_id": "24d3b887-f903-44ca-bfcf-f8862da91018",
+     "amount": 10,
+     "price": 20000.0,
+     "service_type": "Dosimetria Clinica",
+     "status_payment": "Confirmado",
+     "created_at": "2022-08-30"
+   },
+   {
+     "id": "23923dc1-b5bd-4e88-98c7-50292d69672a",
+     "user_id": "24d3b887-f903-44ca-bfcf-f8862da91018",
+     "amount": 5,
+     "price": 10000.0,
+     "service_type": "Dosimetria Preclinica",
+     "status_payment": "Analise",
+     "created_at": "2022-08-30"
+   }
   ]
 }
 ```
@@ -216,16 +216,16 @@ Exemplo de `curl`:
 
 ```console
 curl --request GET \
-  --url http://localhost:8000/api/v1/users/6e6f86cc-644a-442e-80d6-471dba2dfc75/quotas/8f5462eb-2bfe-4007-8346-5346b2b547f2/ \
-  --header 'Authorization: Bearer 0323d4b041be5306f8b488ccc798cb5349e5fc73'
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/quotas/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
+  --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5'
 ```
 
 Corpo da resposta:
 
 ```json
 {
-  "id": "8f5462eb-2bfe-4007-8346-5346b2b547f2",
-  "user_id": "6e6f86cc-644a-442e-80d6-471dba2dfc75",
+  "id": "49c1d8e7-e44b-4680-8fe7-42432df8f1d1",
+  "user_id": "24d3b887-f903-44ca-bfcf-f8862da91018",
   "amount": 10,
   "price": 30000.0,
   "service_type": "Dosimetria Clinica",
@@ -256,8 +256,8 @@ Exemplo de `curl`:
 
 ```console
 curl --request PATCH \
-  --url http://localhost:8000/api/v1/users/66927692-b45b-4b85-89d3-71f1a8322fd5/quotas/56192a59-7719-4434-a6b5-210c69a541b0/ \
-  --header 'Authorization: Bearer  89e411defaf79102c83085abb834b7583dfdb499' \
+  --url http://localhost:8000/api/v1/24d3b887-f903-44ca-bfcf-f8862da91018/quotas/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
+  --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5' \
   --header 'Content-Type: application/json' \
   --data '{
 	"amount": "9"
@@ -268,9 +268,9 @@ Corpo da resposta:
 
 ```json
 {
-  "id": "8f5462eb-2bfe-4007-8346-5346b2b547f2",
-  "user_id": "6e6f86cc-644a-442e-80d6-471dba2dfc75",
-  "amount": 10,
+  "id": "49c1d8e7-e44b-4680-8fe7-42432df8f1d12",
+  "user_id": "24d3b887-f903-44ca-bfcf-f8862da91018",
+  "amount": 9,
   "price": 30000.0,
   "service_type": "Dosimetria Clinica",
   "status_payment": "Confirmado",
@@ -289,8 +289,8 @@ Exemplo de `curl`:
 
 ```console
 curl --request DELETE \
-  --url http://localhost:8000/api/v1/users/66927692-b45b-4b85-89d3-71f1a8322fd5/quotas/56192a59-7719-4434-a6b5-210c69a541b0/ \
-  --header 'Authorization: Bearer  89e411defaf79102c83085abb834b7583dfdb499'
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/quotas/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
+  --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5'
 ```
 ---
 
