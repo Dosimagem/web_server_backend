@@ -46,8 +46,8 @@ Rotas disponiveis
 - GET /api/v1/users/\<uuid:user_id>/
 - GET /api/v2/users/\<uuid:user_id>/quota/
 - GET /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>/
-* PATCH /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>/
-* DELETE /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>/
+- PATCH /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>/
+- DELETE /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>/
 
 ---
 
@@ -443,3 +443,5 @@ docker build --tag django_server:dosimagem .
 docker run --name django_server -d -p 8000:8000 django_server:dosimagem
 docker start django_server
 ```
+
+---
