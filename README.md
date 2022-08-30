@@ -342,13 +342,13 @@ Agora pode-se fazer a migração com o `db` selecionado:
 python manage.py migrate
 ```
 
-Apos fazer o camando `migrate` para popular o banco com alguns dados basta:
+Após fazer o camando `migrate` para popular o banco com alguns dados basta:
 
-```
-python manage.py loaddata contib/db_initial.json
+```console
+python manage.py loaddata contrib/db_initial.json
 ```
 
-Os usuarios criado serão:
+Os usuarios criados serão:
 
 * Super Usuário:
   * email: `admin@admin.com`
