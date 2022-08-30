@@ -24,6 +24,7 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
     - [3.4) Área adminstrativa](#34-área-adminstrativa)
   - [4) Banco de dados](#4-banco-de-dados)
     - [4.1) Usando o postgres via docker](#41-usando-o-postgres-via-docker)
+    - [4.2) Backup de todo o banco](#42-backup-de-todo-o-banco)
   - [5) Python decouple](#5-python-decouple)
   - [6) Docker](#6-docker)
 
@@ -341,6 +342,25 @@ Agora pode-se fazer a migração com o `db` selecionado:
 python manage.py migrate
 ```
 
+Apos fazer o camando `migrate` para popular o banco com alguns dados basta:
+
+```
+python manage.py loaddata contib/db_initial.json
+```
+
+Os usuarios criado serão:
+
+* Super Usuário:
+  * email: `admin@admin.com`
+  * senha: `admin`
+
+* Usuario comum:
+  * email: `user1@user.com`
+  * senha: `123456!!`
+
+* Usuario comum:
+  * email: `user2@user.com`
+  * senha: `123456@@`
 ---
 
 ### 3.2) Rodando o servido de desenvolvimento
@@ -393,7 +413,7 @@ A rota para acessar é `/dosimagem/admin/`
 
 Subir o container
 
-```consolse
+```console
 docker-compose -f docker-compose.yml up -d
 ```
 
@@ -403,6 +423,13 @@ Configurar `DATABASE_URL` no arquivo `.env` para
 postgres://api:apirest@localhost:5434/api
 ```
 ---
+
+### 4.2) Backup de todo o banco:
+
+
+```console
+./manage.py dumpdata --exclude auth.permission --exclude contenttypes --indent 2 > db.json
+```
 
 
 ### 5) Python decouple
