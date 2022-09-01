@@ -3,7 +3,7 @@ from decimal import Decimal
 import pytest
 
 from web_server.service.forms import CreateQuotasForm, DisableSaveFormException
-from web_server.service.models import UserQuota
+from web_server.service.models import Order
 
 
 @pytest.fixture
@@ -11,7 +11,7 @@ def create_data():
     return {
         'price': '1000.00',
         'amount': 10,
-        'service_type': UserQuota.DOSIMETRY_CLINIC,
+        'service_type': Order.DOSIMETRY_CLINIC,
     }
 
 
@@ -22,7 +22,7 @@ def test_valid_form(create_data):
 
     assert form.cleaned_data['amount'] == 10
     assert form.cleaned_data['price'] == Decimal('1000.00')
-    assert form.cleaned_data['service_type'] == UserQuota.DOSIMETRY_CLINIC
+    assert form.cleaned_data['service_type'] == Order.DOSIMETRY_CLINIC
 
 
 def test_invalid_form_negative_amount_number(create_data):
@@ -79,4 +79,4 @@ def test_valid_form_save(create_data):
     with pytest.raises(DisableSaveFormException):
         form.save()
 
-    assert not UserQuota.objects.exists()
+    assert not Order.objects.exists()

@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('service_type', models.CharField(choices=[('DC', 'Dosimetria Clinica'), ('DPC', 'Dosimetria Preclinica')], max_length=3, verbose_name='Service type')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(auto_now=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='quotas', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'User Quota',

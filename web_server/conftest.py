@@ -4,7 +4,7 @@ import pytest
 from web_server.core.models import UserProfile
 from rest_framework.authtoken.models import Token
 
-from web_server.service.models import UserQuota
+from web_server.service.models import Order
 
 
 @pytest.fixture
@@ -68,27 +68,27 @@ def second_user(user, django_user_model, second_user_info, second_user_profile_i
 
 
 @pytest.fixture
-def create_quota_data():
+def create_order_data():
     return {
         'amount': 10,
         'price': '1000.00',
-        'service_type': UserQuota.DOSIMETRY_CLINIC
+        'service_type': Order.DOSIMETRY_CLINIC
     }
 
 
 @pytest.fixture
-def user_and_quota(user, create_quota_data):
-    return UserQuota.objects.create(user=user,
-                                    amount=create_quota_data['amount'],
-                                    service_type=create_quota_data['service_type'],
-                                    price=create_quota_data['price'],
-                                    status_payment=UserQuota.CONFIRMED)
+def user_and_order(user, create_order_data):
+    return Order.objects.create(user=user,
+                                amount=create_order_data['amount'],
+                                service_type=create_order_data['service_type'],
+                                price=create_order_data['price'],
+                                status_payment=Order.CONFIRMED)
 
 
 @pytest.fixture
-def users_and_quotas(user, second_user):
+def users_and_orders(user, second_user):
     '''
-    UserQuota Table:
+    Order Table:
 
     ID_USER  Type               Number    Value   Status Payment
     1        Dosimetry Clinic     10     10.000   Confirmed
@@ -96,28 +96,28 @@ def users_and_quotas(user, second_user):
     2        Dosimetry Clinic      3      3.000   Confimed
     '''
 
-    UserQuota.objects.create(user=user,
-                             amount=10,
-                             service_type=UserQuota.DOSIMETRY_CLINIC,
-                             price=Decimal('10000.00'),
-                             status_payment=UserQuota.CONFIRMED,
-                             )
+    Order.objects.create(user=user,
+                         amount=10,
+                         service_type=Order.DOSIMETRY_CLINIC,
+                         price=Decimal('10000.00'),
+                         status_payment=Order.CONFIRMED,
+                         )
 
-    UserQuota.objects.create(user=user,
-                             amount=5,
-                             service_type=UserQuota.DOSIMETRY_PRECLINIC,
-                             price=Decimal('5000.00'),
-                             status_payment=UserQuota.ANALYSIS,
-                             )
+    Order.objects.create(user=user,
+                         amount=5,
+                         service_type=Order.DOSIMETRY_PRECLINIC,
+                         price=Decimal('5000.00'),
+                         status_payment=Order.ANALYSIS,
+                         )
 
-    UserQuota.objects.create(user=second_user,
-                             amount=3,
-                             service_type=UserQuota.DOSIMETRY_CLINIC,
-                             price=Decimal('3000.00'),
-                             status_payment=UserQuota.AWAITING_PAYMENT,
-                             )
+    Order.objects.create(user=second_user,
+                         amount=3,
+                         service_type=Order.DOSIMETRY_CLINIC,
+                         price=Decimal('3000.00'),
+                         status_payment=Order.AWAITING_PAYMENT,
+                         )
 
-    return list(UserQuota.objects.all())
+    return list(Order.objects.all())
 
 
 # INDEX_DOSIMETRY = 0
@@ -127,25 +127,25 @@ def users_and_quotas(user, second_user):
 
 
 # @pytest.fixture
-# def services(db):
+# def Orders(db):
 
-#     Service(name='Dosimetria Clinica',
+#     Order(name='Dosimetria Clinica',
 #             description='Serviço de dosimentria',
 #             unit_price=Decimal('1855.21')).save()
 
-#     Service(name='Dosimetria Preclinica',
+#     Order(name='Dosimetria Preclinica',
 #             description='Serviço de dosimetria preclinica',
 #             unit_price=Decimal('1000.01')).save()
 
-#     Service(name='Segmentação',
+#     Order(name='Segmentação',
 #             description='Serviço de Segmentação',
 #             unit_price=Decimal('2000.50')).save()
 
-#     Service(name='Modelagem Computacional',
+#     Order(name='Modelagem Computacional',
 #             description='Serviço de modelagem computacional',
 #             unit_price=Decimal('4000.55')).save()
 
-#     return Service.objects.all()
+#     return Order.objects.all()
 
 
 # @pytest.fixture
