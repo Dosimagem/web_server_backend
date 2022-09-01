@@ -5,7 +5,7 @@ from uuid import uuid4
 import pytest
 from django.shortcuts import resolve_url
 
-from web_server.service.models import UserQuota
+from web_server.service.models import Order
 
 
 @pytest.fixture
@@ -15,41 +15,41 @@ def url(user):
 
 # CREATE - POST
 
-def test_create_quotas_successfully_with(client_api_auth, create_quota_data, url):
+def test_create_orders_successfully_with(client_api_auth, create_order_data, url):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/ - POST
+    endpoint: /api/v1/users/<uuid>/orders/ - POST
     '''
 
-    response = client_api_auth.post(url, data=create_quota_data)
+    response = client_api_auth.post(url, data=create_order_data)
 
     assert response.status_code == HTTPStatus.CREATED
 
     body = response.json()
 
-    assert body['amount'] == create_quota_data['amount']
-    assert Decimal(body['price']) == Decimal(create_quota_data['price'])
+    assert body['amount'] == create_order_data['amount']
+    assert Decimal(body['price']) == Decimal(create_order_data['price'])
     assert body['service_type'] == 'Dosimetria Clinica'
     assert body['status_payment'] == 'Aguardando pagamento'
     assert 'created_at' in body
 
-    assert UserQuota.objects.exists()
+    assert Order.objects.exists()
 
-    quota_db = UserQuota.objects.first()
+    order_db = Order.objects.first()
 
-    assert quota_db.amount == create_quota_data['amount']
-    assert quota_db.price == Decimal(create_quota_data['price'])
-    assert quota_db.service_type == UserQuota.DOSIMETRY_CLINIC
-    assert quota_db.status_payment == UserQuota.AWAITING_PAYMENT
+    assert order_db.amount == create_order_data['amount']
+    assert order_db.price == Decimal(create_order_data['price'])
+    assert order_db.service_type == Order.DOSIMETRY_CLINIC
+    assert order_db.status_payment == Order.AWAITING_PAYMENT
 
 
-def test_invalid_create_quotas_negative_amount(client_api_auth, create_quota_data, url):
+def test_invalid_create_orders_negative_amount(client_api_auth, create_order_data, url):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/ - POST
+    endpoint: /api/v1/users/<uuid>/orders/ - POST
     '''
 
-    create_quota_data['amount'] = -10
+    create_order_data['amount'] = -10
 
-    response = client_api_auth.post(url, data=create_quota_data)
+    response = client_api_auth.post(url, data=create_order_data)
 
     assert response.status_code == HTTPStatus.BAD_REQUEST
 
@@ -57,14 +57,14 @@ def test_invalid_create_quotas_negative_amount(client_api_auth, create_quota_dat
 
     assert body['errors'] == ['Ensure this value is greater than or equal to 0.']
 
-    assert not UserQuota.objects.exists()
+    assert not Order.objects.exists()
 
 
-def test_invalid_create_quotas_amount_is_not_number(client_api_auth, create_quota_data, url):
+def test_invalid_create_orders_amount_is_not_number(client_api_auth, create_order_data, url):
 
-    create_quota_data['amount'] = '10A0.1'
+    create_order_data['amount'] = '10A0.1'
 
-    response = client_api_auth.post(url, data=create_quota_data)
+    response = client_api_auth.post(url, data=create_order_data)
 
     assert response.status_code == HTTPStatus.BAD_REQUEST
 
@@ -72,14 +72,14 @@ def test_invalid_create_quotas_amount_is_not_number(client_api_auth, create_quot
 
     assert body['errors'] == ['Enter a whole number.']
 
-    assert not UserQuota.objects.exists()
+    assert not Order.objects.exists()
 
 
-def test_invalid_create_quotas_price_is_not_number(client_api_auth, create_quota_data, url):
+def test_invalid_create_orders_price_is_not_number(client_api_auth, create_order_data, url):
 
-    create_quota_data['price'] = '100.00.0'
+    create_order_data['price'] = '100.00.0'
 
-    response = client_api_auth.post(url, data=create_quota_data)
+    response = client_api_auth.post(url, data=create_order_data)
 
     assert response.status_code == HTTPStatus.BAD_REQUEST
 
@@ -87,14 +87,14 @@ def test_invalid_create_quotas_price_is_not_number(client_api_auth, create_quota
 
     assert body['errors'] == ['Enter a number.']
 
-    assert not UserQuota.objects.exists()
+    assert not Order.objects.exists()
 
 
-def test_invalid_create_quotas_service_choices(client_api_auth, create_quota_data, url):
+def test_invalid_create_orders_service_choices(client_api_auth, create_order_data, url):
 
-    create_quota_data['service_type'] = 'AA'
+    create_order_data['service_type'] = 'AA'
 
-    response = client_api_auth.post(url, data=create_quota_data)
+    response = client_api_auth.post(url, data=create_order_data)
 
     assert response.status_code == HTTPStatus.BAD_REQUEST
 
@@ -102,14 +102,14 @@ def test_invalid_create_quotas_service_choices(client_api_auth, create_quota_dat
 
     assert body['errors'] == ['Select a valid choice. AA is not one of the available choices.']
 
-    assert not UserQuota.objects.exists()
+    assert not Order.objects.exists()
 
 
 # List - GET
 
-def test_list_quotas_of_user(client_api_auth, user_and_quota, url):
+def test_list_orders_of_user(client_api_auth, user_and_order, url):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/ - GET
+    endpoint: /api/v1/users/<uuid>/orders/ - GET
     '''
 
     response = client_api_auth.get(url)
@@ -118,25 +118,25 @@ def test_list_quotas_of_user(client_api_auth, user_and_quota, url):
 
     assert response.status_code == HTTPStatus.OK
 
-    quota_db_list = list(UserQuota.objects.filter(user=user_and_quota.user))
+    order_db_list = list(Order.objects.filter(user=user_and_order.user))
 
-    quota_response_list = body['quotas']
+    order_response_list = body['orders']
 
-    assert len(quota_response_list) == len(quota_db_list)
+    assert len(order_response_list) == len(order_db_list)
 
-    for quota_response, quota_db in zip(quota_response_list, quota_db_list):
-        assert quota_response['amount'] == quota_db.amount
-        assert quota_response['price'] == quota_db.price
-        assert quota_response['service_type'] == quota_db.get_service_type_display()
-        assert quota_response['status_payment'] == quota_db.get_status_payment_display()
-        assert quota_response['id'] == str(quota_db.uuid)
-        assert quota_response['user_id'] == str(quota_db.user.uuid)
-        assert quota_response['created_at'] == str(quota_db.created_at.date())
+    for order_response, order_db in zip(order_response_list, order_db_list):
+        assert order_response['amount'] == order_db.amount
+        assert order_response['price'] == order_db.price
+        assert order_response['service_type'] == order_db.get_service_type_display()
+        assert order_response['status_payment'] == order_db.get_status_payment_display()
+        assert order_response['id'] == str(order_db.uuid)
+        assert order_response['user_id'] == str(order_db.user.uuid)
+        assert order_response['created_at'] == str(order_db.created_at.date())
 
 
-def test_try_list_quotas_for_user_without_qoutas(client_api_auth, user, url):
+def test_try_list_orders_for_user_without_qoutas(client_api_auth, user, url):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/ - GET
+    endpoint: /api/v1/users/<uuid>/orders/ - GET
     '''
 
     response = client_api_auth.get(url)
@@ -145,15 +145,15 @@ def test_try_list_quotas_for_user_without_qoutas(client_api_auth, user, url):
 
     body = response.json()
 
-    assert body == {'errors': ['This user has no quota record.']}
+    assert body == {'errors': ['This user has no order record.']}
 
 
-def test_read_quota_by_id(client_api_auth, user_and_quota):
+def test_read_order_by_id(client_api_auth, user_and_order):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - GET
+    endpoint: /api/v1/users/<uuid>/orders/<uuid> - GET
     '''
 
-    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
+    url = resolve_url('api:read-patch-delete', user_id=user_and_order.user.uuid, order_id=user_and_order.uuid)
 
     response = client_api_auth.get(url)
 
@@ -161,23 +161,23 @@ def test_read_quota_by_id(client_api_auth, user_and_quota):
 
     body = response.json()
 
-    quota_db = UserQuota.objects.get(id=user_and_quota.id)
+    order_db = Order.objects.get(id=user_and_order.id)
 
-    assert body['amount'] == quota_db.amount
-    assert body['price'] == quota_db.price
-    assert body['service_type'] == quota_db.get_service_type_display()
-    assert body['status_payment'] == quota_db.get_status_payment_display()
-    assert body['id'] == str(quota_db.uuid)
-    assert body['user_id'] == str(quota_db.user.uuid)
-    assert body['created_at'] == str(quota_db.created_at.date())
+    assert body['amount'] == order_db.amount
+    assert body['price'] == order_db.price
+    assert body['service_type'] == order_db.get_service_type_display()
+    assert body['status_payment'] == order_db.get_status_payment_display()
+    assert body['id'] == str(order_db.uuid)
+    assert body['user_id'] == str(order_db.user.uuid)
+    assert body['created_at'] == str(order_db.created_at.date())
 
 
-def test_read_quota_by_wrong_id(client_api_auth, user_and_quota):
+def test_read_order_by_wrong_id(client_api_auth, user_and_order):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - GET
+    endpoint: /api/v1/users/<uuid>/orders/<uuid> - GET
     '''
 
-    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=uuid4())
+    url = resolve_url('api:read-patch-delete', user_id=user_and_order.user.uuid, order_id=uuid4())
 
     response = client_api_auth.get(url)
 
@@ -188,14 +188,14 @@ def test_read_quota_by_wrong_id(client_api_auth, user_and_quota):
     assert body['errors'] == ['There is no information for this pair of ids']
 
 
-def test_try_read_quota_for_user_without_qoutas(client_api_auth, user, url):
+def test_try_read_order_for_user_without_qoutas(client_api_auth, user, url):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - GET
+    endpoint: /api/v1/users/<uuid>/orders/<uuid> - GET
 
-    The user does not have a quota registration
+    The user does not have a order registration
     '''
 
-    url = resolve_url('api:read-patch-delete', user_id=user.uuid, quota_id=uuid4())
+    url = resolve_url('api:read-patch-delete', user_id=user.uuid, order_id=uuid4())
 
     response = client_api_auth.get(url)
 
@@ -203,43 +203,43 @@ def test_try_read_quota_for_user_without_qoutas(client_api_auth, user, url):
 
     body = response.json()
 
-    assert body == {'errors': ['This user has no quota record.']}
+    assert body == {'errors': ['This user has no order record.']}
 
 
 # Update - PATCH
 
-def test_update_quota_amount(client_api_auth, user_and_quota):
+def test_update_order_amount(client_api_auth, user_and_order):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - PATCH
+    endpoint: /api/v1/users/<uuid>/orders/<uuid> - PATCH
     '''
 
-    quota = UserQuota.objects.first()
+    order = Order.objects.first()
 
-    assert quota.amount == 10
+    assert order.amount == 10
 
     payload = {'amount': 20}
 
-    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
+    url = resolve_url('api:read-patch-delete', user_id=user_and_order.user.uuid, order_id=user_and_order.uuid)
 
     response = client_api_auth.patch(url, data=payload)
 
     assert response.status_code == HTTPStatus.NO_CONTENT
 
-    quota = UserQuota.objects.first()
+    order = Order.objects.first()
 
-    assert quota.amount == payload['amount']
+    assert order.amount == payload['amount']
 
 
-def test_invalid_update_quota_negative_amount(client_api_auth, user_and_quota):
+def test_invalid_update_order_negative_amount(client_api_auth, user_and_order):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - PATCH
+    endpoint: /api/v1/users/<uuid>/orders/<uuid> - PATCH
     '''
 
-    quota_db = UserQuota.objects.first()
+    order_db = Order.objects.first()
 
-    assert quota_db.amount == user_and_quota.amount
+    assert order_db.amount == user_and_order.amount
 
-    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
+    url = resolve_url('api:read-patch-delete', user_id=user_and_order.user.uuid, order_id=user_and_order.uuid)
 
     response = client_api_auth.patch(url, data={'amount': -20})
 
@@ -247,23 +247,23 @@ def test_invalid_update_quota_negative_amount(client_api_auth, user_and_quota):
 
     body = response.json()
 
-    quota_db = UserQuota.objects.first()
+    order_db = Order.objects.first()
 
-    assert quota_db.amount == user_and_quota.amount
+    assert order_db.amount == user_and_order.amount
 
     assert body['errors'] == ['Ensure this value is greater than or equal to 0.']
 
 
-def test_invalid_update_quota_empty_body(client_api_auth, user_and_quota):
+def test_invalid_update_order_empty_body(client_api_auth, user_and_order):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - PATCH
+    endpoint: /api/v1/users/<uuid>/orders/<uuid> - PATCH
     '''
 
-    quota_db = UserQuota.objects.first()
+    order_db = Order.objects.first()
 
-    assert quota_db.amount == user_and_quota.amount
+    assert order_db.amount == user_and_order.amount
 
-    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
+    url = resolve_url('api:read-patch-delete', user_id=user_and_order.user.uuid, order_id=user_and_order.uuid)
 
     response = client_api_auth.patch(url)
 
@@ -271,9 +271,9 @@ def test_invalid_update_quota_empty_body(client_api_auth, user_and_quota):
 
     body = response.json()
 
-    quota_db = UserQuota.objects.first()
+    order_db = Order.objects.first()
 
-    assert quota_db.amount == user_and_quota.amount
+    assert order_db.amount == user_and_order.amount
 
     assert body['errors'] == ['Amount field is required.']
 
@@ -281,23 +281,23 @@ def test_invalid_update_quota_empty_body(client_api_auth, user_and_quota):
 # Delete - delete
 
 
-def test_delete_user_qoutes(client_api_auth, user_and_quota):
+def test_delete_user_qoutes(client_api_auth, user_and_order):
     '''
-    endpoint: /api/v1/users/<uuid>/quotas/<uuid> - DELETE
+    endpoint: /api/v1/users/<uuid>/orders/<uuid> - DELETE
     '''
 
-    url = resolve_url('api:read-patch-delete', user_id=user_and_quota.user.uuid, quota_id=user_and_quota.uuid)
+    url = resolve_url('api:read-patch-delete', user_id=user_and_order.user.uuid, order_id=user_and_order.uuid)
 
     response = client_api_auth.delete(url)
 
     assert response.status_code == HTTPStatus.NO_CONTENT
 
-    assert not UserQuota.objects.exists()
+    assert not Order.objects.exists()
 
 
 # def test_try_to_delete_user_qoutes_for_user_without_qoutas(client_api_auth, user, url):
 #     '''
-#     endpoint: /api/v1/users/<uuid>/quotas/ - DELETE
+#     endpoint: /api/v1/users/<uuid>/orders/ - DELETE
 
 #     no request body:
 
@@ -309,10 +309,10 @@ def test_delete_user_qoutes(client_api_auth, user_and_quota):
 
 #     body = response.json()
 
-#     assert body['errors'] == ['This user has no quota record.']
+#     assert body['errors'] == ['This user has no order record.']
 
 
-def test_create_list_token_view_and_user_id_dont_match(client_api_auth, user_and_quota):
+def test_create_list_token_view_and_user_id_dont_match(client_api_auth, user_and_order):
     '''
     The token does not belong to the user
     '''
@@ -327,12 +327,12 @@ def test_create_list_token_view_and_user_id_dont_match(client_api_auth, user_and
     assert body['errors'] == ['Token and User id do not match.']
 
 
-def test_read_patch_delete_view_token_and_user_id_dont_match(client_api_auth, user_and_quota):
+def test_read_patch_delete_view_token_and_user_id_dont_match(client_api_auth, user_and_order):
     '''
     The token does not belong to the user
     '''
 
-    url = resolve_url('api:read-patch-delete', user_id=uuid4(), quota_id=user_and_quota.uuid)
+    url = resolve_url('api:read-patch-delete', user_id=uuid4(), order_id=user_and_order.uuid)
 
     response = client_api_auth.get(url)
 

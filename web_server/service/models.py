@@ -1,13 +1,10 @@
-# from functools import partial
-# import os
 from uuid import uuid4
 
 from django.db import models
 from django.conf import settings
-# from django.utils.timezone import now
 
 
-class UserQuota(models.Model):
+class Order(models.Model):
 
     DOSIMETRY_CLINIC = 'DC'
     DOSIMETRY_PRECLINIC = 'DPC'
@@ -28,7 +25,7 @@ class UserQuota(models.Model):
     )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='quotas')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
     amount = models.PositiveIntegerField('Amount of analysis', default=0)
     price = models.DecimalField('Unit price', max_digits=14, decimal_places=2)
     status_payment = models.CharField('Status payment', max_length=3, choices=STATUS_PAYMENT, default=AWAITING_PAYMENT)
@@ -41,8 +38,8 @@ class UserQuota(models.Model):
         return self.user.profile.name
 
     class Meta:
-        verbose_name = 'User Quota'
-        verbose_name_plural = 'User Ouotas'
+        verbose_name = 'User Order'
+        verbose_name_plural = 'User Orders'
 
 
 # def _normalize_email(email):
@@ -71,19 +68,6 @@ class UserQuota(models.Model):
 
 # upload_img_to = partial(upload_to, type='img')
 # upload_report_to = partial(upload_to, type='report')
-
-
-# class Service(models.Model):
-
-#     name = models.CharField('name', max_length=60)
-#     description = models.TextField('description', max_length=2048)
-#     unit_price = models.DecimalField('unit price', max_digits=14, decimal_places=2)
-
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     modified_at = models.DateTimeField(auto_now=True)
-
-#     def __str__(self):
-#         return self.name
 
 
 # class BaseAbstractOrder(models.Model):

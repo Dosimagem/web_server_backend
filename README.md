@@ -45,10 +45,10 @@ Rotas disponiveis
 - POST /api/v1/register/
 - POST /api/v1/login/
 - GET /api/v1/users/\<uuid:user_id>/
-- GET /api/v2/users/\<uuid:user_id>/quota/
-- GET /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>/
-- PATCH /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>/
-- DELETE /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>/
+- GET /api/v2/users/\<uuid:user_id>/order/
+- GET /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>/
+- PATCH /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>/
+- DELETE /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>/
 
 ---
 
@@ -163,15 +163,15 @@ Corpo da resposta:
 
 ---
 
-* GET /api/v2/users/\<uuid:user_id>/quota/
+* GET /api/v2/users/\<uuid:user_id>/order/
 
-Rota para listar a quotas do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
+Rota para listar a orders do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
 ```console
 curl --request GET \
-  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/quotas \
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/orders \
   --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5'
 ```
 
@@ -179,7 +179,7 @@ Corpo da resposta:
 
 ```json
 {
-  "quotas": [
+  "orders": [
    {
      "id": "49c1d8e7-e44b-4680-8fe7-42432df8f1d1",
      "user_id": "24d3b887-f903-44ca-bfcf-f8862da91018",
@@ -208,15 +208,15 @@ Corpo da resposta:
 
 ---
 
-* GET /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>/
+* GET /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>/
 
-Rota para ler uma quota específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `200`
+Rota para ler uma order específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
 ```console
 curl --request GET \
-  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/quotas/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/orders/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
   --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5'
 ```
 
@@ -240,9 +240,9 @@ Corpo da resposta:
 
 ---
 
-* PATCH /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>
+* PATCH /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>
 
-Rota para ler uma quota específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário, o `uuid` da cota e o o `json`. Apenas é possivel fazer atualização no campo `amount`. O código de sucesso é `204`
+Rota para ler uma order específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário, o `uuid` da cota e o o `json`. Apenas é possivel fazer atualização no campo `amount`. O código de sucesso é `204`
 
 Corpo da requisição:
 
@@ -256,7 +256,7 @@ Exemplo de `curl`:
 
 ```console
 curl --request PATCH \
-  --url http://localhost:8000/api/v1/24d3b887-f903-44ca-bfcf-f8862da91018/quotas/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
+  --url http://localhost:8000/api/v1/24d3b887-f903-44ca-bfcf-f8862da91018/orders/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
   --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -280,16 +280,16 @@ Corpo da resposta:
 ---
 ### 2.7) Rota para deletar uma cota específica daquele usuário
 ---
-* DELETE /api/v2/users/\<uuid:user_id>/quota/\<uuid:id_cota>
+* DELETE /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>
 
-Rota para deletar uma quota específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `204`
+Rota para deletar uma order específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `204`
 
 
 Exemplo de `curl`:
 
 ```console
 curl --request DELETE \
-  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/quotas/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/orders/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
   --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5'
 ```
 ---

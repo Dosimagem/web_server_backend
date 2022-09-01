@@ -1,6 +1,6 @@
 from django import forms
 
-from web_server.service.models import UserQuota
+from web_server.service.models import Order
 
 
 class DisableSaveFormException(Exception):
@@ -12,7 +12,7 @@ class DisableSaveFormException(Exception):
 class CreateQuotasForm(forms.ModelForm):
 
     class Meta:
-        model = UserQuota
+        model = Order
         fields = ('amount', 'price', 'service_type', )
 
     def save(self):
@@ -22,7 +22,7 @@ class CreateQuotasForm(forms.ModelForm):
 class UpdateQuotasForm(forms.ModelForm):
 
     class Meta:
-        model = UserQuota
+        model = Order
         fields = ('amount', )
 
     def save(self):

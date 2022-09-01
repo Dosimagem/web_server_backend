@@ -2,11 +2,11 @@
 from django.contrib import admin
 
 
-from web_server.service.models import UserQuota
+from web_server.service.models import Order
 
 
-@admin.register(UserQuota)
-class UserQuotasModelAdmin(admin.ModelAdmin):
+@admin.register(Order)
+class UserOrderModelAdmin(admin.ModelAdmin):
     list_display = (
                    'id',
                    'uuid',
