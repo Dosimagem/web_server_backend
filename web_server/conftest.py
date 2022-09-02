@@ -68,25 +68,29 @@ def second_user(user, django_user_model, second_user_info, second_user_profile_i
 
 
 @pytest.fixture
-def create_order_data():
+def create_order_data(user):
     return {
-        'amount': 10,
+        'user': user,
+        'quantity_of_analyzes': 10,
+        'remaining_of_analyzes': 10,
         'price': '1000.00',
-        'service_type': Order.DOSIMETRY_CLINIC
+        'service_name': Order.DOSIMETRY_CLINIC,
+        'status_payment': Order.AWAITING_PAYMENT
     }
 
 
 @pytest.fixture
-def user_and_order(user, create_order_data):
+def user_and_order(user, create_order_data):  # TODO: change this to order
     return Order.objects.create(user=user,
-                                amount=create_order_data['amount'],
-                                service_type=create_order_data['service_type'],
+                                quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
+                                remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
                                 price=create_order_data['price'],
-                                status_payment=Order.CONFIRMED)
+                                service_name=create_order_data['service_name']
+                                )
 
 
 @pytest.fixture
-def users_and_orders(user, second_user):
+def users_and_orders(user, second_user):  # TODO: change this to tree_orders_of_tow_ursers
     '''
     Order Table:
 
@@ -97,24 +101,30 @@ def users_and_orders(user, second_user):
     '''
 
     Order.objects.create(user=user,
-                         amount=10,
-                         service_type=Order.DOSIMETRY_CLINIC,
+                         quantity_of_analyzes=10,
+                         remaining_of_analyzes=10,
                          price=Decimal('10000.00'),
+                         service_name=Order.DOSIMETRY_CLINIC,
                          status_payment=Order.CONFIRMED,
+                         permission=True
                          )
 
     Order.objects.create(user=user,
-                         amount=5,
-                         service_type=Order.DOSIMETRY_PRECLINIC,
+                         quantity_of_analyzes=5,
+                         remaining_of_analyzes=5,
                          price=Decimal('5000.00'),
+                         service_name=Order.DOSIMETRY_PRECLINIC,
                          status_payment=Order.ANALYSIS,
+                         permission=False
                          )
 
     Order.objects.create(user=second_user,
-                         amount=3,
-                         service_type=Order.DOSIMETRY_CLINIC,
+                         quantity_of_analyzes=3,
+                         remaining_of_analyzes=3,
                          price=Decimal('3000.00'),
+                         service_name=Order.DOSIMETRY_CLINIC,
                          status_payment=Order.AWAITING_PAYMENT,
+                         permission=False
                          )
 
     return list(Order.objects.all())

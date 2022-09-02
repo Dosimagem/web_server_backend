@@ -1,29 +1,31 @@
 from django import forms
+from django.forms import ValidationError
+from django.utils.translation import gettext as _
 
 from web_server.service.models import Order
 
 
-class DisableSaveFormException(Exception):
-    def __init__(self, message='Save diabled for this form.'):
-        self.message = message
-        super().__init__(self.message)
-
-
-class CreateQuotasForm(forms.ModelForm):
+class CreateOrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ('amount', 'price', 'service_type', )
+        fields = ('user',
+                  'quantity_of_analyzes',
+                  'remaining_of_analyzes',
+                  'service_name',
+                  'price',
+                  'service_name',
+                  'status_payment',
+                  'permission')
 
-    def save(self):
-        raise DisableSaveFormException()
+    def clean_remaining_of_analyzes(self):
 
+        quantity_of_analyzes = self.cleaned_data.get('quantity_of_analyzes')
+        remaining_of_analyzes = self.cleaned_data.get('remaining_of_analyzes')
 
-class UpdateQuotasForm(forms.ModelForm):
+        if (quantity_of_analyzes is not None) and (remaining_of_analyzes > quantity_of_analyzes):
+            raise ValidationError(
+                _('Must be lower with the field quantity of analyzes.'),
+                code='invalid')
 
-    class Meta:
-        model = Order
-        fields = ('amount', )
-
-    def save(self):
-        raise DisableSaveFormException()
+        return remaining_of_analyzes

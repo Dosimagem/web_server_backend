@@ -1,5 +1,6 @@
 
 from django.contrib import admin
+from web_server.service.forms import CreateOrderForm
 
 
 from web_server.service.models import Order
@@ -8,15 +9,19 @@ from web_server.service.models import Order
 @admin.register(Order)
 class UserOrderModelAdmin(admin.ModelAdmin):
     list_display = (
-                   'id',
                    'uuid',
+                   'id',
                    'user',
-                   'amount',
+                   'quantity_of_analyzes',
+                   'remaining_of_analyzes',
                    'price',
-                   'service_type',
                    'status_payment',
+                   'service_name',
+                   'permission',
                    'created_at',
                    'modified_at'
                    )
 
-    list_display_links = ('user',)
+    list_display_links = ('uuid',)
+
+    form = CreateOrderForm

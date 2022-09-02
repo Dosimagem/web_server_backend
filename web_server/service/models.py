@@ -2,6 +2,8 @@ from uuid import uuid4
 
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 
 class Order(models.Model):
@@ -26,10 +28,12 @@ class Order(models.Model):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
-    amount = models.PositiveIntegerField('Amount of analysis', default=0)
-    price = models.DecimalField('Unit price', max_digits=14, decimal_places=2)
+    quantity_of_analyzes = models.PositiveIntegerField('Amount of analysis', default=0)
+    remaining_of_analyzes = models.PositiveIntegerField('Remaning of analysis', default=0)
+    price = models.DecimalField('Price', max_digits=14, decimal_places=2)
     status_payment = models.CharField('Status payment', max_length=3, choices=STATUS_PAYMENT, default=AWAITING_PAYMENT)
-    service_type = models.CharField('Service type', max_length=3, choices=SERVICES_TYPES)
+    service_name = models.CharField('Service name', max_length=3, choices=SERVICES_TYPES)
+    permission = models.BooleanField('Permission', default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -40,6 +44,13 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'User Order'
         verbose_name_plural = 'User Orders'
+
+    def save(self, *args, **kwargs):
+        if self.remaining_of_analyzes > self.quantity_of_analyzes:
+            raise ValidationError(
+                _('Remaining of analyzes must be lower or equal quantity of analyzes.'),
+                code='invalid')
+        super().save(*args, **kwargs)
 
 
 # def _normalize_email(email):

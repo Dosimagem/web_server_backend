@@ -14,9 +14,7 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
     - [2.2) Rota de login](#22-rota-de-login)
     - [2.3) Rota para obter informações do usuário](#23-rota-informações-do-usuario)
     - [2.4) Rota para listar todas as cotas para aquele usuário](#24-rota-para-listar-todas-as-cotas-para-aquele-usuario)
-    - [2.5) Rota para ler uma cota especifica daquele usuario](#25-rota-para-ler-uma-cota-especifica-daquele-usuario)
-    - [2.6) Rota para atualizar uma cota específica daquele usuário](#26-rota-para-atualizar-uma-cota-específica-daquele-usuário)
-    - [2.7) Rota para deletar uma cota específica daquele usuário](#27-rota-para-deletar-uma-cota-específica-daquele-usuário)
+    - [2.5) Rota para ler uma cota especifica daquele usuario](#27-rota-para-deletar-uma-cota-específica-daquele-usuário)
   - [3) Desenvolvimento](#3-desenvolvimento)
     - [3.1) Setup inicial](#31-setup-inicial)
     - [3.2) Rodando o servido](#32-rodando-o-servido)
@@ -46,9 +44,7 @@ Rotas disponiveis
 - POST /api/v1/login/
 - GET /api/v1/users/\<uuid:user_id>/
 - GET /api/v2/users/\<uuid:user_id>/order/
-- GET /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>/
-- PATCH /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>/
-- DELETE /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>/
+- GET /api/v2/users/\<uuid:user_id>/order/\<uuid:id_order>/
 
 ---
 
@@ -208,7 +204,7 @@ Corpo da resposta:
 
 ---
 
-* GET /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>/
+* GET /api/v2/users/\<uuid:user_id>/order/\<uuid:id_order>/
 
 Rota para ler uma order específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `200`
 
@@ -234,64 +230,6 @@ Corpo da resposta:
 }
 ```
 
----
-
-### 2.6) Rota para atualizar uma cota específica daquele usuário
-
----
-
-* PATCH /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>
-
-Rota para ler uma order específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário, o `uuid` da cota e o o `json`. Apenas é possivel fazer atualização no campo `amount`. O código de sucesso é `204`
-
-Corpo da requisição:
-
-```json
-{
-  "amount": 9,
-}
-```
-
-Exemplo de `curl`:
-
-```console
-curl --request PATCH \
-  --url http://localhost:8000/api/v1/24d3b887-f903-44ca-bfcf-f8862da91018/orders/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
-  --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5' \
-  --header 'Content-Type: application/json' \
-  --data '{
-	"amount": "9"
-}'
-```
-
-Corpo da resposta:
-
-```json
-{
-  "id": "49c1d8e7-e44b-4680-8fe7-42432df8f1d12",
-  "user_id": "24d3b887-f903-44ca-bfcf-f8862da91018",
-  "amount": 9,
-  "price": 30000.0,
-  "service_type": "Dosimetria Clinica",
-  "status_payment": "Confirmado",
-  "created_at": "2022-08-30"
-}
-```
----
-### 2.7) Rota para deletar uma cota específica daquele usuário
----
-* DELETE /api/v2/users/\<uuid:user_id>/order/\<uuid:id_cota>
-
-Rota para deletar uma order específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `204`
-
-
-Exemplo de `curl`:
-
-```console
-curl --request DELETE \
-  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/orders/49c1d8e7-e44b-4680-8fe7-42432df8f1d1/ \
-  --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5'
-```
 ---
 
 ## 3) Desenvolvimento
