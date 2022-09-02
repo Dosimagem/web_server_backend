@@ -221,6 +221,136 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2022-09-01T23:37:37.960Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Maria Silva",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status payment\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2022-09-01T23:37:44.850Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "João Silva",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Permission\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2022-09-01T23:38:14.210Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "João Silva",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Remaning of analysis\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2022-09-01T23:38:23.105Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "João Silva",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Remaning of analysis\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2022-09-01T23:38:35.194Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Maria Silva",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Remaning of analysis\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2022-09-02T00:29:17.899Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "João Silva",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2022-09-02T00:29:34.321Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "João Silva",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2022-09-02T00:31:09.937Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "5",
+    "object_repr": "João Silva",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2022-09-02T00:31:20.821Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "5",
+    "object_repr": "João Silva",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2022-09-02T00:43:31.153Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Maria Silva",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
   "model": "sessions.session",
   "pk": "ej80uieyf066b1j99hjn8fh23il50ipl",
   "fields": {
@@ -331,12 +461,14 @@
   "fields": {
     "uuid": "49c1d8e7-e44b-4680-8fe7-42432df8f1d1",
     "user": 2,
-    "amount": 15,
+    "quantity_of_analyzes": 15,
+    "remaining_of_analyzes": 15,
     "price": "30000.00",
     "status_payment": "CON",
-    "service_type": "DC",
+    "service_name": "DC",
+    "permission": true,
     "created_at": "2022-08-30T18:58:10.601Z",
-    "modified_at": "2022-08-31T02:42:20.061Z"
+    "modified_at": "2022-09-01T23:38:14.206Z"
   }
 },
 {
@@ -345,12 +477,14 @@
   "fields": {
     "uuid": "23923dc1-b5bd-4e88-98c7-50292d69672a",
     "user": 2,
-    "amount": 5,
+    "quantity_of_analyzes": 5,
+    "remaining_of_analyzes": 5,
     "price": "10000.00",
     "status_payment": "ALY",
-    "service_type": "DPC",
+    "service_name": "DC",
+    "permission": false,
     "created_at": "2022-08-30T18:58:35.045Z",
-    "modified_at": "2022-08-31T02:43:13.195Z"
+    "modified_at": "2022-09-01T23:38:23.102Z"
   }
 },
 {
@@ -359,12 +493,14 @@
   "fields": {
     "uuid": "041ba593-7b41-406e-952b-7d1388dd0c4a",
     "user": 3,
-    "amount": 3,
+    "quantity_of_analyzes": 3,
+    "remaining_of_analyzes": 3,
     "price": "1000.00",
-    "status_payment": "CON",
-    "service_type": "DC",
+    "status_payment": "ALY",
+    "service_name": "DC",
+    "permission": false,
     "created_at": "2022-08-30T18:59:48.818Z",
-    "modified_at": "2022-08-30T18:59:48.818Z"
+    "modified_at": "2022-09-02T00:43:31.149Z"
   }
 },
 {

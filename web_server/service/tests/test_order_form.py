@@ -1,82 +1,71 @@
 from decimal import Decimal
 
-import pytest
-
-from web_server.service.forms import CreateQuotasForm, DisableSaveFormException
+from web_server.service.forms import CreateOrderForm
 from web_server.service.models import Order
 
 
-@pytest.fixture
-def create_data():
-    return {
-        'price': '1000.00',
-        'amount': 10,
-        'service_type': Order.DOSIMETRY_CLINIC,
-    }
+def test_valid_form(create_order_data):
 
-
-def test_valid_form(create_data):
-    form = CreateQuotasForm(data=create_data)
+    form = CreateOrderForm(data=create_order_data)
 
     assert form.is_valid()
-
-    assert form.cleaned_data['amount'] == 10
+    assert form.cleaned_data['quantity_of_analyzes'] == 10
+    assert form.cleaned_data['remaining_of_analyzes'] == 10
     assert form.cleaned_data['price'] == Decimal('1000.00')
-    assert form.cleaned_data['service_type'] == Order.DOSIMETRY_CLINIC
+    assert form.cleaned_data['service_name'] == Order.DOSIMETRY_CLINIC
 
 
-def test_invalid_form_negative_amount_number(create_data):
+def test_invalid_form_negative_quantity_of_analyzes(create_order_data):
 
-    create_data['amount'] = -10
+    create_order_data['quantity_of_analyzes'] = -10
 
-    form = CreateQuotasForm(data=create_data)
-
-    assert not form.is_valid()
-
-    assert form.errors == {'amount': ['Ensure this value is greater than or equal to 0.']}
-
-
-def test_invalid_form_amount(create_data):
-
-    create_data['amount'] = '1..0'
-
-    form = CreateQuotasForm(data=create_data)
+    form = CreateOrderForm(data=create_order_data)
 
     assert not form.is_valid()
 
-    assert form.errors == {'amount': ['Enter a whole number.']}
+    assert form.errors == {'quantity_of_analyzes': ['Ensure this value is greater than or equal to 0.']}
 
 
-def test_invalid_form_service_type(create_data):
+def test_invalid_form_quantity_of_analyzes(create_order_data):
 
-    create_data['service_type'] = 'AAA'
+    create_order_data['quantity_of_analyzes'] = '1..0'
 
-    form = CreateQuotasForm(data=create_data)
-
-    assert not form.is_valid()
-
-    assert form.errors == {'service_type': ['Select a valid choice. AAA is not one of the available choices.']}
-
-
-def test_invalid_form_price(create_data):
-
-    create_data['price'] = '100.0.0'
-
-    form = CreateQuotasForm(data=create_data)
+    form = CreateOrderForm(data=create_order_data)
 
     assert not form.is_valid()
 
-    assert form.errors == {'price': ['Enter a number.']}
+    assert form.errors == {'quantity_of_analyzes': ['Enter a whole number.']}
 
 
-@pytest.mark.django_db
-def test_valid_form_save(create_data):
+def test_invalid_form_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(create_order_data):
 
-    form = CreateQuotasForm(data=create_data)
+    create_order_data['quantity_of_analyzes'] = '1'
+    create_order_data['remaining_of_analyzes'] = '2'
 
-    form.full_clean()
+    form = CreateOrderForm(data=create_order_data)
 
-    with pytest.raises(DisableSaveFormException):
-        form.save()
+    assert not form.is_valid()
 
-    assert not Order.objects.exists()
+    assert form.errors == {'remaining_of_analyzes': ['Must be lower with the field quantity of analyzes.']}
+
+
+# def test_invalid_form_service_type(create_oerder_data):
+
+#     create_oerder_data['service_type'] = 'AAA'
+
+#     form = CreateQuotasForm(data=create_oerder_data)
+
+#     assert not form.is_valid()
+
+#     assert form.errors == {'service_type': ['Select a valid choice. AAA is not one of the available choices.']}
+
+
+# def test_invalid_form_price(create_oerder_data):
+
+#     create_oerder_data['price'] = '100.0.0'
+
+#     form = CreateQuotasForm(data=create_oerder_data)
+
+#     assert not form.is_valid()
+
+#     assert form.errors == {'price': ['Enter a number.']}
