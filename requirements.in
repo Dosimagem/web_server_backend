@@ -3,3 +3,4 @@ python-decouple
 djangorestframework
 django-cors-headers
 django-extensions
+djangorestframework-camel-case

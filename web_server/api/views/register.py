@@ -3,9 +3,9 @@ from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
 from web_server.core.forms import SignupForm
 from .utils import list_errors
@@ -36,6 +36,8 @@ class MyObtainAuthToken(ObtainAuthToken):
     "errors": ["Username field is required.", "Password field is required."]
     }
     '''
+    renderer_classes = (CamelCaseJSONRenderer, )
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid(raise_exception=False):

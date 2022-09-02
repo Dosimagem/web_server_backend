@@ -29,13 +29,13 @@ def test_list_orders_of_user(client_api_auth, user_and_order):
 
     for order_response, order_db in zip(order_response_list, order_db_list):
         assert order_response['id'] == str(order_db.uuid)
-        assert order_response['user_id'] == str(order_db.user.uuid)
-        assert order_response['quantity_of_analyzes'] == order_db.quantity_of_analyzes
-        assert order_response['remaining_of_analyzes'] == order_db.remaining_of_analyzes
+        assert order_response['userId'] == str(order_db.user.uuid)
+        assert order_response['quantityOfAnalyzes'] == order_db.quantity_of_analyzes
+        assert order_response['remainingOfAnalyzes'] == order_db.remaining_of_analyzes
         assert order_response['price'] == order_db.price
-        assert order_response['service_name'] == order_db.get_service_name_display()
-        assert order_response['status_payment'] == order_db.get_status_payment_display()
-        assert order_response['created_at'] == str(order_db.created_at.date())
+        assert order_response['serviceName'] == order_db.get_service_name_display()
+        assert order_response['statusPayment'] == order_db.get_status_payment_display()
+        assert order_response['createdAt'] == str(order_db.created_at.date())
         assert order_response['permission'] == order_db.permission
 
 
@@ -91,13 +91,13 @@ def test_read_order_by_id(client_api_auth, user_and_order):
     order_db = Order.objects.get(id=user_and_order.id)
 
     assert body['id'] == str(order_db.uuid)
-    assert body['user_id'] == str(order_db.user.uuid)
-    assert body['quantity_of_analyzes'] == order_db.quantity_of_analyzes
-    assert body['remaining_of_analyzes'] == order_db.remaining_of_analyzes
+    assert body['userId'] == str(order_db.user.uuid)
+    assert body['quantityOfAnalyzes'] == order_db.quantity_of_analyzes
+    assert body['remainingOfAnalyzes'] == order_db.remaining_of_analyzes
     assert body['price'] == order_db.price
-    assert body['service_name'] == order_db.get_service_name_display()
-    assert body['status_payment'] == order_db.get_status_payment_display()
-    assert body['created_at'] == str(order_db.created_at.date())
+    assert body['serviceName'] == order_db.get_service_name_display()
+    assert body['statusPayment'] == order_db.get_status_payment_display()
+    assert body['createdAt'] == str(order_db.created_at.date())
     assert body['permission'] == order_db.permission
 
 
