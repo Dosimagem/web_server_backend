@@ -62,7 +62,7 @@ Corpo da requisição:
 {
   "name": "João Silva",
   "email": "user1@user.com",
-  "confirm_email": "user1@user.com",
+  "confirmEmail": "user1@user.com",
   "password1": "123456!!",
   "password2": "123456!!",
   "phone": "2222-2222",
@@ -77,7 +77,7 @@ Corpo da reposta:
 {
   "id": "24d3b887-f903-44ca-bfcf-f8862da91018",
   "token": "12df687b3adda8cdcfd0b9b8a77d32b02b721be5",
-  "is_staff": false
+  "isStaff": false
 }
 ```
 
@@ -119,7 +119,7 @@ Corpo da resposta:
 {
   "id": "24d3b887-f903-44ca-bfcf-f8862da91018",
   "token": "30af7c82372a8d4b3be470ea52967b0921f5ebff",
-  "is_staff": false
+  "isStaff": false
 }
 ```
 
@@ -178,25 +178,25 @@ Corpo da resposta:
 	"orders": [
 		{
 			"id": "49c1d8e7-e44b-4680-8fe7-42432df8f1d1",
-			"user_id": "24d3b887-f903-44ca-bfcf-f8862da91018",
-			"quantity_of_analyzes": 15,
-			"remaining_of_analyzes": 15,
+			"userId": "24d3b887-f903-44ca-bfcf-f8862da91018",
+			"quantityOfAnalyzes": 15,
+			"remainingOfAnalyzes": 15,
 			"price": 30000.0,
-			"service_name": "Dosimetria Clinica",
-			"status_payment": "Confirmado",
+			"serviceName": "Dosimetria Clinica",
+			"statusPayment": "Confirmado",
 			"permission": true,
-			"created_at": "2022-08-30"
+			"createdAt": "2022-08-30"
 		},
 		{
 			"id": "23923dc1-b5bd-4e88-98c7-50292d69672a",
-			"user_id": "24d3b887-f903-44ca-bfcf-f8862da91018",
-			"quantity_of_analyzes": 5,
-			"remaining_of_analyzes": 5,
+			"userId": "24d3b887-f903-44ca-bfcf-f8862da91018",
+			"quantityOfAnalyzes": 5,
+			"remainingOfAnalyzes": 5,
 			"price": 10000.0,
-			"service_name": "Dosimetria Clinica",
-			"status_payment": "Analise",
+			"serviceName": "Dosimetria Clinica",
+			"statusPayment": "Analise",
 			"permission": false,
-			"created_at": "2022-08-30"
+			"createdAt": "2022-08-30"
 		}
 	]
 }
@@ -225,14 +225,14 @@ Corpo da resposta:
 ```json
 {
 	"id": "23923dc1-b5bd-4e88-98c7-50292d69672a",
-	"user_id": "24d3b887-f903-44ca-bfcf-f8862da91018",
-	"quantity_of_analyzes": 5,
-	"remaining_of_analyzes": 5,
+	"userId": "24d3b887-f903-44ca-bfcf-f8862da91018",
+	"quantityOfAnalyzes": 5,
+	"remainingOfAnalyzes": 5,
 	"price": 10000.0,
-	"service_name": "Dosimetria Clinica",
-	"status_payment": "Analise",
+	"serviceName": "Dosimetria Clinica",
+	"statusPayment": "Analise",
 	"permission": false,
-	"created_at": "2022-08-30"
+	"createdAt": "2022-08-30"
 }
 ```
 
