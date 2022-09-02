@@ -96,7 +96,7 @@ Corpo da requisição:
 
 ```json
 {
-  "username": "test1@email.com",
+  "username": "user1@user.com",
   "password": "123456!!",
 }
 ```
@@ -118,7 +118,7 @@ Corpo da resposta:
 ```json
 {
   "id": "24d3b887-f903-44ca-bfcf-f8862da91018",
-  "token": "12df687b3adda8cdcfd0b9b8a77d32b02b721be5",
+  "token": "30af7c82372a8d4b3be470ea52967b0921f5ebff",
   "is_staff": false
 }
 ```
@@ -167,7 +167,7 @@ Exemplo de `curl`:
 
 ```console
 curl --request GET \
-  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/orders \
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/orders/ \
   --header 'Authorization: Bearer 12df687b3adda8cdcfd0b9b8a77d32b02b721be5'
 ```
 
