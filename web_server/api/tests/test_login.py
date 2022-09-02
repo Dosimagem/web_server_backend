@@ -29,7 +29,7 @@ def test_successfull_login(client_api, user_info, user):
 
     assert body['id'] == str(user.uuid)
     assert body['token'] == user.auth_token.key
-    assert body['is_staff'] == user.is_staff
+    assert body['isStaff'] == user.is_staff
 
 
 def test_fail_wrong_username(client_api, user_info, user):
