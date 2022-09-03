@@ -4,7 +4,7 @@ import pytest
 from web_server.core.models import UserProfile
 from rest_framework.authtoken.models import Token
 
-from web_server.service.models import Order
+from web_server.service.models import Isotope, Order
 
 
 @pytest.fixture
@@ -128,6 +128,11 @@ def users_and_orders(user, second_user):  # TODO: change this to tree_orders_of_
                          )
 
     return list(Order.objects.all())
+
+
+@pytest.fixture
+def lu_177(db):
+    return Isotope.objects.create(name='Lu-177')
 
 
 # INDEX_DOSIMETRY = 0

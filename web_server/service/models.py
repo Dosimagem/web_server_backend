@@ -53,6 +53,17 @@ class Order(models.Model):
         super().save(*args, **kwargs)
 
 
+class Isotope(models.Model):
+
+    name = models.CharField(max_length=6)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
 # def _normalize_email(email):
 #     return email.replace('@', '_').replace('.', '_')
 

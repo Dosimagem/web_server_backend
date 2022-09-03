@@ -14,7 +14,8 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
     - [2.2) Rota de login](#22-rota-de-login)
     - [2.3) Rota para obter informações do usuário](#23-rota-informações-do-usuario)
     - [2.4) Rota para listar todas as cotas para aquele usuário](#24-rota-para-listar-todas-as-cotas-para-aquele-usuario)
-    - [2.5) Rota para ler uma cota especifica daquele usuario](#27-rota-para-deletar-uma-cota-específica-daquele-usuário)
+    - [2.5) Rota para ler uma cota especifica daquele usuario](#25-rota-para-deletar-uma-cota-específica-daquele-usuário)
+    - [2.6) Rota para ler os isotopos cadastrados](#25-rota-para-deletar-uma-cota-específica-daquele-usuário)
   - [3) Desenvolvimento](#3-desenvolvimento)
     - [3.1) Setup inicial](#31-setup-inicial)
     - [3.2) Rodando o servido](#32-rodando-o-servido)
@@ -43,8 +44,8 @@ Rotas disponiveis
 - POST /api/v1/register/
 - POST /api/v1/login/
 - GET /api/v1/users/\<uuid:user_id>/
-- GET /api/v2/users/\<uuid:user_id>/order/
-- GET /api/v2/users/\<uuid:user_id>/order/\<uuid:id_order>/
+- GET /api/v1/users/\<uuid:user_id>/order/
+- GET /api/v1/users/\<uuid:user_id>/order/\<uuid:id_order>/
 
 ---
 
@@ -88,7 +89,7 @@ Corpo da reposta:
 
 ---
 
-* POST /api/v2/login/
+* POST /api/v1/login/
 
 Rota serve para obter o token de um usuario cadastrado. Caso o `payload` seja valido será retornado o `token`. O código de sucesso é `200`
 
@@ -129,7 +130,7 @@ Corpo da resposta:
 
 ---
 
-* GET /api/v2/users/\<uuid:user_id>/
+* GET /api/v1/users/\<uuid:user_id>/
 
 Rota para obter informação do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
 
@@ -159,7 +160,7 @@ Corpo da resposta:
 
 ---
 
-* GET /api/v2/users/\<uuid:user_id>/order/
+* GET /api/v1/users/\<uuid:user_id>/order/
 
 Rota para listar a orders do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
 
@@ -208,7 +209,7 @@ Corpo da resposta:
 
 ---
 
-* GET /api/v2/users/\<uuid:user_id>/order/\<uuid:id_order>/
+* GET /api/v1/users/\<uuid:user_id>/order/\<uuid:id_order>/
 
 Rota para ler uma order específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `200`
 
@@ -233,6 +234,38 @@ Corpo da resposta:
 	"statusPayment": "Analise",
 	"permission": false,
 	"createdAt": "2022-08-30"
+}
+```
+
+---
+
+### 2.6) Rota para ler os isotopos cadastrados
+
+---
+
+* GET /api/v1/isotopes/
+
+Rota para ler os isotopos. O código de sucesso é `200`
+
+Exemplo de `curl`:
+
+```console
+curl --request GET --url http://localhost:8000/api/v1/isotopes/
+```
+
+Corpo da resposta:
+
+```json
+{
+  "count": "6",
+  "isotopes": [
+    "Lu-177",
+    "Cu-64",
+    "Cu-67",
+    "F-18",
+    "G1-68",
+    "Ho-166"
+  ]
 }
 ```
 
