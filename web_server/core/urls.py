@@ -1,10 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 
-from .views import index, signup
+from .views import index
 
 app_name = 'core'
 urlpatterns = [
     path('', index, name='index'),
-    path('accounts/signup/', signup, name='signup'),
-    path('accounts/', include('django.contrib.auth.urls')),
 ]
