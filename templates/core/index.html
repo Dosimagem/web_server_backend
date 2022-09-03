@@ -1,32 +1,16 @@
 {% extends 'base/base.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
-  {%include 'base/nav.html'%}
+  <header style="color: white; background-color:  #1c8bcd;" >
+  <div class="m-0">
+      <div>
+          <br>
+          <br>
+      </div>
+  </div>
+  </header>
   <div class="container m-5">
-    <h2>Rotas disponiveis</h2>
-    <ul>
-      <li>
-        home &#10140; <a href="{% url 'core:index' %}">/</a>
-      </li>
-      <li>
-        profile ( rota protegida) &#10140;  <a href="{% url 'client:profile' %}">/profile</a>
-      </li>
-      <li>
-        Cadastro &#10140; <a href="{% url 'core:signup' %}"> /accounts/signup</a>
-      </li>
-      <li>
-        login &#10140; <a href="{% url 'core:login' %}"> /accounts/login</a>
-      </li>
-      <li>
-        logout &#10140;  <a href="{% url 'core:logout' %}">/accounts/logout</a>
-      </li>
-      <li>
-        password_reset &#10140;  <a href="{% url 'core:password_reset' %}">/accounts/password_reset/</a>
-      </li>
-      <li>
-        admin &#10140;  <a href="{% url 'admin:login' %}">/dosimagem/admin/</a>
-      </li>
-    </ul>
+    <h1>Dosimagem API</h1>
   </div>
   {%include 'base/footer.html'%}
 {% endblock %}
