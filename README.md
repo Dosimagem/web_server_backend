@@ -15,7 +15,11 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
     - [2.3) Rota para obter informações do usuário](#23-rota-informações-do-usuario)
     - [2.4) Rota para listar todas as cotas para aquele usuário](#24-rota-para-listar-todas-as-cotas-para-aquele-usuario)
     - [2.5) Rota para ler uma cota especifica daquele usuario](#25-rota-para-deletar-uma-cota-específica-daquele-usuário)
-    - [2.6) Rota para ler os isotopos cadastrados](#25-rota-para-deletar-uma-cota-específica-daquele-usuário)
+    - [2.6) Rota para ler os isotopos cadastrados](#26-rota-para-deletar-uma-cota-específica-daquele-usuário)
+    - [2.7) Rota para lista as calibrações](#27-rota-para-listar-calibrações)
+    - [2.8) Rota para cadastra uma calibração](#28-rota-para-cadastra-calibrações)
+    - [2.9) Rota para atualizar uma calibração](#29-rota-para-atualizar-uma-calibração)
+    - [2.10) Rota para deletar uma calibração](#210-rota-para-deletar-uma-calibração)
   - [3) Desenvolvimento](#3-desenvolvimento)
     - [3.1) Setup inicial](#31-setup-inicial)
     - [3.2) Rodando o servido](#32-rodando-o-servido)
@@ -41,11 +45,19 @@ Desenvolvimento das funcionalidades
 
 Rotas disponiveis
 
-- POST /api/v1/register/
-- POST /api/v1/login/
-- GET /api/v1/users/\<uuid:user_id>/
-- GET /api/v1/users/\<uuid:user_id>/order/
-- GET /api/v1/users/\<uuid:user_id>/order/\<uuid:id_order>/
+- Register
+  - POST /api/v1/register/
+  - POST /api/v1/login/
+- Users
+  - GET /api/v1/users/\<uuid:user_id>/
+- Order
+  - GET /api/v1/users/\<uuid:user_id>/order/
+  - GET /api/v1/users/\<uuid:user_id>/order/\<uuid:id_order>/
+- Calibration
+  - GET /api/v1/users/\<uuid:user_id>/
+  - POST /api/v1/users/\<uuid:user_id>/
+  - DELETE /api/v1/users/\<uuid:user_id>/calibration//\<uuid:cali_id>
+  - PUT /api/v1/users/\<uuid:user_id>/calibration//\<uuid:cali_id>
 
 ---
 
@@ -267,6 +279,143 @@ Corpo da resposta:
     "Ho-166"
   ]
 }
+```
+
+---
+
+### 2.7) Rota para listar calibrações
+
+---
+
+* GET /api/v1/users/\<uuid:user_id>/calibration/
+
+Rota para listar as calibrações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `201`
+
+Exemplo de `curl`:
+
+```console
+curl --request GET \
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/calibrations/ \
+  --header 'Authorization: Bearer 30af7c82372a8d4b3be470ea52967b0921f5ebff'
+```
+
+Corpo da resposta:
+
+```json
+{
+  "count": 2,
+  "row": [
+    {
+      "id": "b707c70e-518f-4d33-bcd5-9da9491bbab6",
+      "userId": "24d3b887-f903-44ca-bfcf-f8862da91018",
+      "isotope": "Cu-64",
+      "calibrationName": "Calibração B",
+      "syringeActivity": 10.0,
+      "residualSyringeActivity": 5.0,
+      "measurementDatetime": "01/04/2016 - 01:12:04",
+      "phantomVolume": 2.0,
+      "acquisitionTime": "11:12:02"
+    },
+    {
+      "id": "1400b576-1221-4304-835c-30a0512307db",
+      "userId": "24d3b887-f903-44ca-bfcf-f8862da91018",
+      "isotope": "F-18",
+      "calibrationName": "Calibração A",
+      "syringeActivity": 12.0,
+      "residualSyringeActivity": 5.0,
+      "measurementDatetime": "01/04/2016 - 01:12:04",
+      "phantomVolume": 2.0,
+      "acquisitionTime": "11:12:02"
+    }
+  ]
+}
+```
+
+---
+
+
+### 2.8) Rota para cadastra calibrações
+
+---
+
+* POST /api/v1/users/\<uuid:user_id>/calibration/
+
+Rota para cadastra as calibrações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `201`
+
+Exemplo de `curl`:
+
+```console
+curl --request POST \
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/calibrations/ \
+  --header 'Authorization: Bearer 30af7c82372a8d4b3be470ea52967b0921f5ebff' \
+  --header 'Content-Type: multipart/form-data' \
+  --form isotope=F-18 \
+  --form 'calibrationName=Calibração A' \
+  --form syringeActivity=12 \
+  --form residualSyringeActivity=5 \
+  --form 'measurementDatetime=2016-04-01 01:12:04' \
+  --form phantomVolume=2 \
+  --form acquisitionTime=11:12:02
+```
+
+Corpo da resposta:
+
+```json
+{
+  "id": "1400b576-1221-4304-835c-30a0512307db",
+  "userId": "24d3b887-f903-44ca-bfcf-f8862da91018",
+  "isotope": "F-18",
+  "calibrationName": "Calibração A",
+  "syringeActivity": 12.0,
+  "residualSyringeActivity": 5.0,
+  "measurementDatetime": "01/04/2016 - 01:12:04",
+  "phantomVolume": 2.0,
+  "acquisitionTime": "11:12:02"
+}
+```
+
+---
+
+### 2.9) Rota para atualizar uma calibração
+
+---
+
+* PUT /api/v1/users/\<uuid:user_id>/calibration/\<uuid:cali_id>
+
+Rota para atualizar as calibrações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `204`
+
+Exemplo de `curl`:
+
+```console
+curl --request PUT \
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/calibrations/b707c70e-518f-4d33-bcd5-9da9491bbab6 \
+  --header 'Authorization: Bearer 30af7c82372a8d4b3be470ea52967b0921f5ebff' \
+  --header 'Content-Type: multipart/form-data' \
+  --form isotope=Cu-64 \
+  --form 'calibrationName=Calibração C' \
+  --form syringeActivity=10 \
+  --form residualSyringeActivity=5 \
+  --form 'measurementDatetime=2016-04-01 01:12:04' \
+  --form phantomVolume=2 \
+  --form acquisitionTime=11:12:02
+```
+
+---
+
+### 2.10) Rota para deletar uma calibração
+
+---
+
+* DELETE /api/v1/users/\<uuid:user_id>/calibration/
+
+Rota para deletar uma do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. O código de sucesso é `204`
+
+Exemplo de `curl`:
+
+```console
+curl --request DELETE \
+  --url http://localhost:8000/api/v1/users/24d3b887-f903-44ca-bfcf-f8862da91018/calibrations/b1b159b5-d5e7-4959-9cbb-3426ba5447fd \
+  --header 'Authorization: Bearer 30af7c82372a8d4b3be470ea52967b0921f5ebff'
 ```
 
 ---

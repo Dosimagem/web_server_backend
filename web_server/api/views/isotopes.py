@@ -10,7 +10,7 @@ def isotope(request):
 
     isotopes = _isotope_to_list()
 
-    data = {'count': len(isotopes), 'isotopes': isotopes}
+    data = {'count': len(isotopes), 'row': isotopes}
 
     return Response(data=data)
 
