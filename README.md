@@ -56,8 +56,8 @@ Rotas disponiveis
 - Calibration
   - GET /api/v1/users/\<uuid:user_id>/
   - POST /api/v1/users/\<uuid:user_id>/
-  - DELETE /api/v1/users/\<uuid:user_id>/calibration//\<uuid:cali_id>
-  - PUT /api/v1/users/\<uuid:user_id>/calibration//\<uuid:cali_id>
+  - DELETE /api/v1/users/\<uuid:user_id>/calibration/\<uuid:cali_id>
+  - PUT /api/v1/users/\<uuid:user_id>/calibration/\<uuid:cali_id>
 
 ---
 
