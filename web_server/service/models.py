@@ -3,6 +3,7 @@ from uuid import uuid4
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.utils.translation import gettext as _
 
 
@@ -63,6 +64,38 @@ class Isotope(models.Model):
     def __str__(self):
         return self.name
 
+
+class Calibration(models.Model):
+
+    uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
+    isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='calibrations')
+
+    calibration_name = models.CharField('Calibration Name', max_length=24)
+    syringe_activity = models.FloatField('Syringe Activity', validators=[MinValueValidator(0.0)])
+    residual_syringe_activity = models.FloatField('Residual Syringe Activity', validators=[MinValueValidator(0.0)])
+    measurement_datetime = models.DateTimeField('Measurement Datetime')
+    phantom_volume = models.FloatField('Phantom Volume', validators=[MinValueValidator(0.0)])
+    acquisition_time = models.TimeField('Acquisition Time')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.calibration_name
+
+    def to_dict(self):
+        return {
+            'id': self.uuid,
+            'user_id': self.user.uuid,
+            'isotope': self.isotope.name,
+            'calibration_name': self.calibration_name,
+            'syringe_activity': self.syringe_activity,
+            'residual_syringe_activity': self.residual_syringe_activity,
+            'measurement_datetime': self.measurement_datetime.strftime('%d/%m/%Y - %H:%M:%S'),
+            'phantom_volume': self.phantom_volume,
+            'acquisition_time': self.acquisition_time
+        }
 
 # def _normalize_email(email):
 #     return email.replace('@', '_').replace('.', '_')

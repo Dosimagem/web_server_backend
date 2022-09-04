@@ -1,10 +1,12 @@
+from datetime import datetime
 from decimal import Decimal
 
 import pytest
-from web_server.core.models import UserProfile
 from rest_framework.authtoken.models import Token
+from django.utils.timezone import make_aware
 
-from web_server.service.models import Isotope, Order
+from web_server.core.models import UserProfile
+from web_server.service.models import Isotope, Order, Calibration
 
 
 @pytest.fixture
@@ -133,6 +135,48 @@ def users_and_orders(user, second_user):  # TODO: change this to tree_orders_of_
 @pytest.fixture
 def lu_177(db):
     return Isotope.objects.create(name='Lu-177')
+
+
+@pytest.fixture
+def lu_177_and_cu_64(lu_177):
+    Isotope.objects.create(name='Cu-64')
+    return list(Isotope.objects.all())
+
+
+
+DATETIME_TIMEZONE = make_aware(datetime(2016, 12, 14, 11, 2, 51))
+
+
+@pytest.fixture
+def calibration_infos(user, lu_177):
+    return dict(
+        user=user,
+        isotope=lu_177,
+        calibration_name='Calibration 1',
+        syringe_activity=50.0,
+        residual_syringe_activity=0.3,
+        measurement_datetime=DATETIME_TIMEZONE,
+        phantom_volume=200.0,
+        acquisition_time=DATETIME_TIMEZONE.time()
+    )
+
+
+@pytest.fixture
+def calibration(calibration_infos):
+    return Calibration.objects.create(**calibration_infos)
+
+
+@pytest.fixture
+def form_data(calibration_infos):
+    return {
+         'isotope': calibration_infos['isotope'].name,
+         'calibrationName': calibration_infos['calibration_name'],
+         'syringeActivity': calibration_infos['syringe_activity'],
+         'residualSyringeActivity': calibration_infos['residual_syringe_activity'],
+         'measurementDatetime': calibration_infos['measurement_datetime'],
+         'phantomVolume': calibration_infos['phantom_volume'],
+         'acquisitionTime': calibration_infos['acquisition_time']
+    }
 
 
 # INDEX_DOSIMETRY = 0

@@ -17,4 +17,5 @@ def test_list_isotopes(client_api, lu_177):
 
     isotope_db_list = _isotope_to_list()
 
-    assert body['isotopes'] == isotope_db_list
+    assert body['count'] == 1
+    assert body['row'] == isotope_db_list

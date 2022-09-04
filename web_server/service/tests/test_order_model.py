@@ -29,7 +29,7 @@ def test_delete_user_must_delete_quotes(user, user_and_order):
     assert not Order.objects.exists()
 
 
-def test_delete_orders_must_not_dele_user(user, user_and_order):
+def test_delete_orders_must_not_delete_user(user, user_and_order):
     user_and_order.delete()
     assert User.objects.exists()
 

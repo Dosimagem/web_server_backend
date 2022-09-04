@@ -10,7 +10,7 @@ from web_server.service.models import Order
 
 def test_list_orders_of_user(client_api_auth, user_and_order):
     '''
-    endpoint: /api/v1/users/<uuid>/orders/ - GET
+    /api/v1/users/<uuid>/orders/ - GET
     '''
 
     url = resolve_url('api:order-list', user_and_order.user.uuid)
@@ -41,7 +41,7 @@ def test_list_orders_of_user(client_api_auth, user_and_order):
 
 def test_try_list_orders_for_user_without_order(client_api_auth, user):
     '''
-    endpoint: /api/v1/users/<uuid>/orders/ - GET
+    /api/v1/users/<uuid>/orders/ - GET
     '''
 
     url = resolve_url('api:order-list', user.uuid)
@@ -72,12 +72,27 @@ def test_list_not_allowed_method(client_api_auth, user_and_order):
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
 
 
+def test_list_token_view_and_user_id_dont_match(client_api_auth, user_and_order):
+    '''
+    The token does not belong to the user
+    '''
+
+    url = resolve_url('api:order-list', uuid4())
+    response = client_api_auth.get(url)
+
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+
+    body = response.json()
+
+    assert body['errors'] == ['Token and User id do not match.']
+
+
 # Read - GET
 
 
 def test_read_order_by_id(client_api_auth, user_and_order):
     '''
-    endpoint: /api/v1/users/<uuid>/orders/<uuid> - GET
+    /api/v1/users/<uuid>/orders/<uuid> - GET
     '''
 
     url = resolve_url('api:order-read', user_id=user_and_order.user.uuid, order_id=user_and_order.uuid)
@@ -103,7 +118,7 @@ def test_read_order_by_id(client_api_auth, user_and_order):
 
 def test_read_order_by_wrong_id(client_api_auth, user_and_order):
     '''
-    endpoint: /api/v1/users/<uuid>/orders/<uuid> - GET
+    /api/v1/users/<uuid>/orders/<uuid> - GET
     '''
 
     url = resolve_url('api:order-read', user_id=user_and_order.user.uuid, order_id=uuid4())
@@ -119,7 +134,7 @@ def test_read_order_by_wrong_id(client_api_auth, user_and_order):
 
 def test_try_read_order_for_user_without_order(client_api_auth, user):
     '''
-    endpoint: /api/v1/users/<uuid>/orders/<uuid> - GET
+    /api/v1/users/<uuid>/orders/<uuid> - GET
 
     The user does not have a order registration
     '''
@@ -133,21 +148,6 @@ def test_try_read_order_for_user_without_order(client_api_auth, user):
     body = response.json()
 
     assert body == {'errors': ['This user has no order record.']}
-
-
-def test_list_token_view_and_user_id_dont_match(client_api_auth, user_and_order):
-    '''
-    The token does not belong to the user
-    '''
-
-    url = resolve_url('api:order-list', uuid4())
-    response = client_api_auth.get(url)
-
-    assert response.status_code == HTTPStatus.UNAUTHORIZED
-
-    body = response.json()
-
-    assert body['errors'] == ['Token and User id do not match.']
 
 
 def test_read_view_token_and_user_id_dont_match(client_api_auth, user_and_order):
@@ -187,7 +187,7 @@ def test_read_not_allowed_method(client_api_auth, user_and_order):
 
 # def test_update_order_amount(client_api_auth, user_and_order):
 #     '''
-#     endpoint: /api/v1/users/<uuid>/orders/<uuid> - PATCH
+#     /api/v1/users/<uuid>/orders/<uuid> - PATCH
 #     '''
 
 #     order = Order.objects.first()
@@ -209,7 +209,7 @@ def test_read_not_allowed_method(client_api_auth, user_and_order):
 
 # def test_invalid_update_order_negative_amount(client_api_auth, user_and_order):
 #     '''
-#     endpoint: /api/v1/users/<uuid>/orders/<uuid> - PATCH
+#     /api/v1/users/<uuid>/orders/<uuid> - PATCH
 #     '''
 
 #     order_db = Order.objects.first()
@@ -233,7 +233,7 @@ def test_read_not_allowed_method(client_api_auth, user_and_order):
 
 # def test_invalid_update_order_empty_body(client_api_auth, user_and_order):
 #     '''
-#     endpoint: /api/v1/users/<uuid>/orders/<uuid> - PATCH
+#     /api/v1/users/<uuid>/orders/<uuid> - PATCH
 #     '''
 
 #     order_db = Order.objects.first()
@@ -260,7 +260,7 @@ def test_read_not_allowed_method(client_api_auth, user_and_order):
 
 # def test_delete_user_qoutes(client_api_auth, user_and_order):
 #     '''
-#     endpoint: /api/v1/users/<uuid>/orders/<uuid> - DELETE
+#     /api/v1/users/<uuid>/orders/<uuid> - DELETE
 #     '''
 
 #     url = resolve_url('api:read-patch-delete', user_id=user_and_order.user.uuid, order_id=user_and_order.uuid)
@@ -276,7 +276,7 @@ def test_read_not_allowed_method(client_api_auth, user_and_order):
 
 # def test_create_orders_successfully_with(client_api_auth, create_order_data, url):
 #     '''
-#     endpoint: /api/v1/users/<uuid>/orders/ - POST
+#     /api/v1/users/<uuid>/orders/ - POST
 #     '''
 
 #     response = client_api_auth.post(url, data=create_order_data)
@@ -303,7 +303,7 @@ def test_read_not_allowed_method(client_api_auth, user_and_order):
 
 # def test_invalid_create_orders_negative_amount(client_api_auth, create_order_data, url):
 #     '''
-#     endpoint: /api/v1/users/<uuid>/orders/ - POST
+#     /api/v1/users/<uuid>/orders/ - POST
 #     '''
 
 #     create_order_data['amount'] = -10

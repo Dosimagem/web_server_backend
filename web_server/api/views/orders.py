@@ -11,13 +11,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from web_server.service.models import Order
 from .utils import MyTokenAuthentication
-
+from .errors_msg import MSG_ERROR_TOKEN_USER, MSG_ERROR_USER_ORDER, MSG_ERROR_IDS
 
 User = get_user_model()
-
-
-MSG_ERROR_USER_ORDER = ['This user has no order record.']
-MSG_ERROR_TOKEN_USER = ['Token and User id do not match.']
 
 
 @api_view(['GET'])
@@ -52,7 +48,7 @@ def orders_read(request, user_id, order_id):
 
     order = query_set.filter(uuid=order_id).first()
     if not order:
-        return Response(data={'errors': ['There is no information for this pair of ids']}, status=HTTPStatus.NOT_FOUND)
+        return Response(data={'errors': MSG_ERROR_IDS}, status=HTTPStatus.NOT_FOUND)
 
     dispatcher = {
         'GET': _read_order,
