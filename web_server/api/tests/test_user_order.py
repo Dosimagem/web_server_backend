@@ -129,7 +129,7 @@ def test_read_order_by_wrong_id(client_api_auth, user_and_order):
 
     body = response.json()
 
-    assert body['errors'] == ['There is no information for this pair of ids']
+    assert body['errors'] == ['This user does not have this resource registered.']
 
 
 def test_try_read_order_for_user_without_order(client_api_auth, user):

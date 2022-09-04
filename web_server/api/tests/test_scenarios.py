@@ -1,7 +1,6 @@
 from http import HTTPStatus
 from django.shortcuts import resolve_url
 
-from web_server.conftest import calibration
 from web_server.service.models import Calibration
 
 
@@ -67,7 +66,7 @@ def test_scenario_read_orders_of_users(client_api, users_and_orders, user, secon
     assert not q1['permission']
 
 
-def test_scenario_calibrations_view(client_api, user, lu_177_and_cu_64, form_data):
+def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu_64, form_data):
     '''
     Isotoper Table:
 
@@ -78,6 +77,7 @@ def test_scenario_calibrations_view(client_api, user, lu_177_and_cu_64, form_dat
     User Table:
     ID   EMAIL           ...
     1    test1@email.com
+    2    test2@email.com
 
     '''
 
@@ -93,45 +93,76 @@ def test_scenario_calibrations_view(client_api, user, lu_177_and_cu_64, form_dat
     assert body['count'] == 2
     assert body['row'] == [lu_177_and_cu_64[0].name, lu_177_and_cu_64[1].name]
 
-    # Register calibration
+    # Register 2 calibration for user 1
 
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
 
-    url = resolve_url('api:calibration-list-create', user.uuid)
+    form_data['calibrationName'] = 'Calibration 1 of user 1'
+
+    current_user = user
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
+    url = resolve_url('api:calibration-list-create', current_user.uuid)
     response = client_api.post(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.CREATED
 
-    form_data['calibrationName'] = 'Calibration 2'
+    form_data['calibrationName'] = 'Calibration 2 of user 2'
     form_data['isotope'] = 'Cu-64'
 
-    url = resolve_url('api:calibration-list-create', user.uuid)
+    url = resolve_url('api:calibration-list-create', current_user.uuid)
     response = client_api.post(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.CREATED
 
     assert Calibration.objects.count() == 2
 
-    # List calibrations
+    # Register 1 calibration for user 2
 
-    url = resolve_url('api:calibration-list-create', user.uuid)
+    current_user = second_user
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
+    url = resolve_url('api:calibration-list-create', current_user.uuid)
+    response = client_api.post(url, data=form_data, format='multipart')
+
+    assert response.status_code == HTTPStatus.CREATED
+
+    form_data['calibrationName'] = 'Calibration 1 User 2'
+    form_data['isotope'] = 'Cu-64'
+
+    # List calibrations use 1
+
+    current_user = user
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
+    url = resolve_url('api:calibration-list-create', current_user.uuid)
     response = client_api.get(url)
 
     assert response.status_code == HTTPStatus.OK
 
     body = response.json()
 
-    calibration_list_db = list(Calibration.objects.all())
+    assert body['count'] == 2  # User 1
 
-    assert body['count'] == 2
+    # List calibrations of use 2
 
-    # Update
+    current_user = second_user
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
+    url = resolve_url('api:calibration-list-create', current_user.uuid)
+    response = client_api.get(url)
 
-    calibration = calibration_list_db[0]
+    assert response.status_code == HTTPStatus.OK
 
-    form_data['calibrationName'] = 'Calibration 3'
+    body = response.json()
 
-    url = resolve_url('api:calibration-read-update-delete', user.uuid, calibration.uuid)
+    assert body['count'] == 1  # User 2
+
+    # Update the 1th calibration
+
+    calibration = Calibration.objects.filter(user=user).first()
+
+    form_data['calibrationName'] = 'Calibration 3 of User 1'
+
+    current_user = user
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
+    url = resolve_url('api:calibration-read-update-delete', current_user.uuid, calibration.uuid)
     response = client_api.put(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.NO_CONTENT
@@ -139,3 +170,27 @@ def test_scenario_calibrations_view(client_api, user, lu_177_and_cu_64, form_dat
     calibration_update = Calibration.objects.get(id=calibration.id)
 
     assert calibration_update.calibration_name == form_data['calibrationName']
+
+    # Delete the 1th calibration if user 1
+
+    current_user = user
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
+    url = resolve_url('api:calibration-read-update-delete', current_user.uuid, calibration.uuid)
+    response = client_api.delete(url)
+
+    assert response.status_code == HTTPStatus.NO_CONTENT
+
+    assert not Calibration.objects.filter(id=calibration.id)
+
+    # List calibrations use 1 afeter delete
+
+    current_user = user
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
+    url = resolve_url('api:calibration-list-create', current_user.uuid)
+    response = client_api.get(url)
+
+    assert response.status_code == HTTPStatus.OK
+
+    body = response.json()
+
+    assert body['count'] == 1  # User 1

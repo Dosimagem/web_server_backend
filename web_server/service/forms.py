@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ValidationError
 from django.utils.translation import gettext as _
 
-from web_server.service.models import Order, Calibration
+from web_server.service.models import Isotope, Order, Calibration
 
 
 class CreateOrderForm(forms.ModelForm):
@@ -35,8 +35,7 @@ class CreateCalibrationForm(forms.ModelForm):
 
     class Meta:
         model = Calibration
-        fields = (
-                  'user',
+        fields = ('user',
                   'isotope',
                   'calibration_name',
                   'syringe_activity',
@@ -44,3 +43,21 @@ class CreateCalibrationForm(forms.ModelForm):
                   'measurement_datetime',
                   'phantom_volume',
                   'acquisition_time')
+
+
+class UpdateCalibrationForm(CreateCalibrationForm):
+    ...
+
+
+class IsotopeForm(forms.Form):
+
+    isotope = forms.CharField(max_length=6)
+
+    def clean_isotope(self):
+        isotopes_list = [isotope.name for isotope in Isotope.objects.all()]
+
+        isotope = self.cleaned_data['isotope']
+        if isotope not in isotopes_list:
+            raise ValidationError(_('Isotope not registered.'), code='invalid_isotope')
+
+        return isotope

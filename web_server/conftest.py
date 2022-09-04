@@ -143,7 +143,6 @@ def lu_177_and_cu_64(lu_177):
     return list(Isotope.objects.all())
 
 
-
 DATETIME_TIMEZONE = make_aware(datetime(2016, 12, 14, 11, 2, 51))
 
 
@@ -162,8 +161,27 @@ def calibration_infos(user, lu_177):
 
 
 @pytest.fixture
+def second_calibration_infos(user, lu_177):
+    return dict(
+        user=user,
+        isotope=lu_177,
+        calibration_name='Calibration 2',
+        syringe_activity=50.0,
+        residual_syringe_activity=0.3,
+        measurement_datetime=DATETIME_TIMEZONE,
+        phantom_volume=200.0,
+        acquisition_time=DATETIME_TIMEZONE.time()
+    )
+
+
+@pytest.fixture
 def calibration(calibration_infos):
     return Calibration.objects.create(**calibration_infos)
+
+
+@pytest.fixture
+def second_calibration(calibration, second_calibration_infos):
+    return Calibration.objects.create(**second_calibration_infos)
 
 
 @pytest.fixture
@@ -176,6 +194,19 @@ def form_data(calibration_infos):
          'measurementDatetime': calibration_infos['measurement_datetime'],
          'phantomVolume': calibration_infos['phantom_volume'],
          'acquisitionTime': calibration_infos['acquisition_time']
+    }
+
+
+@pytest.fixture
+def second_form_data(second_calibration_infos):
+    return {
+         'isotope': second_calibration_infos['isotope'].name,
+         'calibrationName': second_calibration_infos['calibration_name'],
+         'syringeActivity': second_calibration_infos['syringe_activity'],
+         'residualSyringeActivity': second_calibration_infos['residual_syringe_activity'],
+         'measurementDatetime': second_calibration_infos['measurement_datetime'],
+         'phantomVolume': second_calibration_infos['phantom_volume'],
+         'acquisitionTime': second_calibration_infos['acquisition_time']
     }
 
 

@@ -48,10 +48,3 @@ def test_delete_user_must_be_delete_calibration(calibration, user):
 def test_str_(calibration):
 
     assert str(calibration) == calibration.calibration_name
-
-
-# def test_syringe_activity_must_be_positive_float(calibration):
-#     calibration.syringe_activity = -calibration.syringe_activity
-
-#     # with pytest.raises( IntegrityError):
-#     calibration.full_clean()

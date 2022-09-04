@@ -81,6 +81,9 @@ class Calibration(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = ('user', 'calibration_name',)
+
     def __str__(self):
         return self.calibration_name
 
