@@ -3,7 +3,7 @@ from django.contrib import admin
 from web_server.service.forms import CreateOrderForm
 
 
-from web_server.service.models import Isotope, Order
+from web_server.service.models import Calibration, Isotope, Order
 
 
 @admin.register(Order)
@@ -35,3 +35,21 @@ class IstopeModelAdmin(admin.ModelAdmin):
                    'created_at',
                    'modified_at'
                    )
+
+
+@admin.register(Calibration)
+class CalibrationModelAdmin(admin.ModelAdmin):
+    list_display = (
+                'uuid',
+                'id',
+                'isotope',
+                'calibration_name',
+                'syringe_activity',
+                'residual_syringe_activity',
+                'measurement_datetime',
+                'phantom_volume',
+                'acquisition_time',
+                'images',
+                'created_at',
+                'modified_at'
+                )

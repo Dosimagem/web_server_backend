@@ -1,3 +1,5 @@
+from functools import partial
+import os
 from uuid import uuid4
 
 from django.db import models
@@ -5,6 +7,8 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.utils.translation import gettext as _
+from django.utils.timezone import now
+from django.utils.text import slugify
 
 
 class Order(models.Model):
@@ -50,7 +54,7 @@ class Order(models.Model):
         if self.remaining_of_analyzes > self.quantity_of_analyzes:
             raise ValidationError(
                 _('Remaining of analyzes must be lower or equal quantity of analyzes.'),
-                code='invalid')
+                code='invalid')  # TODO: ValidationError or IntegrityError
         super().save(*args, **kwargs)
 
 
@@ -65,6 +69,28 @@ class Isotope(models.Model):
         return self.name
 
 
+def _timestamp(datetime):
+    return str(datetime.timestamp()).replace('.', '')
+
+
+def upload_to(instance, filename, type):
+
+    datetime_now = now()
+    time = _timestamp(datetime_now)
+
+    _, extension = os.path.splitext(filename)
+
+    if type == 'calibrations':
+        slug = slugify(instance.calibration_name)
+        filename = f'calibration_{time}{extension}'
+        return f'{instance.user.id}/{type}/{slug}/{filename}'
+
+    return filename
+
+
+upload_calibration_to = partial(upload_to, type='calibrations')
+
+
 class Calibration(models.Model):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
@@ -77,6 +103,8 @@ class Calibration(models.Model):
     measurement_datetime = models.DateTimeField('Measurement Datetime')
     phantom_volume = models.FloatField('Phantom Volume', validators=[MinValueValidator(0.0)])
     acquisition_time = models.TimeField('Acquisition Time')
+
+    images = models.FileField('Calibration Images', upload_to=upload_calibration_to, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -100,31 +128,6 @@ class Calibration(models.Model):
             'acquisition_time': self.acquisition_time
         }
 
-# def _normalize_email(email):
-#     return email.replace('@', '_').replace('.', '_')
-
-
-# def upload_to(instance, filename, type):
-
-#     datetime_now = now()
-#     time = f'{datetime_now:%H%M%S}'
-#     date = f'{datetime_now:%Y/%m/%d}'
-#     _, extension = os.path.splitext(filename)
-
-#     if type == 'img':
-#         user = _normalize_email(instance.requester.email)
-#         type = 'images'
-#         filename = f'images_{time}{extension}'
-
-#     if type == 'report':
-#         user = _normalize_email(instance.requester.email)
-#         type = 'report'
-#         filename = f'report_{time}{extension}'
-
-#     return f'{user}/{type}/{date}/{filename}'
-
-
-# upload_img_to = partial(upload_to, type='img')
 # upload_report_to = partial(upload_to, type='report')
 
 

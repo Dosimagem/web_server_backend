@@ -1,4 +1,8 @@
+from copy import copy
 from http import HTTPStatus
+from unittest import mock
+
+import django
 from django.shortcuts import resolve_url
 
 from web_server.service.models import Calibration
@@ -66,7 +70,8 @@ def test_scenario_read_orders_of_users(client_api, users_and_orders, user, secon
     assert not q1['permission']
 
 
-def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu_64, form_data):
+@mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
+def test_scenario_calibrations_view(mock, client_api, user, second_user, lu_177_and_cu_64, form_data):
     '''
     Isotoper Table:
 
@@ -80,6 +85,8 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
     2    test2@email.com
 
     '''
+
+    mock.return_value = 'no save to disk'
 
     # get isotopes
 
@@ -95,6 +102,8 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
 
     # Register 2 calibration for user 1
 
+    images = copy(form_data['images'])  # the file is consumed
+
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
 
     form_data['calibrationName'] = 'Calibration 1 of user 1'
@@ -108,6 +117,7 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
 
     form_data['calibrationName'] = 'Calibration 2 of user 2'
     form_data['isotope'] = 'Cu-64'
+    form_data['images'] = copy(images)
 
     url = resolve_url('api:calibration-list-create', current_user.uuid)
     response = client_api.post(url, data=form_data, format='multipart')
@@ -118,15 +128,14 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
 
     # Register 1 calibration for user 2
 
+    form_data['images'] = copy(images)
+
     current_user = second_user
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
     url = resolve_url('api:calibration-list-create', current_user.uuid)
     response = client_api.post(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.CREATED
-
-    form_data['calibrationName'] = 'Calibration 1 User 2'
-    form_data['isotope'] = 'Cu-64'
 
     # List calibrations use 1
 
@@ -159,6 +168,7 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
     calibration = Calibration.objects.filter(user=user).first()
 
     form_data['calibrationName'] = 'Calibration 3 of User 1'
+    form_data['images'] = copy(images)
 
     current_user = user
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)

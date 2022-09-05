@@ -1,6 +1,9 @@
+from copy import copy
 from http import HTTPStatus
+from unittest import mock
 from uuid import uuid4
 
+import django
 from django.shortcuts import resolve_url
 
 from web_server.service.models import Calibration
@@ -86,10 +89,13 @@ def test_try_list_for_user_without_calibrations(client_api_auth, user):
     assert body == {'errors': ['This user has no calibrations record.']}
 
 
-def test_create_successful(client_api_auth, user, form_data, calibration_infos):
+@mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
+def test_create_successful(mock, client_api_auth, user, form_data, calibration_infos):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
+
+    mock.return_value = 'no save to disk'
 
     assert not Calibration.objects.exists()
 
@@ -141,16 +147,23 @@ def test_create_fail_negative_float_numbers(client_api_auth, user, form_data):
                               ]
 
 
-def test_create_fail_calibration_name_must_be_unique_per_user(client_api_auth, user, form_data):
+@mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
+def test_create_fail_calibration_name_must_be_unique_per_user(mock, client_api_auth, user, form_data):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
 
+    mock.return_value = 'no save to disk'
+
     url = resolve_url('api:calibration-list-create', user.uuid)
+
+    images = copy(form_data['images'])
 
     response = client_api_auth.post(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.CREATED
+
+    form_data['images'] = images
 
     response = client_api_auth.post(url, data=form_data, format='multipart')
 
@@ -263,10 +276,13 @@ def test_delete_fail_wrong_calibration_id(client_api_auth, calibration):
     assert Calibration.objects.exists()
 
 
-def test_update_successful(client_api_auth, form_data, calibration):
+@mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
+def test_update_successful(mock, client_api_auth, form_data, calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - PUT
     '''
+
+    mock.return_value = 'no save to disk'
 
     update_form_data = form_data.copy()
     update_form_data['syringeActivity'] = 100.0
