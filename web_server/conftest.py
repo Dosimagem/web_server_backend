@@ -157,7 +157,7 @@ def calibration_infos(user, lu_177):
         residual_syringe_activity=0.3,
         measurement_datetime=DATETIME_TIMEZONE,
         phantom_volume=200.0,
-        acquisition_time=DATETIME_TIMEZONE.time()
+        acquisition_time=1800.0,
     )
 
 
@@ -181,7 +181,7 @@ def second_calibration_infos(user, lu_177):
         residual_syringe_activity=0.3,
         measurement_datetime=DATETIME_TIMEZONE,
         phantom_volume=200.0,
-        acquisition_time=DATETIME_TIMEZONE.time()
+        acquisition_time=1000.0
     )
 
 

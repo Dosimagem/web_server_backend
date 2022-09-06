@@ -70,7 +70,7 @@ def test_list_successful(client_api_auth, calibration):
         assert cali_response['residualSyringeActivity'] == cali_db.residual_syringe_activity
         assert cali_response['measurementDatetime'] == cali_db.measurement_datetime.strftime('%d/%m/%Y - %H:%M:%S')
         assert cali_response['phantomVolume'] == cali_db.phantom_volume
-        assert cali_response['acquisitionTime'] == str(cali_db.acquisition_time)
+        assert cali_response['acquisitionTime'] == cali_db.acquisition_time
 
 
 def test_try_list_for_user_without_calibrations(client_api_auth, user):
@@ -121,7 +121,7 @@ def test_create_successful(save_disk_mock, client_api_auth, user, form_data, cal
     assert body['residualSyringeActivity'] == calibration_infos['residual_syringe_activity']
     assert body['measurementDatetime'] == calibration_infos['measurement_datetime'].strftime('%d/%m/%Y - %H:%M:%S')
     assert body['phantomVolume'] == calibration_infos['phantom_volume']
-    assert body['acquisitionTime'] == str(calibration_infos['acquisition_time'])
+    assert body['acquisitionTime'] == calibration_infos['acquisition_time']
 
 
 def test_create_fail_negative_float_numbers(client_api_auth, user, form_data):
@@ -134,6 +134,7 @@ def test_create_fail_negative_float_numbers(client_api_auth, user, form_data):
     form_data['syringeActivity'] = -form_data['syringeActivity']
     form_data['residualSyringeActivity'] = -form_data['residualSyringeActivity']
     form_data['phantomVolume'] = -form_data['phantomVolume']
+    form_data['acquisitionTime'] = -form_data['acquisitionTime']
 
     response = client_api_auth.post(url, data=form_data, format='multipart')
 
@@ -146,6 +147,7 @@ def test_create_fail_negative_float_numbers(client_api_auth, user, form_data):
     assert body['errors'] == ['Ensure Syringe_activity value is greater than or equal to 0.0.',
                               'Ensure Residual_syringe_activity value is greater than or equal to 0.0.',
                               'Ensure Phantom_volume value is greater than or equal to 0.0.',
+                              'Ensure Acquisition_time value is greater than or equal to 0.0.'
                               ]
 
 
@@ -186,7 +188,6 @@ def test_create_fail_datetime_invalid(client_api_auth, user, form_data):
     url = resolve_url('api:calibration-list-create', user.uuid)
 
     form_data['measurementDatetime'] = 'wrong'
-    form_data['acquisitionTime'] = 'wrong'
 
     response = client_api_auth.post(url, data=form_data, format='multipart')
 
@@ -196,7 +197,7 @@ def test_create_fail_datetime_invalid(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    assert body['errors'] == ['Enter a valid date/time.', 'Enter a valid time.']
+    assert body['errors'] == ['Enter a valid date/time.']
 
 
 def test_create_fail_isotope_invalid(client_api_auth, user, form_data):
@@ -320,7 +321,6 @@ def test_update_fail_by_wrong_data(client_api_auth, form_data, calibration):
 
     update_form_data = form_data.copy()
     update_form_data['syringeActivity'] = -100.0
-    update_form_data['acquisitionTime'] = 'wrong'
 
     url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
 
@@ -330,7 +330,7 @@ def test_update_fail_by_wrong_data(client_api_auth, form_data, calibration):
 
     body = response.json()
 
-    assert body['errors'] == ['Enter a valid time.', 'Ensure Syringe_activity value is greater than or equal to 0.0.']
+    assert body['errors'] == ['Ensure Syringe_activity value is greater than or equal to 0.0.']
 
     calibration_db = Calibration.objects.all().first()
 
