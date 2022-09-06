@@ -3,11 +3,11 @@
   "model": "admin.logentry",
   "pk": 1,
   "fields": {
-    "action_time": "2022-08-30T18:55:36.833Z",
+    "action_time": "2022-09-06T03:09:24.810Z",
     "user": 1,
-    "content_type": 6,
-    "object_id": "2",
-    "object_repr": "user1@user.com",
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Lu-177",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -16,20 +16,33 @@
   "model": "admin.logentry",
   "pk": 2,
   "fields": {
-    "action_time": "2022-08-30T18:55:49.854Z",
+    "action_time": "2022-09-06T03:12:34.635Z",
     "user": 1,
     "content_type": 6,
     "object_id": "2",
     "object_repr": "user1@user.com",
-    "action_flag": 2,
-    "change_message": "[]"
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 3,
   "fields": {
-    "action_time": "2022-08-30T18:56:15.404Z",
+    "action_time": "2022-09-06T03:12:54.019Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Grace Hopper",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Phone\", \"Institution\", \"Role\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2022-09-06T04:12:44.708Z",
     "user": 1,
     "content_type": 6,
     "object_id": "3",
@@ -40,26 +53,13 @@
 },
 {
   "model": "admin.logentry",
-  "pk": 4,
-  "fields": {
-    "action_time": "2022-08-30T18:56:24.229Z",
-    "user": 1,
-    "content_type": 6,
-    "object_id": "3",
-    "object_repr": "user2@user.com",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
   "pk": 5,
   "fields": {
-    "action_time": "2022-08-30T18:57:03.735Z",
+    "action_time": "2022-09-06T04:13:37.615Z",
     "user": 1,
     "content_type": 7,
-    "object_id": "2",
-    "object_repr": "João Silva",
+    "object_id": "3",
+    "object_repr": "Maria Silva",
     "action_flag": 2,
     "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Phone\", \"Institution\", \"Role\"]}}]"
   }
@@ -68,37 +68,37 @@
   "model": "admin.logentry",
   "pk": 6,
   "fields": {
-    "action_time": "2022-08-30T18:57:36.586Z",
+    "action_time": "2022-09-06T04:13:53.875Z",
     "user": 1,
     "content_type": 7,
-    "object_id": "3",
-    "object_repr": "Maria Silva",
+    "object_id": "2",
+    "object_repr": "João Silva",
     "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Phone\", \"Institution\", \"Role\"]}}]"
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 7,
   "fields": {
-    "action_time": "2022-08-30T18:57:45.456Z",
+    "action_time": "2022-09-06T04:14:15.740Z",
     "user": 1,
-    "content_type": 7,
+    "content_type": 8,
     "object_id": "2",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Institution\"]}}]"
+    "object_repr": "Cu-64",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 8,
   "fields": {
-    "action_time": "2022-08-30T18:58:10.605Z",
+    "action_time": "2022-09-06T04:14:31.809Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "1",
-    "object_repr": "João Silva",
+    "object_id": "3",
+    "object_repr": "Cu-67",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -107,11 +107,11 @@
   "model": "admin.logentry",
   "pk": 9,
   "fields": {
-    "action_time": "2022-08-30T18:58:35.048Z",
+    "action_time": "2022-09-06T04:14:46.891Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "2",
-    "object_repr": "João Silva",
+    "object_id": "4",
+    "object_repr": "F-18",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -120,11 +120,11 @@
   "model": "admin.logentry",
   "pk": 10,
   "fields": {
-    "action_time": "2022-08-30T18:59:48.821Z",
+    "action_time": "2022-09-06T04:14:59.514Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "3",
-    "object_repr": "Maria Silva",
+    "object_id": "5",
+    "object_repr": "Ga-68",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -133,259 +133,139 @@
   "model": "admin.logentry",
   "pk": 11,
   "fields": {
-    "action_time": "2022-08-31T02:35:19.621Z",
+    "action_time": "2022-09-06T04:15:22.860Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "1",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Amount of analysis\"]}}]"
+    "object_id": "6",
+    "object_repr": "Ho-166",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 12,
   "fields": {
-    "action_time": "2022-08-31T02:35:41.915Z",
+    "action_time": "2022-09-06T04:15:39.377Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "1",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Amount of analysis\", \"Unit price\"]}}]"
+    "object_id": "7",
+    "object_repr": "I-124",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 13,
   "fields": {
-    "action_time": "2022-08-31T02:36:03.979Z",
+    "action_time": "2022-09-06T04:15:53.535Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "1",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Amount of analysis\"]}}]"
+    "object_id": "8",
+    "object_repr": "I-131",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 14,
   "fields": {
-    "action_time": "2022-08-31T02:40:23.901Z",
+    "action_time": "2022-09-06T04:16:08.681Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "1",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Amount of analysis\"]}}]"
+    "object_id": "9",
+    "object_repr": "In-111",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 15,
   "fields": {
-    "action_time": "2022-08-31T02:42:20.065Z",
+    "action_time": "2022-09-06T04:16:19.301Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "1",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Amount of analysis\"]}}]"
+    "object_id": "10",
+    "object_repr": "Lu-177",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 16,
   "fields": {
-    "action_time": "2022-08-31T02:42:52.783Z",
+    "action_time": "2022-09-06T04:16:33.233Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "2",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Unit price\"]}}]"
+    "object_id": "11",
+    "object_repr": "Sm-153",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 17,
   "fields": {
-    "action_time": "2022-08-31T02:43:13.198Z",
+    "action_time": "2022-09-06T04:16:47.527Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "2",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Unit price\"]}}]"
+    "object_id": "12",
+    "object_repr": "Tb-161",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 18,
   "fields": {
-    "action_time": "2022-09-01T23:37:37.960Z",
+    "action_time": "2022-09-06T04:16:58.257Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "3",
-    "object_repr": "Maria Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status payment\"]}}]"
+    "object_id": "13",
+    "object_repr": "Tc-99m",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 },
 {
   "model": "admin.logentry",
   "pk": 19,
   "fields": {
-    "action_time": "2022-09-01T23:37:44.850Z",
+    "action_time": "2022-09-06T04:17:07.350Z",
     "user": 1,
     "content_type": 8,
-    "object_id": "1",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Permission\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 20,
-  "fields": {
-    "action_time": "2022-09-01T23:38:14.210Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "1",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Remaning of analysis\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 21,
-  "fields": {
-    "action_time": "2022-09-01T23:38:23.105Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "2",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Remaning of analysis\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 22,
-  "fields": {
-    "action_time": "2022-09-01T23:38:35.194Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "3",
-    "object_repr": "Maria Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Remaning of analysis\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 23,
-  "fields": {
-    "action_time": "2022-09-02T00:29:17.899Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "4",
-    "object_repr": "João Silva",
+    "object_id": "14",
+    "object_repr": "Y-90",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
 },
 {
-  "model": "admin.logentry",
-  "pk": 24,
-  "fields": {
-    "action_time": "2022-09-02T00:29:34.321Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "4",
-    "object_repr": "João Silva",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 25,
-  "fields": {
-    "action_time": "2022-09-02T00:31:09.937Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "5",
-    "object_repr": "João Silva",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 26,
-  "fields": {
-    "action_time": "2022-09-02T00:31:20.821Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "5",
-    "object_repr": "João Silva",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 27,
-  "fields": {
-    "action_time": "2022-09-02T00:43:31.153Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "3",
-    "object_repr": "Maria Silva",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
   "model": "sessions.session",
-  "pk": "ej80uieyf066b1j99hjn8fh23il50ipl",
+  "pk": "l5f9w1kqoz1wyidxe52qbdllvwhdcnl1",
   "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-reNQ0nMGa71r4wBypDipEHeHSCmgfTPzXiLitta49bzEicVZaHH63RLSI7cd8B3bbZY0t3WZktwVedAurzPn5-Vw_w4q9vqtCxRUZMaARApQl4QuO0abgx29NzkAW0gGgJW1OmiGAoPzbvCGCJx4fwD3izef:1oT6O8:kcFehvmt5x7qYK2BOssC0oj_zzNvhI3zqMU1a4CxDAg",
-    "expire_date": "2022-09-13T18:55:04.176Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "ge3d6wx8q1h8le9k3v04619duz4f7cwt",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-reNQ0nMGa71r4wBypDipEHeHSCmgfTPzXiLitta49bzEicVZaHH63RLSI7cd8B3bbZY0t3WZktwVedAurzPn5-Vw_w4q9vqtCxRUZMaARApQl4QuO0abgx29NzkAW0gGgJW1OmiGAoPzbvCGCJx4fwD3izef:1oTDZE:4uqv6G7TabS4r7EUaTV2EYoKPFbJQvZXXtJiWCJRjzA",
-    "expire_date": "2022-09-14T02:35:00.342Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "losgcr5vdcbziw87e4h7hif6yqk545uw",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-reNQ0nMGa71r4wBypDipEHeHSCmgfTPzXiLitta49bzEicVZaHH63RLSI7cd8B3bbZY0t3WZktwVedAurzPn5-Vw_w4q9vqtCxRUZMaARApQl4QuO0abgx29NzkAW0gGgJW1OmiGAoPzbvCGCJx4fwD3izef:1oT737:6kdOy-matQunu_g0RWT3gHRB1r1vxD7YMNzRcgIId70",
-    "expire_date": "2022-09-13T19:37:25.410Z"
+    "session_data": ".eJxVjDsOwjAQBe_iGlnO-hObkj5nsNbrDQ4gR4qTCnF3EikFtG9m3ltE3NYSt8ZLnLK4ik5cfreE9OR6gPzAep8lzXVdpiQPRZ60yWHO_Lqd7t9BwVb22igPVrmMHiE4bY13adQjePasg2FOySK4DjNRQAo2G9yxgh50T5rF5wvTKjfT:1oVOxc:xRtPBHSVKNmptogIk0kAl1bZnn5oTrbX66_Sx8M0ahw",
+    "expire_date": "2022-09-20T03:09:12.883Z"
   }
 },
 {
   "model": "core.customuser",
   "pk": 1,
   "fields": {
-    "password": "pbkdf2_sha256$390000$MbycygFZ7MEF3X6JHLA5le$R5Xx0t58FberlHPfF/eevVePPs957xU2yTQtwsP8B9Y=",
-    "last_login": "2022-08-31T02:35:00.162Z",
+    "password": "pbkdf2_sha256$390000$1VF2PR5fkAbgndgAHWn8eg$8cEjFeIziRzbfGNLXBEmW/TmfYwltvz0XOSP6lHevHk=",
+    "last_login": "2022-09-06T03:09:12.712Z",
     "is_superuser": true,
-    "uuid": "ce0c1e68-72a4-451a-9fdc-64fc3c1dd4ac",
+    "uuid": "162a3416-3982-4cfc-98da-e0f6a507287f",
     "email": "admin@admin.com",
     "is_staff": true,
     "is_active": true,
-    "date_joined": "2022-08-30T18:54:26.509Z",
+    "date_joined": "2022-09-06T03:08:40.688Z",
     "groups": [],
     "user_permissions": []
   }
@@ -394,14 +274,14 @@
   "model": "core.customuser",
   "pk": 2,
   "fields": {
-    "password": "pbkdf2_sha256$390000$CXXZOxV4AAHgeuJ3QyBhoY$jIZnwj2nczaWqgqteVrf6ENXGPGnh17v3c18VulVGkA=",
+    "password": "pbkdf2_sha256$390000$GATAkAwbGdvXDZiJo8AVLj$09V76a/4Hxo729fuxYg5wrWtD/pXAbWlET5qyVMI2Bw=",
     "last_login": null,
     "is_superuser": false,
-    "uuid": "24d3b887-f903-44ca-bfcf-f8862da91018",
+    "uuid": "a2f94183-cd20-4182-8c7d-07308f84026d",
     "email": "user1@user.com",
     "is_staff": false,
     "is_active": true,
-    "date_joined": "2022-08-30T18:55:36Z",
+    "date_joined": "2022-09-06T03:12:34.234Z",
     "groups": [],
     "user_permissions": []
   }
@@ -410,14 +290,14 @@
   "model": "core.customuser",
   "pk": 3,
   "fields": {
-    "password": "pbkdf2_sha256$390000$gr22LZ87KPRuRa1JUNi2Yu$M3b081mxm3+4p8YCJ8lCdJPlsQagB4GwNjv6zW1vHrY=",
+    "password": "pbkdf2_sha256$390000$Hdhy1ukWUeJa1KCJKhEOze$CVP0Y2hPlTDnNnek+mgmFbkJsRgUGJNbiiB55Chbl+M=",
     "last_login": null,
     "is_superuser": false,
-    "uuid": "cdf40809-b9c0-4c72-bfca-33349480e5c1",
+    "uuid": "5589f209-d989-4aa9-ba52-996b3185d990",
     "email": "user2@user.com",
     "is_staff": false,
     "is_active": true,
-    "date_joined": "2022-08-30T18:56:15Z",
+    "date_joined": "2022-09-06T04:12:44.238Z",
     "groups": [],
     "user_permissions": []
   }
@@ -438,8 +318,8 @@
   "pk": 2,
   "fields": {
     "name": "João Silva",
-    "phone": "2222-2222",
-    "institution": "Ufrj",
+    "phone": "222222",
+    "institution": "Dosimagem",
     "role": "Medico",
     "user": 2
   }
@@ -449,66 +329,144 @@
   "pk": 3,
   "fields": {
     "name": "Maria Silva",
-    "phone": "1111-1111",
+    "phone": "11111-11111",
     "institution": "Dosimagem",
-    "role": "Fisico Médico",
+    "role": "Medico",
     "user": 3
   }
 },
 {
-  "model": "service.order",
+  "model": "service.isotope",
   "pk": 1,
   "fields": {
-    "uuid": "49c1d8e7-e44b-4680-8fe7-42432df8f1d1",
-    "user": 2,
-    "quantity_of_analyzes": 15,
-    "remaining_of_analyzes": 15,
-    "price": "30000.00",
-    "status_payment": "CON",
-    "service_name": "DC",
-    "permission": true,
-    "created_at": "2022-08-30T18:58:10.601Z",
-    "modified_at": "2022-09-01T23:38:14.206Z"
+    "name": "Lu-177",
+    "created_at": "2022-09-06T03:09:24.809Z",
+    "modified_at": "2022-09-06T03:09:24.809Z"
   }
 },
 {
-  "model": "service.order",
+  "model": "service.isotope",
   "pk": 2,
   "fields": {
-    "uuid": "23923dc1-b5bd-4e88-98c7-50292d69672a",
-    "user": 2,
-    "quantity_of_analyzes": 5,
-    "remaining_of_analyzes": 5,
-    "price": "10000.00",
-    "status_payment": "ALY",
-    "service_name": "DC",
-    "permission": false,
-    "created_at": "2022-08-30T18:58:35.045Z",
-    "modified_at": "2022-09-01T23:38:23.102Z"
+    "name": "Cu-64",
+    "created_at": "2022-09-06T04:14:15.730Z",
+    "modified_at": "2022-09-06T04:14:15.730Z"
   }
 },
 {
-  "model": "service.order",
+  "model": "service.isotope",
   "pk": 3,
   "fields": {
-    "uuid": "041ba593-7b41-406e-952b-7d1388dd0c4a",
-    "user": 3,
-    "quantity_of_analyzes": 3,
-    "remaining_of_analyzes": 3,
-    "price": "1000.00",
-    "status_payment": "ALY",
-    "service_name": "DC",
-    "permission": false,
-    "created_at": "2022-08-30T18:59:48.818Z",
-    "modified_at": "2022-09-02T00:43:31.149Z"
+    "name": "Cu-67",
+    "created_at": "2022-09-06T04:14:31.799Z",
+    "modified_at": "2022-09-06T04:14:31.799Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 4,
+  "fields": {
+    "name": "F-18",
+    "created_at": "2022-09-06T04:14:46.881Z",
+    "modified_at": "2022-09-06T04:14:46.881Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 5,
+  "fields": {
+    "name": "Ga-68",
+    "created_at": "2022-09-06T04:14:59.504Z",
+    "modified_at": "2022-09-06T04:14:59.504Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 6,
+  "fields": {
+    "name": "Ho-166",
+    "created_at": "2022-09-06T04:15:22.849Z",
+    "modified_at": "2022-09-06T04:15:22.849Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 7,
+  "fields": {
+    "name": "I-124",
+    "created_at": "2022-09-06T04:15:39.367Z",
+    "modified_at": "2022-09-06T04:15:39.367Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 8,
+  "fields": {
+    "name": "I-131",
+    "created_at": "2022-09-06T04:15:53.520Z",
+    "modified_at": "2022-09-06T04:15:53.520Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 9,
+  "fields": {
+    "name": "In-111",
+    "created_at": "2022-09-06T04:16:08.671Z",
+    "modified_at": "2022-09-06T04:16:08.671Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 10,
+  "fields": {
+    "name": "Lu-177",
+    "created_at": "2022-09-06T04:16:19.288Z",
+    "modified_at": "2022-09-06T04:16:19.288Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 11,
+  "fields": {
+    "name": "Sm-153",
+    "created_at": "2022-09-06T04:16:33.223Z",
+    "modified_at": "2022-09-06T04:16:33.223Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 12,
+  "fields": {
+    "name": "Tb-161",
+    "created_at": "2022-09-06T04:16:47.517Z",
+    "modified_at": "2022-09-06T04:16:47.517Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 13,
+  "fields": {
+    "name": "Tc-99m",
+    "created_at": "2022-09-06T04:16:58.247Z",
+    "modified_at": "2022-09-06T04:16:58.247Z"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 14,
+  "fields": {
+    "name": "Y-90",
+    "created_at": "2022-09-06T04:17:07.340Z",
+    "modified_at": "2022-09-06T04:17:07.340Z"
   }
 },
 {
   "model": "authtoken.token",
-  "pk": "30af7c82372a8d4b3be470ea52967b0921f5ebff",
+  "pk": "00f3a5a5eef28c73aa2a34bec4139d064faf870a",
   "fields": {
     "user": 2,
-    "created": "2022-08-31T00:42:05.138Z"
+    "created": "2022-09-06T03:13:07.826Z"
   }
 }
 ]

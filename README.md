@@ -52,7 +52,7 @@ Rotas disponiveis
   - GET /api/v1/users/\<uuid:user_id>/
 - Order
   - GET /api/v1/users/\<uuid:user_id>/order/
-  - GET /api/v1/users/\<uuid:user_id>/order/\<uuid:id_order>/
+  - GET /api/v1/users/\<uuid:user_id>/order/\<uuid:id_order>
 - Calibration
   - GET /api/v1/users/\<uuid:user_id>/
   - POST /api/v1/users/\<uuid:user_id>/
@@ -468,7 +468,7 @@ Agora pode-se fazer a migração com o `db` selecionado:
 python manage.py migrate
 ```
 
-Após fazer o camando `migrate` para popular o banco com alguns dados basta:
+Após fazer o camando `migrate` para popular o banco com alguns de usuario e isotopos basta fazer:
 
 ```console
 python manage.py loaddata contrib/db_initial.json
@@ -486,7 +486,14 @@ Os usuarios criados serão:
 
 * Usuario comum:
   * email: `user2@user.com`
-  * senha: `123456@@`
+  * senha: `123456!!`
+
+Para apenas popular com as informações do `isotopos` basta fazer:
+
+```bash
+python manage.py loaddata contrib/db_isotope.json
+```
+
 ---
 
 ### 3.2) Rodando o servido de desenvolvimento
@@ -550,11 +557,19 @@ postgres://api:apirest@localhost:5434/api
 ```
 ---
 
-### 4.2) Backup de todo o banco:
+### 4.2) Backup do banco:
 
+
+Todo o banco
 
 ```console
-./manage.py dumpdata --exclude auth.permission --exclude contenttypes --indent 2 > db.json
+./manage.py dumpdata --exclude auth.permission --exclude contenttypes --indent 2 > db_initial.json
+```
+
+Apenas dos `Isotopos` cadastrados
+
+```console
+./manage.py ./manage.py dumpdata service.Isotope --indent 2 > db_isotope.json
 ```
 
 
