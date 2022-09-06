@@ -42,8 +42,9 @@ class CalibrationModelAdmin(admin.ModelAdmin):
     list_display = (
                 'uuid',
                 'id',
-                'isotope',
                 'calibration_name',
+                'user',
+                'isotope',
                 'syringe_activity',
                 'residual_syringe_activity',
                 'measurement_datetime',
