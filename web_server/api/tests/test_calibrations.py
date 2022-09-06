@@ -90,12 +90,12 @@ def test_try_list_for_user_without_calibrations(client_api_auth, user):
 
 
 @mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
-def test_create_successful(mock, client_api_auth, user, form_data, calibration_infos):
+def test_create_successful(save_disk_mock, client_api_auth, user, form_data, calibration_infos):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
 
-    mock.return_value = 'no save to disk'
+    save_disk_mock.return_value = 'no save to disk'
 
     assert not Calibration.objects.exists()
 
@@ -104,6 +104,8 @@ def test_create_successful(mock, client_api_auth, user, form_data, calibration_i
     response = client_api_auth.post(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.CREATED
+
+    assert save_disk_mock.call_count == 1
 
     body = response.json()
 
@@ -148,12 +150,12 @@ def test_create_fail_negative_float_numbers(client_api_auth, user, form_data):
 
 
 @mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
-def test_create_fail_calibration_name_must_be_unique_per_user(mock, client_api_auth, user, form_data):
+def test_create_fail_calibration_name_must_be_unique_per_user(save_disk_mock, client_api_auth, user, form_data):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
 
-    mock.return_value = 'no save to disk'
+    save_disk_mock.return_value = 'no save to disk'
 
     url = resolve_url('api:calibration-list-create', user.uuid)
 
@@ -162,6 +164,8 @@ def test_create_fail_calibration_name_must_be_unique_per_user(mock, client_api_a
     response = client_api_auth.post(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.CREATED
+
+    assert save_disk_mock.call_count == 1
 
     form_data['images'] = images
 
@@ -277,12 +281,12 @@ def test_delete_fail_wrong_calibration_id(client_api_auth, calibration):
 
 
 @mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
-def test_update_successful(mock, client_api_auth, form_data, calibration):
+def test_update_successful(save_disk_mock, client_api_auth, form_data, calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - PUT
     '''
 
-    mock.return_value = 'no save to disk'
+    save_disk_mock.return_value = 'no save to disk'
 
     update_form_data = form_data.copy()
     update_form_data['syringeActivity'] = 100.0
@@ -293,6 +297,8 @@ def test_update_successful(mock, client_api_auth, form_data, calibration):
     response = client_api_auth.put(url, data=update_form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.NO_CONTENT
+
+    assert save_disk_mock.call_count == 1
 
     calibration_db = Calibration.objects.all().first()
 

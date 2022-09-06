@@ -125,7 +125,7 @@ class Calibration(models.Model):
             'residual_syringe_activity': self.residual_syringe_activity,
             'measurement_datetime': self.measurement_datetime.strftime('%d/%m/%Y - %H:%M:%S'),
             'phantom_volume': self.phantom_volume,
-            'acquisition_time': self.acquisition_time
+            'acquisition_time': self.acquisition_time,
         }
 
 # upload_report_to = partial(upload_to, type='report')

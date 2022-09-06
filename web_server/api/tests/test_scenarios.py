@@ -71,7 +71,7 @@ def test_scenario_read_orders_of_users(client_api, users_and_orders, user, secon
 
 
 @mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
-def test_scenario_calibrations_view(mock, client_api, user, second_user, lu_177_and_cu_64, form_data):
+def test_scenario_calibrations_view(save_disk_mock, client_api, user, second_user, lu_177_and_cu_64, form_data):
     '''
     Isotoper Table:
 
@@ -86,7 +86,7 @@ def test_scenario_calibrations_view(mock, client_api, user, second_user, lu_177_
 
     '''
 
-    mock.return_value = 'no save to disk'
+    save_disk_mock.return_value = 'no save to disk'
 
     # get isotopes
 
@@ -115,6 +115,8 @@ def test_scenario_calibrations_view(mock, client_api, user, second_user, lu_177_
 
     assert response.status_code == HTTPStatus.CREATED
 
+    assert save_disk_mock.call_count == 1
+
     form_data['calibrationName'] = 'Calibration 2 of user 2'
     form_data['isotope'] = 'Cu-64'
     form_data['images'] = copy(images)
@@ -123,6 +125,8 @@ def test_scenario_calibrations_view(mock, client_api, user, second_user, lu_177_
     response = client_api.post(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.CREATED
+
+    assert save_disk_mock.call_count == 2
 
     assert Calibration.objects.count() == 2
 
@@ -136,6 +140,8 @@ def test_scenario_calibrations_view(mock, client_api, user, second_user, lu_177_
     response = client_api.post(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.CREATED
+
+    assert save_disk_mock.call_count == 3
 
     # List calibrations use 1
 
