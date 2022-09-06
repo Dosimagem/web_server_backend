@@ -431,7 +431,8 @@ O setup incicial necessário fazer apenas `uma vez`.
 ```console
 python -m venv .venv --upgrade-deps
 source .venv/bin/activate
-pip install -r requirements-dev.txt
+pip install pip-tools
+pip-sync requirements.txt requirements-dev.txt
 cp contrib/env-sample .env
 ```
 
