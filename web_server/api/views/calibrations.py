@@ -71,7 +71,7 @@ def _update_calibration(request, user_id, calibration_id):
         data['user'] = request.user
         data['isotope'] = isotope
 
-        form = UpdateCalibrationForm(data, instance=cali)
+        form = UpdateCalibrationForm(data, request.FILES, instance=cali)
 
         if not form.is_valid():
             return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
@@ -126,7 +126,7 @@ def _create_calibrations(request, user_id):
     data['user'] = request.user
     data['isotope'] = isotope
 
-    form = CreateCalibrationForm(data)
+    form = CreateCalibrationForm(data, request.FILES)
 
     if not form.is_valid():
         return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)

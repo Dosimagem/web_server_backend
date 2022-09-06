@@ -42,7 +42,8 @@ class CreateCalibrationForm(forms.ModelForm):
                   'residual_syringe_activity',
                   'measurement_datetime',
                   'phantom_volume',
-                  'acquisition_time')
+                  'acquisition_time',
+                  'images')
 
 
 class UpdateCalibrationForm(CreateCalibrationForm):

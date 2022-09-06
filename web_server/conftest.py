@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
+from io import BytesIO
 
 import pytest
 from rest_framework.authtoken.models import Token
@@ -161,6 +162,16 @@ def calibration_infos(user, lu_177):
 
 
 @pytest.fixture
+def calibration_file():
+    bytes_ = b'File content'
+    file = BytesIO(bytes_)
+    file.name = 'images.zip'
+    file.size = len(bytes_)
+    file._committed = True
+    return {'images': file}
+
+
+@pytest.fixture
 def second_calibration_infos(user, lu_177):
     return dict(
         user=user,
@@ -185,7 +196,8 @@ def second_calibration(calibration, second_calibration_infos):
 
 
 @pytest.fixture
-def form_data(calibration_infos):
+def form_data(calibration_infos, calibration_file):
+
     return {
          'isotope': calibration_infos['isotope'].name,
          'calibrationName': calibration_infos['calibration_name'],
@@ -193,12 +205,13 @@ def form_data(calibration_infos):
          'residualSyringeActivity': calibration_infos['residual_syringe_activity'],
          'measurementDatetime': calibration_infos['measurement_datetime'],
          'phantomVolume': calibration_infos['phantom_volume'],
-         'acquisitionTime': calibration_infos['acquisition_time']
+         'acquisitionTime': calibration_infos['acquisition_time'],
+         'images': calibration_file['images']
     }
 
 
 @pytest.fixture
-def second_form_data(second_calibration_infos):
+def second_form_data(second_calibration_infos, calibration_file):
     return {
          'isotope': second_calibration_infos['isotope'].name,
          'calibrationName': second_calibration_infos['calibration_name'],
@@ -206,7 +219,8 @@ def second_form_data(second_calibration_infos):
          'residualSyringeActivity': second_calibration_infos['residual_syringe_activity'],
          'measurementDatetime': second_calibration_infos['measurement_datetime'],
          'phantomVolume': second_calibration_infos['phantom_volume'],
-         'acquisitionTime': second_calibration_infos['acquisition_time']
+         'acquisitionTime': second_calibration_infos['acquisition_time'],
+         'images': calibration_file['images']
     }
 
 
