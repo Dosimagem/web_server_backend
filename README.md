@@ -431,7 +431,7 @@ O setup incicial necessário fazer apenas `uma vez`.
 ```console
 python -m venv .venv --upgrade-deps
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 cp contrib/env-sample .env
 ```
 
@@ -490,7 +490,7 @@ Os usuarios criados serão:
 
 Para apenas popular com as informações do `isotopos` basta fazer:
 
-```bash
+```console
 python manage.py loaddata contrib/db_isotope.json
 ```
 
