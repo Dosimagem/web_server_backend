@@ -24,7 +24,7 @@ def test_upload_name_images_calibration(mock, user, calibration, datetime_now):
     mock.return_value = t
     slug = slugify(calibration.calibration_name)
 
-    expected = f'{user.id}/calibrations/{slug}/calibration_{time_stamp_str}.zip'
+    expected = f'{user.id}/calibrations/{slug}_{time_stamp_str}.zip'
 
     assert upload_calibration_to(calibration, filename='filename.zip') == expected
 
