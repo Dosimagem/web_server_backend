@@ -1,4 +1,4 @@
-from copy import copy
+from copy import deepcopy
 from http import HTTPStatus
 from unittest import mock
 from uuid import uuid4
@@ -161,7 +161,7 @@ def test_create_fail_calibration_name_must_be_unique_per_user(save_disk_mock, cl
 
     url = resolve_url('api:calibration-list-create', user.uuid)
 
-    images = copy(form_data['images'])
+    images = deepcopy(form_data['images'])
 
     response = client_api_auth.post(url, data=form_data, format='multipart')
 
