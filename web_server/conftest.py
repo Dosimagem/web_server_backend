@@ -1,8 +1,8 @@
 from datetime import datetime
 from decimal import Decimal
-from io import BytesIO
 
 import pytest
+from django.core.files.base import ContentFile
 from rest_framework.authtoken.models import Token
 from django.utils.timezone import make_aware
 
@@ -163,12 +163,8 @@ def calibration_infos(user, lu_177):
 
 @pytest.fixture
 def calibration_file():
-    bytes_ = b'File content'
-    file = BytesIO(bytes_)
-    file.name = 'images.zip'
-    file.size = len(bytes_)
-    file._committed = True
-    return {'images': file}
+    fp = ContentFile(b'file_content', name='images.zip')
+    return {'images': fp}
 
 
 @pytest.fixture

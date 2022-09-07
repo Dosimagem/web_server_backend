@@ -1,4 +1,4 @@
-from copy import copy
+from copy import deepcopy
 from http import HTTPStatus
 from unittest import mock
 
@@ -102,7 +102,7 @@ def test_scenario_calibrations_view(save_disk_mock, client_api, user, second_use
 
     # Register 2 calibration for user 1
 
-    images = copy(form_data['images'])  # the file is consumed
+    images = deepcopy(form_data['images'])  # the file is consumed
 
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
 
@@ -119,7 +119,7 @@ def test_scenario_calibrations_view(save_disk_mock, client_api, user, second_use
 
     form_data['calibrationName'] = 'Calibration 2 of user 2'
     form_data['isotope'] = 'Cu-64'
-    form_data['images'] = copy(images)
+    form_data['images'] = deepcopy(images)
 
     url = resolve_url('api:calibration-list-create', current_user.uuid)
     response = client_api.post(url, data=form_data, format='multipart')
@@ -132,7 +132,7 @@ def test_scenario_calibrations_view(save_disk_mock, client_api, user, second_use
 
     # Register 1 calibration for user 2
 
-    form_data['images'] = copy(images)
+    form_data['images'] = deepcopy(images)
 
     current_user = second_user
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
@@ -174,7 +174,7 @@ def test_scenario_calibrations_view(save_disk_mock, client_api, user, second_use
     calibration = Calibration.objects.filter(user=user).first()
 
     form_data['calibrationName'] = 'Calibration 3 of User 1'
-    form_data['images'] = copy(images)
+    form_data['images'] = deepcopy(images)
 
     current_user = user
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)

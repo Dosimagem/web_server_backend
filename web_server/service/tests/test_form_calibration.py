@@ -1,6 +1,5 @@
-from io import BytesIO
-
 import pytest
+from django.core.files.base import ContentFile
 from django.contrib.auth import get_user_model
 
 from web_server.service.forms import CreateCalibrationForm
@@ -17,7 +16,7 @@ def test_valid_create_form_calibration(calibration_infos, calibration_file):
     assert form.is_valid()
 
     for f in form.fields:
-        if isinstance(form.cleaned_data[f], BytesIO):
+        if isinstance(form.cleaned_data[f], ContentFile):
             form.cleaned_data[f] == calibration_file[f]
         else:
             assert form.cleaned_data[f] == calibration_infos[f]
