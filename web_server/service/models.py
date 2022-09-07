@@ -82,8 +82,8 @@ def upload_to(instance, filename, type):
 
     if type == 'calibrations':
         slug = slugify(instance.calibration_name)
-        filename = f'calibration_{time}{extension}'
-        return f'{instance.user.id}/{type}/{slug}/{filename}'
+        filename = f'{slug}_{time}{extension}'
+        return f'{instance.user.id}/{type}/{filename}'
 
     return filename
 
