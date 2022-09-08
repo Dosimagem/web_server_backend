@@ -10,8 +10,10 @@ def user_to_dict(user):
         name=user.profile.name,
         phone=user.profile.phone,
         role=user.profile.role,
-        institution=user.profile.institution,
-        email=user.email
+        clinic=user.profile.clinic,
+        email=user.email,
+        cpf=user.profile.cpf,  # TODO: Calocar a mascara
+        cnpj=user.profile.cnpj,  # TODO: Calocar a mascara
     )
 
 

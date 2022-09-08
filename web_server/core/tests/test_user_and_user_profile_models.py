@@ -1,3 +1,5 @@
+import pytest
+from django.db import IntegrityError
 from django.contrib.auth import get_user_model
 
 from web_server.core.models import UserProfile
@@ -11,7 +13,7 @@ def test_create_user_profile(user):
 
 
 def test_str(user):
-    assert str(user.profile) == user.profile.name
+    assert str(user.profile) == user.profile.clinic
 
 
 def test_delete_user_profile_not_delete_user(user):
@@ -39,3 +41,12 @@ def test_user_first_name(user):
 def test_user_first_name_for_user_without_name(user):
     user.profile.name = None
     assert user.get_first_name() == 'This user have not a name'
+
+
+def test_clinic_must_be_unique(user, second_user_login_info, second_user_profile_info):
+
+    second_user = User.objects.create_user(**second_user_login_info)
+    second_user_profile_info['clinic'] = user.profile.clinic
+
+    with pytest.raises(IntegrityError):
+        UserProfile.objects.filter(user=second_user).update(**second_user_profile_info)

@@ -96,12 +96,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class UserProfile(models.Model):
 
     #  Dosimagem fields
-    name = models.CharField(_('name'), max_length=150)
-    phone = models.CharField(_('phone'), max_length=30)
-    institution = models.CharField(_('institution'), max_length=30)
-    role = models.CharField(_('role'), max_length=30)
+    name = models.CharField(_('Name'), max_length=150)
+    phone = models.CharField(_('Phone'), max_length=30)
+    # TODO: This is a good ideia ?
+    clinic = models.CharField(_('Clinic'), max_length=30, unique=True, default='not set')
+    role = models.CharField(_('Role'), max_length=30)
+    cpf = models.CharField('CPF', max_length=11, unique=True)
+    cnpj = models.CharField('CNPJ', max_length=14, unique=True)
 
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
-        return self.name
+        return self.clinic
