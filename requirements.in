@@ -5,3 +5,4 @@ django-cors-headers
 django-extensions
 djangorestframework-camel-case
 django-cleanup
+gunicorn
