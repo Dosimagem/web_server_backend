@@ -44,7 +44,7 @@ def test_fail_register_user_already_exist(client_api, register_infos):
     ('confirmed_email', ['Confirmed_email field is required.']),
     ('name', ['Name field is required.']),
     ('phone', ['Phone field is required.']),
-    ('institution', ['Institution field is required.']),
+    ('clinic', ['Clinic field is required.']),
     ('role', ['Role field is required.'])
     ]
 )

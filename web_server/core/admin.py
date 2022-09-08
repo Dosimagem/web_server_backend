@@ -194,5 +194,5 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(UserProfile)
 class UserProfileModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'phone', 'institution', 'role', 'user')
-    list_display_links = ('id', 'name',)
+    list_display = ('id', 'clinic', 'name', 'phone', 'role', 'user', 'cpf', 'cnpj', 'created_at', 'modified_at')
+    list_display_links = ('id', 'clinic',)
