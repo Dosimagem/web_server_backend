@@ -7,12 +7,21 @@ from django.dispatch import receiver
 User = get_user_model()
 
 
+def _is_backoffice(user):
+    return user.is_staff or user.is_superuser
+
+
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
+    if _is_backoffice(instance):
+        return
     if created:
         UserProfile.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    if _is_backoffice(instance):
+        return
+    if hasattr(instance, 'profile'):
+        instance.profile.save()

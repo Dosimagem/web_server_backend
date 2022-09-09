@@ -18,7 +18,9 @@ from django.utils.translation import gettext, gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
+
 from .models import CustomUser, UserProfile
+from .forms import ProfileCreateForm
 
 
 csrf_protect_m = method_decorator(csrf_protect)
@@ -196,3 +198,11 @@ class UserAdmin(admin.ModelAdmin):
 class UserProfileModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'clinic', 'name', 'phone', 'role', 'user', 'cpf', 'cnpj', 'created_at', 'modified_at')
     list_display_links = ('id', 'clinic',)
+
+    form = ProfileCreateForm
+
+    def change_view(self, request, object_id, extra_content=None):
+        return super(UserProfileModelAdmin, self).change_view(request, object_id)
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)

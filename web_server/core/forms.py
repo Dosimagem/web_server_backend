@@ -6,19 +6,11 @@ from django.utils.translation import gettext as _
 from web_server.core.models import CustomUser, UserProfile
 
 
-class SignupForm(UserCreationForm):
-
-    confirmed_email = forms.EmailField(label='confirmed_email')
-    name = forms.CharField(label='name', max_length=150)
-    phone = forms.CharField(label='phone', max_length=30)
-    clinic = forms.CharField(label='clinic', max_length=30)
-    role = forms.CharField(label='role', max_length=30)
-    cpf = forms.CharField(max_length=11)
-    cnpj = forms.CharField(max_length=14)
+class ProfileCreateForm(forms.ModelForm):
 
     class Meta:
-        model = CustomUser
-        fields = ('email', 'password1', 'password2',)
+        model = UserProfile
+        fields = ('user', 'name', 'phone', 'clinic', 'role', 'cpf', 'cnpj', )
 
     def clean_name(self):
         return self.cleaned_data['name'].title()
@@ -29,27 +21,73 @@ class SignupForm(UserCreationForm):
     def clean_phone(self):
         return ''.join(d for d in self.cleaned_data['phone'] if d.isdigit())
 
+    def _unique(self, field, msg_error):
+        instance = self.instance
+
+        queryset = UserProfile.objects.filter(**field)
+
+        if instance is not None:
+            if queryset.exclude(id=instance.id).exists():
+                raise ValidationError(msg_error,  code='exists')
+        else:
+            if queryset.exists():
+                raise ValidationError(msg_error,  code='exists')
+
+    def clean_clinic(self):
+
+        clinic = self.cleaned_data['clinic'].title()
+
+        self._unique({'clinic': clinic}, _('Clinic already exists'))
+
+        return clinic
+
+    def clean_cpf(self):
+
+        cpf = self.cleaned_data['cpf']
+
+        self._unique({'cpf': cpf}, _('CPF already exists'))
+
+        return cpf
+
+    def clean_cnpj(self):
+
+        cnpj = self.cleaned_data['cnpj']
+
+        self._unique({'cnpj': cnpj}, _('CNPJ already exists'))
+
+        return cnpj
+
+
+# TODO: Apagar isso depois
+# class ProfileUpdateForm(ProfileCreateForm):
+
+#     class Meta:
+#         model = UserProfile
+#         fields = ('name', 'phone', 'clinic', 'role', 'cpf', 'cnpj', )
+
+#     def save(self, user):
+#         profile = UserProfile.objects.get(user=user)
+
+#         for k, v in self.cleaned_data.items():
+#             if hasattr(profile, k):
+#                 setattr(profile, k, v)
+
+#         profile.save()
+
+#         return profile
+
+
+class UserCreationForm(UserCreationForm):
+
+    confirmed_email = forms.EmailField(label='confirmed_email')
+
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'password1', 'password2',)
+
     def clean_confirmed_email(self):
         email = self.cleaned_data.get('email')
         confimed_email = self.cleaned_data['confirmed_email']
 
         if email != confimed_email:
             raise forms.ValidationError(['The two email fields didn’t match.'],  code='email_match')
-
-    def clean_clinic(self):
-        clinic = self.cleaned_data['clinic'].title()
-        if UserProfile.objects.filter(clinic=clinic).exists():
-            raise ValidationError(_('Clinic already exists'),  code='exists_clinic')
-
-        return clinic
-
-    def save(self):
-        super().save()
-        self.instance.profile.name = self.cleaned_data['name']
-        self.instance.profile.clinic = self.cleaned_data['clinic']
-        self.instance.profile.role = self.cleaned_data['role']
-        self.instance.profile.phone = self.cleaned_data['phone']
-        self.instance.profile.cpf = self.cleaned_data['cpf']
-        self.instance.profile.cnpj = self.cleaned_data['cnpj']
-        self.instance.save()
-        return self.instance
