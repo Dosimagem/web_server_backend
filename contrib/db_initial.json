@@ -3,285 +3,51 @@
   "model": "admin.logentry",
   "pk": 1,
   "fields": {
-    "action_time": "2022-09-06T03:09:24.810Z",
-    "user": 1,
-    "content_type": 8,
+    "action_time": "2022-09-09T02:05:00.011Z",
+    "user": 2,
+    "content_type": 6,
     "object_id": "1",
-    "object_repr": "Lu-177",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 2,
-  "fields": {
-    "action_time": "2022-09-06T03:12:34.635Z",
-    "user": 1,
-    "content_type": 6,
-    "object_id": "2",
-    "object_repr": "user1@user.com",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 3,
-  "fields": {
-    "action_time": "2022-09-06T03:12:54.019Z",
-    "user": 1,
-    "content_type": 7,
-    "object_id": "2",
-    "object_repr": "Grace Hopper",
+    "object_repr": "user1@email.com",
     "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Phone\", \"Institution\", \"Role\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 4,
-  "fields": {
-    "action_time": "2022-09-06T04:12:44.708Z",
-    "user": 1,
-    "content_type": 6,
-    "object_id": "3",
-    "object_repr": "user2@user.com",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 5,
-  "fields": {
-    "action_time": "2022-09-06T04:13:37.615Z",
-    "user": 1,
-    "content_type": 7,
-    "object_id": "3",
-    "object_repr": "Maria Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Phone\", \"Institution\", \"Role\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 6,
-  "fields": {
-    "action_time": "2022-09-06T04:13:53.875Z",
-    "user": 1,
-    "content_type": 7,
-    "object_id": "2",
-    "object_repr": "João Silva",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 7,
-  "fields": {
-    "action_time": "2022-09-06T04:14:15.740Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "2",
-    "object_repr": "Cu-64",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 8,
-  "fields": {
-    "action_time": "2022-09-06T04:14:31.809Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "3",
-    "object_repr": "Cu-67",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 9,
-  "fields": {
-    "action_time": "2022-09-06T04:14:46.891Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "4",
-    "object_repr": "F-18",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 10,
-  "fields": {
-    "action_time": "2022-09-06T04:14:59.514Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "5",
-    "object_repr": "Ga-68",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 11,
-  "fields": {
-    "action_time": "2022-09-06T04:15:22.860Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "6",
-    "object_repr": "Ho-166",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 12,
-  "fields": {
-    "action_time": "2022-09-06T04:15:39.377Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "7",
-    "object_repr": "I-124",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 13,
-  "fields": {
-    "action_time": "2022-09-06T04:15:53.535Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "8",
-    "object_repr": "I-131",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 14,
-  "fields": {
-    "action_time": "2022-09-06T04:16:08.681Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "9",
-    "object_repr": "In-111",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 15,
-  "fields": {
-    "action_time": "2022-09-06T04:16:19.301Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "10",
-    "object_repr": "Lu-177",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 16,
-  "fields": {
-    "action_time": "2022-09-06T04:16:33.233Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "11",
-    "object_repr": "Sm-153",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 17,
-  "fields": {
-    "action_time": "2022-09-06T04:16:47.527Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "12",
-    "object_repr": "Tb-161",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 18,
-  "fields": {
-    "action_time": "2022-09-06T04:16:58.257Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "13",
-    "object_repr": "Tc-99m",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 19,
-  "fields": {
-    "action_time": "2022-09-06T04:17:07.350Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "14",
-    "object_repr": "Y-90",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
+    "change_message": "[{\"changed\": {\"fields\": [\"Email address\"]}}]"
   }
 },
 {
   "model": "sessions.session",
-  "pk": "l5f9w1kqoz1wyidxe52qbdllvwhdcnl1",
+  "pk": "iathrzzpqfinqzuzh71fbaynknqllkqx",
   "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGlnO-hObkj5nsNbrDQ4gR4qTCnF3EikFtG9m3ltE3NYSt8ZLnLK4ik5cfreE9OR6gPzAep8lzXVdpiQPRZ60yWHO_Lqd7t9BwVb22igPVrmMHiE4bY13adQjePasg2FOySK4DjNRQAo2G9yxgh50T5rF5wvTKjfT:1oVOxc:xRtPBHSVKNmptogIk0kAl1bZnn5oTrbX66_Sx8M0ahw",
-    "expire_date": "2022-09-20T03:09:12.883Z"
+    "session_data": ".eJxVjEEOwiAQRe_C2hBogVKX7j0DmenMSNVAUtqV8e7apAvd_vfef6kE25rT1nhJM6mz6tTpd0OYHlx2QHcot6qnWtZlRr0r-qBNXyvx83K4fwcZWv7Wln0kjtaYgDJa7AaUiA7FWR7GsTcgjiIHQRPAQ3DUeZYItu9J0Dv1_gDwdDhm:1oWTNs:igwgLDZP9ldTr-31hH5W8uLZr3KV1-v1YRRc9JIvTK0",
+    "expire_date": "2022-09-23T02:04:44.387Z"
   }
 },
 {
   "model": "core.customuser",
   "pk": 1,
   "fields": {
-    "password": "pbkdf2_sha256$390000$1VF2PR5fkAbgndgAHWn8eg$8cEjFeIziRzbfGNLXBEmW/TmfYwltvz0XOSP6lHevHk=",
-    "last_login": "2022-09-06T03:09:12.712Z",
+    "password": "pbkdf2_sha256$390000$1wvhiPud7Inf4EP17tXY2K$lUMmQSU/sndaOpvJJ6rSNznuAIOenBdQ+AjFK7vWklE=",
+    "last_login": null,
+    "is_superuser": false,
+    "uuid": "0be5fbc0-079f-4006-8a15-0e0851bb1df4",
+    "email": "user1@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-09-09T02:03:21Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$wnaaSHNxBpojF25yEiLwsq$HwdyEqjKfJ9K1pbrojHO1aATGSpM7+PRjzlaOk523IM=",
+    "last_login": "2022-09-09T02:04:44.278Z",
     "is_superuser": true,
-    "uuid": "162a3416-3982-4cfc-98da-e0f6a507287f",
+    "uuid": "509da154-22bf-449a-9491-7dc4cce3ef43",
     "email": "admin@admin.com",
     "is_staff": true,
     "is_active": true,
-    "date_joined": "2022-09-06T03:08:40.688Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "core.customuser",
-  "pk": 2,
-  "fields": {
-    "password": "pbkdf2_sha256$390000$GATAkAwbGdvXDZiJo8AVLj$09V76a/4Hxo729fuxYg5wrWtD/pXAbWlET5qyVMI2Bw=",
-    "last_login": null,
-    "is_superuser": false,
-    "uuid": "a2f94183-cd20-4182-8c7d-07308f84026d",
-    "email": "user1@user.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2022-09-06T03:12:34.234Z",
+    "date_joined": "2022-09-09T02:04:36.634Z",
     "groups": [],
     "user_permissions": []
   }
@@ -290,14 +56,14 @@
   "model": "core.customuser",
   "pk": 3,
   "fields": {
-    "password": "pbkdf2_sha256$390000$Hdhy1ukWUeJa1KCJKhEOze$CVP0Y2hPlTDnNnek+mgmFbkJsRgUGJNbiiB55Chbl+M=",
+    "password": "pbkdf2_sha256$390000$Q8YHFfYouFD57VOujTsqXR$reyF4sgKbWDiusr8jyH5IHFOKWB8vk7V5GgM0BT6gSU=",
     "last_login": null,
     "is_superuser": false,
-    "uuid": "5589f209-d989-4aa9-ba52-996b3185d990",
-    "email": "user2@user.com",
+    "uuid": "54fbb954-74d4-424d-a18b-270af48769ec",
+    "email": "user2@email.com",
     "is_staff": false,
     "is_active": true,
-    "date_joined": "2022-09-06T04:12:44.238Z",
+    "date_joined": "2022-09-09T02:06:49.898Z",
     "groups": [],
     "user_permissions": []
   }
@@ -306,33 +72,30 @@
   "model": "core.userprofile",
   "pk": 1,
   "fields": {
-    "name": "",
-    "phone": "",
-    "institution": "",
-    "role": "",
-    "user": 1
+    "name": "João Sliva",
+    "phone": "11111111",
+    "clinic": "Clinica A",
+    "role": "médico",
+    "cpf": "93743851121",
+    "cnpj": "42438610000111",
+    "user": 1,
+    "created_at": "2022-09-09T02:03:22.402Z",
+    "modified_at": "2022-09-09T02:05:00.004Z"
   }
 },
 {
   "model": "core.userprofile",
   "pk": 2,
   "fields": {
-    "name": "João Silva",
-    "phone": "222222",
-    "institution": "Dosimagem",
-    "role": "Medico",
-    "user": 2
-  }
-},
-{
-  "model": "core.userprofile",
-  "pk": 3,
-  "fields": {
     "name": "Maria Silva",
-    "phone": "11111-11111",
-    "institution": "Dosimagem",
-    "role": "Medico",
-    "user": 3
+    "phone": "22222222",
+    "clinic": "Clinica B",
+    "role": "fisico médico",
+    "cpf": "52450318097",
+    "cnpj": "83398534000145",
+    "user": 3,
+    "created_at": "2022-09-09T02:06:50.290Z",
+    "modified_at": "2022-09-09T02:06:50.303Z"
   }
 },
 {
@@ -463,10 +226,18 @@
 },
 {
   "model": "authtoken.token",
-  "pk": "00f3a5a5eef28c73aa2a34bec4139d064faf870a",
+  "pk": "a349a7d81c67d88ac60bd7d97cd09e85eb43f929",
   "fields": {
-    "user": 2,
-    "created": "2022-09-06T03:13:07.826Z"
+    "user": 1,
+    "created": "2022-09-09T02:03:22.422Z"
+  }
+},
+{
+  "model": "authtoken.token",
+  "pk": "ccd12f90fb4aa290056dbb953709bc67de9136b9",
+  "fields": {
+    "user": 3,
+    "created": "2022-09-09T02:06:50.304Z"
   }
 }
 ]

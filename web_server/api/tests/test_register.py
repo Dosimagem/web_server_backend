@@ -3,6 +3,7 @@ from http import HTTPStatus
 import pytest
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
+from rest_framework.authtoken.models import Token
 
 from web_server.api.tests.conftest import HTTP_METHODS
 
@@ -18,25 +19,68 @@ URL_REGISTER = resolve_url('api:register')
 
 def test_successfull_register(client_api, register_infos):
 
-    response = client_api.post(URL_REGISTER, data=register_infos, format='json')
+    resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
 
-    assert response.status_code == HTTPStatus.CREATED
+    assert resp.status_code == HTTPStatus.CREATED
 
     user = User.objects.first()
 
-    body = response.json()
+    body = resp.json()
 
     assert body == {'id': str(user.uuid), 'token': user.auth_token.key, 'isStaff': user.is_staff}
 
 
-def test_fail_register_user_already_exist(client_api, register_infos):
+def test_fail_user_unique_fields(client_api, user, register_infos):
+    '''
+    Email
+    '''
 
-    User.objects.create_user(email=register_infos['email'], password=register_infos['password1'])
+    resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
 
-    response = client_api.post(URL_REGISTER, data=register_infos, format='json')
+    errors_list = resp.json()['errors']
 
-    assert response.status_code == HTTPStatus.BAD_REQUEST
-    assert response.json() == {'errors': ['User with this Email address already exists.']}
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert 'User with this Email address already exists.' in errors_list
+
+
+def test_fail_profile_unique_fields(client_api, user, second_register_infos):
+    '''
+    Clinic, CPF and CNPJ.
+    '''
+
+    second_register_infos['clinic'] = user.profile.clinic
+    second_register_infos['cpf'] = user.profile.cpf
+    second_register_infos['cnpj'] = user.profile.cnpj
+
+    resp = client_api.post(URL_REGISTER, data=second_register_infos, format='json')
+
+    errors_list = resp.json()['errors']
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert 'Clinic already exists' in errors_list
+    assert 'CPF already exists' in errors_list
+    assert 'CNPJ already exists' in errors_list
+
+
+def test_when_profile_fail_the_user_must_not_be_create(client_api, user, second_register_infos):
+    '''
+    Clinic, CPF and CNPJ.
+    '''
+
+    second_register_infos['clinic'] = user.profile.clinic
+
+    resp = client_api.post(URL_REGISTER, data=second_register_infos, format='json')
+
+    errors_list = resp.json()['errors']
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert User.objects.count() == 1
+    assert Token.objects.count() == 1
+
+    assert 'Clinic already exists' in errors_list
 
 
 @pytest.mark.parametrize('field, error', [
@@ -66,10 +110,11 @@ def test_register_invalid_email(client_api, register_infos):
 
     resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
 
-    body = resp.json()
+    errors_list = resp.json()['errors']
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert body['errors'] == ['Enter a valid email address.', 'The two email fields didn’t match.']
+    assert 'Enter a valid email address.' in errors_list
+    assert 'The two email fields didn’t match.' in errors_list
 
 
 def test_register_password_dont_mach(client_api, register_infos):

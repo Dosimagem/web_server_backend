@@ -99,10 +99,10 @@ class UserProfile(models.Model):
     name = models.CharField(_('Name'), max_length=150)
     phone = models.CharField(_('Phone'), max_length=30)
     # TODO: This is a good ideia ?
-    clinic = models.CharField(_('Clinic'), max_length=30, unique=True, default='not set')
+    clinic = models.CharField(_('Clinic'), max_length=30)
     role = models.CharField(_('Role'), max_length=30)
-    cpf = models.CharField('CPF', max_length=11, unique=True)
-    cnpj = models.CharField('CNPJ', max_length=14, unique=True)
+    cpf = models.CharField('CPF', max_length=11)
+    cnpj = models.CharField('CNPJ', max_length=14)
 
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
 
