@@ -1,5 +1,5 @@
-from django.shortcuts import render
+from django.http import JsonResponse
 
 
 def index(request):
-    return render(request, 'core/index.html')
+    return JsonResponse({'message': 'Welcome to Dosiamge API !'})
