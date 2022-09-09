@@ -6,3 +6,5 @@ django-extensions
 djangorestframework-camel-case
 django-cleanup
 gunicorn
+dj_database_url
+psycopg2-binary

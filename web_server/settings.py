@@ -1,4 +1,6 @@
 from pathlib import Path
+
+import dj_database_url
 from decouple import config, Csv
 
 
@@ -95,11 +97,11 @@ if DEBUG:
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
+default_db_url = 'sqlite:///' + str(BASE_DIR / 'db.sqlite3')
+parse_db = dj_database_url.parse
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': config('DATABASE_URL', default=default_db_url, cast=parse_db)
 }
 
 
