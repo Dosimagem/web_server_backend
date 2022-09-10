@@ -22,12 +22,15 @@ django==4.1
     #   collectfast
     #   dj-database-url
     #   django-cors-headers
+    #   django-debug-toolbar
     #   django-extensions
     #   django-storages
     #   djangorestframework
 django-cleanup==6.0.0
     # via -r requirements.in
 django-cors-headers==3.13.0
+    # via -r requirements.in
+django-debug-toolbar==3.6.0
     # via -r requirements.in
 django-extensions==3.2.0
     # via -r requirements.in
@@ -60,7 +63,9 @@ s3transfer==0.6.0
 six==1.16.0
     # via python-dateutil
 sqlparse==0.4.2
-    # via django
+    # via
+    #   django
+    #   django-debug-toolbar
 typing-extensions==4.3.0
     # via collectfast
 urllib3==1.26.12
