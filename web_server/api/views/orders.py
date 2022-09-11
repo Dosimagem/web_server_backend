@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from web_server.service.models import Order
 from .utils import MyTokenAuthentication
-from .errors_msg import MSG_ERROR_TOKEN_USER, MSG_ERROR_USER_ORDER, MSG_ERROR_RESOUCE
+from .errors_msg import MSG_ERROR_TOKEN_USER, MSG_ERROR_USER_ORDER, MSG_ERROR_RESOURCE
 
 User = get_user_model()
 
@@ -41,6 +41,8 @@ def orders_read(request, user_id, order_id):
     if request.user.uuid != user_id:
         return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
+    # TODO: Put together this tow queries
+
     query_set = Order.objects.filter(user__uuid=user_id)
 
     if not query_set:
@@ -48,7 +50,7 @@ def orders_read(request, user_id, order_id):
 
     order = query_set.filter(uuid=order_id).first()
     if not order:
-        return Response(data={'errors': MSG_ERROR_RESOUCE}, status=HTTPStatus.NOT_FOUND)
+        return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
     dispatcher = {
         'GET': _read_order,
