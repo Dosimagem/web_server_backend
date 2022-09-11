@@ -92,13 +92,23 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+    def to_dict(self):
+        return dict(
+            name=self.profile.name,
+            phone=self.profile.phone,
+            role=self.profile.role,
+            clinic=self.profile.clinic,
+            email=self.email,
+            cpf=self.profile._cpf_mask(),
+            cnpj=self.profile._cnpj_mask(),
+        )
+
 
 class UserProfile(models.Model):
 
-    #  Dosimagem fields
     name = models.CharField(_('Name'), max_length=150)
     phone = models.CharField(_('Phone'), max_length=30)
-    # TODO: This is a good ideia ?
+
     clinic = models.CharField(_('Clinic'), max_length=30)
     role = models.CharField(_('Role'), max_length=30)
     cpf = models.CharField('CPF', max_length=11)
@@ -111,3 +121,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.clinic
+
+    def _cnpj_mask(self):
+        cnpj = self.cnpj
+        return f'{cnpj[:3]}.{cnpj[3:6]}.{cnpj[6:9]}/{cnpj[9:12]}-{cnpj[12:14]}'
+
+    def _cpf_mask(self):
+        cpf = self.cpf
+        return f'{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:11]}'

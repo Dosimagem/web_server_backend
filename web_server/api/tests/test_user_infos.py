@@ -23,8 +23,8 @@ def test_read_users_info_by_id(client_api, user):
     assert body['phone'] == user.profile.phone
     assert body['clinic'] == user.profile.clinic
     assert body['role'] == user.profile.role
-    assert body['cpf'] == user.profile.cpf
-    assert body['cnpj'] == user.profile.cnpj
+    assert body['cpf'] == user.profile._cpf_mask()
+    assert body['cnpj'] == user.profile._cnpj_mask()
 
 
 def test_read_users_without_token(client_api):

@@ -9,12 +9,11 @@ from rest_framework.decorators import (
                                         )
 from rest_framework.permissions import IsAuthenticated
 
-from .utils import user_to_dict, MyTokenAuthentication
+from .utils import MyTokenAuthentication
+from .errors_msg import MSG_ERROR_TOKEN_USER
 
 
 User = get_user_model()
-
-MSG_ERROR_TOKEN_USER = ['Token and User id do not match.']
 
 
 @api_view(['GET'])
@@ -27,6 +26,6 @@ def users(request, id):
         return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
     if user := User.objects.filter(uuid=id).first():
-        return Response(data=user_to_dict(user))
+        return Response(data=user.to_dict())
 
-    return Response({}, status=HTTPStatus.NOT_FOUND)
+    return Response(status=HTTPStatus.NOT_FOUND)

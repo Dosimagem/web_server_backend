@@ -39,3 +39,11 @@ def test_user_first_name(user):
 def test_user_first_name_for_user_without_name(user):
     user.profile.name = None
     assert user.get_first_name() == 'This user have not a name'
+
+
+def test_cnpj_mask(user):
+    assert user.profile._cnpj_mask() == '424.386.100/001-11'
+
+
+def test_cpf_mask(user):
+    assert user.profile._cpf_mask() == '937.438.511-21'
