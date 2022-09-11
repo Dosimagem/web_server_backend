@@ -105,6 +105,17 @@ def test_cnpj_must_be_unique(user, second_register_infos, db):
     assert form.errors['cnpj'] == ['CNPJ already exists']
 
 
+def test_cpf_invalid(second_register_infos, db):
+
+    second_register_infos['cpf'] = 1
+
+    form = ProfileCreateForm(second_register_infos)
+
+    assert not form.is_valid()
+
+    assert form.errors['cpf'] == ['CPF invalid']
+
+
 def test_save(profile_infos):
 
     form = ProfileCreateForm(profile_infos, instance=profile_infos['user'].profile)
