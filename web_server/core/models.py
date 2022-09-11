@@ -1,4 +1,6 @@
 from uuid import uuid4
+
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -6,6 +8,8 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+
+from web_server.core.validators import validate_cpf
 
 
 class UserManager(BaseUserManager):
@@ -111,7 +115,7 @@ class UserProfile(models.Model):
 
     clinic = models.CharField(_('Clinic'), max_length=30)
     role = models.CharField(_('Role'), max_length=30)
-    cpf = models.CharField('CPF', max_length=11)
+    cpf = models.CharField('CPF', max_length=11, validators=[validate_cpf])
     cnpj = models.CharField('CNPJ', max_length=14)
 
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
