@@ -113,7 +113,18 @@ def test_cpf_invalid(second_register_infos, db):
 
     assert not form.is_valid()
 
-    assert form.errors['cpf'] == ['CPF invalid']
+    assert form.errors['cpf'] == ['CPF invalid.']
+
+
+def test_cnpf_invalid(second_register_infos, db):
+
+    second_register_infos['cnpj'] = 1
+
+    form = ProfileCreateForm(second_register_infos)
+
+    assert not form.is_valid()
+
+    assert form.errors['cnpj'] == ['CNPJ invalid.']
 
 
 def test_save(profile_infos):

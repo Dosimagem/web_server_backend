@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-
+from validate_docbr import CPF, CNPJ
 from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -9,7 +9,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
-from web_server.core.validators import validate_cpf
+from web_server.core.validators import validate_cnpf, validate_cpf
 
 
 class UserManager(BaseUserManager):
@@ -116,7 +116,7 @@ class UserProfile(models.Model):
     clinic = models.CharField(_('Clinic'), max_length=30)
     role = models.CharField(_('Role'), max_length=30)
     cpf = models.CharField('CPF', max_length=11, validators=[validate_cpf])
-    cnpj = models.CharField('CNPJ', max_length=14)
+    cnpj = models.CharField('CNPJ', max_length=14, validators=[validate_cnpf])
 
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
 
@@ -127,9 +127,9 @@ class UserProfile(models.Model):
         return self.clinic
 
     def _cnpj_mask(self):
-        cnpj = self.cnpj
-        return f'{cnpj[:3]}.{cnpj[3:6]}.{cnpj[6:9]}/{cnpj[9:12]}-{cnpj[12:14]}'
+        cnpj = CNPJ()
+        return cnpj.mask(self.cnpj)
 
     def _cpf_mask(self):
-        cpf = self.cpf
-        return f'{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:11]}'
+        cpf = CPF()
+        return cpf.mask(self.cpf)

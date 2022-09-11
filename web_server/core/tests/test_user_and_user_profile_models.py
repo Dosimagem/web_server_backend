@@ -42,7 +42,7 @@ def test_user_first_name_for_user_without_name(user):
 
 
 def test_cnpj_mask(user):
-    assert user.profile._cnpj_mask() == '424.386.100/001-11'
+    assert user.profile._cnpj_mask() == '42.438.610/0001-11'
 
 
 def test_cpf_mask(user):
