@@ -5,18 +5,6 @@ class MyTokenAuthentication(TokenAuthentication):
     keyword = 'Bearer'
 
 
-def user_to_dict(user):
-    return dict(
-        name=user.profile.name,
-        phone=user.profile.phone,
-        role=user.profile.role,
-        clinic=user.profile.clinic,
-        email=user.email,
-        cpf=user.profile.cpf,  # TODO: Calocar a mascara
-        cnpj=user.profile.cnpj,  # TODO: Calocar a mascara
-    )
-
-
 def list_errors(errors):
 
     list_ = []
