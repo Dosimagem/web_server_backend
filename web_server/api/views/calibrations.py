@@ -13,7 +13,7 @@ from web_server.service.models import Calibration, Isotope
 from web_server.service.forms import CreateCalibrationForm, IsotopeForm, UpdateCalibrationForm
 
 from .utils import MyTokenAuthentication, list_errors
-from .errors_msg import MSG_ERROR_USER_CALIBRATIONS, MSG_ERROR_TOKEN_USER, MSG_ERROR_RESOUCE
+from .errors_msg import MSG_ERROR_USER_CALIBRATIONS, MSG_ERROR_TOKEN_USER, MSG_ERROR_RESOURCE
 
 User = get_user_model()
 
@@ -45,6 +45,7 @@ def calibrations_read_update_delete(request, user_id, calibration_id):
         return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
     dispatcher = {
+        'GET': _read_calibration,
         'DELETE': _delete_calibration,
         'PUT': _update_calibration,
     }
@@ -52,6 +53,14 @@ def calibrations_read_update_delete(request, user_id, calibration_id):
     view = dispatcher[request.method]
 
     return view(request, user_id, calibration_id)
+
+
+def _read_calibration(request, user_id, calibration_id):
+
+    if cali := Calibration.objects.filter(user__uuid=user_id, uuid=calibration_id).first():
+        return Response(data=cali.to_dict())
+
+    return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
 
 def _update_calibration(request, user_id, calibration_id):
@@ -84,7 +93,7 @@ def _update_calibration(request, user_id, calibration_id):
 
         return Response(status=HTTPStatus.NO_CONTENT)
 
-    return Response(data={'errors': MSG_ERROR_RESOUCE}, status=HTTPStatus.NOT_FOUND)
+    return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
 
 def _delete_calibration(request, user_id, calibration_id):
@@ -93,7 +102,7 @@ def _delete_calibration(request, user_id, calibration_id):
         cali.delete()
         return Response(status=HTTPStatus.NO_CONTENT)
 
-    return Response(data={'errors': MSG_ERROR_RESOUCE}, status=HTTPStatus.NOT_FOUND)
+    return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
 
 def _list_calibrations(request, user_id):

@@ -224,6 +224,47 @@ def second_calibration(calibration, second_calibration_infos):
 
 
 @pytest.fixture
+def firsts_user_calibrations(second_calibration, user):
+    return list(Calibration.objects.filter(user=user))
+
+
+@pytest.fixture
+def second_user_calibrations_infos(second_user, lu_177_and_cu_64):
+
+    c1 = dict(
+            user=second_user,
+            isotope=lu_177_and_cu_64[0],
+            calibration_name='Calibration A',
+            syringe_activity=500.0,
+            residual_syringe_activity=2.3,
+            measurement_datetime=DATETIME_TIMEZONE,
+            phantom_volume=20.0,
+            acquisition_time=10000.0
+        )
+
+    c2 = dict(
+            user=second_user,
+            isotope=lu_177_and_cu_64[1],
+            calibration_name='Calibration B',
+            syringe_activity=25.0,
+            residual_syringe_activity=10.3,
+            measurement_datetime=DATETIME_TIMEZONE,
+            phantom_volume=500.0,
+            acquisition_time=1800.0
+        )
+
+    return [c1, c2]
+
+
+@pytest.fixture
+def second_user_calibrations(second_user_calibrations_infos, second_user):
+    Calibration.objects.create(**second_user_calibrations_infos[0])
+    Calibration.objects.create(**second_user_calibrations_infos[1])
+
+    return list(Calibration.objects.filter(user=second_user))
+
+
+@pytest.fixture
 def form_data(calibration_infos, calibration_file):
 
     return {

@@ -124,7 +124,7 @@ def test_create_successful(save_disk_mock, client_api_auth, user, form_data, cal
     assert body['acquisitionTime'] == calibration_infos['acquisition_time']
 
 
-def test_create_fail_negative_float_numbers(client_api_auth, user, form_data):
+def test_fail_create_negative_float_numbers(client_api_auth, user, form_data):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
@@ -152,7 +152,7 @@ def test_create_fail_negative_float_numbers(client_api_auth, user, form_data):
 
 
 @mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
-def test_create_fail_calibration_name_must_be_unique_per_user(save_disk_mock, client_api_auth, user, form_data):
+def test_fail_create_calibration_name_must_be_unique_per_user(save_disk_mock, client_api_auth, user, form_data):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
@@ -180,7 +180,7 @@ def test_create_fail_calibration_name_must_be_unique_per_user(save_disk_mock, cl
     assert body['errors'] == ['Calibration with this User and Calibration Name already exists.']
 
 
-def test_create_fail_datetime_invalid(client_api_auth, user, form_data):
+def test_fail_create_datetime_invalid(client_api_auth, user, form_data):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
@@ -200,7 +200,7 @@ def test_create_fail_datetime_invalid(client_api_auth, user, form_data):
     assert body['errors'] == ['Enter a valid date/time.']
 
 
-def test_create_fail_isotope_invalid(client_api_auth, user, form_data):
+def test_fail_create_isotope_invalid(client_api_auth, user, form_data):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
@@ -250,6 +250,63 @@ def test_read_update_delete_view_and_user_id_dont_match(client_api_auth, calibra
     assert body['errors'] == ['Token and User id do not match.']
 
 
+def test_read_calibration_successful(client_api_auth, calibration):
+    '''
+    /api/v1/users/<uuid>/calibrations/<uuid> - GET
+    '''
+
+    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+
+    response = client_api_auth.get(url)
+
+    assert response.status_code == HTTPStatus.OK
+
+    body = response.json()
+
+    assert body['id'] == str(calibration.uuid)
+    assert body['userId'] == str(calibration.user.uuid)
+    assert body['isotope'] == calibration.isotope.name
+    assert body['calibrationName'] == calibration.calibration_name
+    assert body['syringeActivity'] == calibration.syringe_activity
+    assert body['residualSyringeActivity'] == calibration.residual_syringe_activity
+    assert body['measurementDatetime'] == calibration.measurement_datetime.strftime('%d/%m/%Y - %H:%M:%S')
+    assert body['phantomVolume'] == calibration.phantom_volume
+    assert body['acquisitionTime'] == calibration.acquisition_time
+
+
+def test_fail_read_wrong_calibration_id(client_api_auth, calibration):
+    '''
+    /api/v1/users/<uuid>/calibrations/<uuid> - GET
+    '''
+
+    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, uuid4())
+
+    response = client_api_auth.get(url)
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+    body = response.json()
+
+    assert body['errors'] == ['This user does not have this resource registered.']
+
+
+def test_fail_read_calibration_the_another_user(client_api_auth, calibration, second_user_calibrations):
+    '''
+    /api/v1/users/<uuid>/calibrations/<uuid> - GET
+    '''
+
+    second_user_calibration_uuid = second_user_calibrations[0].uuid
+
+    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, second_user_calibration_uuid)
+    response = client_api_auth.get(url)
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+    body = response.json()
+
+    assert body['errors'] == ['This user does not have this resource registered.']
+
+
 def test_delete_successful(client_api_auth, calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
@@ -264,7 +321,7 @@ def test_delete_successful(client_api_auth, calibration):
     assert not Calibration.objects.exists()
 
 
-def test_delete_fail_wrong_calibration_id(client_api_auth, calibration):
+def test_fail_delete_wrong_calibration_id(client_api_auth, calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
     '''
@@ -279,6 +336,25 @@ def test_delete_fail_wrong_calibration_id(client_api_auth, calibration):
     assert body['errors'] == ['This user does not have this resource registered.']
 
     assert Calibration.objects.exists()
+
+
+def test_fail_delete_calibration_the_another_user(client_api_auth, calibration, second_user_calibrations):
+    '''
+    /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
+    '''
+
+    second_user_calibration_uuid = second_user_calibrations[0].uuid
+
+    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, second_user_calibration_uuid)
+    response = client_api_auth.delete(url)
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+    body = response.json()
+
+    assert body['errors'] == ['This user does not have this resource registered.']
+
+    assert Calibration.objects.count() == 3
 
 
 @mock.patch.object(django.core.files.storage.FileSystemStorage, '_save')
@@ -314,7 +390,7 @@ def test_update_successful(save_disk_mock, client_api_auth, form_data, calibrati
     assert calibration_db.acquisition_time == update_form_data['acquisitionTime']
 
 
-def test_update_fail_by_wrong_data(client_api_auth, form_data, calibration):
+def test_fail_update_by_wrong_data(client_api_auth, form_data, calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - PUT
     '''
@@ -345,7 +421,7 @@ def test_update_fail_by_wrong_data(client_api_auth, form_data, calibration):
     assert calibration_db.acquisition_time == form_data['acquisitionTime']
 
 
-def test_update_fail_isotope_invalid(client_api_auth, calibration, form_data):
+def test_fail_update_isotope_invalid(client_api_auth, calibration, form_data):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
@@ -376,13 +452,34 @@ def test_update_fail_isotope_invalid(client_api_auth, calibration, form_data):
     assert calibration_db.acquisition_time == form_data['acquisitionTime']
 
 
-def test_update_fail_wrong_calibration_id(client_api_auth, form_data, calibration):
+def test_fail_update_wrong_calibration_id(client_api_auth, form_data, calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - PUT
     '''
 
     url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, uuid4())
 
+    response = client_api_auth.put(url, data=form_data, format='multipart')
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+    body = response.json()
+
+    assert body['errors'] == ['This user does not have this resource registered.']
+
+
+def test_fail_update_calibration_the_another_user(client_api_auth, form_data, calibration, second_user_calibrations):
+    '''
+    /api/v1/users/<uuid>/calibrations/<uuid> - PUT
+    '''
+
+    second_user_calibration_uuid = second_user_calibrations[0].uuid
+
+    update_form_data = form_data.copy()
+    update_form_data['syringeActivity'] = 100.0
+    update_form_data['calibrationName'] = 'Calibration new'
+
+    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, second_user_calibration_uuid)
     response = client_api_auth.put(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.NOT_FOUND

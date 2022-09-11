@@ -20,6 +20,7 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
     - [2.8) Rota para cadastra uma calibração](#28-rota-para-cadastra-calibrações)
     - [2.9) Rota para atualizar uma calibração](#29-rota-para-atualizar-uma-calibração)
     - [2.10) Rota para deletar uma calibração](#210-rota-para-deletar-uma-calibração)
+    - [2.11) Rota para ler uma calibração](#211-rota-para-ler-uma-calibração)
   - [3) Desenvolvimento](#3-desenvolvimento)
     - [3.1) Setup inicial](#31-setup-inicial)
     - [3.2) Rodando o servido](#32-rodando-o-servido)
@@ -46,8 +47,8 @@ Desenvolvimento das funcionalidades
 Rotas disponiveis
 
 - Register
-  - POST /api/v1/register/
-  - POST /api/v1/login/
+  - POST /api/v1/users/register/
+  - POST /api/v1/users/login/
 - Users
   - GET /api/v1/users/\<uuid:user_id>/
 - Order
@@ -58,6 +59,7 @@ Rotas disponiveis
   - POST /api/v1/users/\<uuid:user_id>/
   - DELETE /api/v1/users/\<uuid:user_id>/calibration/\<uuid:cali_id>
   - PUT /api/v1/users/\<uuid:user_id>/calibration/\<uuid:cali_id>
+  - GET /api/v1/users/\<uuid:user_id>/calibration/\<uuid:cali_id>
 
 ---
 
@@ -74,8 +76,8 @@ Corpo da requisição:
 ```json
 {
   "name": "João Silva",
-  "email": "user1@user.com",
-  "confirmEmail": "user1@user.com",
+  "email": "user1@email.com",
+  "confirmEmail": "user1@email.com",
   "password1": "123456!!",
   "password2": "123456!!",
   "phone": "2222-2222",
@@ -109,7 +111,7 @@ Corpo da requisição:
 
 ```json
 {
-  "username": "user1@user.com",
+  "username": "user1@email.com",
   "password": "123456!!",
 }
 ```
@@ -121,7 +123,7 @@ curl --request POST \
   --url http://localhost:8000/api/v1/login/ \
   --header 'Content-Type: application/json' \
   --data '{
-  "username": "test1@email.com",
+  "username": "user1@email.com",
   "password": "123456!!"
 }'
 ```
@@ -158,11 +160,13 @@ Corpo da resposta:
 
 ```json
 {
-  "name": "João Silva",
-  "phone": "2222-2222",
-  "role": "medico",
-  "institution": "Ufrj",
-  "email": "user1@user.com"
+  "name": "João Sliva",
+  "phone": "11111111",
+  "role": "médico",
+  "clinic": "Clinica A",
+  "email": "user1@email.com",
+  "cpf": "93743851121",
+  "cnpj": "42438610000111"
 }
 ```
 
@@ -382,7 +386,7 @@ Corpo da resposta:
 
 * PUT /api/v1/users/\<uuid:user_id>/calibration/\<uuid:cali_id>
 
-Rota para atualizar as calibrações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `204`
+Rota para atualizar uma calibração especifica de um usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `204`
 
 Exemplo de `curl`:
 
@@ -406,9 +410,9 @@ curl --request PUT \
 
 ---
 
-* DELETE /api/v1/users/\<uuid:user_id>/calibration/
+* DELETE /api/v1/users/\<uuid:user_id>/calibration/\<uuid:cali_id>
 
-Rota para deletar uma do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. O código de sucesso é `204`
+Rota para deletar uma calibração especifica de um usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. O código de sucesso é `204`
 
 Exemplo de `curl`:
 
@@ -419,6 +423,25 @@ curl --request DELETE \
 ```
 
 ---
+
+### 2.11) Rota para ler uma calibração
+
+---
+
+* GET /api/v1/users/\<uuid:user_id>/calibration/\<uuid:cali_id>
+
+Rota para ler uma calibração especifica de um usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. O código de sucesso é `200`
+
+Exemplo de `curl`:
+
+```console
+curl --request GET \
+  --url http://localhost:8000/api/v1/users/0be5fbc0-079f-4006-8a15-0e0851bb1df4/calibrations/0f7cabd2-97fc-4115-85e4-0cb05174ce2b \
+  --header 'Authorization: Bearer a349a7d81c67d88ac60bd7d97cd09e85eb43f929'
+```
+
+---
+
 
 ## 3) Desenvolvimento
 
@@ -482,11 +505,11 @@ Os usuarios criados serão:
   * senha: `admin`
 
 * Usuario comum:
-  * email: `user1@user.com`
+  * email: `user1@email.com`
   * senha: `123456!!`
 
 * Usuario comum:
-  * email: `user2@user.com`
+  * email: `user2@email.com`
   * senha: `123456!!`
 
 Para apenas popular com as informações do `isotopos` basta fazer:
