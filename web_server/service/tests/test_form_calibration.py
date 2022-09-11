@@ -67,7 +67,9 @@ def test_invalid_isotope(calibration_infos, calibration_file):
     assert form.errors == {'isotope': ['Select a valid choice. That choice is not one of the available choices.']}
 
 
-def test_valid_create_form_field_save(calibration_infos, calibration_file):
+def test_valid_create_form_field_save(settings, tmp_path, calibration_infos, calibration_file):
+
+    settings.MEDIA_ROOT = tmp_path / 'media'
 
     form = CreateCalibrationForm(data=calibration_infos, files=calibration_file)
 

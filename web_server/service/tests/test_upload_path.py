@@ -22,39 +22,9 @@ def test_upload_name_images_calibration(mock, user, calibration, datetime_now):
     time_stamp_str = str(t.timestamp()).replace('.', '')
 
     mock.return_value = t
-    slug = slugify(calibration.calibration_name)
+    slug_calibration_name = slugify(calibration.calibration_name)
+    slug_clinic_name = slugify(calibration.user.profile.clinic)
 
-    expected = f'{user.id}/calibrations/{slug}_{time_stamp_str}.zip'
+    expected = f'{slug_clinic_name}/calibrations/{slug_calibration_name}_{time_stamp_str}.zip'
 
     assert upload_calibration_to(calibration, filename='filename.zip') == expected
-
-
-# @mock.patch('web_server.service.models.now')
-# def test_upload_name_report_dosimetry_order(mock, dosimetry_clinical_order, datetime_now):
-#     t, date, time = datetime_now
-
-#     mock.return_value = t
-#     user = _normalize_email(dosimetry_clinical_order.requester.email)
-
-#     assert upload_report_to(dosimetry_clinical_order, 'filename.pdf') == f'{user}/report/{date}/report_{time}.pdf'
-
-
-# @mock.patch('web_server.service.models.now')
-# def test_upload_name_images_segmentantion_order(mock, segmentantion_order, datetime_now):
-#     t, date, time = datetime_now
-
-#     mock.return_value = t
-
-#     user = _normalize_email(segmentantion_order.requester.email)
-
-#     assert upload_img_to(segmentantion_order, filename='filename.zip') == f'{user}/images/{date}/images_{time}.zip'
-
-
-# @mock.patch('web_server.service.models.now')
-# def test_upload_name_report_segmentantion_order(mock, segmentantion_order, datetime_now):
-#     t, date, time = datetime_now
-
-#     mock.return_value = t
-#     user = _normalize_email(segmentantion_order.requester.email)
-
-#     assert upload_report_to(segmentantion_order, 'filename.pdf') == f'{user}/report/{date}/report_{time}.pdf'
