@@ -10,6 +10,11 @@ from web_server.core.models import UserProfile
 from web_server.service.models import Isotope, Order, Calibration
 
 
+@pytest.fixture(autouse=True)
+def mediafiles(settings, tmp_path):
+    settings.MEDIA_ROOT = tmp_path / 'media'
+
+
 @pytest.fixture
 def register_infos():
     return dict(
