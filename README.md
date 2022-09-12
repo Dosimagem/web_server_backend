@@ -28,7 +28,7 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
     - [3.4) Área adminstrativa](#34-área-adminstrativa)
   - [4) Banco de dados](#4-banco-de-dados)
     - [4.1) Usando o postgres via docker](#41-usando-o-postgres-via-docker)
-    - [4.2) Backup de todo o banco](#42-backup-de-todo-o-banco)
+    - [4.2) Backup do banco](#42-backup-do-banco)
   - [5) Python decouple](#5-python-decouple)
   - [6) Docker](#6-docker)
 
@@ -486,7 +486,7 @@ Para usar o `postgres` o arquivo `.env` fica assim basta adicionar a variável `
 DATABASE_URL=postgres://seu_user_db:seu_password_db@localhost:port/seu_db
 ```
 
-Os valores `seu_user_db`, `seu_password_db`, `port` e `seu_db` podem ser respectivamente `dosimagem`,  `dosimagem`, `5434`e `dosimagem_db`. Para user o postgres utilizando o `docker` basta olha [aqui](#42-backup-de-todo-o-banco).
+Os valores `seu_user_db`, `seu_password_db`, `port` e `seu_db` podem ser respectivamente `dosimagem`,  `dosimagem`, `5434`e `dosimagem_db`. Para user o postgres utilizando o `docker` basta olhar aqui: [Usando o postgres via docker](#41-usando-o-postgres-via-docker).
 
 Agora pode-se fazer a migração com o `db` selecionado:
 
