@@ -4,9 +4,7 @@ from uuid import uuid4
 
 from django.db import models
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from django.utils.translation import gettext as _
 from django.utils.timezone import now
 from django.utils.text import slugify
 
@@ -50,12 +48,12 @@ class Order(models.Model):
         verbose_name = 'User Order'
         verbose_name_plural = 'User Orders'
 
-    def save(self, *args, **kwargs):
-        if self.remaining_of_analyzes > self.quantity_of_analyzes:
-            raise ValidationError(
-                _('Remaining of analyzes must be lower or equal quantity of analyzes.'),
-                code='invalid')  # TODO: ValidationError or IntegrityError
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.remaining_of_analyzes > self.quantity_of_analyzes:
+    #         raise ValidationError(
+    #             _('Remaining of analyzes must be lower or equal quantity of analyzes.'),
+    #             code='invalid')  # TODO: ValidationError or IntegrityError
+    #     super().save(*args, **kwargs)
 
 
 class Isotope(models.Model):
