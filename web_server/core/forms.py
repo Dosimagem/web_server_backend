@@ -77,7 +77,7 @@ class ProfileCreateForm(forms.ModelForm):
 #         return profile
 
 
-class UserCreationForm(UserCreationForm):
+class MyUserCreationForm(UserCreationForm):
 
     confirmed_email = forms.EmailField(label='confirmed_email')
 

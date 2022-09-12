@@ -6,6 +6,13 @@ from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
 
 from web_server.service.models import Calibration
+from web_server.api.views.errors_msg import (
+    LANG,
+    USE_I18N,
+    MSG_ERROR_USER_CALIBRATIONS,
+    MSG_ERROR_TOKEN_USER,
+    MSG_ERROR_RESOURCE,
+)
 
 
 def test_list_create_not_allowed_method(client_api_auth, calibration):
@@ -38,7 +45,7 @@ def test_list_create_token_view_and_user_id_dont_match(client_api_auth, calibrat
 
     body = response.json()
 
-    assert body['errors'] == ['Token and User id do not match.']
+    assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
 def test_list_successful(client_api_auth, calibration):
@@ -85,7 +92,7 @@ def test_try_list_for_user_without_calibrations(client_api_auth, user):
 
     body = response.json()
 
-    assert body == {'errors': ['This user has no calibrations record.']}
+    assert body == {'errors': MSG_ERROR_USER_CALIBRATIONS}
 
 
 def test_create_successful(client_api_auth, user, form_data, calibration_infos):
@@ -138,12 +145,22 @@ def test_fail_create_negative_float_numbers(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    assert body['errors'] == [
-        'Ensure Syringe_activity value is greater than or equal to 0.0.',
-                              'Ensure Residual_syringe_activity value is greater than or equal to 0.0.',
-                              'Ensure Phantom_volume value is greater than or equal to 0.0.',
-                              'Ensure Acquisition_time value is greater than or equal to 0.0.'
-                              ]
+    if LANG == 'pt-br' and USE_I18N:
+        expected = [
+            'Certifique-se que atividade da seringa seja maior ou igual a 0.0.',
+            'Certifique-se que atividade residual na seringa seja maior ou igual a 0.0.',
+            'Certifique-se que volume do fantoma seja maior ou igual a 0.0.',
+            'Certifique-se que tempo de aquisição seja maior ou igual a 0.0.',
+            ]
+    else:
+        expected = [
+            'Ensure syringe activity value is greater than or equal to 0.0.',
+            'Ensure residual syringe activity value is greater than or equal to 0.0.',
+            'Ensure phantom volume value is greater than or equal to 0.0.',
+            'Ensure acquisition time value is greater than or equal to 0.0.'
+            ]
+
+    assert body['errors'] == expected
 
 
 def test_fail_create_calibration_name_must_be_unique_per_user(client_api_auth, user, form_data):
@@ -167,7 +184,12 @@ def test_fail_create_calibration_name_must_be_unique_per_user(client_api_auth, u
 
     body = response.json()
 
-    assert body['errors'] == ['Calibration with this User and Calibration Name already exists.']
+    if LANG == 'pt-br' and USE_I18N:
+        expected = ['Calibração com esse nome ja existe para este usuário.']
+    else:
+        expected = ['Calibration with this User and Calibration Name already exists.']
+
+    assert body['errors'] == expected
 
 
 def test_fail_create_datetime_invalid(client_api_auth, user, form_data):
@@ -207,7 +229,12 @@ def test_fail_create_isotope_invalid(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    assert body['errors'] == ['Isotope not registered.']
+    if LANG == 'pt-br' and USE_I18N:
+        expected = ['Isotopo não registrado.']
+    else:
+        expected = ['Isotope not registered.']
+
+    assert body['errors'] == expected
 
 
 def test_read_update_delete_not_allowed_method(client_api_auth, calibration):
@@ -237,7 +264,7 @@ def test_read_update_delete_view_and_user_id_dont_match(client_api_auth, calibra
 
     body = response.json()
 
-    assert body['errors'] == ['Token and User id do not match.']
+    assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
 def test_read_calibration_successful(client_api_auth, calibration):
@@ -277,7 +304,7 @@ def test_fail_read_wrong_calibration_id(client_api_auth, calibration):
 
     body = response.json()
 
-    assert body['errors'] == ['This user does not have this resource registered.']
+    assert body['errors'] == MSG_ERROR_RESOURCE
 
 
 def test_fail_read_calibration_the_another_user(client_api_auth, calibration, second_user_calibrations):
@@ -294,7 +321,7 @@ def test_fail_read_calibration_the_another_user(client_api_auth, calibration, se
 
     body = response.json()
 
-    assert body['errors'] == ['This user does not have this resource registered.']
+    assert body['errors'] == MSG_ERROR_RESOURCE
 
 
 def test_delete_successful(client_api_auth, calibration):
@@ -323,7 +350,7 @@ def test_fail_delete_wrong_calibration_id(client_api_auth, calibration):
 
     body = response.json()
 
-    assert body['errors'] == ['This user does not have this resource registered.']
+    assert body['errors'] == MSG_ERROR_RESOURCE
 
     assert Calibration.objects.exists()
 
@@ -342,7 +369,7 @@ def test_fail_delete_calibration_the_another_user(client_api_auth, calibration, 
 
     body = response.json()
 
-    assert body['errors'] == ['This user does not have this resource registered.']
+    assert body['errors'] == MSG_ERROR_RESOURCE
 
     assert Calibration.objects.count() == 3
 
@@ -391,7 +418,12 @@ def test_fail_update_by_wrong_data(client_api_auth, form_data, calibration):
 
     body = response.json()
 
-    assert body['errors'] == ['Ensure Syringe_activity value is greater than or equal to 0.0.']
+    if LANG and USE_I18N:
+        expected = ['Certifique-se que atividade da seringa seja maior ou igual a 0.0.']
+    else:
+        expected = ['Ensure syringe activity value is greater than or equal to 0.0.']
+
+    assert body['errors'] == expected
 
     calibration_db = Calibration.objects.all().first()
 
@@ -422,7 +454,12 @@ def test_fail_update_isotope_invalid(client_api_auth, calibration, form_data):
 
     body = response.json()
 
-    assert body['errors'] == ['Isotope not registered.']
+    if LANG == 'pt-br' and USE_I18N:
+        expected = ['Isotopo não registrado.']
+    else:
+        expected = ['Isotope not registered.']
+
+    assert body['errors'] == expected
 
     calibration_db = Calibration.objects.all().first()
 
@@ -450,7 +487,7 @@ def test_fail_update_wrong_calibration_id(client_api_auth, form_data, calibratio
 
     body = response.json()
 
-    assert body['errors'] == ['This user does not have this resource registered.']
+    assert body['errors'] == MSG_ERROR_RESOURCE
 
 
 def test_fail_update_calibration_the_another_user(client_api_auth, form_data, calibration, second_user_calibrations):
@@ -471,7 +508,7 @@ def test_fail_update_calibration_the_another_user(client_api_auth, form_data, ca
 
     body = response.json()
 
-    assert body['errors'] == ['This user does not have this resource registered.']
+    assert body['errors'] == MSG_ERROR_RESOURCE
 
 
 def test_update_fail_calibration_name_must_be_unique_per_user(client_api_auth,
@@ -494,4 +531,9 @@ def test_update_fail_calibration_name_must_be_unique_per_user(client_api_auth,
 
     body = response.json()
 
-    assert body['errors'] == [_('Calibration with this User and Calibration Name already exists.')]
+    if LANG == 'pt-br' and USE_I18N:
+        expected = ['Calibração com esse nome ja existe para este usuário.']
+    else:
+        expected = ['Calibration with this User and Calibration Name already exists.']
+
+    assert body['errors'] == expected

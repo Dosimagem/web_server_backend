@@ -9,8 +9,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
 
-from web_server.core.forms import UserCreationForm, ProfileCreateForm
-from .utils import list_errors
+from web_server.core.forms import MyUserCreationForm, ProfileCreateForm
+from .errors_msg import list_errors
 
 User = get_user_model()
 
@@ -46,7 +46,7 @@ def register(request):
 
     data = request.data
 
-    form_user = UserCreationForm(data)
+    form_user = MyUserCreationForm(data)
 
     if not form_user.is_valid():
         return Response({'errors': list_errors(form_user.errors)}, status=HTTPStatus.BAD_REQUEST)

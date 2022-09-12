@@ -34,7 +34,7 @@ def test_invalid_create_form_field_must_be_positive(field, calibration_infos, ca
 
     msg = _('Ensure this value is greater than or equal to %(limit_value)s.')
 
-    msg = msg % {'limit_value' : 0.0}
+    msg = msg % {'limit_value': 0.0}
 
     assert form.errors == {field: [msg]}
 

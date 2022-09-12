@@ -4,6 +4,11 @@ from uuid import uuid4
 from django.shortcuts import resolve_url
 
 from web_server.service.models import Order
+from web_server.api.views.errors_msg import (
+    MSG_ERROR_TOKEN_USER,
+    MSG_ERROR_RESOURCE,
+    MSG_ERROR_USER_ORDER,
+)
 
 
 # List - GET
@@ -52,7 +57,7 @@ def test_try_list_orders_for_user_without_order(client_api_auth, user):
 
     body = response.json()
 
-    assert body == {'errors': ['This user has no order record.']}
+    assert body == {'errors': MSG_ERROR_USER_ORDER}
 
 
 def test_list_not_allowed_method(client_api_auth, user_and_order):
@@ -84,7 +89,7 @@ def test_list_token_view_and_user_id_dont_match(client_api_auth, user_and_order)
 
     body = response.json()
 
-    assert body['errors'] == ['Token and User id do not match.']
+    assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
 # Read - GET
@@ -129,7 +134,7 @@ def test_read_order_by_wrong_id(client_api_auth, user_and_order):
 
     body = response.json()
 
-    assert body['errors'] == ['This user does not have this resource registered.']
+    assert body['errors'] == MSG_ERROR_RESOURCE
 
 
 def test_try_read_order_for_user_without_order(client_api_auth, user):
@@ -147,7 +152,7 @@ def test_try_read_order_for_user_without_order(client_api_auth, user):
 
     body = response.json()
 
-    assert body == {'errors': ['This user has no order record.']}
+    assert body == {'errors': MSG_ERROR_USER_ORDER}
 
 
 def test_read_view_token_and_user_id_dont_match(client_api_auth, user_and_order):
@@ -163,7 +168,7 @@ def test_read_view_token_and_user_id_dont_match(client_api_auth, user_and_order)
 
     body = response.json()
 
-    assert body['errors'] == ['Token and User id do not match.']
+    assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
 def test_read_not_allowed_method(client_api_auth, user_and_order):

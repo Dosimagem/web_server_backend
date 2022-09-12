@@ -4,6 +4,8 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
+from django.utils.translation import get_language
+from django.conf import settings
 
 from web_server.api.tests.conftest import HTTP_METHODS
 
@@ -73,7 +75,12 @@ def test_fail_login_missing_password(client_api, user_info):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body == {'errors': [_('Password field is required.')]}
+    if get_language() == 'pt-br' and settings.USE_I18N:
+        expected = ['O campo senha é obrigatório.']
+    else:
+        expected = ['Password field is required.']
+
+    assert body == {'errors': expected}
 
 
 def test_fail_login_missing_username(client_api, user_info):
@@ -83,17 +90,13 @@ def test_fail_login_missing_username(client_api, user_info):
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert body == {'errors': [_('Username field is required.')]}
 
+    if get_language() == 'pt-br' and settings.USE_I18N:
+        expected = ['O campo username é obrigatório.']
+    else:
+        expected = ['Username field is required.']
 
-def test_fail_login_missing_username_and_password(client_api):
-
-    wrong_login = {}
-    resp = client_api.post(URL_LOGIN, data=wrong_login, format='json')
-    response_dict = resp.json()
-
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert response_dict == {'errors': [_('Username field is required.'), _('Password field is required.')]}
+    assert body == {'errors': expected}
 
 
 @pytest.mark.parametrize("method", ['get', 'put', 'patch', 'delete'])

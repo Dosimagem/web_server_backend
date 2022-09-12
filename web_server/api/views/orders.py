@@ -10,8 +10,12 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 
 from web_server.service.models import Order
-from .utils import MyTokenAuthentication
-from .errors_msg import MSG_ERROR_TOKEN_USER, MSG_ERROR_USER_ORDER, MSG_ERROR_RESOURCE
+from .auth import MyTokenAuthentication
+from .errors_msg import (
+                        MSG_ERROR_TOKEN_USER,
+                        MSG_ERROR_USER_ORDER,
+                        MSG_ERROR_RESOURCE,
+                        )
 
 User = get_user_model()
 

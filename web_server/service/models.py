@@ -1,6 +1,5 @@
 from functools import partial
 import os
-from time import timezone
 from uuid import uuid4
 
 from django.db import models
