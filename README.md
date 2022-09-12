@@ -483,8 +483,10 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000,127.0.0.1:3000
 Para usar o `postgres` o arquivo `.env` fica assim basta adicionar a variável `DATABASE_URL`:
 
 ```console
-DATABASE_URL=postgres://seu_user_db:seu_password_db@localhost:5432/seu_db
+DATABASE_URL=postgres://seu_user_db:seu_password_db@localhost:port/seu_db
 ```
+
+Os valores `seu_user_db`, `seu_password_db`, `port` e `seu_db` podem ser respectivamente `dosimagem`,  `dosimagem`, `5434`e `dosimagem_db`. Para user o postgres utilizando o `docker` basta olha [aqui](#42-backup-de-todo-o-banco).
 
 Agora pode-se fazer a migração com o `db` selecionado:
 
@@ -577,7 +579,7 @@ docker-compose -f docker-compose.yml up -d
 Configurar `DATABASE_URL` no arquivo `.env` para
 
 ```
-postgres://api:apirest@localhost:5434/api
+postgres://dosimagem:dosimagem@localhost:5434/dosimagem_db
 ```
 ---
 
