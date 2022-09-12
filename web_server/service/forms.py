@@ -26,7 +26,7 @@ class CreateOrderForm(forms.ModelForm):
         if (quantity_of_analyzes is not None) and (remaining_of_analyzes > quantity_of_analyzes):
             raise ValidationError(
                 _('Must be lower with the field quantity of analyzes.'),
-                code='invalid')  # TODO : Change invalid for lower or equal
+                code='lower_or_equal')
 
         return remaining_of_analyzes
 
