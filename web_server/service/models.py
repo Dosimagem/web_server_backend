@@ -1,5 +1,6 @@
 from functools import partial
 import os
+from time import timezone
 from uuid import uuid4
 
 from django.db import models
@@ -122,7 +123,7 @@ class Calibration(models.Model):
             'calibration_name': self.calibration_name,
             'syringe_activity': self.syringe_activity,
             'residual_syringe_activity': self.residual_syringe_activity,
-            'measurement_datetime': self.measurement_datetime.strftime('%d/%m/%Y - %H:%M:%S'),
+            'measurement_datetime': self.measurement_datetime.strftime('%d/%m/%Y %H:%M:%S'),
             'phantom_volume': self.phantom_volume,
             'acquisition_time': self.acquisition_time,
         }

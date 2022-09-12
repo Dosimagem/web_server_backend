@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext as _
 
 from web_server.core.forms import ProfileCreateForm
 from web_server.core.models import UserProfile
@@ -47,7 +48,7 @@ def test_field_missing(profile_infos, field):
 
     assert not form.is_valid()
 
-    expected = ['This field is required.']
+    expected = [_('This field is required.')]
     assert expected == form.errors[field]
 
 

@@ -1,5 +1,7 @@
 from decimal import Decimal
 
+from django.utils.translation import gettext as _
+
 from web_server.service.forms import CreateOrderForm
 from web_server.service.models import Order
 
@@ -34,7 +36,7 @@ def test_invalid_form_quantity_of_analyzes(create_order_data):
 
     assert not form.is_valid()
 
-    assert form.errors == {'quantity_of_analyzes': ['Enter a whole number.']}
+    assert form.errors == {'quantity_of_analyzes': [_('Enter a whole number.')]}
 
 
 def test_invalid_form_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(create_order_data):
@@ -46,7 +48,7 @@ def test_invalid_form_remaining_of_analyzes_must_be_lower_that_quantity_of_analy
 
     assert not form.is_valid()
 
-    assert form.errors == {'remaining_of_analyzes': ['Must be lower with the field quantity of analyzes.']}
+    assert form.errors == {'remaining_of_analyzes': [_('Must be lower with the field quantity of analyzes.')]}
 
 
 # def test_invalid_form_service_type(create_oerder_data):

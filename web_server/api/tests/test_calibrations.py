@@ -3,6 +3,7 @@ from http import HTTPStatus
 from uuid import uuid4
 
 from django.shortcuts import resolve_url
+from django.utils.translation import gettext as _
 
 from web_server.service.models import Calibration
 
@@ -66,7 +67,7 @@ def test_list_successful(client_api_auth, calibration):
         assert cali_response['calibrationName'] == cali_db.calibration_name
         assert cali_response['syringeActivity'] == cali_db.syringe_activity
         assert cali_response['residualSyringeActivity'] == cali_db.residual_syringe_activity
-        assert cali_response['measurementDatetime'] == cali_db.measurement_datetime.strftime('%d/%m/%Y - %H:%M:%S')
+        assert cali_response['measurementDatetime'] == cali_db.measurement_datetime.strftime('%d/%m/%Y %H:%M:%S')
         assert cali_response['phantomVolume'] == cali_db.phantom_volume
         assert cali_response['acquisitionTime'] == cali_db.acquisition_time
 
@@ -112,7 +113,7 @@ def test_create_successful(client_api_auth, user, form_data, calibration_infos):
     assert body['calibrationName'] == calibration_infos['calibration_name']
     assert body['syringeActivity'] == calibration_infos['syringe_activity']
     assert body['residualSyringeActivity'] == calibration_infos['residual_syringe_activity']
-    assert body['measurementDatetime'] == calibration_infos['measurement_datetime'].strftime('%d/%m/%Y - %H:%M:%S')
+    assert body['measurementDatetime'] == calibration_infos['measurement_datetime'].strftime('%d/%m/%Y %H:%M:%S')
     assert body['phantomVolume'] == calibration_infos['phantom_volume']
     assert body['acquisitionTime'] == calibration_infos['acquisition_time']
 
@@ -137,7 +138,8 @@ def test_fail_create_negative_float_numbers(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    assert body['errors'] == ['Ensure Syringe_activity value is greater than or equal to 0.0.',
+    assert body['errors'] == [
+        'Ensure Syringe_activity value is greater than or equal to 0.0.',
                               'Ensure Residual_syringe_activity value is greater than or equal to 0.0.',
                               'Ensure Phantom_volume value is greater than or equal to 0.0.',
                               'Ensure Acquisition_time value is greater than or equal to 0.0.'
@@ -185,7 +187,7 @@ def test_fail_create_datetime_invalid(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    assert body['errors'] == ['Enter a valid date/time.']
+    assert body['errors'] == [_('Enter a valid date/time.')]
 
 
 def test_fail_create_isotope_invalid(client_api_auth, user, form_data):
@@ -257,7 +259,7 @@ def test_read_calibration_successful(client_api_auth, calibration):
     assert body['calibrationName'] == calibration.calibration_name
     assert body['syringeActivity'] == calibration.syringe_activity
     assert body['residualSyringeActivity'] == calibration.residual_syringe_activity
-    assert body['measurementDatetime'] == calibration.measurement_datetime.strftime('%d/%m/%Y - %H:%M:%S')
+    assert body['measurementDatetime'] == calibration.measurement_datetime.strftime('%d/%m/%Y %H:%M:%S')
     assert body['phantomVolume'] == calibration.phantom_volume
     assert body['acquisitionTime'] == calibration.acquisition_time
 
@@ -492,4 +494,4 @@ def test_update_fail_calibration_name_must_be_unique_per_user(client_api_auth,
 
     body = response.json()
 
-    assert body['errors'] == ['Calibration with this User and Calibration Name already exists.']
+    assert body['errors'] == [_('Calibration with this User and Calibration Name already exists.')]
