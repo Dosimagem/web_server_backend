@@ -9,7 +9,7 @@ from rest_framework.decorators import (
                                         )
 from rest_framework.permissions import IsAuthenticated
 
-from .utils import MyTokenAuthentication
+from .auth import MyTokenAuthentication
 from .errors_msg import MSG_ERROR_TOKEN_USER
 
 

@@ -16,7 +16,6 @@ def test_timestamp(datetime_now):
     assert _timestamp(datetime_now) == '16409952000'
 
 
-
 @mock.patch('web_server.service.models.now')
 def test_upload_name_images_calibration(mock, user, calibration, datetime_now):
     t = datetime_now

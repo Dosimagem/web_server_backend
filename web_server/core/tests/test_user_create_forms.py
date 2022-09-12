@@ -1,8 +1,8 @@
 import pytest
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext as _
+from django.utils.translation import ngettext, gettext as _
 
-from web_server.core.forms import UserCreationForm
+from web_server.core.forms import MyUserCreationForm
 from web_server.core.models import UserProfile
 
 
@@ -11,7 +11,7 @@ User = get_user_model()
 
 def test_valid_form(register_infos, db):
 
-    form = UserCreationForm(data=register_infos)
+    form = MyUserCreationForm(data=register_infos)
 
     assert form.is_valid()
 
@@ -27,7 +27,7 @@ def test_valid_form(register_infos, db):
 def test_field_is_not_optional(register_infos, field, db):
 
     del register_infos[field]
-    form = UserCreationForm(data=register_infos)
+    form = MyUserCreationForm(data=register_infos)
 
     assert not form.is_valid()
 
@@ -37,7 +37,7 @@ def test_field_is_not_optional(register_infos, field, db):
 
 def test_password_did_not_mach(user_wrong_signup, db):
 
-    form = UserCreationForm(data=user_wrong_signup)
+    form = MyUserCreationForm(data=user_wrong_signup)
 
     assert not form.is_valid()
 
@@ -47,7 +47,7 @@ def test_password_did_not_mach(user_wrong_signup, db):
 
 def test_email_did_not_mach(user_wrong_signup, db):
 
-    form = UserCreationForm(data=user_wrong_signup)
+    form = MyUserCreationForm(data=user_wrong_signup)
 
     assert not form.is_valid()
 
@@ -55,9 +55,15 @@ def test_email_did_not_mach(user_wrong_signup, db):
     assert expected == form.errors['confirmed_email']
 
 
+MSG_PASSWORD = ngettext(
+        "This password is too short. It must contain at least %(min_length)d character.",
+        "This password is too short. It must contain at least %(min_length)d characters.",
+        8) % {'min_length': 8}
+
+
 @pytest.mark.parametrize(
     'password, error_validation', [
-        ('1', [_('This password is too short. It must contain at least 8 characters.'),
+        ('1', [MSG_PASSWORD,
                _('This password is too common.'),
                _('This password is entirely numeric.')]),
         ('12345678', [_('This password is too common.'),
@@ -73,7 +79,7 @@ def test_password_validation(password, error_validation, db):
         'password2': password,
     }
 
-    form = UserCreationForm(data=payload)
+    form = MyUserCreationForm(data=payload)
 
     assert not form.is_valid()
 
@@ -82,7 +88,7 @@ def test_password_validation(password, error_validation, db):
 
 def test_save(register_infos, db):
 
-    form = UserCreationForm(register_infos)
+    form = MyUserCreationForm(register_infos)
     form.save()
 
     assert User.objects.exists()

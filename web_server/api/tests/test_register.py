@@ -4,6 +4,8 @@ import pytest
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
+from django.utils.translation import get_language
+from django.conf import settings
 from rest_framework.authtoken.models import Token
 
 from web_server.api.tests.conftest import HTTP_METHODS
@@ -42,7 +44,12 @@ def test_fail_user_unique_fields(client_api, user, register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert _('User with this Email address already exists.') in errors_list
+    if get_language() == 'pt-br' and settings.USE_I18N:
+        expected = 'Usuário com este Endereço de email já existe.'
+    else:
+        expected = 'User with this Email address already exists.'
+
+    assert expected in errors_list
 
 
 def test_fail_profile_unique_fields(client_api, user, second_register_infos):
@@ -84,16 +91,33 @@ def test_when_profile_fail_the_user_must_not_be_create(client_api, user, second_
     assert _('Clinic already exists') in errors_list
 
 
+LANG = settings.LANGUAGE_CODE
+I18N = settings.USE_I18N
+
+
 @pytest.mark.parametrize('field, error', [
-    ('email', [_('Email field is required.'), _('The two email fields didn’t match.')]),
-    ('confirmed_email', [_('Confirmed_email field is required.')]),
-    ('name', [_('Name field is required.')]),
-    ('phone', [_('Phone field is required.')]),
-    ('clinic', [_('Clinic field is required.')]),
-    ('role', [_('Role field is required.')])
+    ('email', [
+        'O campo email é obrigatório.' if LANG == 'pt-br' and I18N else 'Email is required.',
+        _('The two email fields didn’t match.')
+        ]),
+    ('confirmed_email', [
+        'O campo email de confirmação é obrigatório.' if LANG == 'pt-br' and I18N else 'Confirmed email is required.'
+        ]),
+    ('name', [
+        'O campo nome é obrigatório.' if LANG == 'pt-br' and I18N else 'Name field is required.'
+        ]),
+    ('phone', [
+        'O campo telefone é obrigatório.' if LANG == 'pt-br' and I18N else 'Phone field is required.'
+        ]),
+    ('clinic', [
+         'O campo clínica é obrigatório.' if LANG == 'pt-br' and I18N else 'Clinic field is required.'
+        ]),
+    ('role', [
+         'O campo cargo é obrigatório.' if LANG == 'pt-br' and I18N else 'Role field is required.'
+        ])
     ]
 )
-def test_resgiter_missing_fields(client_api, field, error, register_infos):
+def test_register_missing_fields(client_api, field, error, register_infos):
 
     register_infos.pop(field)
 

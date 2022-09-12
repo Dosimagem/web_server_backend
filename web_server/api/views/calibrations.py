@@ -12,8 +12,13 @@ from rest_framework.permissions import IsAuthenticated
 from web_server.service.models import Calibration, Isotope
 from web_server.service.forms import CreateCalibrationForm, IsotopeForm, UpdateCalibrationForm
 
-from .utils import MyTokenAuthentication, list_errors
-from .errors_msg import MSG_ERROR_USER_CALIBRATIONS, MSG_ERROR_TOKEN_USER, MSG_ERROR_RESOURCE
+from .auth import MyTokenAuthentication
+from .errors_msg import (
+    MSG_ERROR_USER_CALIBRATIONS,
+    MSG_ERROR_TOKEN_USER,
+    MSG_ERROR_RESOURCE,
+    list_errors
+)
 
 User = get_user_model()
 

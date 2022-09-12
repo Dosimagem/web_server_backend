@@ -25,7 +25,11 @@ def test_invalid_form_negative_quantity_of_analyzes(create_order_data):
 
     assert not form.is_valid()
 
-    assert form.errors == {'quantity_of_analyzes': ['Ensure this value is greater than or equal to 0.']}
+    msg = _('Ensure this value is greater than or equal to %(limit_value)s.')
+
+    msg = msg % {'limit_value': 0}
+
+    assert form.errors == {'quantity_of_analyzes': [msg]}
 
 
 def test_invalid_form_quantity_of_analyzes(create_order_data):
