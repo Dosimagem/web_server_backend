@@ -1,5 +1,5 @@
 from unittest import mock
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 from django.utils.text import slugify
@@ -9,11 +9,12 @@ from web_server.service.models import upload_calibration_to, _timestamp
 
 @pytest.fixture
 def datetime_now():
-    return datetime(year=2022, month=1, day=1)
+    return datetime(year=2022, month=1, day=1, tzinfo=timezone.utc)
 
 
 def test_timestamp(datetime_now):
     assert _timestamp(datetime_now) == '16409952000'
+
 
 
 @mock.patch('web_server.service.models.now')

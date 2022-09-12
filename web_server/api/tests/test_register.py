@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 import pytest
+from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
 from rest_framework.authtoken.models import Token
@@ -41,7 +42,7 @@ def test_fail_user_unique_fields(client_api, user, register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert 'User with this Email address already exists.' in errors_list
+    assert _('User with this Email address already exists.') in errors_list
 
 
 def test_fail_profile_unique_fields(client_api, user, second_register_infos):
@@ -59,9 +60,9 @@ def test_fail_profile_unique_fields(client_api, user, second_register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert 'Clinic already exists' in errors_list
-    assert 'CPF already exists' in errors_list
-    assert 'CNPJ already exists' in errors_list
+    assert _('Clinic already exists') in errors_list
+    assert _('CPF already exists') in errors_list
+    assert _('CNPJ already exists') in errors_list
 
 
 def test_when_profile_fail_the_user_must_not_be_create(client_api, user, second_register_infos):
@@ -80,16 +81,16 @@ def test_when_profile_fail_the_user_must_not_be_create(client_api, user, second_
     assert User.objects.count() == 1
     assert Token.objects.count() == 1
 
-    assert 'Clinic already exists' in errors_list
+    assert _('Clinic already exists') in errors_list
 
 
 @pytest.mark.parametrize('field, error', [
-    ('email', ['Email field is required.', 'The two email fields didn’t match.']),
-    ('confirmed_email', ['Confirmed_email field is required.']),
-    ('name', ['Name field is required.']),
-    ('phone', ['Phone field is required.']),
-    ('clinic', ['Clinic field is required.']),
-    ('role', ['Role field is required.'])
+    ('email', [_('Email field is required.'), _('The two email fields didn’t match.')]),
+    ('confirmed_email', [_('Confirmed_email field is required.')]),
+    ('name', [_('Name field is required.')]),
+    ('phone', [_('Phone field is required.')]),
+    ('clinic', [_('Clinic field is required.')]),
+    ('role', [_('Role field is required.')])
     ]
 )
 def test_resgiter_missing_fields(client_api, field, error, register_infos):
@@ -113,8 +114,8 @@ def test_register_invalid_email(client_api, register_infos):
     errors_list = resp.json()['errors']
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert 'Enter a valid email address.' in errors_list
-    assert 'The two email fields didn’t match.' in errors_list
+    assert _('Enter a valid email address.') in errors_list
+    assert _('The two email fields didn’t match.') in errors_list
 
 
 def test_register_password_dont_mach(client_api, register_infos):
@@ -125,7 +126,7 @@ def test_register_password_dont_mach(client_api, register_infos):
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert body['errors'] == ['The two password fields didn’t match.']
+    assert body['errors'] == [_('The two password fields didn’t match.')]
 
 
 def test_register_email_dont_mach(client_api, register_infos):
@@ -136,7 +137,7 @@ def test_register_email_dont_mach(client_api, register_infos):
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert body['errors'] == ['The two email fields didn’t match.']
+    assert body['errors'] == [_('The two email fields didn’t match.')]
 
 
 @pytest.mark.parametrize("method", ['get', 'put', 'patch', 'delete'])

@@ -3,6 +3,7 @@ from uuid import uuid4
 
 import pytest
 from django.shortcuts import resolve_url
+from django.utils.translation import gettext as _
 
 from web_server.api.tests.conftest import HTTP_METHODS
 
@@ -34,7 +35,7 @@ def test_read_users_without_token(client_api):
     response = client_api.get(url)
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
-    assert response.json() == {'detail': 'Authentication credentials were not provided.'}
+    assert response.json() == {'detail': _('Authentication credentials were not provided.')}
 
 
 def test_read_users_wrong_token(client_api, db):
@@ -45,7 +46,7 @@ def test_read_users_wrong_token(client_api, db):
     response = client_api.get(url)
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
-    assert response.json() == {'detail': 'Invalid token.'}
+    assert response.json() == {'detail': _('Invalid token.')}
 
 
 @pytest.mark.parametrize("method", ['post', 'put', 'patch', 'delete'])

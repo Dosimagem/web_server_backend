@@ -3,6 +3,7 @@ from http import HTTPStatus
 import pytest
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
+from django.utils.translation import gettext as _
 
 from web_server.api.tests.conftest import HTTP_METHODS
 
@@ -45,7 +46,7 @@ def test_fail_wrong_username(client_api, user_info, user):
 
     assert response.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body == {'errors': ['Unable to log in with provided credentials.']}
+    assert body == {'errors': [_('Unable to log in with provided credentials.')]}
 
 
 def test_fail_wrong_email(client_api, user_info, user):
@@ -61,7 +62,7 @@ def test_fail_wrong_email(client_api, user_info, user):
 
     assert response.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body == {'errors': ['Unable to log in with provided credentials.']}
+    assert body == {'errors': [_('Unable to log in with provided credentials.')]}
 
 
 def test_fail_login_missing_password(client_api, user_info):
@@ -72,7 +73,7 @@ def test_fail_login_missing_password(client_api, user_info):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body == {'errors': ['Password field is required.']}
+    assert body == {'errors': [_('Password field is required.')]}
 
 
 def test_fail_login_missing_username(client_api, user_info):
@@ -82,7 +83,7 @@ def test_fail_login_missing_username(client_api, user_info):
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert body == {'errors': ['Username field is required.']}
+    assert body == {'errors': [_('Username field is required.')]}
 
 
 def test_fail_login_missing_username_and_password(client_api):
@@ -92,7 +93,7 @@ def test_fail_login_missing_username_and_password(client_api):
     response_dict = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert response_dict == {'errors': ['Username field is required.', 'Password field is required.']}
+    assert response_dict == {'errors': [_('Username field is required.'), _('Password field is required.')]}
 
 
 @pytest.mark.parametrize("method", ['get', 'put', 'patch', 'delete'])
