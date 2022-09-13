@@ -237,6 +237,31 @@ def test_fail_create_isotope_invalid(client_api_auth, user, form_data):
     assert body['errors'] == expected
 
 
+def test_fail_create_isotope_invalid_by_size(client_api_auth, user, form_data):
+    '''
+    /api/v1/users/<uuid>/calibrations/ - POST
+    '''
+
+    url = resolve_url('api:calibration-list-create', user.uuid)
+
+    form_data['isotope'] = 'more 6 char'
+
+    response = client_api_auth.post(url, data=form_data, format='multipart')
+
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    body = response.json()
+
+    assert not Calibration.objects.exists()
+
+    if LANG == 'pt-br' and USE_I18N:
+        expected = ['Isotopo inválido.']
+    else:
+        expected = ['Invalid isotope.']
+
+    assert body['errors'] == expected
+
+
 def test_read_update_delete_not_allowed_method(client_api_auth, calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - GET, PUT, DELETE

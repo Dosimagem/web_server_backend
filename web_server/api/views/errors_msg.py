@@ -72,6 +72,9 @@ def list_errors(errors):
                 elif error == 'Isotope not registered.':
                     msg = 'Isotopo não registrado.'
                     list_.append(msg)
+                elif error.startswith('Certifique-se de que o valor tenha no máximo') and field_name == 'isotope':
+                    msg = 'Isotopo inválido.'
+                    list_.append(msg)
                 else:
                     list_.append(error)
             else:
@@ -82,6 +85,9 @@ def list_errors(errors):
                 elif error == 'Ensure this value is greater than or equal to 0.0.':
                     name = ERRORS_MAP_EN[field_name]
                     msg = error.replace('this', name)
+                    list_.append(msg)
+                elif error.startswith('Ensure this value has at most') and field_name == 'isotope':
+                    msg = 'Invalid isotope.'
                     list_.append(msg)
                 else:
                     list_.append(error)
