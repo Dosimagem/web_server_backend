@@ -9,23 +9,34 @@ from rest_framework.decorators import (
                                         )
 from rest_framework.permissions import IsAuthenticated
 
+from web_server.core.forms import ProfileUpdateForm
+
 from .auth import MyTokenAuthentication
-from .errors_msg import MSG_ERROR_TOKEN_USER
+from .errors_msg import MSG_ERROR_TOKEN_USER, list_errors
 
 
 User = get_user_model()
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PATCH'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
-def users(request, id):
+def users_read_update(request, user_id):
 
-    # TODO: Transforma isso em decorretor
-    if request.user.uuid != id:
+    if request.user.uuid != user_id:
         return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
-    if user := User.objects.filter(uuid=id).first():
+    user = request.user
+
+    if request.method == 'GET':
         return Response(data=user.to_dict())
 
-    return Response(status=HTTPStatus.NOT_FOUND)
+    elif request.method == 'PATCH':
+        form = ProfileUpdateForm(data=request.data, instance=user.profile)
+
+        if not form.is_valid():
+            return Response({'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+        form.save()
+
+        return Response(status=HTTPStatus.NO_CONTENT)

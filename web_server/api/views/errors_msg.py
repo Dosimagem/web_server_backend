@@ -47,7 +47,9 @@ ERRORS_MAP_PT = {
     'email': 'email',
     'phone': 'telefone',
     'clinic': 'clínica',
-    'name': 'nome'
+    'name': 'nome',
+    'cnpj': 'CNPJ',
+    'cpf': 'CPF',
 }
 
 
@@ -74,6 +76,15 @@ def list_errors(errors):
                     list_.append(msg)
                 elif error.startswith('Certifique-se de que o valor tenha no máximo') and field_name == 'isotope':
                     msg = 'Isotopo inválido.'
+                    list_.append(msg)
+                elif error.endswith('already exists'):
+                    name = ERRORS_MAP_PT[field_name].capitalize()
+                    name = 'CPF' if name == 'Cpf' else name
+                    name = 'CNPJ' if name == 'Cnpj' else name
+                    msg = f'{name} já existe.'
+                    list_.append(msg)
+                elif error == 'The two email fields didn’t match.':
+                    msg = 'Os campos emails não correspondem.'
                     list_.append(msg)
                 else:
                     list_.append(error)

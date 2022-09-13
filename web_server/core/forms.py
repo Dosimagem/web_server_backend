@@ -58,23 +58,11 @@ class ProfileCreateForm(forms.ModelForm):
         return cnpj
 
 
-# TODO: Apagar isso depois
-# class ProfileUpdateForm(ProfileCreateForm):
+class ProfileUpdateForm(ProfileCreateForm):
 
-#     class Meta:
-#         model = UserProfile
-#         fields = ('name', 'phone', 'clinic', 'role', 'cpf', 'cnpj', )
-
-#     def save(self, user):
-#         profile = UserProfile.objects.get(user=user)
-
-#         for k, v in self.cleaned_data.items():
-#             if hasattr(profile, k):
-#                 setattr(profile, k, v)
-
-#         profile.save()
-
-#         return profile
+    class Meta:
+        model = UserProfile
+        fields = ('name', 'clinic', 'role', 'cnpj', )
 
 
 class MyUserCreationForm(UserCreationForm):

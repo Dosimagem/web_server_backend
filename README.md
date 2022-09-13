@@ -13,14 +13,15 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
     - [2.1) Rota de cadastro](#21-rota-de-cadastro)
     - [2.2) Rota de login](#22-rota-de-login)
     - [2.3) Rota para obter informações do usuário](#23-rota-informações-do-usuario)
-    - [2.4) Rota para listar todas as cotas para aquele usuário](#24-rota-para-listar-todas-as-cotas-para-aquele-usuario)
-    - [2.5) Rota para ler uma cota especifica daquele usuario](#25-rota-para-deletar-uma-cota-específica-daquele-usuário)
-    - [2.6) Rota para ler os isotopos cadastrados](#26-rota-para-deletar-uma-cota-específica-daquele-usuário)
-    - [2.7) Rota para lista as calibrações](#27-rota-para-listar-calibrações)
-    - [2.8) Rota para cadastra uma calibração](#28-rota-para-cadastra-calibrações)
-    - [2.9) Rota para atualizar uma calibração](#29-rota-para-atualizar-uma-calibração)
-    - [2.10) Rota para deletar uma calibração](#210-rota-para-deletar-uma-calibração)
-    - [2.11) Rota para ler uma calibração](#211-rota-para-ler-uma-calibração)
+    - [2.4) Rota para atualizar informações do usuário](#24-rota-de-atualização-do-usuario)
+    - [2.5) Rota para listar todas as cotas para aquele usuário](#25-rota-para-listar-todas-as-cotas-para-aquele-usuario)
+    - [2.6) Rota para ler uma cota especifica daquele usuario](#26-rota-para-deletar-uma-cota-específica-daquele-usuário)
+    - [2.7) Rota para ler os isotopos cadastrados](#27-rota-para-deletar-uma-cota-específica-daquele-usuário)
+    - [2.8) Rota para lista as calibrações](#28-rota-para-listar-calibrações)
+    - [2.9) Rota para cadastra uma calibração](#29-rota-para-cadastra-calibrações)
+    - [2.10) Rota para atualizar uma calibração](#210-rota-para-atualizar-uma-calibração)
+    - [2.11) Rota para deletar uma calibração](#211-rota-para-deletar-uma-calibração)
+    - [2.12) Rota para ler uma calibração](#212-rota-para-ler-uma-calibração)
   - [3) Desenvolvimento](#3-desenvolvimento)
     - [3.1) Setup inicial](#31-setup-inicial)
     - [3.2) Rodando o servido](#32-rodando-o-servido)
@@ -50,7 +51,8 @@ Rotas disponiveis
   - POST /api/v1/users/register/
   - POST /api/v1/users/login/
 - Users
-  - GET /api/v1/users/\<uuid:user_id>/
+  - GET /api/v1/users/\<uuid:user_id>
+  - PATCH /api/v1/users/\<uuid:user_id>
 - Order
   - GET /api/v1/users/\<uuid:user_id>/order/
   - GET /api/v1/users/\<uuid:user_id>/order/\<uuid:id_order>
@@ -144,7 +146,7 @@ Corpo da resposta:
 
 ---
 
-* GET /api/v1/users/\<uuid:user_id>/
+* GET /api/v1/users/\<uuid:user_id>
 
 Rota para obter informação do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
 
@@ -172,7 +174,33 @@ Corpo da resposta:
 
 ---
 
-### 2.4) Rota para listar todas as cotas para aquele usuario
+### 2.4) Rota de atualização do usuario
+
+---
+
+* PATCH /api/v1/users/\<uuid:user_id>
+
+Rota atualizar algumas informações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `204`
+
+Exemplo de `curl`:
+
+```console
+curl --request PATCH \
+  --url http://localhost:8000/api/v1/users/0be5fbc0-079f-4006-8a15-0e0851bb1df4 \
+  --header 'Authorization: Bearer a349a7d81c67d88ac60bd7d97cd09e85eb43f929' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "name": "João Sliva1",
+  "phone": "111111111",
+  "role": "médico",
+  "clinic": "Clinica BA",
+  "cnpj": "42438610000111"
+}'
+```
+
+---
+
+### 2.5) Rota para listar todas as cotas para aquele usuario
 
 ---
 
@@ -221,7 +249,7 @@ Corpo da resposta:
 
 ---
 
-### 2.5) Rota para ler uma cota especifica daquele usuario
+### 2.6) Rota para ler uma cota especifica daquele usuario
 
 ---
 
@@ -255,7 +283,7 @@ Corpo da resposta:
 
 ---
 
-### 2.6) Rota para ler os isotopos cadastrados
+### 2.7) Rota para ler os isotopos cadastrados
 
 ---
 
@@ -287,7 +315,7 @@ Corpo da resposta:
 
 ---
 
-### 2.7) Rota para listar calibrações
+### 2.8) Rota para listar calibrações
 
 ---
 
@@ -338,7 +366,7 @@ Corpo da resposta:
 ---
 
 
-### 2.8) Rota para cadastra calibrações
+### 2.9) Rota para cadastra calibrações
 
 ---
 
@@ -380,7 +408,7 @@ Corpo da resposta:
 
 ---
 
-### 2.9) Rota para atualizar uma calibração
+### 2.10) Rota para atualizar uma calibração
 
 ---
 
@@ -406,7 +434,7 @@ curl --request PUT \
 
 ---
 
-### 2.10) Rota para deletar uma calibração
+### 2.11) Rota para deletar uma calibração
 
 ---
 
@@ -424,7 +452,7 @@ curl --request DELETE \
 
 ---
 
-### 2.11) Rota para ler uma calibração
+### 2.12) Rota para ler uma calibração
 
 ---
 

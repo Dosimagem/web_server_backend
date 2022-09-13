@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
-from web_server.core.forms import ProfileCreateForm
+from web_server.core.forms import ProfileCreateForm, ProfileUpdateForm
 from web_server.core.models import UserProfile
 
 
@@ -128,7 +128,7 @@ def test_cnpf_invalid(second_register_infos, db):
     assert form.errors['cnpj'] == ['CNPJ invalid.']
 
 
-def test_save(profile_infos):
+def test_create_save(profile_infos):
 
     form = ProfileCreateForm(profile_infos, instance=profile_infos['user'].profile)
 
@@ -146,3 +146,57 @@ def test_save(profile_infos):
     assert user.profile.phone == form.cleaned_data['phone']
     assert user.profile.cpf == form.cleaned_data['cpf']
     assert user.profile.cnpj == form.cleaned_data['cnpj']
+
+
+def test_update_profile_form_succesuful(user):
+
+    payload = {
+        'name': 'João Sliva Carvalho',
+        'role': 'médico',
+        'cnpj': '42438610000111',
+        'clinic': 'Clinica A'
+    }
+
+    assert user.profile.name == 'João Silva'
+
+    form = ProfileUpdateForm(data=payload, instance=user.profile)
+
+    assert form.is_valid()
+
+    form.save()
+
+    user_db = User.objects.first()
+
+    assert user_db.profile.name == 'João Sliva Carvalho'
+
+
+def test_fail_update_profile_form_clinic_unique_constraint(user, second_user):
+
+    payload = {
+        'name': 'João Sliva Carvalho',
+        'role': 'médico',
+        'cnpj': '42438610000111',
+        'clinic': second_user.profile.clinic
+    }
+
+    form = ProfileUpdateForm(data=payload, instance=user.profile)
+
+    assert not form.is_valid()
+
+    assert form.errors['clinic'] == ['Clinic already exists']
+
+
+def test_fail_update_profile_form_cnpj_unique_constraint(user, second_user):
+
+    payload = {
+        'name': 'João Sliva Carvalho',
+        'role': 'médico',
+        'cnpj': second_user.profile.cnpj,
+        'clinic': 'Clinica A'
+    }
+
+    form = ProfileUpdateForm(data=payload, instance=user.profile)
+
+    assert not form.is_valid()
+
+    assert form.errors['cnpj'] == ['CNPJ already exists']
