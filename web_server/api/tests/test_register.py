@@ -4,11 +4,9 @@ import pytest
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
-from django.utils.translation import get_language
-from django.conf import settings
-from rest_framework.authtoken.models import Token
 
 from web_server.api.tests.conftest import HTTP_METHODS
+from web_server.api.views.errors_msg import LANG, USE_I18N
 
 
 User = get_user_model()
@@ -44,7 +42,7 @@ def test_fail_user_unique_fields(client_api, user, register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    if get_language() == 'pt-br' and settings.USE_I18N:
+    if LANG and USE_I18N:
         expected = 'Usuário com este Endereço de email já existe.'
     else:
         expected = 'User with this Email address already exists.'
@@ -67,54 +65,31 @@ def test_fail_profile_unique_fields(client_api, user, second_register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert _('Clinic already exists') in errors_list
-    assert _('CPF already exists') in errors_list
-    assert _('CNPJ already exists') in errors_list
-
-
-def test_when_profile_fail_the_user_must_not_be_create(client_api, user, second_register_infos):
-    '''
-    Clinic, CPF and CNPJ.
-    '''
-
-    second_register_infos['clinic'] = user.profile.clinic
-
-    resp = client_api.post(URL_REGISTER, data=second_register_infos, format='json')
-
-    errors_list = resp.json()['errors']
-
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
-
-    assert User.objects.count() == 1
-    assert Token.objects.count() == 1
-
-    assert _('Clinic already exists') in errors_list
-
-
-LANG = settings.LANGUAGE_CODE
-I18N = settings.USE_I18N
+    assert ('Clínica já existe.' if LANG and USE_I18N else 'Clinic already exists.') in errors_list
+    assert ('CPF já existe.' if LANG and USE_I18N else 'CPF already exists.') in errors_list
+    assert ('CNPJ já existe.' if LANG and USE_I18N else 'CNPJ already exists.') in errors_list
 
 
 @pytest.mark.parametrize('field, error', [
     ('email', [
-        'O campo email é obrigatório.' if LANG == 'pt-br' and I18N else 'Email field is required.',
-        _('The two email fields didn’t match.')
+        'O campo email é obrigatório.' if LANG == 'pt-br' and USE_I18N else 'Email field is required.',
+        'Os campos emails não correspondem.' if LANG == 'pt-br' and USE_I18N else 'The two email fields didn’t match.'
         ]),
     ('confirmed_email', [
         ('O campo email de confirmação é obrigatório.'
-            if LANG == 'pt-br' and I18N else 'Confirmed email field is required.')
+            if LANG == 'pt-br' and USE_I18N else 'Confirmed email field is required.')
         ]),
     ('name', [
-        'O campo nome é obrigatório.' if LANG == 'pt-br' and I18N else 'Name field is required.'
+        'O campo nome é obrigatório.' if LANG == 'pt-br' and USE_I18N else 'Name field is required.'
         ]),
     ('phone', [
-        'O campo telefone é obrigatório.' if LANG == 'pt-br' and I18N else 'Phone field is required.'
+        'O campo telefone é obrigatório.' if LANG == 'pt-br' and USE_I18N else 'Phone field is required.'
         ]),
     ('clinic', [
-         'O campo clínica é obrigatório.' if LANG == 'pt-br' and I18N else 'Clinic field is required.'
+         'O campo clínica é obrigatório.' if LANG == 'pt-br' and USE_I18N else 'Clinic field is required.'
         ]),
     ('role', [
-         'O campo cargo é obrigatório.' if LANG == 'pt-br' and I18N else 'Role field is required.'
+         'O campo cargo é obrigatório.' if LANG == 'pt-br' and USE_I18N else 'Role field is required.'
         ])
     ]
 )
@@ -139,8 +114,12 @@ def test_register_invalid_email(client_api, register_infos):
     errors_list = resp.json()['errors']
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
+
     assert _('Enter a valid email address.') in errors_list
-    assert _('The two email fields didn’t match.') in errors_list
+
+    expected = 'Os campos emails não correspondem.' if LANG and USE_I18N else 'The two email fields didn’t match.'
+
+    assert expected in errors_list
 
 
 def test_register_password_dont_mach(client_api, register_infos):
@@ -151,7 +130,11 @@ def test_register_password_dont_mach(client_api, register_infos):
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert body['errors'] == [_('The two password fields didn’t match.')]
+
+    expected = ['Os dois campos de senha não correspondem.'
+                if LANG and USE_I18N else 'The two password fields didn’t match.']
+
+    assert body['errors'] == expected
 
 
 def test_register_email_dont_mach(client_api, register_infos):
@@ -162,7 +145,10 @@ def test_register_email_dont_mach(client_api, register_infos):
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert body['errors'] == [_('The two email fields didn’t match.')]
+
+    expected = ['Os campos emails não correspondem.' if LANG and USE_I18N else 'The two email fields didn’t match.']
+
+    assert body['errors'] == expected
 
 
 @pytest.mark.parametrize("method", ['get', 'put', 'patch', 'delete'])
