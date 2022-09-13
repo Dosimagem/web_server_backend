@@ -97,11 +97,12 @@ I18N = settings.USE_I18N
 
 @pytest.mark.parametrize('field, error', [
     ('email', [
-        'O campo email é obrigatório.' if LANG == 'pt-br' and I18N else 'Email is required.',
+        'O campo email é obrigatório.' if LANG == 'pt-br' and I18N else 'Email field is required.',
         _('The two email fields didn’t match.')
         ]),
     ('confirmed_email', [
-        'O campo email de confirmação é obrigatório.' if LANG == 'pt-br' and I18N else 'Confirmed email is required.'
+        ('O campo email de confirmação é obrigatório.'
+            if LANG == 'pt-br' and I18N else 'Confirmed email field is required.')
         ]),
     ('name', [
         'O campo nome é obrigatório.' if LANG == 'pt-br' and I18N else 'Name field is required.'
