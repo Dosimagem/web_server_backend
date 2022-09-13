@@ -74,7 +74,7 @@ def test_list_successful(client_api_auth, calibration):
         assert cali_response['calibrationName'] == cali_db.calibration_name
         assert cali_response['syringeActivity'] == cali_db.syringe_activity
         assert cali_response['residualSyringeActivity'] == cali_db.residual_syringe_activity
-        assert cali_response['measurementDatetime'] == cali_db.measurement_datetime.strftime('%d/%m/%Y %H:%M:%S')
+        assert cali_response['measurementDatetime'] == cali_db.measurement_datetime.strftime(cali_db.FORMAT_DATE)
         assert cali_response['phantomVolume'] == cali_db.phantom_volume
         assert cali_response['acquisitionTime'] == cali_db.acquisition_time
 
@@ -120,7 +120,7 @@ def test_create_successful(client_api_auth, user, form_data, calibration_infos):
     assert body['calibrationName'] == calibration_infos['calibration_name']
     assert body['syringeActivity'] == calibration_infos['syringe_activity']
     assert body['residualSyringeActivity'] == calibration_infos['residual_syringe_activity']
-    assert body['measurementDatetime'] == calibration_infos['measurement_datetime'].strftime('%d/%m/%Y %H:%M:%S')
+    assert body['measurementDatetime'] == calibration_infos['measurement_datetime'].strftime(cali_db.FORMAT_DATE)
     assert body['phantomVolume'] == calibration_infos['phantom_volume']
     assert body['acquisitionTime'] == calibration_infos['acquisition_time']
 
@@ -311,7 +311,7 @@ def test_read_calibration_successful(client_api_auth, calibration):
     assert body['calibrationName'] == calibration.calibration_name
     assert body['syringeActivity'] == calibration.syringe_activity
     assert body['residualSyringeActivity'] == calibration.residual_syringe_activity
-    assert body['measurementDatetime'] == calibration.measurement_datetime.strftime('%d/%m/%Y %H:%M:%S')
+    assert body['measurementDatetime'] == calibration.measurement_datetime.strftime(calibration.FORMAT_DATE)
     assert body['phantomVolume'] == calibration.phantom_volume
     assert body['acquisitionTime'] == calibration.acquisition_time
 

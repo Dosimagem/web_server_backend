@@ -92,6 +92,8 @@ upload_calibration_to = partial(upload_to, type='calibrations')
 
 class Calibration(models.Model):
 
+    FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
+
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
     isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='calibrations')
@@ -122,7 +124,7 @@ class Calibration(models.Model):
             'calibration_name': self.calibration_name,
             'syringe_activity': self.syringe_activity,
             'residual_syringe_activity': self.residual_syringe_activity,
-            'measurement_datetime': self.measurement_datetime.strftime('%d/%m/%Y %H:%M:%S'),
+            'measurement_datetime': self.measurement_datetime.strftime(self.FORMAT_DATE),
             'phantom_volume': self.phantom_volume,
             'acquisition_time': self.acquisition_time,
         }
