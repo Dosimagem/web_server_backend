@@ -53,6 +53,28 @@ def test_update_user_infos(client_api_auth, user):
     assert user_db.profile.name == 'João Sliva Carvalho'
 
 
+def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
+
+    url = resolve_url('api:users-read-update', user_id=user.uuid)
+
+    payload = {
+        'name': 'João Sliva Carvalho',
+        'role': 'médico',
+        'cnpj': '42.438.610/0001-11',
+        'clinic': 'Clinica A'
+    }
+
+    response = client_api_auth.patch(url, payload, format='json')
+
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    body = response.json()
+
+    expected = ['CNPJ inválido.' if LANG and USE_I18N else 'CNPJ invalid.']
+
+    assert body['errors'] == expected
+
+
 def test_fail_update_user_infos_cnpj_unique_constrain(client_api_auth, user, second_user):
 
     url = resolve_url('api:users-read-update', user_id=user.uuid)
