@@ -77,6 +77,9 @@ def list_errors(errors):
                 elif error.startswith('Certifique-se de que o valor tenha no máximo') and field_name == 'isotope':
                     msg = 'Isotopo inválido.'
                     list_.append(msg)
+                elif error.startswith('Certifique-se de que o valor tenha no máximo') and field_name == 'cnpj':
+                    msg = 'CNPJ inválido.'
+                    list_.append(msg)
                 elif error.endswith('already exists'):
                     name = ERRORS_MAP_PT[field_name].capitalize()
                     name = 'CPF' if name == 'Cpf' else name
