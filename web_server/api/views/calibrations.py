@@ -3,10 +3,10 @@ from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.decorators import (
-                                        api_view,
-                                        authentication_classes,
-                                        permission_classes
-                                        )
+    api_view,
+    authentication_classes,
+    permission_classes
+)
 from rest_framework.permissions import IsAuthenticated
 
 from web_server.service.models import Calibration, Isotope
@@ -105,7 +105,7 @@ def _delete_calibration(request, user_id, calibration_id):
 
     if cali := Calibration.objects.filter(user__uuid=user_id, uuid=calibration_id).first():
         cali.delete()
-        return Response(status=HTTPStatus.NO_CONTENT)
+        return Response(data={'id': calibration_id, "message": "Calibração deletada com sucesso!"}, status=HTTPStatus.OK)
 
     return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
