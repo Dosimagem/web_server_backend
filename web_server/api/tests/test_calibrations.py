@@ -358,9 +358,13 @@ def test_delete_successful(client_api_auth, calibration):
 
     response = client_api_auth.delete(url)
 
-    assert response.status_code == HTTPStatus.NO_CONTENT
+    assert response.status_code == HTTPStatus.OK
 
     assert not Calibration.objects.exists()
+
+    body = response.json()
+
+    assert body['message'] == 'Calibração deletada com sucesso!'
 
 
 def test_fail_delete_wrong_calibration_id(client_api_auth, calibration):

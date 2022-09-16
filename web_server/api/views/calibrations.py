@@ -105,7 +105,8 @@ def _delete_calibration(request, user_id, calibration_id):
 
     if cali := Calibration.objects.filter(user__uuid=user_id, uuid=calibration_id).first():
         cali.delete()
-        return Response(data={'id': calibration_id, "message": "Calibração deletada com sucesso!"}, status=HTTPStatus.OK)
+        data = {'id': calibration_id, 'message': 'Calibração deletada com sucesso!'}  # TODO: Do translate automatically
+        return Response(data=data)
 
     return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
