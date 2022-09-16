@@ -239,7 +239,7 @@ Corpo da resposta:
 			"remainingOfAnalyzes": 5,
 			"price": 10000.0,
 			"serviceName": "Dosimetria Clinica",
-			"statusPayment": "Analise",
+			"statusPayment": "Aguardando pagamento",
 			"permission": false,
 			"createdAt": "2022-08-30"
 		}
@@ -617,13 +617,13 @@ postgres://dosimagem:dosimagem@localhost:5434/dosimagem_db
 Todo o banco
 
 ```console
-./manage.py dumpdata --exclude auth.permission --exclude contenttypes --indent 2 > db_initial.json
+./manage.py dumpdata --exclude auth.permission --exclude contenttypes --indent 2 > contrib/db_initial.json
 ```
 
 Apenas dos `Isotopos` cadastrados
 
 ```console
-./manage.py ./manage.py dumpdata service.Isotope --indent 2 > db_isotope.json
+./manage.py ./manage.py dumpdata service.Isotope --indent 2 > contrib/db_isotope.json
 ```
 
 
