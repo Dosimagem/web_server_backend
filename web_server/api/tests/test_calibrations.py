@@ -126,7 +126,7 @@ def test_create_successful(client_api_auth, user, form_data, calibration_infos, 
     assert body['phantomVolume'] == calibration_infos['phantom_volume']
     assert body['acquisitionTime'] == calibration_infos['acquisition_time']
     # TODO: Pensar um forma melhor
-    assert body['imagesUrl'].startswith('http://testserver/media/clinica-a/calibrations/calibration-1')
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{cali_db.user.id}/calibrations/calibration-1')
 
 
 def test_fail_create_negative_float_numbers(client_api_auth, user, form_data):
@@ -311,19 +311,18 @@ def test_read_calibration_successful(client_api_auth, calibration_with_images):
 
     body = response.json()
 
-    assert body['id'] == str(calibration_with_images.uuid)
-    assert body['userId'] == str(calibration_with_images.user.uuid)
-    assert body['isotope'] == calibration_with_images.isotope.name
-    assert body['calibrationName'] == calibration_with_images.calibration_name
-    assert body['syringeActivity'] == calibration_with_images.syringe_activity
-    assert body['residualSyringeActivity'] == calibration_with_images.residual_syringe_activity
-    assert body['measurementDatetime'] == (calibration_with_images
-                                           .measurement_datetime
-                                           .strftime(calibration_with_images.FORMAT_DATE)
-                                           )
-    assert body['phantomVolume'] == calibration_with_images.phantom_volume
-    assert body['acquisitionTime'] == calibration_with_images.acquisition_time
-    assert body['imagesUrl'].startswith('http://testserver/media/clinica-a/calibrations/calibration-1')
+    cali = calibration_with_images
+
+    assert body['id'] == str(cali.uuid)
+    assert body['userId'] == str(cali.user.uuid)
+    assert body['isotope'] == cali.isotope.name
+    assert body['calibrationName'] == cali.calibration_name
+    assert body['syringeActivity'] == cali.syringe_activity
+    assert body['residualSyringeActivity'] == cali.residual_syringe_activity
+    assert body['measurementDatetime'] == cali.measurement_datetime.strftime(cali.FORMAT_DATE)
+    assert body['phantomVolume'] == cali.phantom_volume
+    assert body['acquisitionTime'] == cali.acquisition_time
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{cali.user.id}/calibrations/calibration-1')
 
 
 def test_fail_read_wrong_calibration_id(client_api_auth, calibration):
