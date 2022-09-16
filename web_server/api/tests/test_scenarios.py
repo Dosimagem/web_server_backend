@@ -183,7 +183,7 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
     url = resolve_url('api:calibration-read-update-delete', current_user.uuid, calibration.uuid)
     response = client_api.delete(url)
 
-    assert response.status_code == HTTPStatus.NO_CONTENT
+    assert response.status_code == HTTPStatus.OK
 
     assert not Calibration.objects.filter(id=calibration.id)
 
@@ -199,3 +199,6 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
     body = response.json()
 
     assert body['count'] == 1  # User 1
+
+
+# TODO: Make a data calibration scenario
