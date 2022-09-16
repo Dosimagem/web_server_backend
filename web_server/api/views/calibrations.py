@@ -63,7 +63,7 @@ def calibrations_read_update_delete(request, user_id, calibration_id):
 def _read_calibration(request, user_id, calibration_id):
 
     if cali := Calibration.objects.filter(user__uuid=user_id, uuid=calibration_id).first():
-        return Response(data=cali.to_dict())
+        return Response(data=cali.to_dict(request))
 
     return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
@@ -114,7 +114,7 @@ def _delete_calibration(request, user_id, calibration_id):
 def _list_calibrations(request, user_id):
     if calibration := Calibration.objects.filter(user=request.user):
 
-        calibration_list = [q.to_dict() for q in calibration]
+        calibration_list = [q.to_dict(request) for q in calibration]
 
         data = {
             'count': len(calibration_list),
@@ -148,4 +148,4 @@ def _create_calibrations(request, user_id):
 
     new_calibration = form.save()
 
-    return Response(data=new_calibration.to_dict(), status=HTTPStatus.CREATED)
+    return Response(data=new_calibration.to_dict(request), status=HTTPStatus.CREATED)
