@@ -116,8 +116,9 @@ class Calibration(models.Model):
     def __str__(self):
         return self.calibration_name
 
-    def to_dict(self):
-        return {
+    def to_dict(self, request):
+
+        dict_ = {
             'id': self.uuid,
             'user_id': self.user.uuid,
             'isotope': self.isotope.name,
@@ -128,6 +129,11 @@ class Calibration(models.Model):
             'phantom_volume': self.phantom_volume,
             'acquisition_time': self.acquisition_time,
         }
+
+        if self.images:
+            dict_['images_url'] = request.build_absolute_uri(self.images.url)
+
+        return dict_
 
 # upload_report_to = partial(upload_to, type='report')
 

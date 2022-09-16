@@ -185,6 +185,12 @@ DATETIME_TIMEZONE = make_aware(datetime(2016, 12, 14, 11, 2, 51))
 
 
 @pytest.fixture
+def calibration_file():
+    fp = ContentFile(b'file_content', name='images.zip')
+    return {'images': fp}
+
+
+@pytest.fixture
 def calibration_infos(user, lu_177):
     return dict(
         user=user,
@@ -196,12 +202,6 @@ def calibration_infos(user, lu_177):
         phantom_volume=200.0,
         acquisition_time=1800.0,
     )
-
-
-@pytest.fixture
-def calibration_file():
-    fp = ContentFile(b'file_content', name='images.zip')
-    return {'images': fp}
 
 
 @pytest.fixture
@@ -226,6 +226,11 @@ def calibration(calibration_infos):
 @pytest.fixture
 def second_calibration(calibration, second_calibration_infos):
     return Calibration.objects.create(**second_calibration_infos)
+
+
+@pytest.fixture
+def calibration_with_images(calibration_infos, calibration_file):
+    return Calibration.objects.create(**calibration_infos, **calibration_file)
 
 
 @pytest.fixture

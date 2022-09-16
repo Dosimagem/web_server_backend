@@ -21,5 +21,5 @@ urlpatterns = [
     #
     path('users/<uuid:user_id>/calibrations/', calibrations_list_create, name='calibration-list-create'),
     path('users/<uuid:user_id>/calibrations/<uuid:calibration_id>', calibrations_read_update_delete,
-         name='calibration-read-update-delete')
+         name='calibration-read-update-delete'),
 ]

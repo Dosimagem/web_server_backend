@@ -95,7 +95,7 @@ def test_try_list_for_user_without_calibrations(client_api_auth, user):
     assert body == {'errors': MSG_ERROR_USER_CALIBRATIONS}
 
 
-def test_create_successful(client_api_auth, user, form_data, calibration_infos):
+def test_create_successful(client_api_auth, user, form_data, calibration_infos, calibration_file):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
@@ -103,6 +103,8 @@ def test_create_successful(client_api_auth, user, form_data, calibration_infos):
     assert not Calibration.objects.exists()
 
     url = resolve_url('api:calibration-list-create', user.uuid)
+
+    form_data.update(calibration_file)
 
     response = client_api_auth.post(url, data=form_data, format='multipart')
 
@@ -123,6 +125,8 @@ def test_create_successful(client_api_auth, user, form_data, calibration_infos):
     assert body['measurementDatetime'] == calibration_infos['measurement_datetime'].strftime(cali_db.FORMAT_DATE)
     assert body['phantomVolume'] == calibration_infos['phantom_volume']
     assert body['acquisitionTime'] == calibration_infos['acquisition_time']
+    # TODO: Pensar um forma melhor
+    assert body['imagesUrl'].startswith('http://testserver/media/clinica-a/calibrations/calibration-1')
 
 
 def test_fail_create_negative_float_numbers(client_api_auth, user, form_data):
@@ -292,12 +296,14 @@ def test_read_update_delete_view_and_user_id_dont_match(client_api_auth, calibra
     assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
-def test_read_calibration_successful(client_api_auth, calibration):
+def test_read_calibration_successful(client_api_auth, calibration_with_images):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - GET
     '''
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+    url = resolve_url('api:calibration-read-update-delete',
+                      calibration_with_images.user.uuid,
+                      calibration_with_images.uuid)
 
     response = client_api_auth.get(url)
 
@@ -305,15 +311,19 @@ def test_read_calibration_successful(client_api_auth, calibration):
 
     body = response.json()
 
-    assert body['id'] == str(calibration.uuid)
-    assert body['userId'] == str(calibration.user.uuid)
-    assert body['isotope'] == calibration.isotope.name
-    assert body['calibrationName'] == calibration.calibration_name
-    assert body['syringeActivity'] == calibration.syringe_activity
-    assert body['residualSyringeActivity'] == calibration.residual_syringe_activity
-    assert body['measurementDatetime'] == calibration.measurement_datetime.strftime(calibration.FORMAT_DATE)
-    assert body['phantomVolume'] == calibration.phantom_volume
-    assert body['acquisitionTime'] == calibration.acquisition_time
+    assert body['id'] == str(calibration_with_images.uuid)
+    assert body['userId'] == str(calibration_with_images.user.uuid)
+    assert body['isotope'] == calibration_with_images.isotope.name
+    assert body['calibrationName'] == calibration_with_images.calibration_name
+    assert body['syringeActivity'] == calibration_with_images.syringe_activity
+    assert body['residualSyringeActivity'] == calibration_with_images.residual_syringe_activity
+    assert body['measurementDatetime'] == (calibration_with_images
+                                           .measurement_datetime
+                                           .strftime(calibration_with_images.FORMAT_DATE)
+                                           )
+    assert body['phantomVolume'] == calibration_with_images.phantom_volume
+    assert body['acquisitionTime'] == calibration_with_images.acquisition_time
+    assert body['imagesUrl'].startswith('http://testserver/media/clinica-a/calibrations/calibration-1')
 
 
 def test_fail_read_wrong_calibration_id(client_api_auth, calibration):
