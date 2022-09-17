@@ -2,6 +2,7 @@ from copy import deepcopy
 from http import HTTPStatus
 
 from django.shortcuts import resolve_url
+from django.core.files.base import ContentFile
 
 from web_server.service.models import Calibration
 
@@ -201,4 +202,27 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
     assert body['count'] == 1  # User 1
 
 
-# TODO: Make a data calibration scenario
+def test_scenario_update_calibration_images(client_api, user, form_data, calibration_with_images):
+    '''
+    Calibration Already file
+    '''
+
+    cali_db = Calibration.objects.first()
+
+    fp = deepcopy(cali_db.images)
+
+    assert fp.read() == b'file_content'
+
+    form_data['images'] = ContentFile(b'New calibration file', name='images.zip')
+
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
+    url = resolve_url('api:calibration-read-update-delete', user.uuid, calibration_with_images.uuid)
+    response = client_api.put(url, data=form_data, format='multipart')
+
+    assert response.status_code == HTTPStatus.NO_CONTENT
+
+    cali_db = Calibration.objects.first()
+
+    fp = deepcopy(cali_db.images)
+
+    assert fp.read() == b'New calibration file'
