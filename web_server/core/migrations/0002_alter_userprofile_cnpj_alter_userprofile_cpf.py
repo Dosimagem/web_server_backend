@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='userprofile',
             name='cnpj',
-            field=models.CharField(max_length=14, validators=[web_server.core.validators.validate_cnpf], verbose_name='CNPJ'),
+            field=models.CharField(max_length=14, validators=[web_server.core.validators.validate_cnpj], verbose_name='CNPJ'),
         ),
         migrations.AlterField(
             model_name='userprofile',
