@@ -89,6 +89,7 @@ def test_password_validation(password, error_validation, db):
 def test_save(register_infos, db):
 
     form = MyUserCreationForm(register_infos)
+    form.full_clean()
     form.save()
 
     assert User.objects.exists()

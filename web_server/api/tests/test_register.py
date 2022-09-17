@@ -18,7 +18,7 @@ pytestmark = pytest.mark.django_db
 URL_REGISTER = resolve_url('api:register')
 
 
-def test_successfull_register(client_api, register_infos):
+def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
 
     resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
 
@@ -70,6 +70,46 @@ def test_fail_profile_unique_fields(client_api, user, second_register_infos):
     assert ('CNPJ já existe.' if LANG and USE_I18N else 'CNPJ already exists.') in errors_list
 
 
+def test_fail_profile_invalid_cpf(api_cnpj_fail, client_api, second_register_infos):
+
+    second_register_infos['cpf'] = '1'
+
+    resp = client_api.post(URL_REGISTER, data=second_register_infos, format='json')
+
+    errors_list = resp.json()['errors']
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert 'CPF inválido.' in errors_list
+
+
+def test_fail_profile_invalid_cnpj(client_api, second_register_infos):
+
+    second_register_infos['cnpj'] = '1'
+
+    resp = client_api.post(URL_REGISTER, data=second_register_infos, format='json')
+
+    errors_list = resp.json()['errors']
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert 'CNPJ inválido.' in errors_list
+
+
+def test_fail_profile_invalid_cnpj_api(api_cnpj_fail, client_api, second_register_infos):
+    '''
+    Clinic, CPF and CNPJ.
+    '''
+
+    resp = client_api.post(URL_REGISTER, data=second_register_infos, format='json')
+
+    errors_list = resp.json()['errors']
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert 'CNPJ 83.398.534/0001-45 não encontrado.' in errors_list
+
+
 @pytest.mark.parametrize('field, error', [
     ('email', [
         'O campo email é obrigatório.' if LANG == 'pt-br' and USE_I18N else 'Email field is required.',
@@ -79,6 +119,21 @@ def test_fail_profile_unique_fields(client_api, user, second_register_infos):
         ('O campo email de confirmação é obrigatório.'
             if LANG == 'pt-br' and USE_I18N else 'Confirmed email field is required.')
         ]),
+    ]
+)
+def test_register_missing_fields(client_api, field, error, register_infos):
+
+    register_infos.pop(field)
+
+    resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
+
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+    assert body['errors'] == error
+
+
+@pytest.mark.parametrize('field, error', [
     ('name', [
         'O campo nome é obrigatório.' if LANG == 'pt-br' and USE_I18N else 'Name field is required.'
         ]),
@@ -90,10 +145,13 @@ def test_fail_profile_unique_fields(client_api, user, second_register_infos):
         ]),
     ('role', [
          'O campo cargo é obrigatório.' if LANG == 'pt-br' and USE_I18N else 'Role field is required.'
+        ]),
+    ('cpf', [
+         'O campo CPF é obrigatório.' if LANG == 'pt-br' and USE_I18N else 'CPF field is required.'
         ])
     ]
 )
-def test_register_missing_fields(client_api, field, error, register_infos):
+def test_register_missing_profile_fields(api_cnpj_successfull, client_api, field, error, register_infos):
 
     register_infos.pop(field)
 
