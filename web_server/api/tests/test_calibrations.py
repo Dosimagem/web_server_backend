@@ -9,7 +9,6 @@ from web_server.service.models import Calibration
 from web_server.api.views.errors_msg import (
     LANG,
     USE_I18N,
-    MSG_ERROR_USER_CALIBRATIONS,
     MSG_ERROR_TOKEN_USER,
     MSG_ERROR_RESOURCE,
 )
@@ -88,11 +87,11 @@ def test_try_list_for_user_without_calibrations(client_api_auth, user):
 
     response = client_api_auth.get(url)
 
-    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.status_code == HTTPStatus.OK
 
     body = response.json()
 
-    assert body == {'errors': MSG_ERROR_USER_CALIBRATIONS}
+    assert body == {'count': 0, 'row': []}
 
 
 def test_create_successful(client_api_auth, user, form_data, calibration_infos, calibration_file):

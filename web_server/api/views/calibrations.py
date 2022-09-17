@@ -14,7 +14,6 @@ from web_server.service.forms import CreateCalibrationForm, IsotopeForm, UpdateC
 
 from .auth import MyTokenAuthentication
 from .errors_msg import (
-    MSG_ERROR_USER_CALIBRATIONS,
     MSG_ERROR_TOKEN_USER,
     MSG_ERROR_RESOURCE,
     list_errors
@@ -112,19 +111,17 @@ def _delete_calibration(request, user_id, calibration_id):
 
 
 def _list_calibrations(request, user_id):
-    if calibration := Calibration.objects.filter(user=request.user):
 
-        calibration_list = [q.to_dict(request) for q in calibration]
+    calibration = Calibration.objects.filter(user=request.user)
 
-        data = {
-            'count': len(calibration_list),
-            'row': calibration_list
-        }
+    calibration_list = [q.to_dict(request) for q in calibration]
 
-        return Response(data=data)
+    data = {
+        'count': len(calibration_list),
+        'row': calibration_list
+    }
 
-    data = {'errors': MSG_ERROR_USER_CALIBRATIONS}
-    return Response(data=data, status=HTTPStatus.NOT_FOUND)  # TODO: not repat usersself !!
+    return Response(data=data)
 
 
 def _create_calibrations(request, user_id):
