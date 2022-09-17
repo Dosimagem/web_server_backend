@@ -19,11 +19,22 @@ def profile_infos(register_infos, user_info, db):
     return profile_infos
 
 
-def test_valid_form(profile_infos):
+def test_valid_form(api_cnpj_successfull, profile_infos):
 
     form = ProfileCreateForm(data=profile_infos, instance=profile_infos['user'].profile)
 
     assert form.is_valid()
+
+
+def test_cnpj_missing(profile_infos):
+
+    profile_infos.pop('cnpj')
+    form = ProfileCreateForm(data=profile_infos, instance=profile_infos['user'].profile)
+
+    assert not form.is_valid()
+
+    expected = [_('This field is required.')]
+    assert form.errors['cnpj'] == expected
 
 
 @pytest.mark.parametrize(
@@ -35,9 +46,9 @@ def test_valid_form(profile_infos):
      'clinic',
      'role',
      'cpf',
-     'cnpj'],
+    ],
 )
-def test_field_missing(profile_infos, field):
+def test_field_missing(api_cnpj_successfull, profile_infos, field):
 
     if field == 'user':
         user = profile_infos.pop(field)
@@ -49,7 +60,7 @@ def test_field_missing(profile_infos, field):
     assert not form.is_valid()
 
     expected = [_('This field is required.')]
-    assert expected == form.errors[field]
+    assert form.errors[field] == expected
 
 
 def test_form_clean(db):
@@ -75,7 +86,7 @@ def test_form_clean(db):
     assert form.cleaned_data['role'] == d['role'].lower()
 
 
-def test_clinic_must_be_unique(user, second_register_infos):
+def test_clinic_must_be_unique(api_cnpj_fail, user, second_register_infos):
 
     second_register_infos['clinic'] = user.profile.clinic
 
@@ -86,7 +97,7 @@ def test_clinic_must_be_unique(user, second_register_infos):
     assert form.errors['clinic'] == ['Clinic already exists']
 
 
-def test_cpf_must_be_unique(user, second_register_infos):
+def test_cpf_must_be_unique(api_cnpj_fail, user, second_register_infos):
     second_register_infos['cpf'] = user.profile.cpf
 
     form = ProfileCreateForm(second_register_infos)
@@ -106,7 +117,7 @@ def test_cnpj_must_be_unique(user, second_register_infos, db):
     assert form.errors['cnpj'] == ['CNPJ already exists']
 
 
-def test_cpf_invalid(second_register_infos, db):
+def test_cpf_invalid(api_cnpj_fail, second_register_infos, db):
 
     second_register_infos['cpf'] = 1
 
@@ -117,7 +128,7 @@ def test_cpf_invalid(second_register_infos, db):
     assert form.errors['cpf'] == ['CPF invalid.']
 
 
-def test_cnpf_invalid(second_register_infos, db):
+def test_cnpj_invalid(second_register_infos, db):
 
     second_register_infos['cnpj'] = 1
 
@@ -128,7 +139,16 @@ def test_cnpf_invalid(second_register_infos, db):
     assert form.errors['cnpj'] == ['CNPJ invalid.']
 
 
-def test_create_save(profile_infos):
+def test_cnpj_api_invalid(api_cnpj_fail, second_register_infos, db):
+
+    form = ProfileCreateForm(second_register_infos)
+
+    assert not form.is_valid()
+
+    assert form.errors['cnpj'] == ['CNPJ 83.398.534/0001-45 não encontrado.']
+
+
+def test_create_save(api_cnpj_successfull, profile_infos):
 
     form = ProfileCreateForm(profile_infos, instance=profile_infos['user'].profile)
 
@@ -148,7 +168,7 @@ def test_create_save(profile_infos):
     assert user.profile.cnpj == form.cleaned_data['cnpj']
 
 
-def test_update_profile_form_succesuful(user):
+def test_update_profile_form_succesuful(api_cnpj_successfull, user):
 
     payload = {
         'name': 'João Sliva Carvalho',
@@ -170,7 +190,7 @@ def test_update_profile_form_succesuful(user):
     assert user_db.profile.name == 'João Sliva Carvalho'
 
 
-def test_fail_update_profile_form_clinic_unique_constraint(user, second_user):
+def test_fail_update_profile_form_clinic_unique_constraint(api_cnpj_successfull, user, second_user):
 
     payload = {
         'name': 'João Sliva Carvalho',

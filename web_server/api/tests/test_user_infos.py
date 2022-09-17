@@ -33,7 +33,7 @@ def test_read_user_info_by_id(client_api, user):
     assert body['cnpj'] == user.profile._cnpj_mask()
 
 
-def test_update_user_infos(client_api_auth, user):
+def test_update_user_infos(api_cnpj_successfull, client_api_auth, user):
 
     url = resolve_url('api:users-read-update', user_id=user.uuid)
 
@@ -97,7 +97,7 @@ def test_fail_update_user_infos_cnpj_unique_constrain(client_api_auth, user, sec
     assert body['errors'] == expected
 
 
-def test_fail_update_user_infos_clinic_unique_constrain(client_api_auth, user, second_user):
+def test_fail_update_user_infos_clinic_unique_constrain(api_cnpj_successfull, client_api_auth, user, second_user):
 
     url = resolve_url('api:users-read-update', user_id=user.uuid)
 

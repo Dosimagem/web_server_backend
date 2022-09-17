@@ -8,7 +8,6 @@ USE_I18N = settings.USE_I18N
 
 if LANG == 'pt-br' and USE_I18N:
     MSG_ERROR_USER_ORDER = ['Este usuário não possui registro de pedido.']
-    MSG_ERROR_USER_CALIBRATIONS = ['Este usuário não possui registro de calibrações.']
     MSG_ERROR_TOKEN_USER = ['O token e o ID do usuário não correspondem.']
     MSG_ERROR_RESOURCE = ['Este usuário não possui este recurso cadastrado.']
 else:
@@ -94,6 +93,12 @@ def list_errors(errors):
                     list_.append(msg)
                 elif error == 'The two email fields didn’t match.':
                     msg = 'Os campos emails não correspondem.'
+                    list_.append(msg)
+                elif error == 'CNPJ invalid.':
+                    msg = 'CNPJ inválido.'
+                    list_.append(msg)
+                elif error == 'CPF invalid.':
+                    msg = 'CPF inválido.'
                     list_.append(msg)
                 else:
                     list_.append(error)
