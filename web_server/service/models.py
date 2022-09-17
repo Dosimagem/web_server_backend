@@ -105,7 +105,7 @@ class Calibration(models.Model):
     phantom_volume = models.FloatField('Phantom Volume', validators=[MinValueValidator(0.0)])
     acquisition_time = models.FloatField('Acquisition Time', validators=[MinValueValidator(0.0)])
 
-    images = models.FileField('Calibration Images', upload_to=upload_calibration_to, null=True)
+    images = models.FileField('Calibration Images', upload_to=upload_calibration_to, null=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

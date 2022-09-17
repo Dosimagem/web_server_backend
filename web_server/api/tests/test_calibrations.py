@@ -2,6 +2,7 @@ from copy import deepcopy
 from http import HTTPStatus
 from uuid import uuid4
 
+import pytest
 from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
 
@@ -263,6 +264,55 @@ def test_fail_create_isotope_invalid_by_size(client_api_auth, user, form_data):
         expected = ['Invalid isotope.']
 
     assert body['errors'] == expected
+
+
+@pytest.mark.parametrize('field, error', [
+    ('isotope', [
+        'O campo isotopo é obrigatório.' if LANG and USE_I18N else 'Isotope field is required.'
+        ]),
+    ('calibrationName', [
+        'O campo Nome da calibração é obrigatório.' if LANG and USE_I18N else 'Calibration name field is required.'
+        ]),
+    ('syringeActivity', [
+        'O campo atividade da seringa é obrigatório.'
+        if LANG and USE_I18N else 'Syringe activity field is required.'
+        ]),
+    ('residualSyringeActivity', [
+        'O campo atividade residual na seringa é obrigatório.'
+        if LANG and USE_I18N else 'Residual syringe activity field is required.'
+        ]),
+    ('measurementDatetime', [
+        'O campo hora e data da medição é obrigatório.'
+        if LANG and USE_I18N else 'Measurement datetime field is required.'
+        ]),
+    ('phantomVolume', [
+        'O campo volume do fantoma é obrigatório.' if LANG and USE_I18N else 'Phantom volume field is required.'
+        ]),
+    ('acquisitionTime', [
+        'O campo tempo de aquisição é obrigatório.' if LANG and USE_I18N else 'Acquisition time field is required.'
+        ]),
+    ('images', [
+        'O campo images é obrigatório.' if LANG and USE_I18N else 'Images field is required.'
+        ]),
+    ])
+def test_fail_create_missing_fields(client_api_auth, user, form_data, field, error):
+    '''
+    /api/v1/users/<uuid>/calibrations/ - POST
+    '''
+
+    form_data.pop(field)
+
+    url = resolve_url('api:calibration-list-create', user.uuid)
+
+    response = client_api_auth.post(url, data=form_data, format='multipart')
+
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    body = response.json()
+
+    assert not Calibration.objects.exists()
+
+    assert body['errors'] == error
 
 
 def test_read_update_delete_not_allowed_method(client_api_auth, calibration):

@@ -31,7 +31,10 @@ ERRORS_MAP_EN = {
     'email': 'email',
     'phone': 'phone',
     'clinic': 'clinic',
-    'name': 'name'
+    'name': 'name',
+    'isotope': 'isotope',
+    'calibration_name': 'calibration name',
+    'images': 'images'
 }
 
 ERRORS_MAP_PT = {
@@ -50,6 +53,9 @@ ERRORS_MAP_PT = {
     'name': 'nome',
     'cnpj': 'CNPJ',
     'cpf': 'CPF',
+    'isotope': 'isotopo',
+    'calibration_name': 'Nome da calibração',
+    'images': 'images'
 }
 
 

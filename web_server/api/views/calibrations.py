@@ -89,10 +89,6 @@ def _update_calibration(request, user_id, calibration_id):
         if not form.is_valid():
             return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-        for field, value in form.cleaned_data.items():
-            if getattr(cali, field) != value:
-                setattr(cali, field, value)
-
         cali.save()
 
         return Response(status=HTTPStatus.NO_CONTENT)
