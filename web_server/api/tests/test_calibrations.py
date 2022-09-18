@@ -126,7 +126,7 @@ def test_create_successful(client_api_auth, user, form_data, calibration_infos, 
     assert body['phantomVolume'] == calibration_infos['phantom_volume']
     assert body['acquisitionTime'] == calibration_infos['acquisition_time']
     # TODO: Pensar um forma melhor
-    assert body['imagesUrl'].startswith(f'http://testserver/media/{cali_db.user.id}/calibrations/calibration-1')
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{cali_db.user.id}/calibration')
 
 
 def test_fail_create_negative_float_numbers(client_api_auth, user, form_data):
@@ -371,7 +371,7 @@ def test_read_calibration_successful(client_api_auth, calibration_with_images):
     assert body['measurementDatetime'] == cali.measurement_datetime.strftime(cali.FORMAT_DATE)
     assert body['phantomVolume'] == cali.phantom_volume
     assert body['acquisitionTime'] == cali.acquisition_time
-    assert body['imagesUrl'].startswith(f'http://testserver/media/{cali.user.id}/calibrations/calibration-1')
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{cali.user.id}/calibration')
 
 
 def test_fail_read_wrong_calibration_id(client_api_auth, calibration):

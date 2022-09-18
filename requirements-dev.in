@@ -7,3 +7,4 @@ pytest-codecov
 pre_commit
 pip-audit
 pytest-responses
+pytest-mock
