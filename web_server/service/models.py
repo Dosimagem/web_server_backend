@@ -6,7 +6,6 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.utils.timezone import now
-from django.utils.text import slugify
 
 
 class Order(models.Model):
@@ -79,10 +78,9 @@ def upload_to(instance, filename, type):
     _, extension = os.path.splitext(filename)
 
     if type == 'calibrations':
-        slug_calibration_name = slugify(instance.calibration_name)
         id = instance.user.id
-        filename = f'{slug_calibration_name}_{time}{extension}'
-        return f'{id}/{type}/{filename}'
+        filename = f'calibration_{time}{extension}'
+        return f'{id}/{filename}'
 
     return filename
 
