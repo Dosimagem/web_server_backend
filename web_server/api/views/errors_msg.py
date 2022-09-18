@@ -7,12 +7,9 @@ LANG = settings.LANGUAGE_CODE
 USE_I18N = settings.USE_I18N
 
 if LANG == 'pt-br' and USE_I18N:
-    MSG_ERROR_USER_ORDER = ['Este usuário não possui registro de pedido.']
     MSG_ERROR_TOKEN_USER = ['O token e o ID do usuário não correspondem.']
     MSG_ERROR_RESOURCE = ['Este usuário não possui este recurso cadastrado.']
 else:
-    MSG_ERROR_USER_ORDER = ['This user has no order record.']
-    MSG_ERROR_USER_CALIBRATIONS = ['This user has no calibrations record.']
     MSG_ERROR_TOKEN_USER = ['Token and User id do not match.']
     MSG_ERROR_RESOURCE = ['This user does not have this resource registered.']
 

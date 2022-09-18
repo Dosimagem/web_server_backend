@@ -13,7 +13,6 @@ from web_server.service.models import Order
 from .auth import MyTokenAuthentication
 from .errors_msg import (
                         MSG_ERROR_TOKEN_USER,
-                        MSG_ERROR_USER_ORDER,
                         MSG_ERROR_RESOURCE,
                         )
 
@@ -50,7 +49,7 @@ def orders_read(request, user_id, order_id):
     query_set = Order.objects.filter(user__uuid=user_id)
 
     if not query_set:
-        return Response(data={'errors': MSG_ERROR_USER_ORDER}, status=HTTPStatus.NOT_FOUND)
+        return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
     order = query_set.filter(uuid=order_id).first()
     if not order:
@@ -70,14 +69,14 @@ def _read_order(request, order):
 
 
 def _list_orders(request, user_id):
-    if order := Order.objects.filter(user=request.user):
 
-        order_list = [_order_to_dict(q) for q in order]
+    order = Order.objects.filter(user=request.user)
 
-        return Response(data={'orders': order_list})
+    order_list = [_order_to_dict(q) for q in order]
 
-    data = {'errors': MSG_ERROR_USER_ORDER}
-    return Response(data=data, status=HTTPStatus.NOT_FOUND)
+    data = {'count': len(order_list), 'row': order_list}
+
+    return Response(data)
 
 
 def _order_to_dict(order):

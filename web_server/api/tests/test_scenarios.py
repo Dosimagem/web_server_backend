@@ -25,9 +25,11 @@ def test_scenario_read_orders_of_users(client_api, users_and_orders, user, secon
 
     assert response.status_code == HTTPStatus.OK
 
-    user_list_quotes = response.json()['orders']
+    body = response.json()
 
-    assert len(user_list_quotes) == 2
+    user_list_quotes = body['row']
+
+    assert body['count'] == 2
 
     # order 1 do usuario 1
     q1 = user_list_quotes[0]
@@ -55,9 +57,11 @@ def test_scenario_read_orders_of_users(client_api, users_and_orders, user, secon
 
     assert response.status_code == HTTPStatus.OK
 
-    user_list_orders = response.json()['orders']
+    body = response.json()
 
-    assert len(user_list_orders) == 1
+    user_list_orders = body['row']
+
+    assert body['count'] == 1
 
     # order 1 do usuario 2
     q1 = user_list_orders[0]
