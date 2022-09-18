@@ -8,6 +8,9 @@ from django.core.validators import MinValueValidator
 from django.utils.timezone import now
 
 
+FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
+
+
 class Order(models.Model):
 
     DOSIMETRY_CLINIC = 'DC'
@@ -90,7 +93,7 @@ upload_calibration_to = partial(upload_to, type='calibrations')
 
 class Calibration(models.Model):
 
-    FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
+
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
@@ -115,7 +118,7 @@ class Calibration(models.Model):
         return self.calibration_name
 
     def to_dict(self, request):
-
+        # TODO: Clocar da data de criação e modificação
         dict_ = {
             'id': self.uuid,
             'user_id': self.user.uuid,
@@ -123,17 +126,82 @@ class Calibration(models.Model):
             'calibration_name': self.calibration_name,
             'syringe_activity': self.syringe_activity,
             'residual_syringe_activity': self.residual_syringe_activity,
-            'measurement_datetime': self.measurement_datetime.strftime(self.FORMAT_DATE),
+            'measurement_datetime': self.measurement_datetime.strftime(FORMAT_DATE),
             'phantom_volume': self.phantom_volume,
             'acquisition_time': self.acquisition_time,
         }
 
-        if self.images:
+        if self.images.name is not None:
             dict_['images_url'] = request.build_absolute_uri(self.images.url)
 
         return dict_
 
-# upload_report_to = partial(upload_to, type='report')
+
+class ClinicDosimetryAnalysis(models.Model):
+
+    CODE = 1
+
+    ANALYZING_INFOS = 'AP'
+    PROCESSING = 'PR'
+    CONCLUDED = 'CO'
+
+    STATUS = (
+        (ANALYZING_INFOS, 'Analisando informações'),
+        (PROCESSING, 'Processando'),
+        (CONCLUDED, 'Concluído'),
+    )
+
+    uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
+    user = models.ForeignKey('core.CustomUser',
+                             on_delete=models.CASCADE,
+                             related_name='clinic_dosimetry_analysis')
+    calibration = models.ForeignKey('Calibration',
+                                    on_delete=models.CASCADE,
+                                    related_name='clinic_dosimetry_analysis')
+    order = models.ForeignKey('Order',
+                              on_delete=models.CASCADE,
+                              related_name='clinic_dosimetry_analysis')
+    images = models.FileField('Images')
+
+    status = models.CharField('Status', max_length=3, choices=STATUS, default=ANALYZING_INFOS)
+    report = models.FileField('Report', blank=True, null=True)
+    active = models.BooleanField('Active', default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'clinic_dosimetry_analyis'
+
+    def __str__(self):
+        infos = self._infos()
+        # TODO:  Falta fazer a logica do 0001
+        return f'{infos["clinic"]:04}.{infos["isotope"]}.{infos["year"]}/0001-{self.CODE}'
+
+    def _infos(self):
+        clinic = self.user.profile.id
+        isotope = self.calibration.isotope.name.replace('-', '')
+        year = str(self.created_at.year)[2:]
+        return {'clinic': clinic, 'isotope': isotope, 'year': year}
+
+
+    def to_dict(self):
+        dict_ = {
+            'id': self.uuid,
+            'user_id': self.user.uuid,
+            'order_id': self.order.uuid,
+            'calibration_id': self.calibration.uuid,
+            'status': self.get_status_display(),
+            'images': self.images.url,
+            'active': self.active,
+            'created_at': self.created_at.strftime(FORMAT_DATE),
+            'modified_at': self.modified_at.strftime(FORMAT_DATE)
+        }
+
+        if self.report.name is not None:
+            dict_['report'] = self.report.url
+
+        return dict_
 
 
 # class BaseAbstractOrder(models.Model):

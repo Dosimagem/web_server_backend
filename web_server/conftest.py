@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 from django.utils.timezone import make_aware
 
 from web_server.core.models import UserProfile
-from web_server.service.models import Isotope, Order, Calibration
+from web_server.service.models import ClinicDosimetryAnalysis, Isotope, Order, Calibration
 
 
 @pytest.fixture(autouse=True)
@@ -120,7 +120,7 @@ def create_order_data(user):
 
 
 @pytest.fixture
-def user_and_order(user, create_order_data):  # TODO: change this to order
+def order(user, create_order_data):  # TODO: change this to order
     return Order.objects.create(user=user,
                                 quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
                                 remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
@@ -320,6 +320,26 @@ def api_cnpj_fail(responses, second_register_infos):
         status=404,
         json={'message': ['CNPJ 83.398.534/0001-45 não encontrado.']}
     )
+
+
+@pytest.fixture
+def clinic_dosimetry_file():
+    fp = ContentFile(b'CT e SPET files', name='images.zip')
+    return {'images': fp}
+
+
+@pytest.fixture
+def clinic_dosimetry_info(user, calibration, order):
+    return {
+        'user': user,
+        'calibration': calibration,
+        'order': order,
+    }
+
+
+@pytest.fixture
+def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
+    return ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info, **clinic_dosimetry_file)
 
 
 # INDEX_DOSIMETRY = 0

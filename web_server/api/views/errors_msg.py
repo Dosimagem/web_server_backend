@@ -51,7 +51,8 @@ ERRORS_MAP_PT = {
     'cpf': 'CPF',
     'isotope': 'isotopo',
     'calibration_name': 'Nome da calibração',
-    'images': 'images'
+    'images': 'images',
+    'calibration_id': 'id de calibração'
 }
 
 

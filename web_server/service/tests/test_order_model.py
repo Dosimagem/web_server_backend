@@ -10,30 +10,30 @@ from web_server.service.models import Order
 User = get_user_model()
 
 
-def test_orders_create(user_and_order):
+def test_orders_create(order):
     assert Order.objects.exists()
 
 
-def test_orders_create_at(user_and_order):
-    assert isinstance(user_and_order.created_at, datetime)
+def test_orders_create_at(order):
+    assert isinstance(order.created_at, datetime)
 
 
-def test_orders_modified_at(user_and_order):
-    assert isinstance(user_and_order.modified_at, datetime)
+def test_orders_modified_at(order):
+    assert isinstance(order.modified_at, datetime)
 
 
-def test_delete_user_must_delete_quotes(user, user_and_order):
+def test_delete_user_must_delete_quotes(user, order):
     user.delete()
     assert not Order.objects.exists()
 
 
-def test_delete_orders_must_not_delete_user(user, user_and_order):
-    user_and_order.delete()
+def test_delete_orders_must_not_delete_user(user, order):
+    order.delete()
     assert User.objects.exists()
 
 
-def test_orders_str(user_and_order):
-    assert str(user_and_order) == user_and_order.user.profile.name
+def test_orders_str(order):
+    assert str(order) == order.user.profile.name
 
 
 def test_orders_positive_integer_constraint(user):
@@ -63,7 +63,7 @@ def test_default_values(user):
     assert order_db.remaining_of_analyzes == 0
 
 
-# def test_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(user_and_order):
+# def test_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(order):
 
 #     order_db = Order.objects.first()
 
