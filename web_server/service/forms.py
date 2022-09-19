@@ -79,6 +79,7 @@ class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
                   'order',
                   'images')
 
+
 class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
 
     class Meta:

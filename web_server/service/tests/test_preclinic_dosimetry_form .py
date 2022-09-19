@@ -1,10 +1,8 @@
-from decimal import Decimal
 import pytest
 
 from django.utils.translation import gettext as _
 
 from web_server.service.forms import PreClinicDosimetryAnalysisCreateForm
-from web_server.service.models import Order
 
 
 def test_create_form(preclinic_dosimetry_info, preclinic_dosimetry_file):
@@ -43,4 +41,4 @@ def test_invalid_order_of_wrong_service(user, order, calibration, preclinic_dosi
 
     assert not form.is_valid()
 
-    assert form.errors ==  {'__all__': ['Este serviço não foi contratado nesse pedido.']}
+    assert form.errors == {'__all__': ['Este serviço não foi contratado nesse pedido.']}

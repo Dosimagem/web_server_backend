@@ -11,8 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
 
 
-from web_server.service.forms import ClinicDosimetryAnalysisCreateForm
-from web_server.service.models import ClinicDosimetryAnalysis, Order, Calibration
+from web_server.service.forms import ClinicDosimetryAnalysisCreateForm, PreClinicDosimetryAnalysisCreateForm
+from web_server.service.models import ClinicDosimetryAnalysis, Order, Calibration, PreClinicDosimetryAnalysis
 from web_server.api.forms import ClinicDosimetryAnalysisCreateFormApi
 from .auth import MyTokenAuthentication
 from .errors_msg import (
@@ -41,7 +41,15 @@ def analysis_list_create(request, user_id, order_id):
 
 def _list_analysis(request, user_id, order_id):
 
-    list_ = ClinicDosimetryAnalysis.objects.filter(user__uuid=user_id, order__uuid=order_id)
+    try:
+        order = Order.objects.get(user__uuid=user_id, uuid=order_id)
+    except ObjectDoesNotExist:
+        return Response(status=HTTPStatus.NOT_FOUND)
+
+    if order.service_name == Order.PRECLINIC_DOSIMETRY:
+        list_ = PreClinicDosimetryAnalysis.objects.filter(user__uuid=user_id, order__uuid=order_id)
+    elif order.service_name == Order.CLINIC_DOSIMETRY:
+        list_ = ClinicDosimetryAnalysis.objects.filter(user__uuid=user_id, order__uuid=order_id)
 
     data = {
         'count': len(list_),
@@ -71,21 +79,26 @@ def _create_analysis(request, user_id, order_id):
         return Response({'errors': ['Todas as análises para essa pedido já foram usuadas.']},
                         status=HTTPStatus.CONFLICT)
 
-    try:
-        calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'])
-    except ObjectDoesNotExist:
-        return Response(data={'errors': ['Calibração com esse id não existe.']}, status=HTTPStatus.BAD_REQUEST)
+    if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
 
-    data = {'user': user, 'order': order, 'calibration': calibration}
+        try:
+            calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'])
+        except ObjectDoesNotExist:
+            return Response(data={'errors': ['Calibração com esse id não existe.']}, status=HTTPStatus.BAD_REQUEST)
 
-    form_clinic_dosi = ClinicDosimetryAnalysisCreateForm(data, request.FILES)
+        data = {'user': user, 'order': order, 'calibration': calibration}
 
-    if not form_clinic_dosi.is_valid():
-        return Response({'errors': list_errors(form_clinic_dosi.errors)}, status=HTTPStatus.BAD_REQUEST)
+        if order.service_name == Order.CLINIC_DOSIMETRY:
+            form_analysis = ClinicDosimetryAnalysisCreateForm(data, request.FILES)
+        elif order.service_name == Order.PRECLINIC_DOSIMETRY:
+            form_analysis = PreClinicDosimetryAnalysisCreateForm(data, request.FILES)
 
-    with transaction.atomic():
-        order.remaining_of_analyzes -= 1
-        order.save()
-        new_clinic_dosi = form_clinic_dosi.save()
+        if not form_analysis.is_valid():
+            return Response({'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-    return Response(new_clinic_dosi.to_dict(), status=HTTPStatus.CREATED)
+        with transaction.atomic():
+            order.remaining_of_analyzes -= 1
+            order.save()
+            new_analysis = form_analysis.save()
+
+        return Response(new_analysis.to_dict(), status=HTTPStatus.CREATED)

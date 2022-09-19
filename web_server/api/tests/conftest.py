@@ -29,3 +29,12 @@ def form_data_clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
          'calibration_id': clinic_dosimetry_info['calibration'].uuid,
          'images': clinic_dosimetry_file['images']
     }
+
+
+@pytest.fixture
+def form_data_preclinic_dosimetry(preclinic_dosimetry_info, preclinic_dosimetry_file):
+
+    return {
+         'calibration_id': preclinic_dosimetry_info['calibration'].uuid,
+         'images': preclinic_dosimetry_file['images']
+    }

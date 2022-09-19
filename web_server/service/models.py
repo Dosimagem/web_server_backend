@@ -45,7 +45,7 @@ class Order(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.profile.name
+        return f'{self.user.profile.clinic} <{self.get_service_name_display()}>'
 
     class Meta:
         verbose_name = 'User Order'
@@ -219,6 +219,8 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     class Meta:
         db_table = 'clinic_dosimetry_analyis'
+        verbose_name = 'Clinic Dosimetry'
+        verbose_name_plural = 'Clinic Dosimetries'
 
 
 class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
@@ -238,6 +240,8 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     class Meta:
         db_table = 'preclinic_dosimetry_analyis'
+        verbose_name = 'Preclinic Dosimetry'
+        verbose_name_plural = 'Preclinic Dosimetries'
 
 
 # class BaseAbstractOrder(models.Model):

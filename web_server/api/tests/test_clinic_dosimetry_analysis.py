@@ -80,27 +80,6 @@ def test_create_clinic_dosimetry(client_api_auth, user, order, form_data_clinic_
     assert body['modifiedAt'] == clinic_dosi_db.modified_at.strftime(FORMAT_DATE)
 
 
-def test_fail_create_clinic_dosimetry_analysis_in_preclinic_order(client_api_auth, user, preclinic_order, form_data_clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-    '''
-
-    assert not ClinicDosimetryAnalysis.objects.exists()
-    assert not PreClinicDosimetryAnalysis.objects.exists()
-
-
-    url = resolve_url('api:analysis-list-create', user.uuid, preclinic_order.uuid)
-    resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
-    body = resp.json()
-
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
-
-    assert not PreClinicDosimetryAnalysis.objects.exists()
-    assert not ClinicDosimetryAnalysis.objects.exists()
-
-    assert body['errors'] == ['Este serviço não foi contratado nesse pedido.']
-
-
 def test_fail_create_not_have_remaining_of_analyzes(client_api_auth, user, form_data_clinic_dosimetry):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
@@ -244,6 +223,7 @@ def test_list_clinic_dosimetry(client_api_auth, user, order, tree_clinic_dosimet
     analysis_list = body['row']
     analysis_list_db = ClinicDosimetryAnalysis.objects.all()
 
+    assert body['count']
     assert body['count'] == len(analysis_list)
 
     for analysis_response, analysis_db in zip(analysis_list, analysis_list_db):

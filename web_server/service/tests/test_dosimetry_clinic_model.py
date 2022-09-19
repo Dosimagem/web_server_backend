@@ -56,16 +56,16 @@ def test_delete_clinic_dosimetry_must_not_delete_order(order, clinic_dosimetry):
 def test_clinic_dosimetry_one_to_many_relation(user, calibration, order):
 
     analyis_1 = ClinicDosimetryAnalysis.objects.create(user=user,
-                                                      calibration=calibration,
-                                                      order=order,
-                                                      images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                      )
+                                                       calibration=calibration,
+                                                       order=order,
+                                                       images=ContentFile(b'CT e SPET files', name='images.zip')
+                                                       )
 
     analyis_2 = ClinicDosimetryAnalysis.objects.create(user=user,
-                                                      calibration=calibration,
-                                                      order=order,
-                                                      images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                      )
+                                                       calibration=calibration,
+                                                       order=order,
+                                                       images=ContentFile(b'CT e SPET files', name='images.zip')
+                                                       )
 
     assert user.clinic_dosimetry_analysis.count() == 2
 
@@ -85,10 +85,10 @@ def test_clinic_dosimetry_one_to_many_relation(user, calibration, order):
 def test_default_values(user, calibration, order):
 
     analyis = ClinicDosimetryAnalysis.objects.create(user=user,
-                                                    calibration=calibration,
-                                                    order=order,
-                                                    images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                    )
+                                                     calibration=calibration,
+                                                     order=order,
+                                                     images=ContentFile(b'CT e SPET files', name='images.zip')
+                                                     )
 
     assert analyis.status == ClinicDosimetryAnalysis.ANALYZING_INFOS
     assert analyis.active
@@ -110,10 +110,10 @@ def test_str(clinic_dosimetry):
 def test_status(user, calibration, order):
 
     analysis = ClinicDosimetryAnalysis(user=user,
-                                      calibration=calibration,
-                                      order=order,
-                                      images=ContentFile(b'CT e SPET files', name='images.zip'),
-                                      status='AA')
+                                       calibration=calibration,
+                                       order=order,
+                                       images=ContentFile(b'CT e SPET files', name='images.zip'),
+                                       status='AA')
 
     with pytest.raises(ValidationError):
         analysis.full_clean()

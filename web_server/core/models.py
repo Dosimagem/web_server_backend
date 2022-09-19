@@ -107,6 +107,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             cnpj=self.profile._cnpj_mask(),
         )
 
+    def __str__(self):
+        if hasattr(self, 'profile'):
+            return self.profile.clinic
+        return self.email
+
 
 class UserProfile(models.Model):
 

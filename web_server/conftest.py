@@ -120,7 +120,7 @@ def create_order_data(user):
 
 
 @pytest.fixture
-def order(user, create_order_data): # TODO: change name for clinic order
+def order(user, create_order_data):  # TODO: change name for clinic order
     return Order.objects.create(user=user,
                                 quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
                                 remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
@@ -128,13 +128,14 @@ def order(user, create_order_data): # TODO: change name for clinic order
                                 service_name=create_order_data['service_name']
                                 )
 
+
 @pytest.fixture
 def preclinic_order(user, create_order_data):
     return Order.objects.create(user=user,
                                 quantity_of_analyzes=10,
                                 remaining_of_analyzes=10,
                                 price='1000',
-                                service_name= Order.PRECLINIC_DOSIMETRY
+                                service_name=Order.PRECLINIC_DOSIMETRY
                                 )
 
 
@@ -336,6 +337,7 @@ def clinic_dosimetry_file():
     fp = ContentFile(b'CT e SPET files', name='images.zip')
     return {'images': fp}
 
+
 @pytest.fixture
 def preclinic_dosimetry_file():
     fp = ContentFile(b'CT e SPET files', name='images.zip')
@@ -365,8 +367,6 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
     return ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info, **clinic_dosimetry_file)
 
 
-
-
 @pytest.fixture
 def tree_clinic_dosimetry_of_first_user(clinic_dosimetry_info):
     ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
@@ -376,6 +376,17 @@ def tree_clinic_dosimetry_of_first_user(clinic_dosimetry_info):
     ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
                                            images=ContentFile(b'CT e SPET files 3', name='images.zip'))
     return ClinicDosimetryAnalysis.objects.all()
+
+
+@pytest.fixture
+def tree_preclinic_dosimetry_of_first_user(preclinic_dosimetry_info):
+    PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info,
+                                              images=ContentFile(b'CT e SPET files 1', name='images.zip'))
+    PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info,
+                                              images=ContentFile(b'CT e SPET files 2', name='images.zip'))
+    PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info,
+                                              images=ContentFile(b'CT e SPET files 3', name='images.zip'))
+    return PreClinicDosimetryAnalysis.objects.all()
 
 # INDEX_DOSIMETRY = 0
 # INDEX_PRECLINIC_DOSIMETRYAL = 1

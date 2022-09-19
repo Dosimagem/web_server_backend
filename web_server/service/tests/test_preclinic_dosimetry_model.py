@@ -1,5 +1,4 @@
 from datetime import datetime
-from decimal import Decimal
 
 import pytest
 from django.core.files.base import ContentFile
@@ -70,16 +69,16 @@ def test_delete_clinic_dosimetry_must_not_delete_order(preclinic_order, preclini
 def test_clinic_dosimetry_one_to_many_relation(user, calibration, preclinic_order):
 
     analyis_1 = PreClinicDosimetryAnalysis.objects.create(user=user,
-                                                       calibration=calibration,
-                                                       order=preclinic_order,
-                                                       images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                       )
+                                                          calibration=calibration,
+                                                          order=preclinic_order,
+                                                          images=ContentFile(b'CT e SPET files', name='images.zip')
+                                                          )
 
     analyis_2 = PreClinicDosimetryAnalysis.objects.create(user=user,
-                                                       calibration=calibration,
-                                                       order=preclinic_order,
-                                                       images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                       )
+                                                          calibration=calibration,
+                                                          order=preclinic_order,
+                                                          images=ContentFile(b'CT e SPET files', name='images.zip')
+                                                          )
 
     assert user.preclinic_dosimetry_analysis.count() == 2
 
@@ -99,10 +98,10 @@ def test_clinic_dosimetry_one_to_many_relation(user, calibration, preclinic_orde
 def test_default_values(user, calibration, preclinic_order):
 
     analyis = PreClinicDosimetryAnalysis.objects.create(user=user,
-                                                     calibration=calibration,
-                                                     order=preclinic_order,
-                                                     images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                     )
+                                                        calibration=calibration,
+                                                        order=preclinic_order,
+                                                        images=ContentFile(b'CT e SPET files', name='images.zip')
+                                                        )
 
     assert analyis.status == PreClinicDosimetryAnalysis.ANALYZING_INFOS
     assert analyis.active
@@ -124,10 +123,10 @@ def test_str(preclinic_dosimetry_analysis):
 def test_status(user, calibration, preclinic_order):
 
     analysis = PreClinicDosimetryAnalysis(user=user,
-                                       calibration=calibration,
-                                       order=preclinic_order,
-                                       images=ContentFile(b'CT e SPET files', name='images.zip'),
-                                       status='AA')
+                                          calibration=calibration,
+                                          order=preclinic_order,
+                                          images=ContentFile(b'CT e SPET files', name='images.zip'),
+                                          status='AA')
 
     with pytest.raises(ValidationError):
         analysis.full_clean()

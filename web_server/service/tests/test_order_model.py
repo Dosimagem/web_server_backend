@@ -33,7 +33,7 @@ def test_delete_orders_must_not_delete_user(user, order):
 
 
 def test_orders_str(order):
-    assert str(order) == order.user.profile.name
+    assert str(order) == f'{order.user.profile.clinic} <{order.get_service_name_display()}>'
 
 
 def test_orders_positive_integer_constraint(user):
