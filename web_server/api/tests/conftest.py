@@ -26,6 +26,6 @@ def client_api_auth(client_api, user):
 def form_data_clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
 
     return {
-         'calibration_id' : clinic_dosimetry_info['calibration'].uuid,
+         'calibration_id': clinic_dosimetry_info['calibration'].uuid,
          'images': clinic_dosimetry_file['images']
     }

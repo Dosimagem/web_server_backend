@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 from django.utils.timezone import make_aware
 
 from web_server.core.models import UserProfile
-from web_server.service.models import ClinicDosimetryAnalysis, Isotope, Order, Calibration
+from web_server.service.models import ClinicDosimetryAnalysis, Isotope, Order, Calibration, PreClinicDosimetryAnalysis
 
 
 @pytest.fixture(autouse=True)
@@ -114,13 +114,13 @@ def create_order_data(user):
         'quantity_of_analyzes': 10,
         'remaining_of_analyzes': 10,
         'price': '1000.00',
-        'service_name': Order.DOSIMETRY_CLINIC,
+        'service_name': Order.CLINIC_DOSIMETRY,
         'status_payment': Order.AWAITING_PAYMENT
     }
 
 
 @pytest.fixture
-def order(user, create_order_data):  # TODO: change this to order
+def order(user, create_order_data): # TODO: change name for clinic order
     return Order.objects.create(user=user,
                                 quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
                                 remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
@@ -128,9 +128,18 @@ def order(user, create_order_data):  # TODO: change this to order
                                 service_name=create_order_data['service_name']
                                 )
 
+@pytest.fixture
+def preclinic_order(user, create_order_data):
+    return Order.objects.create(user=user,
+                                quantity_of_analyzes=10,
+                                remaining_of_analyzes=10,
+                                price='1000',
+                                service_name= Order.PRECLINIC_DOSIMETRY
+                                )
+
 
 @pytest.fixture
-def users_and_orders(user, second_user):  # TODO: change this to tree_orders_of_tow_ursers
+def tree_orders_of_tow_users(user, second_user):  # TODO: change this to tree_orders_of_tow_users
     '''
     Order Table:
 
@@ -144,7 +153,7 @@ def users_and_orders(user, second_user):  # TODO: change this to tree_orders_of_
                          quantity_of_analyzes=10,
                          remaining_of_analyzes=10,
                          price=Decimal('10000.00'),
-                         service_name=Order.DOSIMETRY_CLINIC,
+                         service_name=Order.CLINIC_DOSIMETRY,
                          status_payment=Order.CONFIRMED,
                          permission=True
                          )
@@ -153,7 +162,7 @@ def users_and_orders(user, second_user):  # TODO: change this to tree_orders_of_
                          quantity_of_analyzes=5,
                          remaining_of_analyzes=5,
                          price=Decimal('5000.00'),
-                         service_name=Order.DOSIMETRY_PRECLINIC,
+                         service_name=Order.PRECLINIC_DOSIMETRY,
                          status_payment=Order.ANALYSIS,
                          permission=False
                          )
@@ -162,7 +171,7 @@ def users_and_orders(user, second_user):  # TODO: change this to tree_orders_of_
                          quantity_of_analyzes=3,
                          remaining_of_analyzes=3,
                          price=Decimal('3000.00'),
-                         service_name=Order.DOSIMETRY_CLINIC,
+                         service_name=Order.CLINIC_DOSIMETRY,
                          status_payment=Order.AWAITING_PAYMENT,
                          permission=False
                          )
@@ -327,6 +336,11 @@ def clinic_dosimetry_file():
     fp = ContentFile(b'CT e SPET files', name='images.zip')
     return {'images': fp}
 
+@pytest.fixture
+def preclinic_dosimetry_file():
+    fp = ContentFile(b'CT e SPET files', name='images.zip')
+    return {'images': fp}
+
 
 @pytest.fixture
 def clinic_dosimetry_info(user, calibration, order):
@@ -338,12 +352,33 @@ def clinic_dosimetry_info(user, calibration, order):
 
 
 @pytest.fixture
+def preclinic_dosimetry_info(user, calibration, preclinic_order):
+    return {
+        'user': user,
+        'calibration': calibration,
+        'order': preclinic_order,
+    }
+
+
+@pytest.fixture
 def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
     return ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info, **clinic_dosimetry_file)
 
 
+
+
+@pytest.fixture
+def tree_clinic_dosimetry_of_first_user(clinic_dosimetry_info):
+    ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
+                                           images=ContentFile(b'CT e SPET files 1', name='images.zip'))
+    ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
+                                           images=ContentFile(b'CT e SPET files 2', name='images.zip'))
+    ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
+                                           images=ContentFile(b'CT e SPET files 3', name='images.zip'))
+    return ClinicDosimetryAnalysis.objects.all()
+
 # INDEX_DOSIMETRY = 0
-# INDEX_DOSIMETRY_PRECLINICAL = 1
+# INDEX_PRECLINIC_DOSIMETRYAL = 1
 # INDEX_SEGMENTANTION = 2
 # INDEX_COMPUTATIONAL_MODELING = 3
 
@@ -371,13 +406,13 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
 
 
 # @pytest.fixture
-# def dosimetry_clinical_service(services):
+# def CLINIC_DOSIMETRYal_service(services):
 #     return services[INDEX_DOSIMETRY]
 
 
 # @pytest.fixture
-# def dosimetry_preclinical_service(services):
-#     return services[INDEX_DOSIMETRY_PRECLINICAL]
+# def PRECLINIC_DOSIMETRYal_service(services):
+#     return services[INDEX_PRECLINIC_DOSIMETRYAL]
 
 
 # @pytest.fixture
@@ -395,10 +430,10 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
 
 
 # @pytest.fixture
-# def dosimetry_clinical_order(user, dosimetry_clinical_service):
+# def CLINIC_DOSIMETRYal_order(user, CLINIC_DOSIMETRYal_service):
 
 #     return DosimetryOrder.objects.create(requester=user,
-#                                          service=dosimetry_clinical_service,
+#                                          service=CLINIC_DOSIMETRYal_service,
 #                                          amount=2,
 #                                          status=DosimetryOrder.PROCESSING,
 #                                          camera_factor=10.0,
@@ -410,10 +445,10 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
 
 
 # @pytest.fixture
-# def dosimetry_preclinical_order(user, dosimetry_preclinical_service):
+# def PRECLINIC_DOSIMETRYal_order(user, PRECLINIC_DOSIMETRYal_service):
 
 #     return DosimetryOrder.objects.create(requester=user,
-#                                          service=dosimetry_preclinical_service,
+#                                          service=PRECLINIC_DOSIMETRYal_service,
 #                                          amount=2,
 #                                          status=DosimetryOrder.PROCESSING,
 #                                          camera_factor=10.0,
@@ -448,5 +483,5 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
 
 
 # @pytest.fixture
-# def orders_user(dosimetry_clinical_order, dosimetry_preclinical_order, segmentantion_order, computational_modeling):
-#     return [dosimetry_clinical_order, dosimetry_preclinical_order, segmentantion_order, computational_modeling]
+# def orders_user(CLINIC_DOSIMETRYal_order, PRECLINIC_DOSIMETRYal_order, segmentantion_order, computational_modeling):
+#     return [CLINIC_DOSIMETRYal_order, PRECLINIC_DOSIMETRYal_order, segmentantion_order, computational_modeling]

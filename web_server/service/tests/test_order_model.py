@@ -41,12 +41,12 @@ def test_orders_positive_integer_constraint(user):
         Order.objects.create(user=user, quantity_of_analyzes=-1, remaining_of_analyzes=-1)
 
 
-def test_orders_one_to_many_relation(user, second_user, users_and_orders):
+def test_orders_one_to_many_relation(user, second_user, tree_orders_of_tow_users):
 
-    assert users_and_orders[0].user.id == user.id
-    assert users_and_orders[1].user.id == user.id
+    assert tree_orders_of_tow_users[0].user.id == user.id
+    assert tree_orders_of_tow_users[1].user.id == user.id
 
-    assert users_and_orders[2].user.id == second_user.id
+    assert tree_orders_of_tow_users[2].user.id == second_user.id
 
     assert user.orders.count() == 2
     assert second_user.orders.count() == 1
@@ -56,7 +56,7 @@ def test_default_values(user):
 
     order_db = Order.objects.create(
             user=user,
-            price='1000', service_name=Order.DOSIMETRY_CLINIC)
+            price='1000', service_name=Order.CLINIC_DOSIMETRY)
 
     assert not order_db.permission
     assert order_db.quantity_of_analyzes == 0

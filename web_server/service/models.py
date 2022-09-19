@@ -6,6 +6,7 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.utils.timezone import now
+from django.core.exceptions import ValidationError
 
 
 FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
@@ -13,12 +14,12 @@ FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
 class Order(models.Model):
 
-    DOSIMETRY_CLINIC = 'DC'
-    DOSIMETRY_PRECLINIC = 'DPC'
+    CLINIC_DOSIMETRY = 'DC'
+    PRECLINIC_DOSIMETRY = 'DPC'
 
-    SERVICES_TYPES = (
-        (DOSIMETRY_CLINIC, 'Dosimetria Clinica'),
-        (DOSIMETRY_PRECLINIC, 'Dosimetria Preclinica')
+    SERVICES_NAMES = (
+        (CLINIC_DOSIMETRY, 'Dosimetria Clinica'),
+        (PRECLINIC_DOSIMETRY, 'Dosimetria Preclinica')
     )
 
     AWAITING_PAYMENT = 'APG'
@@ -37,7 +38,7 @@ class Order(models.Model):
     remaining_of_analyzes = models.PositiveIntegerField('Remaning of analysis', default=0)
     price = models.DecimalField('Price', max_digits=14, decimal_places=2)
     status_payment = models.CharField('Status payment', max_length=3, choices=STATUS_PAYMENT, default=AWAITING_PAYMENT)
-    service_name = models.CharField('Service name', max_length=3, choices=SERVICES_TYPES)
+    service_name = models.CharField('Service name', max_length=3, choices=SERVICES_NAMES)
     permission = models.BooleanField('Permission', default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -49,6 +50,9 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'User Order'
         verbose_name_plural = 'User Orders'
+
+    def is_analysis_available(self):
+        return self.remaining_of_analyzes > 0
 
     # def save(self, *args, **kwargs):
     #     if self.remaining_of_analyzes > self.quantity_of_analyzes:
@@ -93,8 +97,6 @@ upload_calibration_to = partial(upload_to, type='calibrations')
 
 class Calibration(models.Model):
 
-
-
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
     isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='calibrations')
@@ -131,16 +133,13 @@ class Calibration(models.Model):
             'acquisition_time': self.acquisition_time,
         }
 
-        if self.images.name is not None:
+        if self.images.name:
             dict_['images_url'] = request.build_absolute_uri(self.images.url)
 
         return dict_
 
 
-class ClinicDosimetryAnalysis(models.Model):
-
-    CODE = 1
-
+class DosimetryAnalysisBase(models.Model):
     ANALYZING_INFOS = 'AP'
     PROCESSING = 'PR'
     CONCLUDED = 'CO'
@@ -152,15 +151,7 @@ class ClinicDosimetryAnalysis(models.Model):
     )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
-    user = models.ForeignKey('core.CustomUser',
-                             on_delete=models.CASCADE,
-                             related_name='clinic_dosimetry_analysis')
-    calibration = models.ForeignKey('Calibration',
-                                    on_delete=models.CASCADE,
-                                    related_name='clinic_dosimetry_analysis')
-    order = models.ForeignKey('Order',
-                              on_delete=models.CASCADE,
-                              related_name='clinic_dosimetry_analysis')
+
     images = models.FileField('Images')
 
     status = models.CharField('Status', max_length=3, choices=STATUS, default=ANALYZING_INFOS)
@@ -171,7 +162,7 @@ class ClinicDosimetryAnalysis(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'clinic_dosimetry_analyis'
+        abstract = True
 
     def __str__(self):
         infos = self._infos()
@@ -184,7 +175,6 @@ class ClinicDosimetryAnalysis(models.Model):
         year = str(self.created_at.year)[2:]
         return {'clinic': clinic, 'isotope': isotope, 'year': year}
 
-
     def to_dict(self):
         dict_ = {
             'id': self.uuid,
@@ -194,14 +184,60 @@ class ClinicDosimetryAnalysis(models.Model):
             'status': self.get_status_display(),
             'images': self.images.url,
             'active': self.active,
+            'service_name': self.order.get_service_name_display(),
             'created_at': self.created_at.strftime(FORMAT_DATE),
             'modified_at': self.modified_at.strftime(FORMAT_DATE)
         }
 
-        if self.report.name is not None:
+        if self.report.name:
             dict_['report'] = self.report.url
 
         return dict_
+
+    def clean(self):
+        if hasattr(self, 'order'):
+            order = self.order
+            if order.service_name != self.SERVICE_NAME:
+                raise ValidationError('Este serviço não foi contratado nesse pedido.')
+
+
+class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
+
+    CODE = 1
+    SERVICE_NAME = Order.CLINIC_DOSIMETRY
+
+    user = models.ForeignKey('core.CustomUser',
+                             on_delete=models.CASCADE,
+                             related_name='clinic_dosimetry_analysis')
+    calibration = models.ForeignKey('Calibration',
+                                    on_delete=models.CASCADE,
+                                    related_name='clinic_dosimetry_analysis')
+    order = models.ForeignKey('Order',
+                              on_delete=models.CASCADE,
+                              related_name='clinic_dosimetry_analysis')
+    images = models.FileField('Images')
+
+    class Meta:
+        db_table = 'clinic_dosimetry_analyis'
+
+
+class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
+
+    CODE = 2
+    SERVICE_NAME = Order.PRECLINIC_DOSIMETRY
+
+    user = models.ForeignKey('core.CustomUser',
+                             on_delete=models.CASCADE,
+                             related_name='preclinic_dosimetry_analysis')
+    calibration = models.ForeignKey('Calibration',
+                                    on_delete=models.CASCADE,
+                                    related_name='preclinic_dosimetry_analysis')
+    order = models.ForeignKey('Order',
+                              on_delete=models.CASCADE,
+                              related_name='preclinic_dosimetry_analysis')
+
+    class Meta:
+        db_table = 'preclinic_dosimetry_analyis'
 
 
 # class BaseAbstractOrder(models.Model):

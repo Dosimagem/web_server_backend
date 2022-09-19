@@ -14,7 +14,7 @@ def test_valid_form(create_order_data):
     assert form.cleaned_data['quantity_of_analyzes'] == 10
     assert form.cleaned_data['remaining_of_analyzes'] == 10
     assert form.cleaned_data['price'] == Decimal('1000.00')
-    assert form.cleaned_data['service_name'] == Order.DOSIMETRY_CLINIC
+    assert form.cleaned_data['service_name'] == Order.CLINIC_DOSIMETRY
 
 
 def test_invalid_form_negative_quantity_of_analyzes(create_order_data):

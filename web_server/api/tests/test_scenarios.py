@@ -7,7 +7,7 @@ from django.core.files.base import ContentFile
 from web_server.service.models import Calibration
 
 
-def test_scenario_read_orders_of_users(client_api, users_and_orders, user, second_user):
+def test_scenario_read_orders_of_users(client_api, tree_orders_of_tow_users, user, second_user):
     '''
     Order Table:
 
