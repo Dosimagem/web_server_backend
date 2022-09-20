@@ -10,30 +10,30 @@ from web_server.service.models import Order
 User = get_user_model()
 
 
-def test_orders_create(user_and_order):
+def test_orders_create(order):
     assert Order.objects.exists()
 
 
-def test_orders_create_at(user_and_order):
-    assert isinstance(user_and_order.created_at, datetime)
+def test_orders_create_at(order):
+    assert isinstance(order.created_at, datetime)
 
 
-def test_orders_modified_at(user_and_order):
-    assert isinstance(user_and_order.modified_at, datetime)
+def test_orders_modified_at(order):
+    assert isinstance(order.modified_at, datetime)
 
 
-def test_delete_user_must_delete_quotes(user, user_and_order):
+def test_delete_user_must_delete_quotes(user, order):
     user.delete()
     assert not Order.objects.exists()
 
 
-def test_delete_orders_must_not_delete_user(user, user_and_order):
-    user_and_order.delete()
+def test_delete_orders_must_not_delete_user(user, order):
+    order.delete()
     assert User.objects.exists()
 
 
-def test_orders_str(user_and_order):
-    assert str(user_and_order) == user_and_order.user.profile.name
+def test_orders_str(order):
+    assert str(order) == f'{order.user.profile.clinic} <{order.get_service_name_display()}>'
 
 
 def test_orders_positive_integer_constraint(user):
@@ -41,12 +41,12 @@ def test_orders_positive_integer_constraint(user):
         Order.objects.create(user=user, quantity_of_analyzes=-1, remaining_of_analyzes=-1)
 
 
-def test_orders_one_to_many_relation(user, second_user, users_and_orders):
+def test_orders_one_to_many_relation(user, second_user, tree_orders_of_tow_users):
 
-    assert users_and_orders[0].user.id == user.id
-    assert users_and_orders[1].user.id == user.id
+    assert tree_orders_of_tow_users[0].user.id == user.id
+    assert tree_orders_of_tow_users[1].user.id == user.id
 
-    assert users_and_orders[2].user.id == second_user.id
+    assert tree_orders_of_tow_users[2].user.id == second_user.id
 
     assert user.orders.count() == 2
     assert second_user.orders.count() == 1
@@ -56,14 +56,14 @@ def test_default_values(user):
 
     order_db = Order.objects.create(
             user=user,
-            price='1000', service_name=Order.DOSIMETRY_CLINIC)
+            price='1000', service_name=Order.CLINIC_DOSIMETRY)
 
     assert not order_db.permission
     assert order_db.quantity_of_analyzes == 0
     assert order_db.remaining_of_analyzes == 0
 
 
-# def test_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(user_and_order):
+# def test_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(order):
 
 #     order_db = Order.objects.first()
 

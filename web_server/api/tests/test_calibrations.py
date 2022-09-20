@@ -6,7 +6,7 @@ import pytest
 from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
 
-from web_server.service.models import Calibration
+from web_server.service.models import Calibration, FORMAT_DATE
 from web_server.api.views.errors_msg import (
     LANG,
     USE_I18N,
@@ -74,7 +74,7 @@ def test_list_successful(client_api_auth, calibration):
         assert cali_response['calibrationName'] == cali_db.calibration_name
         assert cali_response['syringeActivity'] == cali_db.syringe_activity
         assert cali_response['residualSyringeActivity'] == cali_db.residual_syringe_activity
-        assert cali_response['measurementDatetime'] == cali_db.measurement_datetime.strftime(cali_db.FORMAT_DATE)
+        assert cali_response['measurementDatetime'] == cali_db.measurement_datetime.strftime(FORMAT_DATE)
         assert cali_response['phantomVolume'] == cali_db.phantom_volume
         assert cali_response['acquisitionTime'] == cali_db.acquisition_time
 
@@ -122,7 +122,7 @@ def test_create_successful(client_api_auth, user, form_data, calibration_infos, 
     assert body['calibrationName'] == calibration_infos['calibration_name']
     assert body['syringeActivity'] == calibration_infos['syringe_activity']
     assert body['residualSyringeActivity'] == calibration_infos['residual_syringe_activity']
-    assert body['measurementDatetime'] == calibration_infos['measurement_datetime'].strftime(cali_db.FORMAT_DATE)
+    assert body['measurementDatetime'] == calibration_infos['measurement_datetime'].strftime(FORMAT_DATE)
     assert body['phantomVolume'] == calibration_infos['phantom_volume']
     assert body['acquisitionTime'] == calibration_infos['acquisition_time']
     # TODO: Pensar um forma melhor
@@ -368,7 +368,7 @@ def test_read_calibration_successful(client_api_auth, calibration_with_images):
     assert body['calibrationName'] == cali.calibration_name
     assert body['syringeActivity'] == cali.syringe_activity
     assert body['residualSyringeActivity'] == cali.residual_syringe_activity
-    assert body['measurementDatetime'] == cali.measurement_datetime.strftime(cali.FORMAT_DATE)
+    assert body['measurementDatetime'] == cali.measurement_datetime.strftime(FORMAT_DATE)
     assert body['phantomVolume'] == cali.phantom_volume
     assert body['acquisitionTime'] == cali.acquisition_time
     assert body['imagesUrl'].startswith(f'http://testserver/media/{cali.user.id}/calibration')

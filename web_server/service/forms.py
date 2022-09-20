@@ -2,7 +2,13 @@ from django import forms
 from django.forms import ValidationError
 from django.utils.translation import gettext as _
 
-from web_server.service.models import Isotope, Order, Calibration
+from web_server.service.models import (
+                                      ClinicDosimetryAnalysis,
+                                      PreClinicDosimetryAnalysis,
+                                      Isotope,
+                                      Order,
+                                      Calibration,
+                                      )
 
 
 class CreateOrderForm(forms.ModelForm):
@@ -62,3 +68,23 @@ class IsotopeForm(forms.Form):
             raise ValidationError(_('Isotope not registered.'), code='invalid_isotope')
 
         return isotope
+
+
+class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = ClinicDosimetryAnalysis
+        fields = ('user',
+                  'calibration',
+                  'order',
+                  'images')
+
+
+class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = PreClinicDosimetryAnalysis
+        fields = ('user',
+                  'calibration',
+                  'order',
+                  'images')

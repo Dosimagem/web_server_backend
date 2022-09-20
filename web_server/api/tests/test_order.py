@@ -12,12 +12,12 @@ from web_server.api.views.errors_msg import (
 
 # List - GET
 
-def test_list_orders_of_user(client_api_auth, user_and_order):
+def test_list_orders_of_user(client_api_auth, order):
     '''
     /api/v1/users/<uuid>/orders/ - GET
     '''
 
-    url = resolve_url('api:order-list', user_and_order.user.uuid)
+    url = resolve_url('api:order-list', order.user.uuid)
 
     response = client_api_auth.get(url)
 
@@ -25,7 +25,7 @@ def test_list_orders_of_user(client_api_auth, user_and_order):
 
     assert response.status_code == HTTPStatus.OK
 
-    order_db_list = list(Order.objects.filter(user=user_and_order.user))
+    order_db_list = list(Order.objects.filter(user=order.user))
 
     order_response_list = body['row']
 
@@ -59,9 +59,9 @@ def test_try_list_orders_for_user_without_order(client_api_auth, user):
     assert body == {'row': [], 'count': 0}
 
 
-def test_list_not_allowed_method(client_api_auth, user_and_order):
+def test_list_not_allowed_method(client_api_auth, order):
 
-    url = resolve_url('api:order-list', user_and_order.user.uuid)
+    url = resolve_url('api:order-list', order.user.uuid)
 
     resp = client_api_auth.post(url, format='json')
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
@@ -76,7 +76,7 @@ def test_list_not_allowed_method(client_api_auth, user_and_order):
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
 
 
-def test_list_token_view_and_user_id_dont_match(client_api_auth, user_and_order):
+def test_list_token_view_and_user_id_dont_match(client_api_auth, order):
     '''
     The token does not belong to the user
     '''
@@ -94,12 +94,12 @@ def test_list_token_view_and_user_id_dont_match(client_api_auth, user_and_order)
 # Read - GET
 
 
-def test_read_order_by_id(client_api_auth, user_and_order):
+def test_read_order_by_id(client_api_auth, order):
     '''
     /api/v1/users/<uuid>/orders/<uuid> - GET
     '''
 
-    url = resolve_url('api:order-read', user_id=user_and_order.user.uuid, order_id=user_and_order.uuid)
+    url = resolve_url('api:order-read', user_id=order.user.uuid, order_id=order.uuid)
 
     response = client_api_auth.get(url)
 
@@ -107,7 +107,7 @@ def test_read_order_by_id(client_api_auth, user_and_order):
 
     body = response.json()
 
-    order_db = Order.objects.get(id=user_and_order.id)
+    order_db = Order.objects.get(id=order.id)
 
     assert body['id'] == str(order_db.uuid)
     assert body['userId'] == str(order_db.user.uuid)
@@ -120,12 +120,12 @@ def test_read_order_by_id(client_api_auth, user_and_order):
     assert body['permission'] == order_db.permission
 
 
-def test_read_order_by_wrong_id(client_api_auth, user_and_order):
+def test_read_order_by_wrong_id(client_api_auth, order):
     '''
     /api/v1/users/<uuid>/orders/<uuid> - GET
     '''
 
-    url = resolve_url('api:order-read', user_id=user_and_order.user.uuid, order_id=uuid4())
+    url = resolve_url('api:order-read', user_id=order.user.uuid, order_id=uuid4())
 
     response = client_api_auth.get(url)
 
@@ -154,12 +154,12 @@ def test_try_read_order_for_user_without_order(client_api_auth, user):
     assert body['errors'] == MSG_ERROR_RESOURCE
 
 
-def test_read_view_token_and_user_id_dont_match(client_api_auth, user_and_order):
+def test_read_view_token_and_user_id_dont_match(client_api_auth, order):
     '''
     The token does not belong to the user
     '''
 
-    url = resolve_url('api:order-read', user_id=uuid4(), order_id=user_and_order.uuid)
+    url = resolve_url('api:order-read', user_id=uuid4(), order_id=order.uuid)
 
     response = client_api_auth.get(url)
 
@@ -170,9 +170,9 @@ def test_read_view_token_and_user_id_dont_match(client_api_auth, user_and_order)
     assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
-def test_read_not_allowed_method(client_api_auth, user_and_order):
+def test_read_not_allowed_method(client_api_auth, order):
 
-    url = resolve_url('api:order-read', user_id=user_and_order.user.uuid, order_id=user_and_order.uuid)
+    url = resolve_url('api:order-read', user_id=order.user.uuid, order_id=order.uuid)
 
     resp = client_api_auth.post(url, format='json')
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED

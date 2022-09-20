@@ -51,7 +51,8 @@ ERRORS_MAP_PT = {
     'cpf': 'CPF',
     'isotope': 'isotopo',
     'calibration_name': 'Nome da calibração',
-    'images': 'images'
+    'images': 'images',
+    'calibration_id': 'id de calibração'
 }
 
 
@@ -63,11 +64,11 @@ def list_errors(errors):
         for error in field_errors:
             if LANG == 'pt-br' and USE_I18N:
                 if error == 'Este campo é obrigatório.':
-                    name = ERRORS_MAP_PT[field_name]
+                    name = ERRORS_MAP_PT.get(field_name, field_name)
                     msg = f'O campo {name} é obrigatório.'
                     list_.append(msg)
                 elif error == 'Certifique-se que este valor seja maior ou igual a 0.0.':
-                    name = ERRORS_MAP_PT[field_name]
+                    name = ERRORS_MAP_PT.get(field_name, field_name)
                     msg = f'Certifique-se que {name} seja maior ou igual a 0.0.'
                     list_.append(msg)
                 elif error == 'Calibration com este User e Calibration Name já existe.':
@@ -83,7 +84,7 @@ def list_errors(errors):
                     msg = 'CNPJ inválido.'
                     list_.append(msg)
                 elif error.endswith('already exists'):
-                    name = ERRORS_MAP_PT[field_name].capitalize()
+                    name = ERRORS_MAP_PT.get(field_name, field_name).capitalize()
                     name = 'CPF' if name == 'Cpf' else name
                     name = 'CNPJ' if name == 'Cnpj' else name
                     msg = f'{name} já existe.'
@@ -101,7 +102,7 @@ def list_errors(errors):
                     list_.append(error)
             else:
                 if error == 'This field is required.':
-                    name = ERRORS_MAP_EN[field_name].capitalize()
+                    name = ERRORS_MAP_EN[field_name].get(field_name, field_name).capitalize()
                     msg = error.replace('This', name)
                     list_.append(msg)
                 elif error == 'Ensure this value is greater than or equal to 0.0.':
