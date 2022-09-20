@@ -52,6 +52,9 @@ Rotas disponiveis
   - DELETE /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
   - PUT /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
   - GET /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
+- Analises
+  - GET /api/v1/users/\<uuid:user_id>/orders/\<uuid:order_id>/analysis/
+  - POST /api/v1/users/\<uuid:user_id>/orders/\<uuid:order_id>/analysis/
 
 Detalhes das rotas: [ROTAS.md](ROTAS.md)
 
