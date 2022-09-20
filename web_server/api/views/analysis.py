@@ -53,7 +53,7 @@ def _list_analysis(request, user_id, order_id):
 
     data = {
         'count': len(list_),
-        'row': [a.to_dict() for a in list_]
+        'row': [a.to_dict(request) for a in list_]
     }
 
     return Response(data)
@@ -101,4 +101,4 @@ def _create_analysis(request, user_id, order_id):
             order.save()
             new_analysis = form_analysis.save()
 
-        return Response(new_analysis.to_dict(), status=HTTPStatus.CREATED)
+        return Response(new_analysis.to_dict(request), status=HTTPStatus.CREATED)

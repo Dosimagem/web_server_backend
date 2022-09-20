@@ -16,9 +16,9 @@
     - [4.3) Rota para atualizar uma calibração](#43-rota-para-atualizar-uma-calibração)
     - [4.4) Rota para deletar uma calibração](#44-rota-para-deletar-uma-calibração)
     - [4.5) Rota para ler uma calibração](#45-rota-para-ler-uma-calibração)
-  - [5) Rota das analises]()
-    - [5.1) Rota para listar as analises]()
-    - [5.2) Rota para criar as analises]()
+  - [5) Rota das analises](#5-rota-das-analises)
+    - [5.1) Rota para listar as analises](#51-rota-para-listar-as-analises)
+    - [5.2) Rota para criar as analises](#52-rota-para-cadastra-analises)
 
 
 ---
@@ -530,7 +530,7 @@ Corpo da resposta:
 ---
 
 
-### 4.2) Rota para cadastra analises
+### 5.2) Rota para cadastra analises
 
 ---
 

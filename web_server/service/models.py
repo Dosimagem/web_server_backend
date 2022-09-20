@@ -84,15 +84,16 @@ def upload_to(instance, filename, type):
 
     _, extension = os.path.splitext(filename)
 
-    if type == 'calibrations':
-        id = instance.user.id
-        filename = f'calibration_{time}{extension}'
-        return f'{id}/{filename}'
+    id = instance.user.id
+    filename = f'{type}_{time}{extension}'
 
-    return filename
+    return f'{id}/{filename}'
 
 
-upload_calibration_to = partial(upload_to, type='calibrations')
+upload_calibration_to = partial(upload_to, type='calibration')
+upload_clinic_dosimetry_to = partial(upload_to, type='clinic_dosimetry')
+upload_preclinic_dosimetry_to = partial(upload_to, type='preclinic_dosimetry')
+upload_report_to = partial(upload_to, type='report')
 
 
 class Calibration(models.Model):
@@ -152,10 +153,8 @@ class DosimetryAnalysisBase(models.Model):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
-    images = models.FileField('Images')
-
     status = models.CharField('Status', max_length=3, choices=STATUS, default=ANALYZING_INFOS)
-    report = models.FileField('Report', blank=True, null=True)
+    report = models.FileField('Report', blank=True, null=True, upload_to=upload_report_to)
     active = models.BooleanField('Active', default=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -175,14 +174,14 @@ class DosimetryAnalysisBase(models.Model):
         year = str(self.created_at.year)[2:]
         return {'clinic': clinic, 'isotope': isotope, 'year': year}
 
-    def to_dict(self):
+    def to_dict(self, request):
         dict_ = {
             'id': self.uuid,
             'user_id': self.user.uuid,
             'order_id': self.order.uuid,
             'calibration_id': self.calibration.uuid,
             'status': self.get_status_display(),
-            'images': self.images.url,
+            'images_url': request.build_absolute_uri(self.images.url),
             'active': self.active,
             'service_name': self.order.get_service_name_display(),
             'created_at': self.created_at.strftime(FORMAT_DATE),
@@ -190,7 +189,7 @@ class DosimetryAnalysisBase(models.Model):
         }
 
         if self.report.name:
-            dict_['report'] = self.report.url
+            dict_['report'] = request.build_absolute_uri(self.report.url)
 
         return dict_
 
@@ -215,7 +214,7 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
     order = models.ForeignKey('Order',
                               on_delete=models.CASCADE,
                               related_name='clinic_dosimetry_analysis')
-    images = models.FileField('Images')
+    images = models.FileField('Images', upload_to=upload_clinic_dosimetry_to)
 
     class Meta:
         db_table = 'clinic_dosimetry_analyis'
@@ -237,6 +236,8 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
     order = models.ForeignKey('Order',
                               on_delete=models.CASCADE,
                               related_name='preclinic_dosimetry_analysis')
+
+    images = models.FileField('Images', upload_to=upload_preclinic_dosimetry_to)
 
     class Meta:
         db_table = 'preclinic_dosimetry_analyis'

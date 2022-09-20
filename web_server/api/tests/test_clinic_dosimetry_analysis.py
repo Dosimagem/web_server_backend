@@ -73,11 +73,13 @@ def test_create_clinic_dosimetry(client_api_auth, user, order, form_data_clinic_
     assert body['orderId'] == str(clinic_dosi_db.order.uuid)
     assert body['calibrationId'] == str(clinic_dosi_db.calibration.uuid)
     assert body['status'] == clinic_dosi_db.get_status_display()
-    assert body['images'] == clinic_dosi_db.images.url  # TODO: gerar a url completa
     assert body['active'] == clinic_dosi_db.active
     assert body['serviceName'] == clinic_dosi_db.order.get_service_name_display()
     assert body['createdAt'] == clinic_dosi_db.created_at.strftime(FORMAT_DATE)
     assert body['modifiedAt'] == clinic_dosi_db.modified_at.strftime(FORMAT_DATE)
+
+    # TODO: Pensar uma forma melhor
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{clinic_dosi_db.user.id}/clinic_dosimetry')
 
 
 def test_fail_create_not_have_remaining_of_analyzes(client_api_auth, user, form_data_clinic_dosimetry):
@@ -232,11 +234,14 @@ def test_list_clinic_dosimetry(client_api_auth, user, order, tree_clinic_dosimet
         assert analysis_response['orderId'] == str(analysis_db.order.uuid)
         assert analysis_response['calibrationId'] == str(analysis_db.calibration.uuid)
         assert analysis_response['status'] == analysis_db.get_status_display()
-        assert analysis_response['images'] == analysis_db.images.url
         assert analysis_response['active'] == analysis_db.active
         assert analysis_response['serviceName'] == analysis_db.order.get_service_name_display()
         assert analysis_response['createdAt'] == analysis_db.created_at.strftime(FORMAT_DATE)
         assert analysis_response['modifiedAt'] == analysis_db.modified_at.strftime(FORMAT_DATE)
+        # TODO: Pensar uma forma melhor
+        assert analysis_response['imagesUrl'].startswith(
+            f'http://testserver/media/{analysis_db.user.id}/clinic_dosimetry'
+            )
 
 
 def test_list_clinic_dosimetry_without_analysis(client_api_auth, user, order):

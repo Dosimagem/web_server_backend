@@ -37,11 +37,13 @@ def test_create_preclinic_dosimetry(client_api_auth, user, preclinic_order, form
     assert body['orderId'] == str(preclinic_dosi_db.order.uuid)
     assert body['calibrationId'] == str(preclinic_dosi_db.calibration.uuid)
     assert body['status'] == preclinic_dosi_db.get_status_display()
-    assert body['images'] == preclinic_dosi_db.images.url  # TODO: gerar a url completa
     assert body['active'] == preclinic_dosi_db.active
     assert body['serviceName'] == preclinic_dosi_db.order.get_service_name_display()
     assert body['createdAt'] == preclinic_dosi_db.created_at.strftime(FORMAT_DATE)
     assert body['modifiedAt'] == preclinic_dosi_db.modified_at.strftime(FORMAT_DATE)
+
+    # TODO: gerar a url completa
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{preclinic_dosi_db.user.id}/preclinic_dosimetry')
 
 
 def test_fail_create_not_have_remaining_of_analyzes(client_api_auth, user, form_data_preclinic_dosimetry):
@@ -206,11 +208,13 @@ def test_list_preclinic_dosimetry(client_api_auth, user, preclinic_order, tree_p
         assert analysis_response['orderId'] == str(analysis_db.order.uuid)
         assert analysis_response['calibrationId'] == str(analysis_db.calibration.uuid)
         assert analysis_response['status'] == analysis_db.get_status_display()
-        assert analysis_response['images'] == analysis_db.images.url
         assert analysis_response['active'] == analysis_db.active
         assert analysis_response['serviceName'] == analysis_db.order.get_service_name_display()
         assert analysis_response['createdAt'] == analysis_db.created_at.strftime(FORMAT_DATE)
         assert analysis_response['modifiedAt'] == analysis_db.modified_at.strftime(FORMAT_DATE)
+        assert analysis_response['imagesUrl'].startswith(
+            f'http://testserver/media/{analysis_db.user.id}/preclinic_dosimetry'
+            )
 
 
 def test_list_preclinic_dosimetry_without_analysis(client_api_auth, user, preclinic_order):

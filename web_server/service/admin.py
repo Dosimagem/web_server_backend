@@ -19,10 +19,10 @@ class UserOrderModelAdmin(admin.ModelAdmin):
                    'permission',
                    'created_at',
                    'modified_at',
-                   'uuid'
                    )
 
     list_display_links = ('id',)
+    readonly_fields = ('uuid',)
 
     form = CreateOrderForm
 
@@ -52,8 +52,8 @@ class CalibrationModelAdmin(admin.ModelAdmin):
                 'images',
                 'created_at',
                 'modified_at',
-                'uuid'
                 )
+    readonly_fields = ('uuid',)
 
 
 @admin.register(ClinicDosimetryAnalysis)
@@ -69,8 +69,8 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                 'active',
                 'created_at',
                 'modified_at',
-                'uuid'
                 )
+    readonly_fields = ('uuid',)
 
 
 @admin.register(PreClinicDosimetryAnalysis)
@@ -86,5 +86,5 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                 'active',
                 'created_at',
                 'modified_at',
-                'uuid'
                 )
+    readonly_fields = ('uuid',)
