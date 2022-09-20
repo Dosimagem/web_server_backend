@@ -6,8 +6,8 @@
     - [1.3) Rota para obter informações do usuário](#13-rota-informações-do-usuario)
     - [1.4) Rota para atualizar informações do usuário](#14-rota-de-atualização-do-usuario)
   - [2) Rotas dos pedidos](#2-rotas-dos-pedidos)
-    - [2.1) Rota para listar todas as cotas para aquele usuário](#21-rota-para-listar-todas-os-podidos-para-aquele-usuario)
-    - [2.2) Rota para ler uma cota específica daquele usuário](#22-rota-para-ler-uma-cota-especifica-daquele-usuário)
+    - [2.1) Rota para listar todas os pedido para aquele usuário](#21-rota-para-listar-todas-os-pedidos-para-aquele-usuario)
+    - [2.2) Rota para ler uma pedido específico daquele usuário](#22-rota-para-ler-um-pedido-especifica-daquele-usuário)
   - [3) Isotopos](#3-isotopos)
     - [3.1) Rota para ler os isótopos cadastrados](#31-rota-para-ler-os-isotopos-cadastrados)
   - [4) Rota das calibrações](#4-rotas-das-calibrações)
@@ -158,13 +158,13 @@ curl --request PATCH \
 
 ## 2) Rotas dos pedidos
 
-### 2.1) Rota para listar todas os podidos para aquele usuario
+### 2.1) Rota para listar todas os pedidos para aquele usuário
 
 ---
 
 * GET /api/v1/users/\<uuid:user_id>/order/
 
-Rota para listar a orders do usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
+Rota para listar os pedidos do usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -207,13 +207,13 @@ Corpo da resposta:
 
 ---
 
-### 2.2) Rota para ler uma cota especifica daquele usuário
+### 2.2) Rota para ler um pedido especifico daquele usuário
 
 ---
 
 * GET /api/v1/users/\<uuid:user_id>/order/\<uuid:id_order>/
 
-Rota para ler uma order específica do usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `200`
+Rota para ler um pedido específica do usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -334,7 +334,7 @@ Corpo da resposta:
 
 * POST /api/v1/users/\<uuid:user_id>/calibrations/
 
-Rota para cadastra as calibrações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `201`
+Rota para cadastra as calibrações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O `Content-Type` é `multipart/form-data`. O código de sucesso é `201`.
 
 Exemplo de `curl`:
 
@@ -376,7 +376,7 @@ Corpo da resposta:
 
 * PUT /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
 
-Rota para atualizar uma calibração especifica de um usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `204`
+Rota para atualizar uma calibração especifica de um usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. O `Content-Type` é `multipart/form-data`. O código de sucesso é `204`
 
 Exemplo de `curl`:
 
@@ -516,7 +516,7 @@ Corpo da resposta:
 
 * POST /api/v1/users/\<uuid:user_id>/calibrations/
 
-Rota para cadastra uma analises em  uma pedido. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` , `uuid` do usuário e `uuid` do pedido. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `201`
+Rota para cadastra uma analises em  uma pedido. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` , `uuid` do usuário e `uuid` do pedido. O `Content-Type` é `multipart/form-data`. O código de sucesso é `201`
 
 Exemplo de `curl`:
 
