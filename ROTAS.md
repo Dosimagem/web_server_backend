@@ -1,15 +1,15 @@
 # Index
 
-  - [1) Rotas de Usuarios](#1-rotas-dos-usuários)
+  - [1) Rotas de Usuários](#1-rotas-dos-usuários)
     - [1.1) Rota de cadastro](#11-rota-de-cadastro)
     - [1.2) Rota de login](#12-rota-de-login)
     - [1.3) Rota para obter informações do usuário](#13-rota-informações-do-usuario)
     - [1.4) Rota para atualizar informações do usuário](#14-rota-de-atualização-do-usuario)
   - [2) Rotas dos pedidos](#2-rotas-dos-pedidos)
     - [2.1) Rota para listar todas as cotas para aquele usuário](#21-rota-para-listar-todas-os-podidos-para-aquele-usuario)
-    - [2.2) Rota para ler uma cota especifica daquele usuario](#22-rota-para-ler-uma-cota-especifica-daquele-usuário)
+    - [2.2) Rota para ler uma cota específica daquele usuário](#22-rota-para-ler-uma-cota-especifica-daquele-usuário)
   - [3) Isotopos](#3-isotopos)
-    - [3.1) Rota para ler os isotopos cadastrados](#31-rota-para-ler-os-isotopos-cadastrados)
+    - [3.1) Rota para ler os isótopos cadastrados](#31-rota-para-ler-os-isotopos-cadastrados)
   - [4) Rota das calibrações](#4-rotas-das-calibrações)
     - [4.1) Rota para listar as calibrações](#41-rota-para-listar-calibrações)
     - [4.2) Rota para cadastrar uma calibração](#42-rota-para-cadastra-calibrações)
@@ -31,25 +31,7 @@
 
 * POST /api/v1/register/
 
- Rota para registrar um usuario via o método post. Caso o `payload` seja válido e o usuario não exista esta rota ira salvar usuario e gera o `token`. O `email` foi usado como `username`. O código de sucesso é `201`
-
-Corpo da requisição:
-
-```json
-{
-  "email": "user1@email.com",
-  "confirmedEmail": "user1@email.com",
-  "password1": "123456!!",
-  "password2": "123456!!",
-  "name": "João Sliva",
-  "phone": "11111111",
-  "role": "médico",
-  "clinic": "Clinica A",
-  "email": "user1@email.com",
-  "cpf": "93743851121",
-  "cnpj": "42438610000111"
-}
-```
+ Rota para registrar um usuário via o método post. Caso o `payload` seja válido e o usuário não exista esta rota irá salvar usuário e gera o `token`. O `email` foi usado como `username`. O código de sucesso é `201`
 
 Exemplo de `curl`:
 
@@ -90,9 +72,7 @@ Corpo da reposta:
 
 * POST /api/v1/login/
 
-Rota serve para obter o token de um usuario cadastrado. Caso o `payload` seja valido será retornado o `token`. O código de sucesso é `200`
-
-Corpo da requisição:
+Rota serve para obter o token de um usuário cadastrado. Caso o `payload` seja válido será retornado o `token`. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -124,7 +104,7 @@ Corpo da resposta:
 
 * GET /api/v1/users/\<uuid:user_id>
 
-Rota para obter informação do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
+Rota para obter informação do usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -156,7 +136,7 @@ Corpo da resposta:
 
 * PATCH /api/v1/users/\<uuid:user_id>
 
-Rota atualizar algumas informações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `204`
+Rota que atualiza algumas informações do usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `204`
 
 
 Exemplo de `curl`:
@@ -184,7 +164,7 @@ curl --request PATCH \
 
 * GET /api/v1/users/\<uuid:user_id>/order/
 
-Rota para listar a orders do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
+Rota para listar a orders do usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -233,7 +213,7 @@ Corpo da resposta:
 
 * GET /api/v1/users/\<uuid:user_id>/order/\<uuid:id_order>/
 
-Rota para ler uma order específica do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `200`
+Rota para ler uma order específica do usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da cota. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -270,7 +250,7 @@ Corpo da resposta:
 
 * GET /api/v1/isotopes/
 
-Rota para ler os isotopos. O código de sucesso é `200`
+Rota para ler os isótopos. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -303,7 +283,7 @@ Corpo da resposta:
 
 * GET /api/v1/users/\<uuid:user_id>/calibrations/
 
-Rota para listar as calibrações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
+Rota para listar as calibrações do usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` e `uuid` do usuário. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -396,7 +376,7 @@ Corpo da resposta:
 
 * PUT /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
 
-Rota para atualizar uma calibração especifica de um usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `204`
+Rota para atualizar uma calibração especifica de um usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `204`
 
 Exemplo de `curl`:
 
@@ -420,7 +400,7 @@ curl --location --request PUT 'localhost:8000/api/v1/users/0be5fbc0-079f-4006-8a
 
 * DELETE /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
 
-Rota para deletar uma calibração especifica de um usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. O código de sucesso é `200`
+Rota para deletar uma calibração especifica de um usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -447,7 +427,7 @@ Corpo da resposta:
 
 * GET /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
 
-Rota para ler uma calibração especifica de um usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. O código de sucesso é `200`
+Rota para ler uma calibração especifica de um usuário. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e o `uuid` da calibração. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -484,7 +464,7 @@ Corpo da resposta:
 
 * GET api/v1/users/\<uuid:user_id>/orders/\<uuid:order_id>/analysis/
 
-Rota para listar as calibrações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e `uuid` do pedido. O código de sucesso é `200`
+Rota para listar as analises de um pedido. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token`, `uuid` do usuário e `uuid` do pedido. O código de sucesso é `200`
 
 Exemplo de `curl`:
 
@@ -536,7 +516,7 @@ Corpo da resposta:
 
 * POST /api/v1/users/\<uuid:user_id>/calibrations/
 
-Rota para cadastra as calibrações do usuario. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` , `uuid` do usuário e `uuid` do pedido. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `201`
+Rota para cadastra uma analises em  uma pedido. É necessário passar o `token` de acesso no `Authorization` na forma `Bearer token` , `uuid` do usuário e `uuid` do pedido. No header `Content-Type` como `multipart/form-data`. O código de sucesso é `201`
 
 Exemplo de `curl`:
 

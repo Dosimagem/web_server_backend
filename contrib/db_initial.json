@@ -117,6 +117,71 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2022-09-20T04:41:32.981Z",
+    "user": 2,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Calibração 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2022-09-20T04:41:48.374Z",
+    "user": 2,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Calibração 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Images\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2022-09-20T04:44:30.811Z",
+    "user": 2,
+    "content_type": 10,
+    "object_id": "3",
+    "object_repr": "Calibração 2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Isotope\", \"Syringe Activity\", \"Measurement Datetime\", \"Phantom Volume\", \"Acquisition Time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2022-09-20T04:49:49.295Z",
+    "user": 2,
+    "content_type": 11,
+    "object_id": "1",
+    "object_repr": "0001.Lu177.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\", \"Report\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2022-09-20T04:50:02.328Z",
+    "user": 2,
+    "content_type": 11,
+    "object_id": "2",
+    "object_repr": "0001.Y90.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
   "model": "sessions.session",
   "pk": "4w9u6jwbrrf8m3p0hbdhki5a7xiu6fao",
   "fields": {
@@ -130,6 +195,14 @@
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hBogVKX7j0DmenMSNVAUtqV8e7apAvd_vfef6kE25rT1nhJM6mz6tTpd0OYHlx2QHcot6qnWtZlRr0r-qBNXyvx83K4fwcZWv7Wln0kjtaYgDJa7AaUiA7FWR7GsTcgjiIHQRPAQ3DUeZYItu9J0Dv1_gDwdDhm:1oWTNs:igwgLDZP9ldTr-31hH5W8uLZr3KV1-v1YRRc9JIvTK0",
     "expire_date": "2022-09-23T02:04:44.387Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ln804doj07pu07zbavziph748wvvk5wd",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hBogVKX7j0DmenMSNVAUtqV8e7apAvd_vfef6kE25rT1nhJM6mz6tTpd0OYHlx2QHcot6qnWtZlRr0r-qBNXyvx83K4fwcZWv7Wln0kjtaYgDJa7AaUiA7FWR7GsTcgjiIHQRPAQ3DUeZYItu9J0Dv1_gDwdDhm:1oaV41:rNz_wJEWMlO41ZxY_IkD7_QSgp9S5tJHeXcNSFhIQpE",
+    "expire_date": "2022-10-04T04:40:53.323Z"
   }
 },
 {
@@ -153,7 +226,7 @@
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$390000$wnaaSHNxBpojF25yEiLwsq$HwdyEqjKfJ9K1pbrojHO1aATGSpM7+PRjzlaOk523IM=",
-    "last_login": "2022-09-16T05:44:23.021Z",
+    "last_login": "2022-09-20T04:40:53.319Z",
     "is_superuser": true,
     "uuid": "509da154-22bf-449a-9491-7dc4cce3ef43",
     "email": "admin@admin.com",
@@ -184,13 +257,13 @@
   "model": "core.userprofile",
   "pk": 1,
   "fields": {
+    "user": 1,
     "name": "João Sliva",
     "phone": "11111111",
     "clinic": "Clinica A",
     "role": "médico",
     "cpf": "93743851121",
     "cnpj": "42438610000111",
-    "user": 1,
     "created_at": "2022-09-09T02:03:22.402Z",
     "modified_at": "2022-09-09T02:05:00.004Z"
   }
@@ -199,13 +272,13 @@
   "model": "core.userprofile",
   "pk": 2,
   "fields": {
+    "user": 3,
     "name": "Maria Silva",
     "phone": "22222222",
     "clinic": "Clinica B",
     "role": "fisico médico",
     "cpf": "52450318097",
     "cnpj": "83398534000145",
-    "user": 3,
     "created_at": "2022-09-09T02:06:50.290Z",
     "modified_at": "2022-09-09T02:06:50.303Z"
   }
@@ -217,13 +290,13 @@
     "uuid": "3898a7e6-34ed-4788-ad25-afae38c19f7d",
     "user": 1,
     "quantity_of_analyzes": 10,
-    "remaining_of_analyzes": 10,
+    "remaining_of_analyzes": 8,
     "price": "3000.00",
     "status_payment": "APG",
     "service_name": "DC",
     "permission": false,
     "created_at": "2022-09-16T05:46:12.377Z",
-    "modified_at": "2022-09-16T05:51:26.044Z"
+    "modified_at": "2022-09-20T04:46:11.993Z"
   }
 },
 {
@@ -233,13 +306,13 @@
     "uuid": "e003ce6f-b8ee-4cb6-b210-e30cd07c06de",
     "user": 1,
     "quantity_of_analyzes": 5,
-    "remaining_of_analyzes": 5,
+    "remaining_of_analyzes": 4,
     "price": "1000.00",
     "status_payment": "CON",
     "service_name": "DPC",
     "permission": true,
     "created_at": "2022-09-16T05:46:40.680Z",
-    "modified_at": "2022-09-16T05:46:40.680Z"
+    "modified_at": "2022-09-20T04:47:33.535Z"
   }
 },
 {
@@ -249,13 +322,13 @@
     "uuid": "4cbf91f7-bbef-4db8-88ce-8f88cf092bbb",
     "user": 3,
     "quantity_of_analyzes": 20,
-    "remaining_of_analyzes": 20,
+    "remaining_of_analyzes": 19,
     "price": "6000.00",
     "status_payment": "APG",
     "service_name": "DC",
     "permission": false,
     "created_at": "2022-09-16T05:48:09.576Z",
-    "modified_at": "2022-09-16T05:50:11.758Z"
+    "modified_at": "2022-09-20T04:48:57.377Z"
   }
 },
 {
@@ -391,15 +464,115 @@
     "uuid": "98b165ba-8744-48d4-bcde-a8fcfe15d3f1",
     "user": 1,
     "isotope": 1,
-    "calibration_name": "Clinica A",
+    "calibration_name": "Calibração 1",
     "syringe_activity": 10.0,
     "residual_syringe_activity": 20.0,
     "measurement_datetime": "2022-09-03T05:45:10Z",
     "phantom_volume": 16.0,
     "acquisition_time": 28.0,
-    "images": "1/calibrations/clinica-a_1663307124006817.zip",
+    "images": "1/calibration_1663648908372148.zip",
     "created_at": "2022-09-16T05:45:24.007Z",
-    "modified_at": "2022-09-16T05:45:24.007Z"
+    "modified_at": "2022-09-20T04:41:48.372Z"
+  }
+},
+{
+  "model": "service.calibration",
+  "pk": 2,
+  "fields": {
+    "uuid": "6868756a-6bd3-4270-844c-4914091741f7",
+    "user": 1,
+    "isotope": 14,
+    "calibration_name": "Calibração 2",
+    "syringe_activity": 12.0,
+    "residual_syringe_activity": 0.0,
+    "measurement_datetime": "2016-04-01T01:12:04Z",
+    "phantom_volume": 2.0,
+    "acquisition_time": 1800.0,
+    "images": "1/calibration_1663648973565395.zip",
+    "created_at": "2022-09-20T04:42:53.565Z",
+    "modified_at": "2022-09-20T04:42:53.565Z"
+  }
+},
+{
+  "model": "service.calibration",
+  "pk": 3,
+  "fields": {
+    "uuid": "cb1bdbc7-c6a6-4440-ad71-f31c7f5d7de6",
+    "user": 3,
+    "isotope": 2,
+    "calibration_name": "Calibração 2",
+    "syringe_activity": 40.0,
+    "residual_syringe_activity": 0.0,
+    "measurement_datetime": "2022-09-20T04:44:18Z",
+    "phantom_volume": 18.0,
+    "acquisition_time": 1000.0,
+    "images": "3/calibration_166364903326499.zip",
+    "created_at": "2022-09-20T04:43:53.265Z",
+    "modified_at": "2022-09-20T04:44:30.809Z"
+  }
+},
+{
+  "model": "service.clinicdosimetryanalysis",
+  "pk": 1,
+  "fields": {
+    "uuid": "696dab21-1ae4-49ee-99e0-6b5d262eb32c",
+    "status": "CO",
+    "report": "1/report_166364938929127.txt",
+    "active": true,
+    "created_at": "2022-09-20T04:45:31.387Z",
+    "modified_at": "2022-09-20T04:49:49.291Z",
+    "user": 1,
+    "calibration": 1,
+    "order": 1,
+    "images": "1/clinic_dosimetry_1663649131387381.zip"
+  }
+},
+{
+  "model": "service.clinicdosimetryanalysis",
+  "pk": 2,
+  "fields": {
+    "uuid": "d70b0fb6-928a-4e0e-8a1c-a5a916dc9db1",
+    "status": "PR",
+    "report": "",
+    "active": true,
+    "created_at": "2022-09-20T04:46:11.994Z",
+    "modified_at": "2022-09-20T04:50:02.323Z",
+    "user": 1,
+    "calibration": 2,
+    "order": 1,
+    "images": "1/clinic_dosimetry_1663649171994804.zip"
+  }
+},
+{
+  "model": "service.clinicdosimetryanalysis",
+  "pk": 3,
+  "fields": {
+    "uuid": "a2754db0-8793-40eb-a9ad-d402b26198bc",
+    "status": "AP",
+    "report": "",
+    "active": true,
+    "created_at": "2022-09-20T04:48:57.379Z",
+    "modified_at": "2022-09-20T04:48:57.379Z",
+    "user": 3,
+    "calibration": 2,
+    "order": 3,
+    "images": "3/clinic_dosimetry_1663649337379366.zip"
+  }
+},
+{
+  "model": "service.preclinicdosimetryanalysis",
+  "pk": 1,
+  "fields": {
+    "uuid": "1d1e148f-6550-4c63-8d43-e6d1949253e3",
+    "status": "AP",
+    "report": "",
+    "active": true,
+    "created_at": "2022-09-20T04:47:33.536Z",
+    "modified_at": "2022-09-20T04:47:33.536Z",
+    "user": 1,
+    "calibration": 2,
+    "order": 2,
+    "images": "1/preclinic_dosimetry_1663649253537032.zip"
   }
 },
 {
