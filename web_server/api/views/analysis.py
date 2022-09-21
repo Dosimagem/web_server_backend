@@ -76,7 +76,7 @@ def _create_analysis(request, user_id, order_id):
         return Response(status=HTTPStatus.NOT_FOUND)
 
     if not order.is_analysis_available():  # TODO: Regra de negocio no modelo não parece uma boa ideia para mim
-        return Response({'errors': ['Todas as análises para essa pedido já foram usuadas.']},
+        return Response({'errors': ['Todas as análises para essa pedido já foram usadas.']},
                         status=HTTPStatus.CONFLICT)
 
     if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
@@ -86,7 +86,7 @@ def _create_analysis(request, user_id, order_id):
         except ObjectDoesNotExist:
             return Response(data={'errors': ['Calibração com esse id não existe.']}, status=HTTPStatus.BAD_REQUEST)
 
-        data = {'user': user, 'order': order, 'calibration': calibration}
+        data.update({'user': user, 'order': order, 'calibration': calibration})
 
         if order.service_name == Order.CLINIC_DOSIMETRY:
             form_analysis = ClinicDosimetryAnalysisCreateForm(data, request.FILES)

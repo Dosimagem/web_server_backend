@@ -1,13 +1,15 @@
+from copy import deepcopy
 from decimal import Decimal
 from http import HTTPStatus
 from uuid import uuid4
 
+import pytest
 from django.shortcuts import resolve_url
 
 from web_server.service.models import ClinicDosimetryAnalysis, FORMAT_DATE, Order, PreClinicDosimetryAnalysis
 
 
-def test_create_preclinic_dosimetry(client_api_auth, user, preclinic_order, form_data_clinic_dosimetry):
+def test_create_preclinic_dosimetry(client_api_auth, user, preclinic_order, form_data_preclinic_dosimetry):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
 
@@ -20,7 +22,7 @@ def test_create_preclinic_dosimetry(client_api_auth, user, preclinic_order, form
     assert Order.objects.get(id=preclinic_order.id).remaining_of_analyzes == preclinic_order.remaining_of_analyzes
 
     url = resolve_url('api:analysis-list-create', user.uuid, preclinic_order.uuid)
-    resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
+    resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.CREATED
@@ -44,6 +46,38 @@ def test_create_preclinic_dosimetry(client_api_auth, user, preclinic_order, form
 
     # TODO: gerar a url completa
     assert body['imagesUrl'].startswith(f'http://testserver/media/{preclinic_dosi_db.user.id}/preclinic_dosimetry')
+
+
+def test_fail_create_analisys_name_must_be_unique_per_order(client_api_auth,
+                                                            user,
+                                                            form_data_preclinic_dosimetry,
+                                                            preclinic_dosimetry_info,
+                                                            preclinic_dosimetry_file):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
+
+    The analysis name must be unique in an order
+    '''
+
+    order = preclinic_dosimetry_info['order']
+
+    images = deepcopy(preclinic_dosimetry_file['images'])
+
+    PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info, **preclinic_dosimetry_file)
+
+    assert PreClinicDosimetryAnalysis.objects.count() == 1
+
+    form_data_preclinic_dosimetry['images'] = images
+
+    url = resolve_url('api:analysis-list-create', user.uuid, order.uuid)
+    resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert PreClinicDosimetryAnalysis.objects.count() == 1
+
+    assert body['errors'] == ['Análises com esse nome já existe para esse pedido.']
 
 
 def test_fail_create_not_have_remaining_of_analyzes(client_api_auth, user, form_data_preclinic_dosimetry):
@@ -70,32 +104,7 @@ def test_fail_create_not_have_remaining_of_analyzes(client_api_auth, user, form_
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['Todas as análises para essa pedido já foram usuadas.']
-
-
-def test_fail_create_preclinic_dosimetry_missing_calibration_id(client_api_auth,
-                                                                user,
-                                                                preclinic_order,
-                                                                form_data_preclinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-    '''
-
-    form_data_preclinic_dosimetry.pop('calibration_id')
-
-    assert not ClinicDosimetryAnalysis.objects.exists()
-
-    url = resolve_url('api:analysis-list-create', user.uuid, preclinic_order.uuid)
-
-    resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
-
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
-
-    assert not ClinicDosimetryAnalysis.objects.exists()
-
-    body = resp.json()
-
-    assert body['errors'] == ['O campo id de calibração é obrigatório.']
+    assert body['errors'] == ['Todas as análises para essa pedido já foram usadas.']
 
 
 def test_fail_create_preclinic_dosimetry_wrong_calibration_id(client_api_auth,
@@ -106,7 +115,7 @@ def test_fail_create_preclinic_dosimetry_wrong_calibration_id(client_api_auth,
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
     '''
 
-    form_data_preclinic_dosimetry['calibration_id'] = uuid4()
+    form_data_preclinic_dosimetry['calibrationId'] = uuid4()
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
@@ -165,12 +174,24 @@ def test_fail_create_preclinic_dosimetry_order_from_another_user(client_api,
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
 
-def test_fail_create_missing_image(client_api_auth, user, preclinic_order, form_data_preclinic_dosimetry):
+@pytest.mark.parametrize('field, error', [
+    ('calibrationId', ['O campo id de calibração é obrigatório.']),
+    ('images', ['O campo imagens é obrigatório.']),
+    ('analysisName', ['O campo nome da análise é obrigatório.']),
+    ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
+    ('administrationDatetime', ['O campo hora e data de adminstração é obrigatório.']),
+    ])
+def test_fail_create_missing_fields(field,
+                                    error,
+                                    client_api_auth,
+                                    user,
+                                    preclinic_order,
+                                    form_data_preclinic_dosimetry):
     '''
      /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
     '''
 
-    form_data_preclinic_dosimetry.pop('images')
+    form_data_preclinic_dosimetry.pop(field)
 
     url = resolve_url('api:analysis-list-create', user.uuid, preclinic_order.uuid)
 
@@ -182,7 +203,7 @@ def test_fail_create_missing_image(client_api_auth, user, preclinic_order, form_
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['O campo images é obrigatório.']
+    assert body['errors'] == error
 
 
 def test_list_preclinic_dosimetry(client_api_auth, user, preclinic_order, tree_preclinic_dosimetry_of_first_user):

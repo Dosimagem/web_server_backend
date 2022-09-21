@@ -15,7 +15,7 @@ FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 class Order(models.Model):
 
     CLINIC_DOSIMETRY = 'DC'
-    PRECLINIC_DOSIMETRY = 'DPC'
+    PRECLINIC_DOSIMETRY = 'PCD'
 
     SERVICES_NAMES = (
         (CLINIC_DOSIMETRY, 'Dosimetria Clinica'),
@@ -46,8 +46,8 @@ class Order(models.Model):
         return f'{self.user.profile.clinic} <{self.get_service_name_display()}>'
 
     class Meta:
-        verbose_name = 'User Order'
-        verbose_name_plural = 'User Orders'
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
 
     def is_analysis_available(self):
         return self.remaining_of_analyzes > 0
@@ -132,27 +132,36 @@ class Calibration(models.Model):
 
 
 class DosimetryAnalysisBase(models.Model):
+
     ANALYZING_INFOS = 'AP'
+    ERRORS_ANALYZING = 'EA'
     PROCESSING = 'PR'
     CONCLUDED = 'CO'
 
     STATUS = (
-        (ANALYZING_INFOS, 'Analisando informações'),
-        (PROCESSING, 'Processando'),
-        (CONCLUDED, 'Concluído'),
+        (ANALYZING_INFOS, 'Verificando informações'),
+        (ERRORS_ANALYZING, 'Informações inválidas'),
+        (PROCESSING, 'Processando a análise'),
+        (CONCLUDED, 'Analise conluída'),
     )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
+    analysis_name = models.CharField('Analysis Name', max_length=24)
+
     status = models.CharField('Status', max_length=3, choices=STATUS, default=ANALYZING_INFOS)
     report = models.FileField('Report', blank=True, null=True, upload_to=upload_report_to)
     active = models.BooleanField('Active', default=True)
+
+    injected_activity = models.FloatField('Injected Activity', validators=[MinValueValidator(0.0)])
+    administration_datetime = models.DateTimeField('Administration Datetime')
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
+
 
     def __str__(self):
         infos = self._infos()
@@ -187,14 +196,14 @@ class DosimetryAnalysisBase(models.Model):
     def clean(self):
         if hasattr(self, 'order'):
             order = self.order
-            if order.service_name != self.SERVICE_NAME:
+            if order.service_name != self.SERVICE_NAME_CODE:
                 raise ValidationError('Este serviço não foi contratado nesse pedido.')
 
 
 class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     CODE = 1
-    SERVICE_NAME = Order.CLINIC_DOSIMETRY
+    SERVICE_NAME_CODE = Order.CLINIC_DOSIMETRY
 
     user = models.ForeignKey('core.CustomUser',
                              on_delete=models.CASCADE,
@@ -211,12 +220,13 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
         db_table = 'clinic_dosimetry_analyis'
         verbose_name = 'Clinic Dosimetry'
         verbose_name_plural = 'Clinic Dosimetries'
+        unique_together = ('order', 'analysis_name',)
 
 
 class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     CODE = 2
-    SERVICE_NAME = Order.PRECLINIC_DOSIMETRY
+    SERVICE_NAME_CODE = Order.PRECLINIC_DOSIMETRY
 
     user = models.ForeignKey('core.CustomUser',
                              on_delete=models.CASCADE,
@@ -234,6 +244,7 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
         db_table = 'preclinic_dosimetry_analyis'
         verbose_name = 'Preclinic Dosimetry'
         verbose_name_plural = 'Preclinic Dosimetries'
+        unique_together = ('order', 'analysis_name',)
 
 
 # class BaseAbstractOrder(models.Model):

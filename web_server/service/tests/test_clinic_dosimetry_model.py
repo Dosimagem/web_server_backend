@@ -4,6 +4,7 @@ import pytest
 from django.core.files.base import ContentFile
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from web_server.conftest import DATETIME_TIMEZONE
 
 from web_server.service.models import Calibration, ClinicDosimetryAnalysis, Order
 
@@ -58,12 +59,18 @@ def test_clinic_dosimetry_one_to_many_relation(user, calibration, order):
     analyis_1 = ClinicDosimetryAnalysis.objects.create(user=user,
                                                        calibration=calibration,
                                                        order=order,
+                                                       analysis_name='Analysis 1',
+                                                       injected_activity=50,
+                                                       administration_datetime=DATETIME_TIMEZONE,
                                                        images=ContentFile(b'CT e SPET files', name='images.zip')
                                                        )
 
     analyis_2 = ClinicDosimetryAnalysis.objects.create(user=user,
                                                        calibration=calibration,
                                                        order=order,
+                                                       analysis_name='Analysis 2',
+                                                       injected_activity=50,
+                                                       administration_datetime=DATETIME_TIMEZONE,
                                                        images=ContentFile(b'CT e SPET files', name='images.zip')
                                                        )
 
@@ -87,6 +94,9 @@ def test_default_values(user, calibration, order):
     analyis = ClinicDosimetryAnalysis.objects.create(user=user,
                                                      calibration=calibration,
                                                      order=order,
+                                                     analysis_name='Analysis 1',
+                                                     injected_activity=50,
+                                                     administration_datetime=DATETIME_TIMEZONE,
                                                      images=ContentFile(b'CT e SPET files', name='images.zip')
                                                      )
 
@@ -107,13 +117,24 @@ def test_str(clinic_dosimetry):
     assert str(analyis) == f'{clinic:04}.{isotope}.{year}/0001-{ClinicDosimetryAnalysis.CODE}'
 
 
-def test_status(user, calibration, order):
+def test_status(clinic_dosimetry_info):
 
-    analysis = ClinicDosimetryAnalysis(user=user,
-                                       calibration=calibration,
-                                       order=order,
+    analysis = ClinicDosimetryAnalysis(**clinic_dosimetry_info,
                                        images=ContentFile(b'CT e SPET files', name='images.zip'),
                                        status='AA')
 
     with pytest.raises(ValidationError):
         analysis.full_clean()
+
+
+def test_status_options():
+
+    status = ClinicDosimetryAnalysis.STATUS
+
+    assert ClinicDosimetryAnalysis.STATUS == status
+
+
+def test_model_code_and_service_name():
+
+    assert ClinicDosimetryAnalysis.CODE == 1
+    assert ClinicDosimetryAnalysis.SERVICE_NAME_CODE == 'PC'
