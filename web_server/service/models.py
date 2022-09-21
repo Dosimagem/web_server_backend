@@ -54,13 +54,6 @@ class Order(models.Model):
     def is_analysis_available(self):
         return self.remaining_of_analyzes > 0
 
-    # def save(self, *args, **kwargs):
-    #     if self.remaining_of_analyzes > self.quantity_of_analyzes:
-    #         raise ValidationError(
-    #             _('Remaining of analyzes must be lower or equal quantity of analyzes.'),
-    #             code='invalid')  # TODO: ValidationError or IntegrityError
-    #     super().save(*args, **kwargs)
-
 
 class Isotope(models.Model):
 

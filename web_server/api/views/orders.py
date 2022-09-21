@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework.decorators import (
                                         api_view,
@@ -10,6 +11,7 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 
 from web_server.service.models import Order
+from web_server.service.order_svc import order_to_dict
 from .auth import MyTokenAuthentication
 from .errors_msg import (
                         MSG_ERROR_TOKEN_USER,
@@ -44,15 +46,9 @@ def orders_read(request, user_id, order_id):
     if request.user.uuid != user_id:
         return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
-    # TODO: Put together this tow queries
-
-    query_set = Order.objects.filter(user__uuid=user_id)
-
-    if not query_set:
-        return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
-
-    order = query_set.filter(uuid=order_id).first()
-    if not order:
+    try:
+        order = Order.objects.filter(user__uuid=user_id, uuid=order_id).get()
+    except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
     dispatcher = {
@@ -65,63 +61,15 @@ def orders_read(request, user_id, order_id):
 
 
 def _read_order(request, order):
-    return Response(data=_order_to_dict(order))
+    return Response(data=order_to_dict(order))
 
 
 def _list_orders(request, user_id):
 
     order = Order.objects.filter(user=request.user)
 
-    order_list = [_order_to_dict(q) for q in order]
+    order_list = [order_to_dict(q) for q in order]
 
     data = {'count': len(order_list), 'row': order_list}
 
     return Response(data)
-
-
-def _order_to_dict(order):
-    return {
-        'id': order.uuid,
-        'user_id': order.user.uuid,
-        'quantity_of_analyzes': order.quantity_of_analyzes,
-        'remaining_of_analyzes': order.remaining_of_analyzes,
-        'price': order.price,
-        'service_name': order.get_service_name_display(),
-        'status_payment': order.get_status_payment_display(),
-        'permission': order.permission,
-        'created_at': order.created_at.date()
-    }
-
-
-# def _delete_order(request, order):
-#     order.delete()
-#     return Response(status=HTTPStatus.NO_CONTENT)
-
-
-# def _update_order(request, order):
-#     form = UpdateQuotasForm(request.data)
-
-#     if not form.is_valid():
-#         return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
-
-#     order.amount = form.cleaned_data['amount']
-
-#     order.save()
-
-#     return Response(status=HTTPStatus.NO_CONTENT)
-
-
-# def _create_orders(request,  user_id):
-
-#     form = CreateQuotasForm(request.data)
-
-#     if not form.is_valid():
-#         return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
-
-#     new_order = {'user': request.user}
-
-#     new_order.update(form.cleaned_data)
-
-#     order_create = Order.objects.create(**new_order)
-
-#     return Response(data=_order_to_dict(order_create), status=HTTPStatus.CREATED)

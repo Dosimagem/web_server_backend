@@ -4,6 +4,7 @@ from uuid import uuid4
 from django.shortcuts import resolve_url
 
 from web_server.service.models import Order
+from web_server.service.order_svc import OrderInfos
 from web_server.api.views.errors_msg import (
     MSG_ERROR_TOKEN_USER,
     MSG_ERROR_RESOURCE,
@@ -32,6 +33,9 @@ def test_list_orders_of_user(client_api_auth, order):
     assert body['count'] == len(order_db_list)
 
     for order_response, order_db in zip(order_response_list, order_db_list):
+
+        order_analysis_infos = OrderInfos(order_db).analysis_status_count()
+
         assert order_response['id'] == str(order_db.uuid)
         assert order_response['userId'] == str(order_db.user.uuid)
         assert order_response['quantityOfAnalyzes'] == order_db.quantity_of_analyzes
@@ -41,6 +45,10 @@ def test_list_orders_of_user(client_api_auth, order):
         assert order_response['statusPayment'] == order_db.get_status_payment_display()
         assert order_response['createdAt'] == str(order_db.created_at.date())
         assert order_response['permission'] == order_db.permission
+
+        assert order_response['analysisStatus']['concluded'] == order_analysis_infos['concluded']
+        assert order_response['analysisStatus']['processing'] == order_analysis_infos['processing']
+        assert order_response['analysisStatus']['analyzingInfos'] == order_analysis_infos['analyzing_infos']
 
 
 def test_try_list_orders_for_user_without_order(client_api_auth, user):
@@ -109,6 +117,8 @@ def test_read_order_by_id(client_api_auth, order):
 
     order_db = Order.objects.get(id=order.id)
 
+    order_analysis_infos = OrderInfos(order_db).analysis_status_count()
+
     assert body['id'] == str(order_db.uuid)
     assert body['userId'] == str(order_db.user.uuid)
     assert body['quantityOfAnalyzes'] == order_db.quantity_of_analyzes
@@ -118,6 +128,9 @@ def test_read_order_by_id(client_api_auth, order):
     assert body['statusPayment'] == order_db.get_status_payment_display()
     assert body['createdAt'] == str(order_db.created_at.date())
     assert body['permission'] == order_db.permission
+    assert body['analysisStatus']['concluded'] == order_analysis_infos['concluded']
+    assert body['analysisStatus']['processing'] == order_analysis_infos['processing']
+    assert body['analysisStatus']['analyzingInfos'] == order_analysis_infos['analyzing_infos']
 
 
 def test_read_order_by_wrong_id(client_api_auth, order):
