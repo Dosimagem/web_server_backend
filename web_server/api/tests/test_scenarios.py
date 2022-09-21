@@ -13,7 +13,7 @@ def test_scenario_read_orders_of_users(client_api, tree_orders_of_tow_users, use
 
     ID_USER  Type               Number    price   Status Payment
     1        Dosimetry Clinic     10     10.000   Confirmado
-    1        Dosimetry Preclinic   5      5.000   Analise
+    1        Dosimetry Preclinic   5      5.000   Aguardando pagamento
     2        Dosimetry Clinic      3      3.000   Aguardando pagamento
     '''
 
@@ -46,7 +46,7 @@ def test_scenario_read_orders_of_users(client_api, tree_orders_of_tow_users, use
     assert q2['quantityOfAnalyzes'] == 5
     assert q2['remainingOfAnalyzes'] == 5
     assert q2['price'] == 5000.00
-    assert q2['statusPayment'] == 'Analise'
+    assert q2['statusPayment'] == 'Aguardando pagamento'
     assert not q2['permission']
 
     # User 2

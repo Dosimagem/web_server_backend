@@ -164,7 +164,7 @@ def tree_orders_of_tow_users(user, second_user):  # TODO: change this to tree_or
                          remaining_of_analyzes=5,
                          price=Decimal('5000.00'),
                          service_name=Order.PRECLINIC_DOSIMETRY,
-                         status_payment=Order.ANALYSIS,
+                         status_payment=Order.AWAITING_PAYMENT,
                          permission=False
                          )
 

@@ -24,12 +24,10 @@ class Order(models.Model):
 
     AWAITING_PAYMENT = 'APG'
     CONFIRMED = 'CON'
-    ANALYSIS = 'ALY'
 
     STATUS_PAYMENT = (
         (AWAITING_PAYMENT, 'Aguardando pagamento'),
         (CONFIRMED, 'Confirmado'),
-        (ANALYSIS, 'Analise'),
     )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
