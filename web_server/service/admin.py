@@ -60,16 +60,20 @@ class CalibrationModelAdmin(admin.ModelAdmin):
 class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_display = (
                 'id',
+                'analysis_name',
                 'user',
                 'order',
                 'calibration',
                 'status',
+                'injected_activity',
+                'administration_datetime',
                 'images',
                 'report',
                 'active',
                 'created_at',
                 'modified_at',
                 )
+    list_display_links = ('id', 'analysis_name',)
     readonly_fields = ('uuid',)
 
 
@@ -77,14 +81,18 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
 class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_display = (
                 'id',
+                'analysis_name',
                 'user',
                 'order',
                 'calibration',
                 'status',
+                'injected_activity',
+                'administration_datetime',
                 'images',
                 'report',
                 'active',
                 'created_at',
                 'modified_at',
                 )
+    list_display_links = ('id', 'analysis_name',)
     readonly_fields = ('uuid',)
