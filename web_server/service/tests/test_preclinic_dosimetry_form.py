@@ -59,8 +59,8 @@ def test_invalid_create_form_field_must_be_positive(preclinic_dosimetry_info, pr
 
 
 def test_invalid_create_form_analysis_name_must_be_unique_per_order(preclinic_dosimetry,
-                                                                   preclinic_dosimetry_info,
-                                                                   preclinic_dosimetry_file):
+                                                                    preclinic_dosimetry_info,
+                                                                    preclinic_dosimetry_file):
 
     form = PreClinicDosimetryAnalysisCreateForm(data=preclinic_dosimetry_info, files=preclinic_dosimetry_file)
 

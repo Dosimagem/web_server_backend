@@ -162,7 +162,6 @@ class DosimetryAnalysisBase(models.Model):
     class Meta:
         abstract = True
 
-
     def __str__(self):
         infos = self._infos()
         # TODO:  Falta fazer a logica do 0001
@@ -185,7 +184,10 @@ class DosimetryAnalysisBase(models.Model):
             'active': self.active,
             'service_name': self.order.get_service_name_display(),
             'created_at': self.created_at.strftime(FORMAT_DATE),
-            'modified_at': self.modified_at.strftime(FORMAT_DATE)
+            'modified_at': self.modified_at.strftime(FORMAT_DATE),
+            'injected_activity': self.injected_activity,
+            'analysis_name': self.analysis_name,
+            'administration_datetime': self.administration_datetime.strftime(FORMAT_DATE)
         }
 
         if self.report.name:

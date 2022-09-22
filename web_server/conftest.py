@@ -229,7 +229,7 @@ def second_calibration_infos(user, lu_177):
 
 
 @pytest.fixture
-def calibration(calibration_infos): # TODO change name for first_calibration
+def calibration(calibration_infos):  # TODO change name for first_calibration
     return Calibration.objects.create(**calibration_infos)
 
 

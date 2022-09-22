@@ -77,7 +77,10 @@ def list_errors(errors):
                 elif error == 'Calibration com este User e Calibration Name já existe.':
                     msg = 'Calibração com esse nome ja existe para este usuário.'
                     list_.append(msg)
-                elif error == 'Preclinic Dosimetry com este Order e Analysis Name já existe.':
+                elif (error == 'Preclinic Dosimetry com este Order e Analysis Name já existe.'
+                      or
+                      error == 'Clinic Dosimetry com este Order e Analysis Name já existe.'
+                      ):
                     msg = 'Análises com esse nome já existe para esse pedido.'
                     list_.append(msg)
                 elif error == 'Isotope not registered.':

@@ -44,8 +44,60 @@ def test_create_preclinic_dosimetry(client_api_auth, user, preclinic_order, form
     assert body['createdAt'] == preclinic_dosi_db.created_at.strftime(FORMAT_DATE)
     assert body['modifiedAt'] == preclinic_dosi_db.modified_at.strftime(FORMAT_DATE)
 
+    assert body['injectedActivity'] == preclinic_dosi_db.injected_activity
+    assert body['analysisName'] == preclinic_dosi_db.analysis_name
+    assert body['administrationDatetime'] == preclinic_dosi_db.administration_datetime.strftime(FORMAT_DATE)
+
     # TODO: gerar a url completa
     assert body['imagesUrl'].startswith(f'http://testserver/media/{preclinic_dosi_db.user.id}/preclinic_dosimetry')
+
+
+def test_fail_create_preclinic_dosimetry_wrong_administration_datetime(client_api_auth,
+                                                                       user,
+                                                                       preclinic_order,
+                                                                       form_data_preclinic_dosimetry):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
+    '''
+
+    form_data_preclinic_dosimetry['administration_datetime'] = 'w'
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    url = resolve_url('api:analysis-list-create', user.uuid, preclinic_order.uuid)
+
+    resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    assert body['errors'] == ['Informe uma data/hora válida.']
+
+
+def test_fail_create_preclinic_dosimetry_injected_activity_must_be_positive(client_api_auth,
+                                                                            user,
+                                                                            preclinic_order,
+                                                                            form_data_preclinic_dosimetry):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
+    '''
+
+    form_data_preclinic_dosimetry['injectedActivity'] = -form_data_preclinic_dosimetry['injectedActivity']
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    url = resolve_url('api:analysis-list-create', user.uuid, preclinic_order.uuid)
+
+    resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    assert body['errors'] == ['Certifique-se que atividade injetada seja maior ou igual a 0.0.']
 
 
 def test_fail_create_analisys_name_must_be_unique_per_order(client_api_auth,
@@ -132,10 +184,10 @@ def test_fail_create_preclinic_dosimetry_wrong_calibration_id(client_api_auth,
     assert body['errors'] == ['Calibração com esse id não existe.']
 
 
-def test_fail_create_preclinic_dosimetry_wrong_order_id(client_api_auth,
-                                                        user,
-                                                        preclinic_order,
-                                                        form_data_preclinic_dosimetry):
+def test_fail_create_preclinic_dosimetry_wrong_(client_api_auth,
+                                                user,
+                                                preclinic_order,
+                                                form_data_preclinic_dosimetry):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
     '''
@@ -233,6 +285,11 @@ def test_list_preclinic_dosimetry(client_api_auth, user, preclinic_order, tree_p
         assert analysis_response['serviceName'] == analysis_db.order.get_service_name_display()
         assert analysis_response['createdAt'] == analysis_db.created_at.strftime(FORMAT_DATE)
         assert analysis_response['modifiedAt'] == analysis_db.modified_at.strftime(FORMAT_DATE)
+
+        assert analysis_response['injectedActivity'] == analysis_db.injected_activity
+        assert analysis_response['analysisName'] == analysis_db.analysis_name
+        assert analysis_response['administrationDatetime'] == analysis_db.administration_datetime.strftime(FORMAT_DATE)
+
         assert analysis_response['imagesUrl'].startswith(
             f'http://testserver/media/{analysis_db.user.id}/preclinic_dosimetry'
             )

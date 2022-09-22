@@ -137,4 +137,4 @@ def test_status_options():
 def test_model_code_and_service_name():
 
     assert ClinicDosimetryAnalysis.CODE == 1
-    assert ClinicDosimetryAnalysis.SERVICE_NAME_CODE == 'PC'
+    assert ClinicDosimetryAnalysis.SERVICE_NAME_CODE == 'DC'

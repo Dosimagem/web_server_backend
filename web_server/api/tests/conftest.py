@@ -23,7 +23,7 @@ def client_api_auth(client_api, user):
 
 
 @pytest.fixture
-def form_data(calibration_infos, calibration_file): # TODO change name for first_http_data_calibration
+def form_data(calibration_infos, calibration_file):  # TODO change name for first_http_data_calibration
 
     return {
          'isotope': calibration_infos['isotope'].name,
@@ -38,7 +38,7 @@ def form_data(calibration_infos, calibration_file): # TODO change name for first
 
 
 @pytest.fixture
-def second_form_data(second_calibration_infos, calibration_file): # TODO change name for second_http_data_calibration
+def second_form_data(second_calibration_infos, calibration_file):  # TODO change name for second_http_data_calibration
     return {
          'isotope': second_calibration_infos['isotope'].name,
          'calibrationName': second_calibration_infos['calibration_name'],
@@ -55,8 +55,12 @@ def second_form_data(second_calibration_infos, calibration_file): # TODO change 
 def form_data_clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
 
     return {
-         'calibration_id': clinic_dosimetry_info['calibration'].uuid,
-         'images': clinic_dosimetry_file['images']
+         'calibrationId': clinic_dosimetry_info['calibration'].uuid,
+         'images': clinic_dosimetry_file['images'],
+         'analysisName': clinic_dosimetry_info['analysis_name'],
+         'injectedActivity': clinic_dosimetry_info['injected_activity'],
+         'administrationDatetime': clinic_dosimetry_info['administration_datetime'],
+
     }
 
 
