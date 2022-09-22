@@ -77,7 +77,10 @@ class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
         fields = ('user',
                   'calibration',
                   'order',
-                  'images')
+                  'images',
+                  'analysis_name',
+                  'injected_activity',
+                  'administration_datetime')
 
 
 class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
@@ -87,4 +90,7 @@ class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
         fields = ('user',
                   'calibration',
                   'order',
-                  'images')
+                  'images',
+                  'analysis_name',
+                  'injected_activity',
+                  'administration_datetime')

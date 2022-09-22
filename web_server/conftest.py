@@ -229,7 +229,7 @@ def second_calibration_infos(user, lu_177):
 
 
 @pytest.fixture
-def calibration(calibration_infos):
+def calibration(calibration_infos):  # TODO change name for first_calibration
     return Calibration.objects.create(**calibration_infos)
 
 
@@ -285,35 +285,6 @@ def second_user_calibrations(second_user_calibrations_infos, second_user):
 
 
 @pytest.fixture
-def form_data(calibration_infos, calibration_file):
-
-    return {
-         'isotope': calibration_infos['isotope'].name,
-         'calibrationName': calibration_infos['calibration_name'],
-         'syringeActivity': calibration_infos['syringe_activity'],
-         'residualSyringeActivity': calibration_infos['residual_syringe_activity'],
-         'measurementDatetime': calibration_infos['measurement_datetime'],
-         'phantomVolume': calibration_infos['phantom_volume'],
-         'acquisitionTime': calibration_infos['acquisition_time'],
-         'images': calibration_file['images']
-    }
-
-
-@pytest.fixture
-def second_form_data(second_calibration_infos, calibration_file):
-    return {
-         'isotope': second_calibration_infos['isotope'].name,
-         'calibrationName': second_calibration_infos['calibration_name'],
-         'syringeActivity': second_calibration_infos['syringe_activity'],
-         'residualSyringeActivity': second_calibration_infos['residual_syringe_activity'],
-         'measurementDatetime': second_calibration_infos['measurement_datetime'],
-         'phantomVolume': second_calibration_infos['phantom_volume'],
-         'acquisitionTime': second_calibration_infos['acquisition_time'],
-         'images': calibration_file['images']
-    }
-
-
-@pytest.fixture
 def api_cnpj_successfull(responses, register_infos):
     return responses.add(
         method='GET',
@@ -350,6 +321,9 @@ def clinic_dosimetry_info(user, calibration, order):
         'user': user,
         'calibration': calibration,
         'order': order,
+        'analysis_name': 'Analysis 1',
+        'injected_activity': 50,
+        'administration_datetime': DATETIME_TIMEZONE
     }
 
 
@@ -359,6 +333,9 @@ def preclinic_dosimetry_info(user, calibration, preclinic_order):
         'user': user,
         'calibration': calibration,
         'order': preclinic_order,
+        'analysis_name': 'Analysis 1',
+        'injected_activity': 20,
+        'administration_datetime': DATETIME_TIMEZONE
     }
 
 
@@ -369,15 +346,21 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
 
 @pytest.fixture
 def preclinic_dosimetry(preclinic_dosimetry_info, preclinic_dosimetry_file):
-    return ClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info, **preclinic_dosimetry_file)
+    return PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info, **preclinic_dosimetry_file)
 
 
 @pytest.fixture
 def tree_clinic_dosimetry_of_first_user(clinic_dosimetry_info):
+
+    clinic_dosimetry_info['analysis_name'] = 'Analysis 1'
     ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
                                            images=ContentFile(b'CT e SPET files 1', name='images.zip'))
+
+    clinic_dosimetry_info['analysis_name'] = 'Analysis 2'
     ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
                                            images=ContentFile(b'CT e SPET files 2', name='images.zip'))
+
+    clinic_dosimetry_info['analysis_name'] = 'Analysis 3'
     ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
                                            images=ContentFile(b'CT e SPET files 3', name='images.zip'))
     return ClinicDosimetryAnalysis.objects.all()
@@ -385,10 +368,16 @@ def tree_clinic_dosimetry_of_first_user(clinic_dosimetry_info):
 
 @pytest.fixture
 def tree_preclinic_dosimetry_of_first_user(preclinic_dosimetry_info):
+
+    preclinic_dosimetry_info['analysis_name'] = 'Analysis 1'
     PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info,
                                               images=ContentFile(b'CT e SPET files 1', name='images.zip'))
+
+    preclinic_dosimetry_info['analysis_name'] = 'Analysis 2'
     PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info,
                                               images=ContentFile(b'CT e SPET files 2', name='images.zip'))
+
+    preclinic_dosimetry_info['analysis_name'] = 'Analysis 3'
     PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info,
                                               images=ContentFile(b'CT e SPET files 3', name='images.zip'))
     return PreClinicDosimetryAnalysis.objects.all()

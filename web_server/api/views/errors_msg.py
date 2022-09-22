@@ -51,8 +51,11 @@ ERRORS_MAP_PT = {
     'cpf': 'CPF',
     'isotope': 'isotopo',
     'calibration_name': 'Nome da calibração',
-    'images': 'images',
-    'calibration_id': 'id de calibração'
+    'images': 'imagens',
+    'calibration_id': 'id de calibração',
+    'analysis_name': 'nome da análise',
+    'injected_activity': 'atividade injetada',
+    'administration_datetime': 'hora e data de adminstração'
 }
 
 
@@ -73,6 +76,12 @@ def list_errors(errors):
                     list_.append(msg)
                 elif error == 'Calibration com este User e Calibration Name já existe.':
                     msg = 'Calibração com esse nome ja existe para este usuário.'
+                    list_.append(msg)
+                elif (error == 'Preclinic Dosimetry com este Order e Analysis Name já existe.'
+                      or
+                      error == 'Clinic Dosimetry com este Order e Analysis Name já existe.'
+                      ):
+                    msg = 'Análises com esse nome já existe para esse pedido.'
                     list_.append(msg)
                 elif error == 'Isotope not registered.':
                     msg = 'Isotopo não registrado.'

@@ -292,7 +292,7 @@ def test_fail_create_isotope_invalid_by_size(client_api_auth, user, form_data):
         'O campo tempo de aquisição é obrigatório.' if LANG and USE_I18N else 'Acquisition time field is required.'
         ]),
     ('images', [
-        'O campo images é obrigatório.' if LANG and USE_I18N else 'Images field is required.'
+        'O campo imagens é obrigatório.' if LANG and USE_I18N else 'Images field is required.'
         ]),
     ])
 def test_fail_create_missing_fields(client_api_auth, user, form_data, field, error):

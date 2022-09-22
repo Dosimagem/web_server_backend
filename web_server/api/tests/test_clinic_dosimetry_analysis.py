@@ -1,7 +1,9 @@
+from copy import deepcopy
 from decimal import Decimal
 from http import HTTPStatus
 from uuid import uuid4
 
+import pytest
 from django.shortcuts import resolve_url
 
 from web_server.service.models import ClinicDosimetryAnalysis, FORMAT_DATE, Order, PreClinicDosimetryAnalysis
@@ -78,8 +80,92 @@ def test_create_clinic_dosimetry(client_api_auth, user, order, form_data_clinic_
     assert body['createdAt'] == clinic_dosi_db.created_at.strftime(FORMAT_DATE)
     assert body['modifiedAt'] == clinic_dosi_db.modified_at.strftime(FORMAT_DATE)
 
+    assert body['injectedActivity'] == clinic_dosi_db.injected_activity
+    assert body['analysisName'] == clinic_dosi_db.analysis_name
+    assert body['administrationDatetime'] == clinic_dosi_db.administration_datetime.strftime(FORMAT_DATE)
+
     # TODO: Pensar uma forma melhor
     assert body['imagesUrl'].startswith(f'http://testserver/media/{clinic_dosi_db.user.id}/clinic_dosimetry')
+
+
+def test_fail_create_clinic_dosimetry_wrong_administration_datetime(client_api_auth,
+                                                                    user,
+                                                                    order,
+                                                                    form_data_clinic_dosimetry):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
+    '''
+
+    form_data_clinic_dosimetry['administrationDatetime'] = 'w'
+
+    assert not ClinicDosimetryAnalysis.objects.exists()
+
+    url = resolve_url('api:analysis-list-create', user.uuid, order.uuid)
+
+    resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert not ClinicDosimetryAnalysis.objects.exists()
+
+    assert body['errors'] == ['Informe uma data/hora válida.']
+
+
+def test_fail_create_preclinic_dosimetry_injected_activity_must_be_positive(client_api_auth,
+                                                                            user,
+                                                                            order,
+                                                                            form_data_clinic_dosimetry):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
+    '''
+
+    form_data_clinic_dosimetry['injectedActivity'] = -form_data_clinic_dosimetry['injectedActivity']
+
+    assert not ClinicDosimetryAnalysis.objects.exists()
+
+    url = resolve_url('api:analysis-list-create', user.uuid, order.uuid)
+
+    resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert not ClinicDosimetryAnalysis.objects.exists()
+
+    assert body['errors'] == ['Certifique-se que atividade injetada seja maior ou igual a 0.0.']
+
+
+def test_fail_create_analisys_name_must_be_unique_per_order(client_api_auth,
+                                                            user,
+                                                            form_data_clinic_dosimetry,
+                                                            clinic_dosimetry_info,
+                                                            clinic_dosimetry_file):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
+
+    The analysis name must be unique in an order
+    '''
+
+    order = clinic_dosimetry_info['order']
+
+    images = deepcopy(clinic_dosimetry_file['images'])
+
+    ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info, **clinic_dosimetry_file)
+
+    assert ClinicDosimetryAnalysis.objects.count() == 1
+
+    form_data_clinic_dosimetry['images'] = images
+
+    url = resolve_url('api:analysis-list-create', user.uuid, order.uuid)
+    resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert ClinicDosimetryAnalysis.objects.count() == 1
+
+    assert body['errors'] == ['Análises com esse nome já existe para esse pedido.']
 
 
 def test_fail_create_not_have_remaining_of_analyzes(client_api_auth, user, form_data_clinic_dosimetry):
@@ -106,7 +192,7 @@ def test_fail_create_not_have_remaining_of_analyzes(client_api_auth, user, form_
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['Todas as análises para essa pedido já foram usuadas.']
+    assert body['errors'] == ['Todas as análises para essa pedido já foram usadas.']
 
 
 def test_fail_create_clinic_dosimetry_missing_calibration_id(client_api_auth, user, order, form_data_clinic_dosimetry):
@@ -114,7 +200,7 @@ def test_fail_create_clinic_dosimetry_missing_calibration_id(client_api_auth, us
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
     '''
 
-    form_data_clinic_dosimetry.pop('calibration_id')
+    form_data_clinic_dosimetry.pop('calibrationId')
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
@@ -136,7 +222,7 @@ def test_fail_create_clinic_dosimetry_wrong_calibration_id(client_api_auth, user
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
     '''
 
-    form_data_clinic_dosimetry['calibration_id'] = uuid4()
+    form_data_clinic_dosimetry['calibrationId'] = uuid4()
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
@@ -191,12 +277,24 @@ def test_fail_create_clinic_dosimetry_order_from_another_user(client_api_auth,
     assert not ClinicDosimetryAnalysis.objects.exists()
 
 
-def test_fail_create_missing_image(client_api_auth, user, order, form_data_clinic_dosimetry):
+@pytest.mark.parametrize('field, error', [
+    ('calibrationId', ['O campo id de calibração é obrigatório.']),
+    ('images', ['O campo imagens é obrigatório.']),
+    ('analysisName', ['O campo nome da análise é obrigatório.']),
+    ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
+    ('administrationDatetime', ['O campo hora e data de adminstração é obrigatório.']),
+    ])
+def test_fail_create_missing_fields(field,
+                                    error,
+                                    client_api_auth,
+                                    user,
+                                    order,
+                                    form_data_clinic_dosimetry):
     '''
      /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
     '''
 
-    form_data_clinic_dosimetry.pop('images')
+    form_data_clinic_dosimetry.pop(field)
 
     url = resolve_url('api:analysis-list-create', user.uuid, order.uuid)
 
@@ -208,7 +306,7 @@ def test_fail_create_missing_image(client_api_auth, user, order, form_data_clini
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['O campo images é obrigatório.']
+    assert body['errors'] == error
 
 
 def test_list_clinic_dosimetry(client_api_auth, user, order, tree_clinic_dosimetry_of_first_user):
@@ -238,6 +336,11 @@ def test_list_clinic_dosimetry(client_api_auth, user, order, tree_clinic_dosimet
         assert analysis_response['serviceName'] == analysis_db.order.get_service_name_display()
         assert analysis_response['createdAt'] == analysis_db.created_at.strftime(FORMAT_DATE)
         assert analysis_response['modifiedAt'] == analysis_db.modified_at.strftime(FORMAT_DATE)
+
+        assert analysis_response['injectedActivity'] == analysis_db.injected_activity
+        assert analysis_response['analysisName'] == analysis_db.analysis_name
+        assert analysis_response['administrationDatetime'] == analysis_db.administration_datetime.strftime(FORMAT_DATE)
+
         # TODO: Pensar uma forma melhor
         assert analysis_response['imagesUrl'].startswith(
             f'http://testserver/media/{analysis_db.user.id}/clinic_dosimetry'
