@@ -156,6 +156,131 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2022-09-22T18:26:50.729Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "3",
+    "object_repr": "Calibração B1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2022-09-22T18:27:11.809Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Calibração 1A",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\", \"Syringe Activity\", \"Residual Syringe Activity\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2022-09-22T18:27:45.326Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Calibração A2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\", \"Syringe Activity\", \"Residual Syringe Activity\", \"Phantom Volume\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2022-09-22T18:27:55.823Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Calibração A1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2022-09-22T18:33:04.834Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "1",
+    "object_repr": "0008.Ga68.22/0001-2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2022-09-22T18:33:15.732Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "1",
+    "object_repr": "0003.F18.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2022-09-22T18:33:26.775Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "3",
+    "object_repr": "0008.Ga68.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2022-09-22T18:33:36.763Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "4",
+    "object_repr": "0008.Ga68.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2022-09-22T18:33:43.887Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "2",
+    "object_repr": "0003.F18.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ujo9yf9rcu8nkx2eoyme6c88epp7v6ts",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hCGAh1cuvcMZGCoVA0kpV0Z765NutDtf-_9lwi0rSVsPS9hZnEWIE6_W6T0yHUHfKd6azK1ui5zlLsiD9rltXF-Xg7376BQL9_aQWSvJgYzjBYY0wTo7UAKo8_MhF5pDcZmlx2bAa0dLYJGAhO9JiPeH85aNuw:1obQta:hoSdsNBj-PQLoEuRNMcHr6dXYLQ3ZK-gDkPNnE4s6dA",
+    "expire_date": "2022-10-06T18:25:58.614Z"
+  }
+},
+{
   "model": "sessions.session",
   "pk": "w8whlhqy0rxln9kiled7adnqn6svuum5",
   "fields": {
@@ -168,7 +293,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$390000$xvuN3RmA6qN4w8pYcXtF7W$AhxkxLi5qO0il52PCOpwz2IJllE68AoQcJq/H7A1Vt0=",
-    "last_login": "2022-09-22T03:35:13.885Z",
+    "last_login": "2022-09-22T18:25:58.522Z",
     "is_superuser": true,
     "uuid": "d4848dd9-fa2b-4b9d-b07d-1f89dd98a247",
     "email": "admin@admin.com",
@@ -438,15 +563,15 @@
     "uuid": "800b3452-a4d8-4bca-af90-20f75158de66",
     "user": 2,
     "isotope": 4,
-    "calibration_name": "Calibração B",
-    "syringe_activity": 12.0,
-    "residual_syringe_activity": 10.0,
+    "calibration_name": "Calibração A2",
+    "syringe_activity": 1200.0,
+    "residual_syringe_activity": 0.0,
     "measurement_datetime": "2016-04-01T01:12:04Z",
-    "phantom_volume": 2.0,
+    "phantom_volume": 2500.0,
     "acquisition_time": 1800.0,
     "images": "2/calibration_1663818786742228.zip",
     "created_at": "2022-09-22T03:53:06.748Z",
-    "modified_at": "2022-09-22T04:21:24.055Z"
+    "modified_at": "2022-09-22T18:27:45.323Z"
   }
 },
 {
@@ -456,15 +581,15 @@
     "uuid": "288c0cff-2016-4611-b0b8-9e3ba23c54ff",
     "user": 2,
     "isotope": 7,
-    "calibration_name": "Calibração AAA",
-    "syringe_activity": 1.0,
-    "residual_syringe_activity": 1.0,
+    "calibration_name": "Calibração A1",
+    "syringe_activity": 1000.0,
+    "residual_syringe_activity": 10.0,
     "measurement_datetime": "2016-04-01T01:12:04Z",
     "phantom_volume": 200.0,
     "acquisition_time": 1800.0,
     "images": "2/calibration_1663818963054752.zip",
     "created_at": "2022-09-22T03:56:03.056Z",
-    "modified_at": "2022-09-22T04:27:50.309Z"
+    "modified_at": "2022-09-22T18:27:55.819Z"
   }
 },
 {
@@ -474,7 +599,7 @@
     "uuid": "ce93f958-cfa5-4d47-bdac-46d2558bfd12",
     "user": 7,
     "isotope": 5,
-    "calibration_name": "Calibração AA",
+    "calibration_name": "Calibração B1",
     "syringe_activity": 1500.0,
     "residual_syringe_activity": 0.0,
     "measurement_datetime": "2022-09-22T01:12:04Z",
@@ -482,7 +607,7 @@
     "acquisition_time": 2000.0,
     "images": "7/calibration_1663819650727151.zip",
     "created_at": "2022-09-22T04:07:30.728Z",
-    "modified_at": "2022-09-22T04:08:07.201Z"
+    "modified_at": "2022-09-22T18:26:50.726Z"
   }
 },
 {
@@ -490,14 +615,14 @@
   "pk": 1,
   "fields": {
     "uuid": "2f88b13f-03c8-4b48-8736-d5e443f41350",
-    "analysis_name": "Analise 1",
+    "analysis_name": "Analise A1",
     "status": "AP",
     "report": "",
     "active": true,
     "injected_activity": 500.0,
     "administration_datetime": "2016-04-01T01:12:04Z",
     "created_at": "2022-09-22T04:04:18.291Z",
-    "modified_at": "2022-09-22T04:04:18.291Z",
+    "modified_at": "2022-09-22T18:33:15.725Z",
     "user": 2,
     "calibration": 1,
     "order": 1,
@@ -509,14 +634,14 @@
   "pk": 2,
   "fields": {
     "uuid": "28b8ae1b-bfb2-4121-b8c7-c40a4f1ee631",
-    "analysis_name": "Analise 2",
+    "analysis_name": "Analise A2",
     "status": "AP",
     "report": "",
     "active": true,
     "injected_activity": 250.0,
     "administration_datetime": "2018-04-01T01:12:04Z",
     "created_at": "2022-09-22T04:05:25.135Z",
-    "modified_at": "2022-09-22T04:05:25.135Z",
+    "modified_at": "2022-09-22T18:33:43.882Z",
     "user": 2,
     "calibration": 1,
     "order": 1,
@@ -528,14 +653,14 @@
   "pk": 3,
   "fields": {
     "uuid": "981043d7-e640-4308-85d9-a2e7c68b8ee4",
-    "analysis_name": "Analise",
+    "analysis_name": "Analise B1",
     "status": "AP",
     "report": "",
     "active": true,
     "injected_activity": 2500.0,
     "administration_datetime": "2019-05-01T01:12:04Z",
     "created_at": "2022-09-22T04:09:26.107Z",
-    "modified_at": "2022-09-22T04:11:50.397Z",
+    "modified_at": "2022-09-22T18:33:26.769Z",
     "user": 7,
     "calibration": 3,
     "order": 3,
@@ -547,14 +672,14 @@
   "pk": 4,
   "fields": {
     "uuid": "3695cdf9-b3af-44c3-aff8-54287205c83b",
-    "analysis_name": "Analise 22",
+    "analysis_name": "Analise B2",
     "status": "AP",
     "report": "",
     "active": true,
     "injected_activity": 2500.0,
     "administration_datetime": "2019-05-01T01:12:04Z",
     "created_at": "2022-09-22T04:12:48.726Z",
-    "modified_at": "2022-09-22T04:12:48.726Z",
+    "modified_at": "2022-09-22T18:33:36.755Z",
     "user": 7,
     "calibration": 3,
     "order": 3,
@@ -566,14 +691,14 @@
   "pk": 1,
   "fields": {
     "uuid": "222bc3cd-e7d7-4b99-bc5a-739c9cea423d",
-    "analysis_name": "Analise 12",
+    "analysis_name": "Analise B1",
     "status": "AP",
     "report": "",
     "active": true,
     "injected_activity": 2500.0,
     "administration_datetime": "2019-05-01T01:12:04Z",
     "created_at": "2022-09-22T04:13:43.992Z",
-    "modified_at": "2022-09-22T04:13:43.992Z",
+    "modified_at": "2022-09-22T18:33:04.828Z",
     "user": 7,
     "calibration": 3,
     "order": 4,
