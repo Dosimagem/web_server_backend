@@ -134,7 +134,7 @@ def _create_calibrations(request, user_id):
     data['user'] = request.user
     data['isotope'] = isotope
 
-    form = CreateCalibrationForm(data, request.FILES)
+    form = CreateCalibrationForm(data=data, files=request.FILES)
 
     if not form.is_valid():
         return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)

@@ -82,6 +82,7 @@ def _create_analysis(request, user_id, order_id):
     if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
 
         try:
+            # TODO colocar o usuario do get
             calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'])
         except ObjectDoesNotExist:
             return Response(data={'errors': ['Calibração com esse id não existe.']}, status=HTTPStatus.BAD_REQUEST)
