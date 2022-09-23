@@ -181,7 +181,7 @@ def test_fail_create_preclinic_dosimetry_wrong_calibration_id(client_api_auth,
 
     body = resp.json()
 
-    assert body['errors'] == ['Calibração com esse id não existe.']
+    assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
 
 
 def test_fail_create_preclinic_dosimetry_wrong_(client_api_auth,
@@ -203,11 +203,11 @@ def test_fail_create_preclinic_dosimetry_wrong_(client_api_auth,
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
 
-def test_fail_create_preclinic_dosimetry_order_from_another_user(client_api,
-                                                                 user,
-                                                                 second_user,
-                                                                 tree_orders_of_tow_users,
-                                                                 form_data_preclinic_dosimetry):
+def test_fail_create_preclinic_dosimetry_witth_order_from_another_user(client_api,
+                                                                       user,
+                                                                       second_user,
+                                                                       tree_orders_of_tow_users,
+                                                                       form_data_preclinic_dosimetry):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
 
@@ -256,6 +256,30 @@ def test_fail_create_missing_fields(field,
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
     assert body['errors'] == error
+
+
+def test_fail_create_preclinic_dosimetry_whith_calibration_of_another_user(client_api_auth,
+                                                                           user,
+                                                                           preclinic_order,
+                                                                           second_user_calibrations,
+                                                                           form_data_preclinic_dosimetry):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
+    '''
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    form_data_preclinic_dosimetry['calibrationId'] = second_user_calibrations[0].uuid
+
+    url = resolve_url('api:analysis-list-create', user.uuid, preclinic_order.uuid)
+    resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
 
 
 def test_list_preclinic_dosimetry(client_api_auth, user, preclinic_order, tree_preclinic_dosimetry_of_first_user):
