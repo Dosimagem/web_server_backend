@@ -236,7 +236,7 @@ def test_fail_create_clinic_dosimetry_wrong_calibration_id(client_api_auth, user
 
     body = resp.json()
 
-    assert body['errors'] == ['Calibração com esse id não existe.']
+    assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
 
 
 def test_fail_create_clinic_dosimetry_wrong_order_id(client_api_auth, user, order, form_data_clinic_dosimetry):
@@ -255,15 +255,15 @@ def test_fail_create_clinic_dosimetry_wrong_order_id(client_api_auth, user, orde
     assert not ClinicDosimetryAnalysis.objects.exists()
 
 
-def test_fail_create_clinic_dosimetry_order_from_another_user(client_api_auth,
-                                                              user,
-                                                              second_user,
-                                                              tree_orders_of_tow_users,
-                                                              form_data_clinic_dosimetry):
+def test_fail_create_clinic_dosimetry_with_order_from_another_user(client_api_auth,
+                                                                   user,
+                                                                   second_user,
+                                                                   tree_orders_of_tow_users,
+                                                                   form_data_clinic_dosimetry):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
 
-    User mut be create analysis only in your own orders
+    User must be create analysis only in your own orders
     '''
 
     order_second_user = Order.objects.filter(user=second_user).first()
@@ -275,6 +275,30 @@ def test_fail_create_clinic_dosimetry_order_from_another_user(client_api_auth,
     assert resp.status_code == HTTPStatus.NOT_FOUND
 
     assert not ClinicDosimetryAnalysis.objects.exists()
+
+
+def test_fail_create_clinic_dosimetry_whith_calibration_of_another_user(client_api_auth,
+                                                                        user,
+                                                                        order,
+                                                                        second_user_calibrations,
+                                                                        form_data_clinic_dosimetry):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
+    '''
+
+    assert not ClinicDosimetryAnalysis.objects.exists()
+
+    form_data_clinic_dosimetry['calibrationId'] = second_user_calibrations[0].uuid
+
+    url = resolve_url('api:analysis-list-create', user.uuid, order.uuid)
+    resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert not ClinicDosimetryAnalysis.objects.exists()
+
+    assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
 
 
 @pytest.mark.parametrize('field, error', [
