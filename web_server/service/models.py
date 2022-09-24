@@ -8,11 +8,13 @@ from django.core.validators import MinValueValidator
 from django.utils.timezone import now
 from django.core.exceptions import ValidationError
 
+from web_server.core.models import CreationModificationBase
+
 
 FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
 
-class Order(models.Model):
+class Order(CreationModificationBase, models.Model):
 
     CLINIC_DOSIMETRY = 'DC'
     PRECLINIC_DOSIMETRY = 'PCD'
@@ -39,9 +41,6 @@ class Order(models.Model):
     service_name = models.CharField('Service name', max_length=3, choices=SERVICES_NAMES)
     permission = models.BooleanField('Permission', default=False)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
-
     def __str__(self):
         return f'{self.user.profile.clinic} <{self.get_service_name_display()}>'
 
@@ -53,12 +52,9 @@ class Order(models.Model):
         return self.remaining_of_analyzes > 0
 
 
-class Isotope(models.Model):
+class Isotope(CreationModificationBase, models.Model):
 
     name = models.CharField(max_length=6)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -87,7 +83,7 @@ upload_preclinic_dosimetry_to = partial(upload_to, type='preclinic_dosimetry')
 upload_report_to = partial(upload_to, type='report')
 
 
-class Calibration(models.Model):
+class Calibration(CreationModificationBase, models.Model):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
@@ -101,9 +97,6 @@ class Calibration(models.Model):
     acquisition_time = models.FloatField('Acquisition Time', validators=[MinValueValidator(0.0)])
 
     images = models.FileField('Calibration Images', upload_to=upload_calibration_to, null=False)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('user', 'calibration_name',)
@@ -131,7 +124,7 @@ class Calibration(models.Model):
         return dict_
 
 
-class DosimetryAnalysisBase(models.Model):
+class DosimetryAnalysisBase(CreationModificationBase, models.Model):
 
     ANALYZING_INFOS = 'AP'
     ERRORS_ANALYZING = 'EA'
@@ -155,9 +148,6 @@ class DosimetryAnalysisBase(models.Model):
 
     injected_activity = models.FloatField('Injected Activity', validators=[MinValueValidator(0.0)])
     administration_datetime = models.DateTimeField('Administration Datetime')
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
@@ -247,105 +237,3 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
         verbose_name = 'Preclinic Dosimetry'
         verbose_name_plural = 'Preclinic Dosimetries'
         unique_together = ('order', 'analysis_name',)
-
-
-# class BaseAbstractOrder(models.Model):
-
-#     AWAITING_PAYMENT = 'APG'
-#     AWAITTING_PROCESSING = 'APR'
-#     PROCESSING = 'PRC'
-#     CONCLUDED = 'CON'
-
-#     STATUS = (
-#         (AWAITING_PAYMENT, 'Aguardando pagamento'),
-#         (AWAITTING_PROCESSING, 'Aguardando processamento'),
-#         (PROCESSING, 'Processando'),
-#         (CONCLUDED, 'Concluído'),
-#     )
-
-#     def save(self, *args, **kwargs):
-#         if not self.total_price:
-#             self.total_price = self.service.unit_price * self.amount
-#         super().save(*args, **kwargs)
-
-#     requester = models.ForeignKey('core.CustomUser', on_delete=models.CASCADE)
-#     service = models.ForeignKey('Service', on_delete=models.CASCADE)
-#     amount = models.IntegerField('Amount')
-
-#     status = models.CharField('status', max_length=3, choices=STATUS, default=AWAITING_PAYMENT)
-
-#     # this field is automatically filled in by amount and unit price of the service
-#     total_price = models.DecimalField('Total price', max_digits=14, decimal_places=2, null=True, blank=True)
-
-#     report = models.FileField('Report', upload_to=upload_report_to, blank=True)
-
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     modified_at = models.DateTimeField(auto_now=True)
-
-#     class Meta:
-#         abstract = True
-
-#     def get_path_report(self):
-#         return str(self.report)
-
-
-# class DosimetryOrder(BaseAbstractOrder):
-
-#     CLINICAL = 'C'
-#     PRECLINICAL = 'P'
-
-#     TYPES = (
-#         (CLINICAL, 'Clinical'),
-#         (PRECLINICAL, 'Pre Clinical'),
-#     )
-
-#     # this field is automatically filled in by service name
-#     type = models.CharField('Dosimetry Type', max_length=1, choices=TYPES, blank=True)
-#     camera_factor = models.FloatField('Camera Factor')
-#     radionuclide = models.CharField('Radionuclide', max_length=6)
-#     injected_activity = models.FloatField('Injected Activity')
-#     injection_datetime = models.DateTimeField('Injection datetime')
-#     images = models.FileField('Images', upload_to=upload_img_to)
-
-#     def save(self, *args, **kwargs):
-#         if not self.type:
-#             if 'preclinica' in self.service.name.lower():
-#                 self.type = self.PRECLINICAL
-#             else:
-#                 self.type = self.CLINICAL
-
-#         super().save(*args, **kwargs)
-
-#     def __str__(self):
-#         msg = ''
-#         if self.type == self.CLINICAL:
-#             msg = f'Clinical Dosimetry (id={self.pk})'
-#         elif self.type == self.PRECLINICAL:
-#             msg = f'Preclinical Dosimetry (id={self.pk})'
-
-#         return msg
-
-
-# class SegmentationOrder(BaseAbstractOrder):
-#     images = models.FileField('Images', upload_to=upload_img_to)
-#     observations = models.TextField('Obeservations', max_length=5000)
-
-#     def __str__(self):
-#         return f'Segmentantion (id={self.pk})'
-
-
-# class ComputationalModelOrder(BaseAbstractOrder):
-
-#     CT = 'C'
-#     SPECT = 'S'
-
-#     OPTIONS = (
-#         (CT, 'CT'),
-#         (SPECT, 'SPECT'),
-#     )
-
-#     images = models.FileField('Images', upload_to=upload_img_to)
-#     equipment_specification = models.CharField('Equipment Specification', max_length=1, choices=OPTIONS)
-
-#     def __str__(self):
-#         return f'Computational Modeling (id={self.pk})'
