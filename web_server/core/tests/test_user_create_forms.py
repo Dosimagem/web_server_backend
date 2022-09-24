@@ -35,9 +35,11 @@ def test_field_is_not_optional(register_infos, field, db):
     assert expected == form.errors[field]
 
 
-def test_password_did_not_mach(user_wrong_signup, db):
+def test_password_did_not_mach(register_infos, db):
 
-    form = MyUserCreationForm(data=user_wrong_signup)
+    register_infos['password2'] = register_infos['password2'] + '!'
+
+    form = MyUserCreationForm(data=register_infos)
 
     assert not form.is_valid()
 
@@ -45,9 +47,11 @@ def test_password_did_not_mach(user_wrong_signup, db):
     assert expected == form.errors['password2']
 
 
-def test_email_did_not_mach(user_wrong_signup, db):
+def test_email_did_not_mach(register_infos, db):
 
-    form = MyUserCreationForm(data=user_wrong_signup)
+    register_infos['confirmed_email'] = 'a' + register_infos['confirmed_email']
+
+    form = MyUserCreationForm(data=register_infos)
 
     assert not form.is_valid()
 

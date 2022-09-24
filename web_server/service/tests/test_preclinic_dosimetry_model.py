@@ -34,12 +34,12 @@ def test_delete_clinic_dosimetry_must_not_delete_user(user, preclinic_dosimetry)
     assert User.objects.exists()
 
 
-def test_delete_calibration_must_delete_clinic_dosimetry(calibration, preclinic_dosimetry):
-    calibration.delete()
+def test_delete_calibration_must_delete_clinic_dosimetry(first_calibration, preclinic_dosimetry):
+    first_calibration.delete()
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
 
-def test_delete_clinic_dosimetry_must_not_delete_calibration(calibration, preclinic_dosimetry):
+def test_delete_clinic_dosimetry_must_not_delete_calibration(first_calibration, preclinic_dosimetry):
     preclinic_dosimetry.delete()
     assert Calibration.objects.exists()
 
@@ -54,10 +54,10 @@ def test_delete_clinic_dosimetry_must_not_delete_order(preclinic_order, preclini
     assert Order.objects.exists()
 
 
-def test_clinic_dosimetry_one_to_many_relation(user, calibration, preclinic_order):
+def test_clinic_dosimetry_one_to_many_relation(user, first_calibration, preclinic_order):
 
     analyis_1 = PreClinicDosimetryAnalysis.objects.create(user=user,
-                                                          calibration=calibration,
+                                                          calibration=first_calibration,
                                                           order=preclinic_order,
                                                           analysis_name='Analysis 1',
                                                           injected_activity=50,
@@ -66,7 +66,7 @@ def test_clinic_dosimetry_one_to_many_relation(user, calibration, preclinic_orde
                                                           )
 
     analyis_2 = PreClinicDosimetryAnalysis.objects.create(user=user,
-                                                          calibration=calibration,
+                                                          calibration=first_calibration,
                                                           order=preclinic_order,
                                                           analysis_name='Analysis 2',
                                                           injected_activity=50,
@@ -76,23 +76,23 @@ def test_clinic_dosimetry_one_to_many_relation(user, calibration, preclinic_orde
 
     assert user.preclinic_dosimetry_analysis.count() == 2
 
-    assert calibration.preclinic_dosimetry_analysis.count() == 2
+    assert first_calibration.preclinic_dosimetry_analysis.count() == 2
 
     assert preclinic_order.preclinic_dosimetry_analysis.count() == 2
 
     assert analyis_1.user == user
-    assert analyis_1.calibration == calibration
+    assert analyis_1.calibration == first_calibration
     assert analyis_1.order == preclinic_order
 
     assert analyis_2.user == user
-    assert analyis_2.calibration == calibration
+    assert analyis_2.calibration == first_calibration
     assert analyis_2.order == preclinic_order
 
 
-def test_default_values(user, calibration, preclinic_order):
+def test_default_values(user, first_calibration, preclinic_order):
 
     analyis = PreClinicDosimetryAnalysis.objects.create(user=user,
-                                                        calibration=calibration,
+                                                        calibration=first_calibration,
                                                         order=preclinic_order,
                                                         analysis_name='Analysis 1',
                                                         injected_activity=50,

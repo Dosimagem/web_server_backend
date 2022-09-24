@@ -15,12 +15,12 @@ from web_server.api.views.errors_msg import (
 )
 
 
-def test_list_create_not_allowed_method(client_api_auth, calibration):
+def test_list_create_not_allowed_method(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/ - GET, POST
     '''
 
-    url = resolve_url('api:calibration-list-create', calibration.user.uuid)
+    url = resolve_url('api:calibration-list-create', first_calibration.user.uuid)
 
     resp = client_api_auth.put(url, format='json')
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
@@ -32,7 +32,7 @@ def test_list_create_not_allowed_method(client_api_auth, calibration):
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
 
 
-def test_list_create_token_view_and_user_id_dont_match(client_api_auth, calibration):
+def test_list_create_token_view_and_user_id_dont_match(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/ - GET, POST
     The token does not belong to the user
@@ -48,12 +48,12 @@ def test_list_create_token_view_and_user_id_dont_match(client_api_auth, calibrat
     assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
-def test_list_successful(client_api_auth, calibration):
+def test_list_successful(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/ - GET
     '''
 
-    url = resolve_url('api:calibration-list-create', calibration.user.uuid)
+    url = resolve_url('api:calibration-list-create', first_calibration.user.uuid)
 
     response = client_api_auth.get(url)
 
@@ -61,7 +61,7 @@ def test_list_successful(client_api_auth, calibration):
 
     assert response.status_code == HTTPStatus.OK
 
-    calibration_db = list(Calibration.objects.filter(user=calibration.user))
+    calibration_db = list(Calibration.objects.filter(user=first_calibration.user))
 
     calibration_response_list = body['row']
 
@@ -315,12 +315,12 @@ def test_fail_create_missing_fields(client_api_auth, user, form_data, field, err
     assert body['errors'] == error
 
 
-def test_read_update_delete_not_allowed_method(client_api_auth, calibration):
+def test_read_update_delete_not_allowed_method(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - GET, PUT, DELETE
     '''
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
 
     resp = client_api_auth.patch(url, format='json')
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
@@ -329,13 +329,13 @@ def test_read_update_delete_not_allowed_method(client_api_auth, calibration):
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
 
 
-def test_read_update_delete_view_and_user_id_dont_match(client_api_auth, calibration):
+def test_read_update_delete_view_and_user_id_dont_match(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - GET, PUT, DELETE
     The token does not belong to the user
     '''
 
-    url = resolve_url('api:calibration-read-update-delete', uuid4(), calibration.uuid)
+    url = resolve_url('api:calibration-read-update-delete', uuid4(), first_calibration.uuid)
     response = client_api_auth.get(url)
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
@@ -374,12 +374,12 @@ def test_read_calibration_successful(client_api_auth, calibration_with_images):
     assert body['imagesUrl'].startswith(f'http://testserver/media/{cali.user.id}/calibration')
 
 
-def test_fail_read_wrong_calibration_id(client_api_auth, calibration):
+def test_fail_read_wrong_calibration_id(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - GET
     '''
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, uuid4())
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, uuid4())
 
     response = client_api_auth.get(url)
 
@@ -390,14 +390,14 @@ def test_fail_read_wrong_calibration_id(client_api_auth, calibration):
     assert body['errors'] == MSG_ERROR_RESOURCE
 
 
-def test_fail_read_calibration_the_another_user(client_api_auth, calibration, second_user_calibrations):
+def test_fail_read_calibration_the_another_user(client_api_auth, first_calibration, second_user_calibrations):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - GET
     '''
 
     second_user_calibration_uuid = second_user_calibrations[0].uuid
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, second_user_calibration_uuid)
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, second_user_calibration_uuid)
     response = client_api_auth.get(url)
 
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -407,12 +407,12 @@ def test_fail_read_calibration_the_another_user(client_api_auth, calibration, se
     assert body['errors'] == MSG_ERROR_RESOURCE
 
 
-def test_delete_successful(client_api_auth, calibration):
+def test_delete_successful(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
     '''
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
 
     response = client_api_auth.delete(url)
 
@@ -425,12 +425,12 @@ def test_delete_successful(client_api_auth, calibration):
     assert body['message'] == 'Calibração deletada com sucesso!'
 
 
-def test_fail_delete_wrong_calibration_id(client_api_auth, calibration):
+def test_fail_delete_wrong_calibration_id(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
     '''
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, uuid4())
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, uuid4())
     response = client_api_auth.delete(url)
 
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -442,14 +442,14 @@ def test_fail_delete_wrong_calibration_id(client_api_auth, calibration):
     assert Calibration.objects.exists()
 
 
-def test_fail_delete_calibration_the_another_user(client_api_auth, calibration, second_user_calibrations):
+def test_fail_delete_calibration_the_another_user(client_api_auth, first_calibration, second_user_calibrations):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
     '''
 
     second_user_calibration_uuid = second_user_calibrations[0].uuid
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, second_user_calibration_uuid)
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, second_user_calibration_uuid)
     response = client_api_auth.delete(url)
 
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -461,7 +461,7 @@ def test_fail_delete_calibration_the_another_user(client_api_auth, calibration, 
     assert Calibration.objects.count() == 3
 
 
-def test_update_successful(client_api_auth, form_data, calibration):
+def test_update_successful(client_api_auth, form_data, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - PUT
     '''
@@ -470,7 +470,7 @@ def test_update_successful(client_api_auth, form_data, calibration):
     update_form_data['syringeActivity'] = 100.0
     update_form_data['calibrationName'] = 'Calibration new'
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
 
     response = client_api_auth.put(url, data=update_form_data, format='multipart')
 
@@ -478,8 +478,8 @@ def test_update_successful(client_api_auth, form_data, calibration):
 
     calibration_db = Calibration.objects.all().first()
 
-    assert calibration_db.uuid == calibration.uuid
-    assert calibration_db.user.uuid == calibration.user.uuid
+    assert calibration_db.uuid == first_calibration.uuid
+    assert calibration_db.user.uuid == first_calibration.user.uuid
     assert calibration_db.isotope.name == update_form_data['isotope']
     assert calibration_db.calibration_name == update_form_data['calibrationName']
     assert calibration_db.syringe_activity == update_form_data['syringeActivity']
@@ -489,7 +489,7 @@ def test_update_successful(client_api_auth, form_data, calibration):
     assert calibration_db.acquisition_time == update_form_data['acquisitionTime']
 
 
-def test_fail_update_by_wrong_data(client_api_auth, form_data, calibration):
+def test_fail_update_by_wrong_data(client_api_auth, form_data, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - PUT
     '''
@@ -497,7 +497,7 @@ def test_fail_update_by_wrong_data(client_api_auth, form_data, calibration):
     update_form_data = form_data.copy()
     update_form_data['syringeActivity'] = -100.0
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
 
     response = client_api_auth.put(url, data=update_form_data, format='multipart')
 
@@ -514,8 +514,8 @@ def test_fail_update_by_wrong_data(client_api_auth, form_data, calibration):
 
     calibration_db = Calibration.objects.all().first()
 
-    assert calibration_db.uuid == calibration.uuid
-    assert calibration_db.user.uuid == calibration.user.uuid
+    assert calibration_db.uuid == first_calibration.uuid
+    assert calibration_db.user.uuid == first_calibration.user.uuid
     assert calibration_db.isotope.name == form_data['isotope']
     assert calibration_db.calibration_name == form_data['calibrationName']
     assert calibration_db.syringe_activity == form_data['syringeActivity']
@@ -525,12 +525,12 @@ def test_fail_update_by_wrong_data(client_api_auth, form_data, calibration):
     assert calibration_db.acquisition_time == form_data['acquisitionTime']
 
 
-def test_fail_update_isotope_invalid(client_api_auth, calibration, form_data):
+def test_fail_update_isotope_invalid(client_api_auth, first_calibration, form_data):
     '''
     /api/v1/users/<uuid>/calibrations/ - POST
     '''
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
 
     update_form_data = form_data.copy()
     update_form_data['isotope'] = 'wrong'
@@ -550,8 +550,8 @@ def test_fail_update_isotope_invalid(client_api_auth, calibration, form_data):
 
     calibration_db = Calibration.objects.all().first()
 
-    assert calibration_db.uuid == calibration.uuid
-    assert calibration_db.user.uuid == calibration.user.uuid
+    assert calibration_db.uuid == first_calibration.uuid
+    assert calibration_db.user.uuid == first_calibration.user.uuid
     assert calibration_db.isotope.name == form_data['isotope']
     assert calibration_db.calibration_name == form_data['calibrationName']
     assert calibration_db.syringe_activity == form_data['syringeActivity']
@@ -561,12 +561,12 @@ def test_fail_update_isotope_invalid(client_api_auth, calibration, form_data):
     assert calibration_db.acquisition_time == form_data['acquisitionTime']
 
 
-def test_fail_update_wrong_calibration_id(client_api_auth, form_data, calibration):
+def test_fail_update_wrong_calibration_id(client_api_auth, form_data, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - PUT
     '''
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, uuid4())
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, uuid4())
 
     response = client_api_auth.put(url, data=form_data, format='multipart')
 
@@ -577,7 +577,10 @@ def test_fail_update_wrong_calibration_id(client_api_auth, form_data, calibratio
     assert body['errors'] == MSG_ERROR_RESOURCE
 
 
-def test_fail_update_calibration_the_another_user(client_api_auth, form_data, calibration, second_user_calibrations):
+def test_fail_update_calibration_the_another_user(client_api_auth,
+                                                  form_data,
+                                                  first_calibration,
+                                                  second_user_calibrations):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - PUT
     '''
@@ -588,7 +591,7 @@ def test_fail_update_calibration_the_another_user(client_api_auth, form_data, ca
     update_form_data['syringeActivity'] = 100.0
     update_form_data['calibrationName'] = 'Calibration new'
 
-    url = resolve_url('api:calibration-read-update-delete', calibration.user.uuid, second_user_calibration_uuid)
+    url = resolve_url('api:calibration-read-update-delete', first_calibration.user.uuid, second_user_calibration_uuid)
     response = client_api_auth.put(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.NOT_FOUND

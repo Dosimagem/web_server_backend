@@ -10,30 +10,30 @@ from web_server.service.models import Order
 User = get_user_model()
 
 
-def test_orders_create(order):
+def test_orders_create(clinic_order):
     assert Order.objects.exists()
 
 
-def test_orders_create_at(order):
-    assert isinstance(order.created_at, datetime)
+def test_orders_create_at(clinic_order):
+    assert isinstance(clinic_order.created_at, datetime)
 
 
-def test_orders_modified_at(order):
-    assert isinstance(order.modified_at, datetime)
+def test_orders_modified_at(clinic_order):
+    assert isinstance(clinic_order.modified_at, datetime)
 
 
-def test_delete_user_must_delete_quotes(user, order):
+def test_delete_user_must_delete_quotes(user, clinic_order):
     user.delete()
     assert not Order.objects.exists()
 
 
-def test_delete_orders_must_not_delete_user(user, order):
-    order.delete()
+def test_delete_orders_must_not_delete_user(user, clinic_order):
+    clinic_order.delete()
     assert User.objects.exists()
 
 
-def test_orders_str(order):
-    assert str(order) == f'{order.user.profile.clinic} <{order.get_service_name_display()}>'
+def test_orders_str(clinic_order):
+    assert str(clinic_order) == f'{clinic_order.user.profile.clinic} <{clinic_order.get_service_name_display()}>'
 
 
 def test_orders_positive_integer_constraint(user):
@@ -61,17 +61,3 @@ def test_default_values(user):
     assert not order_db.permission
     assert order_db.quantity_of_analyzes == 0
     assert order_db.remaining_of_analyzes == 0
-
-
-# def test_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(order):
-
-#     order_db = Order.objects.first()
-
-#     order_db.remaining_of_analyzes = order_db.quantity_of_analyzes + 1
-
-#     with pytest.raises(ValidationError):
-#         order_db.save()
-
-#     order_db = Order.objects.first()
-
-#     assert order_db.remaining_of_analyzes <= order_db.quantity_of_analyzes

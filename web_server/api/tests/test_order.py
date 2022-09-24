@@ -13,12 +13,12 @@ from web_server.api.views.errors_msg import (
 
 # List - GET
 
-def test_list_orders_of_user(client_api_auth, order):
+def test_list_orders_of_user(client_api_auth, clinic_order):
     '''
     /api/v1/users/<uuid>/orders/ - GET
     '''
 
-    url = resolve_url('api:order-list', order.user.uuid)
+    url = resolve_url('api:order-list', clinic_order.user.uuid)
 
     response = client_api_auth.get(url)
 
@@ -26,7 +26,7 @@ def test_list_orders_of_user(client_api_auth, order):
 
     assert response.status_code == HTTPStatus.OK
 
-    order_db_list = list(Order.objects.filter(user=order.user))
+    order_db_list = list(Order.objects.filter(user=clinic_order.user))
 
     order_response_list = body['row']
 
@@ -67,9 +67,9 @@ def test_try_list_orders_for_user_without_order(client_api_auth, user):
     assert body == {'row': [], 'count': 0}
 
 
-def test_list_not_allowed_method(client_api_auth, order):
+def test_list_not_allowed_method(client_api_auth, clinic_order):
 
-    url = resolve_url('api:order-list', order.user.uuid)
+    url = resolve_url('api:order-list', clinic_order.user.uuid)
 
     resp = client_api_auth.post(url, format='json')
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
@@ -84,7 +84,7 @@ def test_list_not_allowed_method(client_api_auth, order):
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
 
 
-def test_list_token_view_and_user_id_dont_match(client_api_auth, order):
+def test_list_token_view_and_user_id_dont_match(client_api_auth, clinic_order):
     '''
     The token does not belong to the user
     '''
@@ -102,12 +102,12 @@ def test_list_token_view_and_user_id_dont_match(client_api_auth, order):
 # Read - GET
 
 
-def test_read_order_by_id(client_api_auth, order):
+def test_read_order_by_id(client_api_auth, clinic_order):
     '''
     /api/v1/users/<uuid>/orders/<uuid> - GET
     '''
 
-    url = resolve_url('api:order-read', user_id=order.user.uuid, order_id=order.uuid)
+    url = resolve_url('api:order-read', user_id=clinic_order.user.uuid, order_id=clinic_order.uuid)
 
     response = client_api_auth.get(url)
 
@@ -115,7 +115,7 @@ def test_read_order_by_id(client_api_auth, order):
 
     body = response.json()
 
-    order_db = Order.objects.get(id=order.id)
+    order_db = Order.objects.get(id=clinic_order.id)
 
     order_analysis_infos = OrderInfos(order_db).analysis_status_count()
 
@@ -133,12 +133,12 @@ def test_read_order_by_id(client_api_auth, order):
     assert body['analysisStatus']['analyzingInfos'] == order_analysis_infos['analyzing_infos']
 
 
-def test_read_order_by_wrong_id(client_api_auth, order):
+def test_read_order_by_wrong_id(client_api_auth, clinic_order):
     '''
     /api/v1/users/<uuid>/orders/<uuid> - GET
     '''
 
-    url = resolve_url('api:order-read', user_id=order.user.uuid, order_id=uuid4())
+    url = resolve_url('api:order-read', user_id=clinic_order.user.uuid, order_id=uuid4())
 
     response = client_api_auth.get(url)
 
@@ -167,12 +167,12 @@ def test_try_read_order_for_user_without_order(client_api_auth, user):
     assert body['errors'] == MSG_ERROR_RESOURCE
 
 
-def test_read_view_token_and_user_id_dont_match(client_api_auth, order):
+def test_read_view_token_and_user_id_dont_match(client_api_auth, clinic_order):
     '''
     The token does not belong to the user
     '''
 
-    url = resolve_url('api:order-read', user_id=uuid4(), order_id=order.uuid)
+    url = resolve_url('api:order-read', user_id=uuid4(), order_id=clinic_order.uuid)
 
     response = client_api_auth.get(url)
 
@@ -183,9 +183,9 @@ def test_read_view_token_and_user_id_dont_match(client_api_auth, order):
     assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
-def test_read_not_allowed_method(client_api_auth, order):
+def test_read_not_allowed_method(client_api_auth, clinic_order):
 
-    url = resolve_url('api:order-read', user_id=order.user.uuid, order_id=order.uuid)
+    url = resolve_url('api:order-read', user_id=clinic_order.user.uuid, order_id=clinic_order.uuid)
 
     resp = client_api_auth.post(url, format='json')
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
