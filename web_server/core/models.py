@@ -12,6 +12,15 @@ from django.utils import timezone
 from web_server.core.validators import validate_cnpj, validate_cpf
 
 
+class CreationModificationBase(models.Model):
+
+    created_at = models.DateTimeField(_('Creation Date and Time'), auto_now_add=True)
+    modified_at = models.DateTimeField(_('Modificatioin Date and Time'), auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -113,7 +122,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class UserProfile(models.Model):
+class UserProfile(CreationModificationBase, models.Model):
 
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
 
@@ -124,9 +133,6 @@ class UserProfile(models.Model):
     role = models.CharField(_('Role'), max_length=30)
     cpf = models.CharField('CPF', max_length=11, validators=[validate_cpf])
     cnpj = models.CharField('CNPJ', max_length=14, validators=[validate_cnpj])
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.clinic
