@@ -10,24 +10,19 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
 
-
+from web_server.api.decorators import user_from_token_and_user_from_url
 from web_server.service.forms import ClinicDosimetryAnalysisCreateForm, PreClinicDosimetryAnalysisCreateForm
 from web_server.service.models import ClinicDosimetryAnalysis, Order, Calibration, PreClinicDosimetryAnalysis
 from web_server.api.forms import ClinicDosimetryAnalysisCreateFormApi
 from .auth import MyTokenAuthentication
-from .errors_msg import (
-    MSG_ERROR_TOKEN_USER,
-    list_errors
-)
+from .errors_msg import list_errors
 
 
 @api_view(['GET', 'POST'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
+@user_from_token_and_user_from_url
 def analysis_list_create(request, user_id, order_id):
-
-    if request.user.uuid != user_id:
-        return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
     dispatcher = {
         'GET': _list_analysis,

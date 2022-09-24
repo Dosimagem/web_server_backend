@@ -11,13 +11,10 @@ from rest_framework.permissions import IsAuthenticated
 
 from web_server.service.models import Calibration, Isotope
 from web_server.service.forms import CreateCalibrationForm, IsotopeForm, UpdateCalibrationForm
-
+from web_server.api.decorators import user_from_token_and_user_from_url
 from .auth import MyTokenAuthentication
-from .errors_msg import (
-    MSG_ERROR_TOKEN_USER,
-    MSG_ERROR_RESOURCE,
-    list_errors
-)
+from .errors_msg import MSG_ERROR_RESOURCE, list_errors
+
 
 User = get_user_model()
 
@@ -25,10 +22,8 @@ User = get_user_model()
 @api_view(['GET', 'POST'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
+@user_from_token_and_user_from_url
 def calibrations_list_create(request, user_id):
-
-    if request.user.uuid != user_id:
-        return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
     dispatcher = {
         'GET': _list_calibrations,
@@ -43,10 +38,8 @@ def calibrations_list_create(request, user_id):
 @api_view(['DELETE', 'GET', 'PUT'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
+@user_from_token_and_user_from_url
 def calibrations_read_update_delete(request, user_id, calibration_id):
-
-    if request.user.uuid != user_id:
-        return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
     dispatcher = {
         'GET': _read_calibration,
