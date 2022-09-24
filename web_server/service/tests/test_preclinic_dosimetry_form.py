@@ -32,9 +32,9 @@ def test_missing_fields(field, preclinic_dosimetry_info, preclinic_dosimetry_fil
     assert form.errors == {field: [_('This field is required.')]}
 
 
-def test_invalid_order_of_wrong_service(order, preclinic_dosimetry_info, preclinic_dosimetry_file):
+def test_invalid_order_of_wrong_service(clinic_order, preclinic_dosimetry_info, preclinic_dosimetry_file):
 
-    preclinic_dosimetry_info['order'] = order
+    preclinic_dosimetry_info['order'] = clinic_order
 
     form = PreClinicDosimetryAnalysisCreateForm(data=preclinic_dosimetry_info, files=preclinic_dosimetry_file)
 

@@ -10,7 +10,7 @@ from web_server.service.order_svc import OrderInfos
     (ClinicDosimetryAnalysis, Order.CLINIC_DOSIMETRY),
     (PreClinicDosimetryAnalysis, Order.PRECLINIC_DOSIMETRY)
 ])
-def test_order_analisys_infos(model, service_name, user, calibration):
+def test_order_analisys_infos(model, service_name, user, first_calibration):
 
     order = Order.objects.create(user=user,
                                  quantity_of_analyzes=10,
@@ -22,7 +22,7 @@ def test_order_analisys_infos(model, service_name, user, calibration):
 
     data = {
         'user': user,
-        'calibration': calibration,
+        'calibration': first_calibration,
         'order': order,
         'images': ContentFile(b'CT e SPET files 1', name='images.zip'),
         'injected_activity': 50,

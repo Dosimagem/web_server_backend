@@ -34,31 +34,30 @@ def test_delete_clinic_dosimetry_must_not_delete_user(user, clinic_dosimetry):
     assert User.objects.exists()
 
 
-def test_delete_calibration_must_delete_clinic_dosimetry(calibration, clinic_dosimetry):
-    calibration.delete()
+def test_delete_calibration_must_delete_clinic_dosimetry(first_calibration, clinic_dosimetry):
+    first_calibration.delete()
     assert not ClinicDosimetryAnalysis.objects.exists()
 
 
-def test_delete_clinic_dosimetry_must_not_delete_calibration(calibration, clinic_dosimetry):
+def test_delete_clinic_dosimetry_must_not_delete_calibration(first_calibration, clinic_dosimetry):
     clinic_dosimetry.delete()
     assert Calibration.objects.exists()
 
 
-def test_delete_order_must_delete_clinic_dosimetry(order, clinic_dosimetry):
-    order.delete()
+def test_delete_order_must_delete_clinic_dosimetry(clinic_order, clinic_dosimetry):
+    clinic_order.delete()
     assert not ClinicDosimetryAnalysis.objects.exists()
 
 
-def test_delete_clinic_dosimetry_must_not_delete_order(order, clinic_dosimetry):
+def test_delete_clinic_dosimetry_must_not_delete_order(clinic_order, clinic_dosimetry):
     clinic_dosimetry.delete()
     assert Order.objects.exists()
 
 
-def test_clinic_dosimetry_one_to_many_relation(user, calibration, order):
-
+def test_clinic_dosimetry_one_to_many_relation(user, first_calibration, clinic_order):
     analyis_1 = ClinicDosimetryAnalysis.objects.create(user=user,
-                                                       calibration=calibration,
-                                                       order=order,
+                                                       calibration=first_calibration,
+                                                       order=clinic_order,
                                                        analysis_name='Analysis 1',
                                                        injected_activity=50,
                                                        administration_datetime=DATETIME_TIMEZONE,
@@ -66,8 +65,8 @@ def test_clinic_dosimetry_one_to_many_relation(user, calibration, order):
                                                        )
 
     analyis_2 = ClinicDosimetryAnalysis.objects.create(user=user,
-                                                       calibration=calibration,
-                                                       order=order,
+                                                       calibration=first_calibration,
+                                                       order=clinic_order,
                                                        analysis_name='Analysis 2',
                                                        injected_activity=50,
                                                        administration_datetime=DATETIME_TIMEZONE,
@@ -76,24 +75,24 @@ def test_clinic_dosimetry_one_to_many_relation(user, calibration, order):
 
     assert user.clinic_dosimetry_analysis.count() == 2
 
-    assert calibration.clinic_dosimetry_analysis.count() == 2
+    assert first_calibration.clinic_dosimetry_analysis.count() == 2
 
-    assert order.clinic_dosimetry_analysis.count() == 2
+    assert clinic_order.clinic_dosimetry_analysis.count() == 2
 
     assert analyis_1.user == user
-    assert analyis_1.calibration == calibration
-    assert analyis_1.order == order
+    assert analyis_1.calibration == first_calibration
+    assert analyis_1.order == clinic_order
 
     assert analyis_2.user == user
-    assert analyis_2.calibration == calibration
-    assert analyis_2.order == order
+    assert analyis_2.calibration == first_calibration
+    assert analyis_2.order == clinic_order
 
 
-def test_default_values(user, calibration, order):
+def test_default_values(user, first_calibration, clinic_order):
 
     analyis = ClinicDosimetryAnalysis.objects.create(user=user,
-                                                     calibration=calibration,
-                                                     order=order,
+                                                     calibration=first_calibration,
+                                                     order=clinic_order,
                                                      analysis_name='Analysis 1',
                                                      injected_activity=50,
                                                      administration_datetime=DATETIME_TIMEZONE,

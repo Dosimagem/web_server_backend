@@ -120,7 +120,7 @@ def create_order_data(user):
 
 
 @pytest.fixture
-def order(user, create_order_data):  # TODO: change name for clinic order
+def clinic_order(user, create_order_data):
     return Order.objects.create(user=user,
                                 quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
                                 remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
@@ -140,7 +140,7 @@ def preclinic_order(user, create_order_data):
 
 
 @pytest.fixture
-def tree_orders_of_tow_users(user, second_user):  # TODO: change this to tree_orders_of_tow_users
+def tree_orders_of_tow_users(user, second_user):
     '''
     Order Table:
 
@@ -229,12 +229,12 @@ def second_calibration_infos(user, lu_177):
 
 
 @pytest.fixture
-def calibration(calibration_infos):  # TODO change name for first_calibration
+def first_calibration(calibration_infos):
     return Calibration.objects.create(**calibration_infos)
 
 
 @pytest.fixture
-def second_calibration(calibration, second_calibration_infos):
+def second_calibration(first_calibration, second_calibration_infos):
     return Calibration.objects.create(**second_calibration_infos)
 
 
@@ -243,9 +243,9 @@ def calibration_with_images(calibration_infos, calibration_file):
     return Calibration.objects.create(**calibration_infos, **calibration_file)
 
 
-@pytest.fixture
-def firsts_user_calibrations(second_calibration, user):
-    return list(Calibration.objects.filter(user=user))
+# @pytest.fixture
+# def first_user_calibrations(second_calibration, user):
+#     return list(Calibration.objects.filter(user=user))
 
 
 @pytest.fixture
@@ -316,11 +316,11 @@ def preclinic_dosimetry_file():
 
 
 @pytest.fixture
-def clinic_dosimetry_info(user, calibration, order):
+def clinic_dosimetry_info(user, first_calibration, clinic_order):
     return {
         'user': user,
-        'calibration': calibration,
-        'order': order,
+        'calibration': first_calibration,
+        'order': clinic_order,
         'analysis_name': 'Analysis 1',
         'injected_activity': 50,
         'administration_datetime': DATETIME_TIMEZONE
@@ -328,10 +328,10 @@ def clinic_dosimetry_info(user, calibration, order):
 
 
 @pytest.fixture
-def preclinic_dosimetry_info(user, calibration, preclinic_order):
+def preclinic_dosimetry_info(user, first_calibration, preclinic_order):
     return {
         'user': user,
-        'calibration': calibration,
+        'calibration': first_calibration,
         'order': preclinic_order,
         'analysis_name': 'Analysis 1',
         'injected_activity': 20,
