@@ -10,13 +10,11 @@ from rest_framework.decorators import (
                                         )
 from rest_framework.permissions import IsAuthenticated
 
+from web_server.api.decorators import user_from_token_and_user_from_url
 from web_server.service.models import Order
 from web_server.service.order_svc import order_to_dict
 from .auth import MyTokenAuthentication
-from .errors_msg import (
-                        MSG_ERROR_TOKEN_USER,
-                        MSG_ERROR_RESOURCE,
-                        )
+from .errors_msg import MSG_ERROR_RESOURCE
 
 User = get_user_model()
 
@@ -24,10 +22,8 @@ User = get_user_model()
 @api_view(['GET'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
+@user_from_token_and_user_from_url
 def orders_list(request, user_id):
-
-    if request.user.uuid != user_id:
-        return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
     dispatcher = {
         'GET': _list_orders,
@@ -41,10 +37,8 @@ def orders_list(request, user_id):
 @api_view(['GET'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
+@user_from_token_and_user_from_url
 def orders_read(request, user_id, order_id):
-
-    if request.user.uuid != user_id:
-        return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
     try:
         order = Order.objects.filter(user__uuid=user_id, uuid=order_id).get()

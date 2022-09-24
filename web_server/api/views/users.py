@@ -12,7 +12,8 @@ from rest_framework.permissions import IsAuthenticated
 from web_server.core.forms import ProfileUpdateForm
 
 from .auth import MyTokenAuthentication
-from .errors_msg import MSG_ERROR_TOKEN_USER, list_errors
+from .errors_msg import list_errors
+from web_server.api.decorators import user_from_token_and_user_from_url
 
 
 User = get_user_model()
@@ -21,10 +22,8 @@ User = get_user_model()
 @api_view(['GET', 'PATCH'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
+@user_from_token_and_user_from_url
 def users_read_update(request, user_id):
-
-    if request.user.uuid != user_id:
-        return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED)
 
     user = request.user
 
