@@ -1,10 +1,11 @@
 services:
+
   database:
     container_name: dosimagem_db
     image: postgres:14.5-alpine
     restart: 'no'
     volumes:
-      - ./.pgdata:/var/lib/postgresql/data
+      - ../../db/pgdata:/var/lib/postgresql/data
     environment:
       - LC_ALL=C.UTF-8
       - POSTGRES_PASSWORD=dosimagem
