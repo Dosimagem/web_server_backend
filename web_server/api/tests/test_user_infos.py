@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
 from web_server.api.tests.conftest import HTTP_METHODS
-from web_server.api.views.errors_msg import LANG, USE_I18N, MSG_ERROR_TOKEN_USER
+from web_server.api.views.errors_msg import MSG_ERROR_TOKEN_USER
 
 
 User = get_user_model()
@@ -70,7 +70,7 @@ def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
 
     body = response.json()
 
-    expected = ['CNPJ inválido.' if LANG and USE_I18N else 'CNPJ invalid.']
+    expected = ['CNPJ inválido.']
 
     assert body['errors'] == expected
 
@@ -92,7 +92,7 @@ def test_fail_update_user_infos_cnpj_unique_constrain(client_api_auth, user, sec
 
     body = response.json()
 
-    expected = ['CNPJ já existe.' if LANG and USE_I18N else 'CNPJ already exists.']
+    expected = ['CNPJ já existe.']
 
     assert body['errors'] == expected
 
@@ -114,7 +114,7 @@ def test_fail_update_user_infos_clinic_unique_constrain(api_cnpj_successfull, cl
 
     body = response.json()
 
-    expected = ['Clínica já existe.' if LANG and USE_I18N else 'Clinic already exists.']
+    expected = ['Clínica já existe.']
 
     assert body['errors'] == expected
 

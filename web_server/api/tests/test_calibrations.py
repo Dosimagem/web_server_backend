@@ -8,8 +8,6 @@ from django.utils.translation import gettext as _
 
 from web_server.service.models import Calibration, FORMAT_DATE
 from web_server.api.views.errors_msg import (
-    LANG,
-    USE_I18N,
     MSG_ERROR_TOKEN_USER,
     MSG_ERROR_RESOURCE,
 )
@@ -149,20 +147,12 @@ def test_fail_create_negative_float_numbers(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    if LANG == 'pt-br' and USE_I18N:
-        expected = [
-            'Certifique-se que atividade da seringa seja maior ou igual a 0.0.',
-            'Certifique-se que atividade residual na seringa seja maior ou igual a 0.0.',
-            'Certifique-se que volume do fantoma seja maior ou igual a 0.0.',
-            'Certifique-se que tempo de aquisição seja maior ou igual a 0.0.',
-            ]
-    else:
-        expected = [
-            'Ensure syringe activity value is greater than or equal to 0.0.',
-            'Ensure residual syringe activity value is greater than or equal to 0.0.',
-            'Ensure phantom volume value is greater than or equal to 0.0.',
-            'Ensure acquisition time value is greater than or equal to 0.0.'
-            ]
+    expected = [
+        'Certifique-se que atividade da seringa seja maior ou igual a 0.0.',
+        'Certifique-se que atividade residual na seringa seja maior ou igual a 0.0.',
+        'Certifique-se que volume do fantoma seja maior ou igual a 0.0.',
+        'Certifique-se que tempo de aquisição seja maior ou igual a 0.0.',
+    ]
 
     assert body['errors'] == expected
 
@@ -188,10 +178,7 @@ def test_fail_create_calibration_name_must_be_unique_per_user(client_api_auth, u
 
     body = response.json()
 
-    if LANG == 'pt-br' and USE_I18N:
-        expected = ['Calibração com esse nome ja existe para este usuário.']
-    else:
-        expected = ['Calibration with this User and Calibration Name already exists.']
+    expected = ['Calibração com esse nome ja existe para este usuário.']
 
     assert body['errors'] == expected
 
@@ -233,10 +220,7 @@ def test_fail_create_isotope_invalid(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    if LANG == 'pt-br' and USE_I18N:
-        expected = ['Isotopo não registrado.']
-    else:
-        expected = ['Isotope not registered.']
+    expected = ['Isotopo não registrado.']
 
     assert body['errors'] == expected
 
@@ -258,42 +242,20 @@ def test_fail_create_isotope_invalid_by_size(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    if LANG == 'pt-br' and USE_I18N:
-        expected = ['Isotopo inválido.']
-    else:
-        expected = ['Invalid isotope.']
+    expected = ['Isotopo inválido.']
 
     assert body['errors'] == expected
 
 
 @pytest.mark.parametrize('field, error', [
-    ('isotope', [
-        'O campo isotopo é obrigatório.' if LANG and USE_I18N else 'Isotope field is required.'
-        ]),
-    ('calibrationName', [
-        'O campo Nome da calibração é obrigatório.' if LANG and USE_I18N else 'Calibration name field is required.'
-        ]),
-    ('syringeActivity', [
-        'O campo atividade da seringa é obrigatório.'
-        if LANG and USE_I18N else 'Syringe activity field is required.'
-        ]),
-    ('residualSyringeActivity', [
-        'O campo atividade residual na seringa é obrigatório.'
-        if LANG and USE_I18N else 'Residual syringe activity field is required.'
-        ]),
-    ('measurementDatetime', [
-        'O campo hora e data da medição é obrigatório.'
-        if LANG and USE_I18N else 'Measurement datetime field is required.'
-        ]),
-    ('phantomVolume', [
-        'O campo volume do fantoma é obrigatório.' if LANG and USE_I18N else 'Phantom volume field is required.'
-        ]),
-    ('acquisitionTime', [
-        'O campo tempo de aquisição é obrigatório.' if LANG and USE_I18N else 'Acquisition time field is required.'
-        ]),
-    ('images', [
-        'O campo imagens é obrigatório.' if LANG and USE_I18N else 'Images field is required.'
-        ]),
+    ('isotope', ['O campo isotopo é obrigatório.']),
+    ('calibrationName', ['O campo Nome da calibração é obrigatório.']),
+    ('syringeActivity', ['O campo atividade da seringa é obrigatório.']),
+    ('residualSyringeActivity', ['O campo atividade residual na seringa é obrigatório.']),
+    ('measurementDatetime', ['O campo hora e data da medição é obrigatório.']),
+    ('phantomVolume', ['O campo volume do fantoma é obrigatório.']),
+    ('acquisitionTime', ['O campo tempo de aquisição é obrigatório.']),
+    ('images', ['O campo imagens é obrigatório.']),
     ])
 def test_fail_create_missing_fields(client_api_auth, user, form_data, field, error):
     '''
@@ -505,10 +467,7 @@ def test_fail_update_by_wrong_data(client_api_auth, form_data, first_calibration
 
     body = response.json()
 
-    if LANG and USE_I18N:
-        expected = ['Certifique-se que atividade da seringa seja maior ou igual a 0.0.']
-    else:
-        expected = ['Ensure syringe activity value is greater than or equal to 0.0.']
+    expected = ['Certifique-se que atividade da seringa seja maior ou igual a 0.0.']
 
     assert body['errors'] == expected
 
@@ -541,10 +500,7 @@ def test_fail_update_isotope_invalid(client_api_auth, first_calibration, form_da
 
     body = response.json()
 
-    if LANG == 'pt-br' and USE_I18N:
-        expected = ['Isotopo não registrado.']
-    else:
-        expected = ['Isotope not registered.']
+    expected = ['Isotopo não registrado.']
 
     assert body['errors'] == expected
 
@@ -621,9 +577,6 @@ def test_update_fail_calibration_name_must_be_unique_per_user(client_api_auth,
 
     body = response.json()
 
-    if LANG == 'pt-br' and USE_I18N:
-        expected = ['Calibração com esse nome ja existe para este usuário.']
-    else:
-        expected = ['Calibration with this User and Calibration Name already exists.']
+    expected = ['Calibração com esse nome ja existe para este usuário.']
 
     assert body['errors'] == expected
