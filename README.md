@@ -248,10 +248,23 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000,127.0.0.1:3000
 
 ---
 
+Docker com ambiente de desenvolvimento.
+
 ```console
-docker build --tag django_server:dosimagem .
-docker run --name django_server -d -p 8000:8000 django_server:dosimagem
-docker start django_server
+docker-compose -f docker/compose/docker-compose-api-db.yml build
+```
+
+Subindo o servidor e o banco de dados
+
+```console
+docker-compose -f docker/compose/docker-compose-api-db.yml up
+```
+
+para fazer a migração e a carga inicial basta
+
+```
+docker exec -it dosimagem_api python manage.py migrate
+docker exec -it dosimagem_api ./manage.py loaddata contrib/db_initial.json
 ```
 
 ---
