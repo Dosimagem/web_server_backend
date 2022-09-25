@@ -14,7 +14,7 @@ services:
     networks:
       - dosimagem_nw
     ports:
-      - 5432
+      - 5434:5432
 
   api:
     build:
@@ -25,6 +25,8 @@ services:
     container_name: dosimagem_api
     image: dosimagem/api:v1
     restart: 'no'
+    environment:
+      - DATABASE_URL=postgres://dosimagem:dosimagem@database/dosimagem_db
     env_file:
       - ../../.env
     ports:
