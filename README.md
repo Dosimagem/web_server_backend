@@ -260,7 +260,7 @@ Subindo o servidor e o banco de dados
 docker-compose -f docker/compose/docker-compose-api-db.yml up
 ```
 
-para fazer a migração e a carga inicial basta
+O `DATABASE_URL` esta definido dentro do docker compose. Para fazer a migração e a carga inicial basta
 
 ```
 docker exec -it dosimagem_api python manage.py migrate

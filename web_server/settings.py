@@ -101,7 +101,7 @@ if DEBUG:
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-default_db_url = 'sqlite:///' + str(BASE_DIR / 'db/db.sqlite3')
+default_db_url = 'sqlite:///' + str(BASE_DIR / 'db.sqlite3')
 parse_db = dj_database_url.parse
 DATABASES = {
     'default': config('DATABASE_URL', default=default_db_url, cast=parse_db)
