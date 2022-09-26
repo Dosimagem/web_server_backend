@@ -12,7 +12,7 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
   - [2) Rotas](#2-rotas)
   - [3) Desenvolvimento](#3-desenvolvimento)
     - [3.1) Setup inicial](#31-setup-inicial)
-    - [3.2) Rodando o servido](#32-rodando-o-servido)
+    - [3.2) Rodando o servido](#32-rodando-o-servidor)
     - [3.3) Rodando os teste](#33-rodando-os-teste)
     - [3.4) Área adminstrativa](#34-área-adminstrativa)
   - [4) Banco de dados](#4-banco-de-dados)
@@ -33,31 +33,7 @@ Desenvolvimento das funcionalidades
 
 # 2) Rotas
 
-Rotas disponiveis
-
-- Isotopos
-  - GET api/v1/isotopes/
-- Register
-  - POST /api/v1/users/register/
-  - POST /api/v1/users/login/
-- Users
-  - GET /api/v1/users/\<uuid:user_id>
-  - PATCH /api/v1/users/\<uuid:user_id>
-- Order
-  - GET /api/v1/users/\<uuid:user_id>/orders/
-  - GET /api/v1/users/\<uuid:user_id>/orders/\<uuid:id_order>
-- Calibration
-  - GET /api/v1/users/\<uuid:user_id>/calibrations/
-  - POST /api/v1/users/\<uuid:user_id>/calibrations/
-  - DELETE /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
-  - PUT /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
-  - GET /api/v1/users/\<uuid:user_id>/calibrations/\<uuid:cali_id>
-- Analises
-  - GET /api/v1/users/\<uuid:user_id>/orders/\<uuid:order_id>/analysis/
-  - POST /api/v1/users/\<uuid:user_id>/orders/\<uuid:order_id>/analysis/
-  - GET /api/v1/users/\<uuid:user_id>/orders/\<uuid:order_id>/analysis/\<uuid:analisys_id>
-
-[Api](https://documenter.getpostman.com/view/18852890/2s83Kad2KE)
+[Documentação da API](https://documenter.getpostman.com/view/18852890/2s83Kad2KE)
 
 
 ## 3) Desenvolvimento
@@ -139,7 +115,7 @@ python manage.py loaddata contrib/db_isotope.json
 
 ---
 
-### 3.2) Rodando o servido de desenvolvimento
+### 3.2) Rodando o servidor de desenvolvimento
 
 ---
 
