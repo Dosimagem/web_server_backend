@@ -133,3 +133,5 @@ staticfiles
 mediafiles
 
 .pgdata
+pgdata
+db

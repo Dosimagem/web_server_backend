@@ -15,7 +15,22 @@ from web_server.service.forms import ClinicDosimetryAnalysisCreateForm, PreClini
 from web_server.service.models import ClinicDosimetryAnalysis, Order, Calibration, PreClinicDosimetryAnalysis
 from web_server.api.forms import ClinicDosimetryAnalysisCreateFormApi
 from .auth import MyTokenAuthentication
-from .errors_msg import list_errors
+from .errors_msg import MSG_ERROR_RESOURCE, list_errors
+
+
+@api_view(['GET'])
+@authentication_classes([MyTokenAuthentication])
+@permission_classes([IsAuthenticated])
+@user_from_token_and_user_from_url
+def analysis_read_update_delete(request, user_id, order_id, analysis_id):
+
+    dispatcher = {
+        'GET': _read_analysis
+    }
+
+    view = dispatcher[request.method]
+
+    return view(request, user_id, order_id, analysis_id)
 
 
 @api_view(['GET', 'POST'])
@@ -34,6 +49,18 @@ def analysis_list_create(request, user_id, order_id):
     return view(request, user_id, order_id)
 
 
+def _read_analysis(request, user_id, order_id, analysis_id):
+
+    try:
+        order = Order.objects.get(user__uuid=user_id, uuid=order_id)
+        model = _get_analisysis_model(order)
+        analysis = model.objects.get(uuid=analysis_id, user__uuid=user_id, order__uuid=order_id)
+    except ObjectDoesNotExist:
+        return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
+
+    return Response(data=analysis.to_dict(request))
+
+
 def _list_analysis(request, user_id, order_id):
 
     try:
@@ -41,10 +68,8 @@ def _list_analysis(request, user_id, order_id):
     except ObjectDoesNotExist:
         return Response(status=HTTPStatus.NOT_FOUND)
 
-    if order.service_name == Order.PRECLINIC_DOSIMETRY:
-        list_ = PreClinicDosimetryAnalysis.objects.filter(user__uuid=user_id, order__uuid=order_id)
-    elif order.service_name == Order.CLINIC_DOSIMETRY:
-        list_ = ClinicDosimetryAnalysis.objects.filter(user__uuid=user_id, order__uuid=order_id)
+    model = _get_analisysis_model(order)
+    list_ = model.objects.filter(user__uuid=user_id, order__uuid=order_id)
 
     data = {
         'count': len(list_),
@@ -93,8 +118,19 @@ def _create_analysis(request, user_id, order_id):
             return Response({'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
 
         with transaction.atomic():
+            # TODO: Colocar isso em uma camada de serviço
             order.remaining_of_analyzes -= 1
             order.save()
             new_analysis = form_analysis.save()
 
         return Response(new_analysis.to_dict(request), status=HTTPStatus.CREATED)
+
+
+# TODO: Colocar isso em uma camada de serviço
+
+def _get_analisysis_model(order):
+    if order.service_name == Order.PRECLINIC_DOSIMETRY:
+        model = PreClinicDosimetryAnalysis
+    elif order.service_name == Order.CLINIC_DOSIMETRY:
+        model = ClinicDosimetryAnalysis
+    return model

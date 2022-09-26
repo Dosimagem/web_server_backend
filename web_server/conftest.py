@@ -130,7 +130,7 @@ def clinic_order(user, create_order_data):
 
 
 @pytest.fixture
-def preclinic_order(user, create_order_data):
+def preclinic_order(user):
     return Order.objects.create(user=user,
                                 quantity_of_analyzes=10,
                                 remaining_of_analyzes=10,
