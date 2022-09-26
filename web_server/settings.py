@@ -217,74 +217,27 @@ REST_FRAMEWORK = {
 # LOGGING = {
 #     'version': 1,
 #     'formatters': {
-#         'verbose': {
-#             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-#         },
 #         'simple': {
-#             'format': '%(levelname)s %(message)s'
+#             'format': '\n---\n%(levelname)s %(message)s\n---\n'
 #         },
 #     },
 #     'filters': {
-#         'require_debug_false': {
-#             '()': 'django.utils.log.RequireDebugFalse',
+#         'require_debug_true': {
+#             '()': 'django.utils.log.RequireDebugTrue',
 #         }
-#     },
+#      },
 #     'handlers': {
 #         'console': {
 #             'level': 'DEBUG',
+#             'filters': ['require_debug_true'],
 #             'class': 'logging.StreamHandler',
-#             'formatter': 'simple'
-#         },
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': os.getenv('DJANGO_LOG_FILE', './twitter_clone.log'),
-#             'formatter': 'simple'
-#         },
+#             'formatter': 'simple',
+#          },
 #     },
 #     'loggers': {
-#         '': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG' if DEBUG else 'WARNING',
-#             'propagate': True,
-#         },
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG' if DEBUG else 'WARNING',
-#             'propagate': True,
-#         },
+#         'django.db.backends': {
+#             'level': 'DEBUG',
+#             'handlers': ['console'],
+#         }
 #     }
 # }
-
-# if DEBUG:
-#     # make all loggers use the console.
-#     for logger in LOGGING['loggers']:
-#         LOGGING['loggers'][logger]['handlers'] = ['console']
-
-LOGGING = {
-    'version': 1,
-    'formatters': {
-        'simple': {
-            'format': '\n---\n%(levelname)s %(message)s\n---\n'
-        },
-    },
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        }
-     },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-         },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        }
-    }
-}

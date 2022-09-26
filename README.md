@@ -55,8 +55,9 @@ Rotas disponiveis
 - Analises
   - GET /api/v1/users/\<uuid:user_id>/orders/\<uuid:order_id>/analysis/
   - POST /api/v1/users/\<uuid:user_id>/orders/\<uuid:order_id>/analysis/
+  - GET /api/v1/users/\<uuid:user_id>/orders/\<uuid:order_id>/analysis/\<uuid:analisys_id>
 
-Detalhes das rotas: [ROTAS.md](ROTAS.md)
+[Api](https://documenter.getpostman.com/view/18852890/2s83Kad2KE)
 
 
 ## 3) Desenvolvimento
