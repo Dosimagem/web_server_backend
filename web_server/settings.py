@@ -214,30 +214,33 @@ REST_FRAMEWORK = {
     },
 }
 
-# LOGGING = {
-#     'version': 1,
-#     'formatters': {
-#         'simple': {
-#             'format': '\n---\n%(levelname)s %(message)s\n---\n'
-#         },
-#     },
-#     'filters': {
-#         'require_debug_true': {
-#             '()': 'django.utils.log.RequireDebugTrue',
-#         }
-#      },
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'filters': ['require_debug_true'],
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'simple',
-#          },
-#     },
-#     'loggers': {
-#         'django.db.backends': {
-#             'level': 'DEBUG',
-#             'handlers': ['console'],
-#         }
-#     }
-# }
+LOGGER_SQL = config('LOGGER_SQL', default=False)
+
+if LOGGER_SQL:
+    LOGGING = {
+        'version': 1,
+        'formatters': {
+            'simple': {
+                'format': '\n---\n%(levelname)s %(message)s\n---\n'
+            },
+        },
+        'filters': {
+            'require_debug_true': {
+                '()': 'django.utils.log.RequireDebugTrue',
+            }
+        },
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'filters': ['require_debug_true'],
+                'class': 'logging.StreamHandler',
+                'formatter': 'simple',
+            },
+        },
+        'loggers': {
+            'django.db.backends': {
+                'level': 'DEBUG',
+                'handlers': ['console'],
+            }
+        }
+    }
