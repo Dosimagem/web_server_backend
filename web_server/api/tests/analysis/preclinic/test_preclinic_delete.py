@@ -33,7 +33,7 @@ def test_delete_preclinic_dosimetry_successfull(client_api_auth, preclinic_dosim
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body == {'message': 'Análise deletada com sucesso!'}
+    assert body == {'id': str(analysis_uuid), 'message': 'Análise deletada com sucesso!'}
 
 
 def test_fail_delete_preclinic_dosimetry_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
