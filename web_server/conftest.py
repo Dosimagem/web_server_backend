@@ -365,6 +365,13 @@ def preclinic_dosimetry(preclinic_dosimetry_info, preclinic_dosimetry_file):
 
 
 @pytest.fixture
+def preclinic_dosimetry_invalid_infos(preclinic_dosimetry):
+    preclinic_dosimetry.status = PreClinicDosimetryAnalysis.INVALID_INFOS
+    preclinic_dosimetry.save()
+    return preclinic_dosimetry
+
+
+@pytest.fixture
 def tree_clinic_dosimetry_of_first_user(clinic_dosimetry_info):
 
     clinic_dosimetry_info['analysis_name'] = 'Analysis 1'

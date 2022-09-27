@@ -49,6 +49,7 @@ python -m venv .venv --upgrade-deps
 source .venv/bin/activate
 pip install pip-tools
 pip-sync requirements.txt requirements-dev.txt
+precommit install
 cp contrib/env-sample .env
 ```
 
