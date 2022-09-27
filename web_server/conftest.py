@@ -341,7 +341,22 @@ def preclinic_dosimetry_info(user, first_calibration, preclinic_order):
 
 @pytest.fixture
 def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
-    return ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info, **clinic_dosimetry_file)
+
+    # TODO: Pensar em uma solução melhor, talvez usar um serviço para isso
+    order_uuid = clinic_dosimetry_info['order'].uuid
+    order = Order.objects.get(uuid=order_uuid)
+    order.remaining_of_analyzes -= 1
+    order.save()
+
+    analysis = ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info, **clinic_dosimetry_file)
+    return analysis
+
+
+@pytest.fixture
+def clinic_dosimetry_invalid_infos(clinic_dosimetry):
+    clinic_dosimetry.status = ClinicDosimetryAnalysis.INVALID_INFOS
+    clinic_dosimetry.save()
+    return clinic_dosimetry
 
 
 @pytest.fixture
