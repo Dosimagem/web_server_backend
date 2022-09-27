@@ -126,14 +126,14 @@ class Calibration(CreationModificationBase, models.Model):
 
 class DosimetryAnalysisBase(CreationModificationBase, models.Model):
 
-    ANALYZING_INFOS = 'AP'
-    ERRORS_ANALYZING = 'EA'
+    ANALYZING_INFOS = 'AI'
+    INVALID_INFOS = 'II'
     PROCESSING = 'PR'
     CONCLUDED = 'CO'
 
     STATUS = (
         (ANALYZING_INFOS, 'Verificando informações'),
-        (ERRORS_ANALYZING, 'Informações inválidas'),
+        (INVALID_INFOS, 'Informações inválidas'),
         (PROCESSING, 'Processando a análise'),
         (CONCLUDED, 'Analise conluída'),
     )

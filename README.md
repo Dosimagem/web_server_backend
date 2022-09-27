@@ -166,7 +166,7 @@ A rota para acessar é `/dosimagem/admin/`
 Subir o container
 
 ```console
-docker-compose -f docker-compose.yml up -d
+docker-compose -f docker/compose/docker-compose-db.yml up -d
 ```
 
 Configurar `DATABASE_URL` no arquivo `.env` para

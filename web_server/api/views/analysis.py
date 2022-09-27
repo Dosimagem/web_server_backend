@@ -18,14 +18,15 @@ from .auth import MyTokenAuthentication
 from .errors_msg import MSG_ERROR_RESOURCE, list_errors
 
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
 def analysis_read_update_delete(request, user_id, order_id, analysis_id):
 
     dispatcher = {
-        'GET': _read_analysis
+        'GET': _read_analysis,
+        'DELETE': _delete_analysis
     }
 
     view = dispatcher[request.method]
@@ -47,6 +48,26 @@ def analysis_list_create(request, user_id, order_id):
     view = dispatcher[request.method]
 
     return view(request, user_id, order_id)
+
+
+def _delete_analysis(request, user_id, order_id, analysis_id):
+
+    try:
+        order = Order.objects.get(user__uuid=user_id, uuid=order_id)
+        model = _get_analisysis_model(order)
+        analysis = model.objects.get(uuid=analysis_id, user__uuid=user_id, order__uuid=order_id)
+    except ObjectDoesNotExist:
+        return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
+
+    if analysis.status == model.INVALID_INFOS:
+        analysis.delete()
+        order.remaining_of_analyzes += 1
+        order.save()
+    else:
+        msg = 'Não foi possivel deletar essa análise.'
+        return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
+
+    return Response(data={'message': 'Análise deletada com sucesso!'})
 
 
 def _read_analysis(request, user_id, order_id, analysis_id):
