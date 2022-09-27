@@ -30,7 +30,7 @@ class OrderInfos:
         return self.queryset_func.filter(status=analysis.ANALYZING_INFOS).count()
 
     def analysis_status_count(self) -> Dict:
-
+        # TODO: add INVALID_INFOS
         return dict(
             concluded=self.analysis_concluded,
             processing=self.analysis_processing,
