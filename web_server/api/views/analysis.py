@@ -67,7 +67,12 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
         msg = 'Não foi possivel deletar essa análise.'
         return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
 
-    return Response(data={'message': 'Análise deletada com sucesso!'})
+    data = {
+        'id': analysis_id,
+        'message': 'Análise deletada com sucesso!'
+    }
+
+    return Response(data=data)
 
 
 def _read_analysis(request, user_id, order_id, analysis_id):
