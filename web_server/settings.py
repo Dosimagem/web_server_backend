@@ -214,7 +214,7 @@ REST_FRAMEWORK = {
     },
 }
 
-LOGGER_SQL = config('LOGGER_SQL', default=False)
+LOGGER_SQL = config('LOGGER_SQL', default=False, cast=bool)
 
 if LOGGER_SQL:
     LOGGING = {

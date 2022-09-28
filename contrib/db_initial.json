@@ -273,6 +273,97 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2022-09-28T15:47:58.977Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "1",
+    "object_repr": "0008.Ga68.22/0001-2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2022-09-28T15:48:25.244Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "4",
+    "object_repr": "0008.Ga68.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2022-09-28T15:48:32.395Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "3",
+    "object_repr": "0008.Ga68.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2022-09-28T15:48:40.931Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "2",
+    "object_repr": "0003.F18.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2022-09-28T15:48:48.220Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "1",
+    "object_repr": "0003.F18.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2022-09-28T15:48:57.309Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "3",
+    "object_repr": "0008.Ga68.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2022-09-28T15:49:08.645Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "4",
+    "object_repr": "0008.Ga68.22/0001-1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
   "model": "sessions.session",
   "pk": "ujo9yf9rcu8nkx2eoyme6c88epp7v6ts",
   "fields": {
@@ -340,36 +431,38 @@
   "model": "core.userprofile",
   "pk": 3,
   "fields": {
+    "created_at": "2022-09-22T03:36:12.487Z",
+    "modified_at": "2022-09-22T03:36:12.636Z",
     "user": 2,
     "name": "João Sliva",
     "phone": "11111111",
     "clinic": "Clinica A",
     "role": "médico",
     "cpf": "93743851121",
-    "cnpj": "42438610000111",
-    "created_at": "2022-09-22T03:36:12.487Z",
-    "modified_at": "2022-09-22T03:36:12.636Z"
+    "cnpj": "42438610000111"
   }
 },
 {
   "model": "core.userprofile",
   "pk": 8,
   "fields": {
+    "created_at": "2022-09-22T03:40:11.962Z",
+    "modified_at": "2022-09-22T03:40:12.523Z",
     "user": 7,
     "name": "Maria Silva",
     "phone": "22222222",
     "clinic": "Clinica B",
     "role": "fisico médico",
     "cpf": "52450318097",
-    "cnpj": "00796966000187",
-    "created_at": "2022-09-22T03:40:11.962Z",
-    "modified_at": "2022-09-22T03:40:12.523Z"
+    "cnpj": "00796966000187"
   }
 },
 {
   "model": "service.order",
   "pk": 1,
   "fields": {
+    "created_at": "2022-09-22T03:42:16.799Z",
+    "modified_at": "2022-09-22T04:05:25.129Z",
     "uuid": "0822f0fe-3323-418b-9b0c-ff2be205e968",
     "user": 2,
     "quantity_of_analyzes": 10,
@@ -377,15 +470,15 @@
     "price": "3000.00",
     "status_payment": "CON",
     "service_name": "DC",
-    "permission": true,
-    "created_at": "2022-09-22T03:42:16.799Z",
-    "modified_at": "2022-09-22T04:05:25.129Z"
+    "permission": true
   }
 },
 {
   "model": "service.order",
   "pk": 2,
   "fields": {
+    "created_at": "2022-09-22T03:42:37.856Z",
+    "modified_at": "2022-09-22T03:42:37.856Z",
     "uuid": "d72c6b60-ea83-488a-bd92-64fe0433cce8",
     "user": 2,
     "quantity_of_analyzes": 5,
@@ -393,15 +486,15 @@
     "price": "1000.00",
     "status_payment": "APG",
     "service_name": "PCD",
-    "permission": false,
-    "created_at": "2022-09-22T03:42:37.856Z",
-    "modified_at": "2022-09-22T03:42:37.856Z"
+    "permission": false
   }
 },
 {
   "model": "service.order",
   "pk": 3,
   "fields": {
+    "created_at": "2022-09-22T04:06:43.569Z",
+    "modified_at": "2022-09-22T04:12:48.720Z",
     "uuid": "6052ed23-7d98-40e3-bbaf-2d192e074bf3",
     "user": 7,
     "quantity_of_analyzes": 5,
@@ -409,15 +502,15 @@
     "price": "1000.00",
     "status_payment": "CON",
     "service_name": "DC",
-    "permission": true,
-    "created_at": "2022-09-22T04:06:43.569Z",
-    "modified_at": "2022-09-22T04:12:48.720Z"
+    "permission": true
   }
 },
 {
   "model": "service.order",
   "pk": 4,
   "fields": {
+    "created_at": "2022-09-22T04:10:08.565Z",
+    "modified_at": "2022-09-22T04:13:43.985Z",
     "uuid": "cd6d2b11-3e05-489f-bcda-9970932f864b",
     "user": 7,
     "quantity_of_analyzes": 3,
@@ -425,141 +518,141 @@
     "price": "500.00",
     "status_payment": "CON",
     "service_name": "PCD",
-    "permission": true,
-    "created_at": "2022-09-22T04:10:08.565Z",
-    "modified_at": "2022-09-22T04:13:43.985Z"
+    "permission": true
   }
 },
 {
   "model": "service.isotope",
   "pk": 1,
   "fields": {
-    "name": "Lu-177",
     "created_at": "2022-09-06T03:09:24.809Z",
-    "modified_at": "2022-09-06T03:09:24.809Z"
+    "modified_at": "2022-09-06T03:09:24.809Z",
+    "name": "Lu-177"
   }
 },
 {
   "model": "service.isotope",
   "pk": 2,
   "fields": {
-    "name": "Cu-64",
     "created_at": "2022-09-06T04:14:15.730Z",
-    "modified_at": "2022-09-06T04:14:15.730Z"
+    "modified_at": "2022-09-06T04:14:15.730Z",
+    "name": "Cu-64"
   }
 },
 {
   "model": "service.isotope",
   "pk": 3,
   "fields": {
-    "name": "Cu-67",
     "created_at": "2022-09-06T04:14:31.799Z",
-    "modified_at": "2022-09-06T04:14:31.799Z"
+    "modified_at": "2022-09-06T04:14:31.799Z",
+    "name": "Cu-67"
   }
 },
 {
   "model": "service.isotope",
   "pk": 4,
   "fields": {
-    "name": "F-18",
     "created_at": "2022-09-06T04:14:46.881Z",
-    "modified_at": "2022-09-06T04:14:46.881Z"
+    "modified_at": "2022-09-06T04:14:46.881Z",
+    "name": "F-18"
   }
 },
 {
   "model": "service.isotope",
   "pk": 5,
   "fields": {
-    "name": "Ga-68",
     "created_at": "2022-09-06T04:14:59.504Z",
-    "modified_at": "2022-09-06T04:14:59.504Z"
+    "modified_at": "2022-09-06T04:14:59.504Z",
+    "name": "Ga-68"
   }
 },
 {
   "model": "service.isotope",
   "pk": 6,
   "fields": {
-    "name": "Ho-166",
     "created_at": "2022-09-06T04:15:22.849Z",
-    "modified_at": "2022-09-06T04:15:22.849Z"
+    "modified_at": "2022-09-06T04:15:22.849Z",
+    "name": "Ho-166"
   }
 },
 {
   "model": "service.isotope",
   "pk": 7,
   "fields": {
-    "name": "I-124",
     "created_at": "2022-09-06T04:15:39.367Z",
-    "modified_at": "2022-09-06T04:15:39.367Z"
+    "modified_at": "2022-09-06T04:15:39.367Z",
+    "name": "I-124"
   }
 },
 {
   "model": "service.isotope",
   "pk": 8,
   "fields": {
-    "name": "I-131",
     "created_at": "2022-09-06T04:15:53.520Z",
-    "modified_at": "2022-09-06T04:15:53.520Z"
+    "modified_at": "2022-09-06T04:15:53.520Z",
+    "name": "I-131"
   }
 },
 {
   "model": "service.isotope",
   "pk": 9,
   "fields": {
-    "name": "In-111",
     "created_at": "2022-09-06T04:16:08.671Z",
-    "modified_at": "2022-09-06T04:16:08.671Z"
+    "modified_at": "2022-09-06T04:16:08.671Z",
+    "name": "In-111"
   }
 },
 {
   "model": "service.isotope",
   "pk": 10,
   "fields": {
-    "name": "Lu-177",
     "created_at": "2022-09-06T04:16:19.288Z",
-    "modified_at": "2022-09-06T04:16:19.288Z"
+    "modified_at": "2022-09-06T04:16:19.288Z",
+    "name": "Lu-177"
   }
 },
 {
   "model": "service.isotope",
   "pk": 11,
   "fields": {
-    "name": "Sm-153",
     "created_at": "2022-09-06T04:16:33.223Z",
-    "modified_at": "2022-09-06T04:16:33.223Z"
+    "modified_at": "2022-09-06T04:16:33.223Z",
+    "name": "Sm-153"
   }
 },
 {
   "model": "service.isotope",
   "pk": 12,
   "fields": {
-    "name": "Tb-161",
     "created_at": "2022-09-06T04:16:47.517Z",
-    "modified_at": "2022-09-06T04:16:47.517Z"
+    "modified_at": "2022-09-06T04:16:47.517Z",
+    "name": "Tb-161"
   }
 },
 {
   "model": "service.isotope",
   "pk": 13,
   "fields": {
-    "name": "Tc-99m",
     "created_at": "2022-09-06T04:16:58.247Z",
-    "modified_at": "2022-09-06T04:16:58.247Z"
+    "modified_at": "2022-09-06T04:16:58.247Z",
+    "name": "Tc-99m"
   }
 },
 {
   "model": "service.isotope",
   "pk": 14,
   "fields": {
-    "name": "Y-90",
     "created_at": "2022-09-06T04:17:07.340Z",
-    "modified_at": "2022-09-06T04:17:07.340Z"
+    "modified_at": "2022-09-06T04:17:07.340Z",
+    "name": "Y-90"
   }
 },
 {
   "model": "service.calibration",
   "pk": 1,
   "fields": {
+    "created_at": "2022-09-22T03:53:06.748Z",
+    "modified_at": "2022-09-22T18:27:45.323Z",
     "uuid": "800b3452-a4d8-4bca-af90-20f75158de66",
     "user": 2,
     "isotope": 4,
@@ -569,15 +662,15 @@
     "measurement_datetime": "2016-04-01T01:12:04Z",
     "phantom_volume": 2500.0,
     "acquisition_time": 1800.0,
-    "images": "2/calibration_1663818786742228.zip",
-    "created_at": "2022-09-22T03:53:06.748Z",
-    "modified_at": "2022-09-22T18:27:45.323Z"
+    "images": "2/calibration_1663818786742228.zip"
   }
 },
 {
   "model": "service.calibration",
   "pk": 2,
   "fields": {
+    "created_at": "2022-09-22T03:56:03.056Z",
+    "modified_at": "2022-09-22T18:27:55.819Z",
     "uuid": "288c0cff-2016-4611-b0b8-9e3ba23c54ff",
     "user": 2,
     "isotope": 7,
@@ -587,15 +680,15 @@
     "measurement_datetime": "2016-04-01T01:12:04Z",
     "phantom_volume": 200.0,
     "acquisition_time": 1800.0,
-    "images": "2/calibration_1663818963054752.zip",
-    "created_at": "2022-09-22T03:56:03.056Z",
-    "modified_at": "2022-09-22T18:27:55.819Z"
+    "images": "2/calibration_1663818963054752.zip"
   }
 },
 {
   "model": "service.calibration",
   "pk": 3,
   "fields": {
+    "created_at": "2022-09-22T04:07:30.728Z",
+    "modified_at": "2022-09-22T18:26:50.726Z",
     "uuid": "ce93f958-cfa5-4d47-bdac-46d2558bfd12",
     "user": 7,
     "isotope": 5,
@@ -605,24 +698,22 @@
     "measurement_datetime": "2022-09-22T01:12:04Z",
     "phantom_volume": 200.0,
     "acquisition_time": 2000.0,
-    "images": "7/calibration_1663819650727151.zip",
-    "created_at": "2022-09-22T04:07:30.728Z",
-    "modified_at": "2022-09-22T18:26:50.726Z"
+    "images": "7/calibration_1663819650727151.zip"
   }
 },
 {
   "model": "service.clinicdosimetryanalysis",
   "pk": 1,
   "fields": {
+    "created_at": "2022-09-22T04:04:18.291Z",
+    "modified_at": "2022-09-28T15:48:48.209Z",
     "uuid": "2f88b13f-03c8-4b48-8736-d5e443f41350",
     "analysis_name": "Analise A1",
-    "status": "AP",
+    "status": "CO",
     "report": "",
     "active": true,
     "injected_activity": 500.0,
     "administration_datetime": "2016-04-01T01:12:04Z",
-    "created_at": "2022-09-22T04:04:18.291Z",
-    "modified_at": "2022-09-22T18:33:15.725Z",
     "user": 2,
     "calibration": 1,
     "order": 1,
@@ -633,15 +724,15 @@
   "model": "service.clinicdosimetryanalysis",
   "pk": 2,
   "fields": {
+    "created_at": "2022-09-22T04:05:25.135Z",
+    "modified_at": "2022-09-28T15:48:40.921Z",
     "uuid": "28b8ae1b-bfb2-4121-b8c7-c40a4f1ee631",
     "analysis_name": "Analise A2",
-    "status": "AP",
+    "status": "II",
     "report": "",
     "active": true,
     "injected_activity": 250.0,
     "administration_datetime": "2018-04-01T01:12:04Z",
-    "created_at": "2022-09-22T04:05:25.135Z",
-    "modified_at": "2022-09-22T18:33:43.882Z",
     "user": 2,
     "calibration": 1,
     "order": 1,
@@ -652,15 +743,15 @@
   "model": "service.clinicdosimetryanalysis",
   "pk": 3,
   "fields": {
+    "created_at": "2022-09-22T04:09:26.107Z",
+    "modified_at": "2022-09-28T15:48:57.296Z",
     "uuid": "981043d7-e640-4308-85d9-a2e7c68b8ee4",
     "analysis_name": "Analise B1",
-    "status": "AP",
+    "status": "PR",
     "report": "",
     "active": true,
     "injected_activity": 2500.0,
     "administration_datetime": "2019-05-01T01:12:04Z",
-    "created_at": "2022-09-22T04:09:26.107Z",
-    "modified_at": "2022-09-22T18:33:26.769Z",
     "user": 7,
     "calibration": 3,
     "order": 3,
@@ -671,15 +762,15 @@
   "model": "service.clinicdosimetryanalysis",
   "pk": 4,
   "fields": {
+    "created_at": "2022-09-22T04:12:48.726Z",
+    "modified_at": "2022-09-28T15:49:08.634Z",
     "uuid": "3695cdf9-b3af-44c3-aff8-54287205c83b",
     "analysis_name": "Analise B2",
-    "status": "AP",
+    "status": "AI",
     "report": "",
     "active": true,
     "injected_activity": 2500.0,
     "administration_datetime": "2019-05-01T01:12:04Z",
-    "created_at": "2022-09-22T04:12:48.726Z",
-    "modified_at": "2022-09-22T18:33:36.755Z",
     "user": 7,
     "calibration": 3,
     "order": 3,
@@ -690,15 +781,15 @@
   "model": "service.preclinicdosimetryanalysis",
   "pk": 1,
   "fields": {
+    "created_at": "2022-09-22T04:13:43.992Z",
+    "modified_at": "2022-09-28T15:47:58.927Z",
     "uuid": "222bc3cd-e7d7-4b99-bc5a-739c9cea423d",
     "analysis_name": "Analise B1",
-    "status": "AP",
+    "status": "II",
     "report": "",
     "active": true,
     "injected_activity": 2500.0,
     "administration_datetime": "2019-05-01T01:12:04Z",
-    "created_at": "2022-09-22T04:13:43.992Z",
-    "modified_at": "2022-09-22T18:33:04.828Z",
     "user": 7,
     "calibration": 3,
     "order": 4,

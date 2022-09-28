@@ -3,126 +3,126 @@
   "model": "service.isotope",
   "pk": 1,
   "fields": {
-    "name": "Lu-177",
     "created_at": "2022-09-06T03:09:24.809Z",
-    "modified_at": "2022-09-06T03:09:24.809Z"
+    "modified_at": "2022-09-06T03:09:24.809Z",
+    "name": "Lu-177"
   }
 },
 {
   "model": "service.isotope",
   "pk": 2,
   "fields": {
-    "name": "Cu-64",
     "created_at": "2022-09-06T04:14:15.730Z",
-    "modified_at": "2022-09-06T04:14:15.730Z"
+    "modified_at": "2022-09-06T04:14:15.730Z",
+    "name": "Cu-64"
   }
 },
 {
   "model": "service.isotope",
   "pk": 3,
   "fields": {
-    "name": "Cu-67",
     "created_at": "2022-09-06T04:14:31.799Z",
-    "modified_at": "2022-09-06T04:14:31.799Z"
+    "modified_at": "2022-09-06T04:14:31.799Z",
+    "name": "Cu-67"
   }
 },
 {
   "model": "service.isotope",
   "pk": 4,
   "fields": {
-    "name": "F-18",
     "created_at": "2022-09-06T04:14:46.881Z",
-    "modified_at": "2022-09-06T04:14:46.881Z"
+    "modified_at": "2022-09-06T04:14:46.881Z",
+    "name": "F-18"
   }
 },
 {
   "model": "service.isotope",
   "pk": 5,
   "fields": {
-    "name": "Ga-68",
     "created_at": "2022-09-06T04:14:59.504Z",
-    "modified_at": "2022-09-06T04:14:59.504Z"
+    "modified_at": "2022-09-06T04:14:59.504Z",
+    "name": "Ga-68"
   }
 },
 {
   "model": "service.isotope",
   "pk": 6,
   "fields": {
-    "name": "Ho-166",
     "created_at": "2022-09-06T04:15:22.849Z",
-    "modified_at": "2022-09-06T04:15:22.849Z"
+    "modified_at": "2022-09-06T04:15:22.849Z",
+    "name": "Ho-166"
   }
 },
 {
   "model": "service.isotope",
   "pk": 7,
   "fields": {
-    "name": "I-124",
     "created_at": "2022-09-06T04:15:39.367Z",
-    "modified_at": "2022-09-06T04:15:39.367Z"
+    "modified_at": "2022-09-06T04:15:39.367Z",
+    "name": "I-124"
   }
 },
 {
   "model": "service.isotope",
   "pk": 8,
   "fields": {
-    "name": "I-131",
     "created_at": "2022-09-06T04:15:53.520Z",
-    "modified_at": "2022-09-06T04:15:53.520Z"
+    "modified_at": "2022-09-06T04:15:53.520Z",
+    "name": "I-131"
   }
 },
 {
   "model": "service.isotope",
   "pk": 9,
   "fields": {
-    "name": "In-111",
     "created_at": "2022-09-06T04:16:08.671Z",
-    "modified_at": "2022-09-06T04:16:08.671Z"
+    "modified_at": "2022-09-06T04:16:08.671Z",
+    "name": "In-111"
   }
 },
 {
   "model": "service.isotope",
   "pk": 10,
   "fields": {
-    "name": "Lu-177",
     "created_at": "2022-09-06T04:16:19.288Z",
-    "modified_at": "2022-09-06T04:16:19.288Z"
+    "modified_at": "2022-09-06T04:16:19.288Z",
+    "name": "Lu-177"
   }
 },
 {
   "model": "service.isotope",
   "pk": 11,
   "fields": {
-    "name": "Sm-153",
     "created_at": "2022-09-06T04:16:33.223Z",
-    "modified_at": "2022-09-06T04:16:33.223Z"
+    "modified_at": "2022-09-06T04:16:33.223Z",
+    "name": "Sm-153"
   }
 },
 {
   "model": "service.isotope",
   "pk": 12,
   "fields": {
-    "name": "Tb-161",
     "created_at": "2022-09-06T04:16:47.517Z",
-    "modified_at": "2022-09-06T04:16:47.517Z"
+    "modified_at": "2022-09-06T04:16:47.517Z",
+    "name": "Tb-161"
   }
 },
 {
   "model": "service.isotope",
   "pk": 13,
   "fields": {
-    "name": "Tc-99m",
     "created_at": "2022-09-06T04:16:58.247Z",
-    "modified_at": "2022-09-06T04:16:58.247Z"
+    "modified_at": "2022-09-06T04:16:58.247Z",
+    "name": "Tc-99m"
   }
 },
 {
   "model": "service.isotope",
   "pk": 14,
   "fields": {
-    "name": "Y-90",
     "created_at": "2022-09-06T04:17:07.340Z",
-    "modified_at": "2022-09-06T04:17:07.340Z"
+    "modified_at": "2022-09-06T04:17:07.340Z",
+    "name": "Y-90"
   }
 }
 ]
