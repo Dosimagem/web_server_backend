@@ -9,7 +9,6 @@ from web_server.service.models import Calibration, ClinicDosimetryAnalysis, Isot
 @admin.register(Order)
 class UserOrderModelAdmin(admin.ModelAdmin):
     list_display = (
-                   'id',
                    'user',
                    'quantity_of_analyzes',
                    'remaining_of_analyzes',
@@ -17,12 +16,12 @@ class UserOrderModelAdmin(admin.ModelAdmin):
                    'status_payment',
                    'service_name',
                    'permission',
-                   'created_at',
-                   'modified_at',
                    )
 
-    list_display_links = ('id',)
-    readonly_fields = ('uuid',)
+    list_display_links = ('user',)
+    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
+    search_fields = ('user__profile__clinic',)
+    list_per_page = 20
 
     form = CreateOrderForm
 
@@ -40,7 +39,6 @@ class IstopeModelAdmin(admin.ModelAdmin):
 @admin.register(Calibration)
 class CalibrationModelAdmin(admin.ModelAdmin):
     list_display = (
-                'id',
                 'calibration_name',
                 'user',
                 'isotope',
@@ -50,16 +48,16 @@ class CalibrationModelAdmin(admin.ModelAdmin):
                 'phantom_volume',
                 'acquisition_time',
                 'images',
-                'created_at',
-                'modified_at',
                 )
-    readonly_fields = ('uuid',)
+    list_display_links = ('calibration_name',)
+    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
+    search_fields = ('calibration_name',)
+    list_per_page = 20
 
 
 @admin.register(ClinicDosimetryAnalysis)
 class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_display = (
-                'id',
                 'analysis_name',
                 'user',
                 'order',
@@ -70,17 +68,16 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                 'images',
                 'report',
                 'active',
-                'created_at',
-                'modified_at',
                 )
-    list_display_links = ('id', 'analysis_name',)
-    readonly_fields = ('uuid',)
+    list_display_links = ('analysis_name',)
+    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
+    search_fields = ('analysis_name',)
+    list_per_page = 20
 
 
 @admin.register(PreClinicDosimetryAnalysis)
 class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_display = (
-                'id',
                 'analysis_name',
                 'user',
                 'order',
@@ -91,8 +88,8 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                 'images',
                 'report',
                 'active',
-                'created_at',
-                'modified_at',
                 )
-    list_display_links = ('id', 'analysis_name',)
-    readonly_fields = ('uuid',)
+    list_display_links = ('analysis_name',)
+    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
+    search_fields = ('analysis_name',)
+    list_per_page = 20
