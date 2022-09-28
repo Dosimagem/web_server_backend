@@ -6,14 +6,14 @@ from django.shortcuts import resolve_url
 from web_server.service.models import PreClinicDosimetryAnalysis, Order
 
 
-def test_delete_preclinic_dosimetry_successfull(client_api_auth, preclinic_dosimetry_invalid_infos):
+def test_delete_preclinic_dosimetry_successfull(client_api_auth, preclinic_dosimetry_update_delete):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
     '''
 
-    user_uuid = preclinic_dosimetry_invalid_infos.user.uuid
-    order_uuid = preclinic_dosimetry_invalid_infos.order.uuid
-    analysis_uuid = preclinic_dosimetry_invalid_infos.uuid
+    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+    order_uuid = preclinic_dosimetry_update_delete.order.uuid
+    analysis_uuid = preclinic_dosimetry_update_delete.uuid
 
     order = Order.objects.get(uuid=order_uuid)
 

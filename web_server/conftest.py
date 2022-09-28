@@ -11,6 +11,11 @@ from web_server.service.models import ClinicDosimetryAnalysis, Isotope, Order, C
 
 
 @pytest.fixture(autouse=True)
+def disable_SQL_logging(settings):
+    settings.LOGGER_SQL = False
+
+
+@pytest.fixture(autouse=True)
 def mediafiles(settings, tmp_path):
     settings.MEDIA_ROOT = tmp_path / 'media'
 
@@ -243,11 +248,6 @@ def calibration_with_images(calibration_infos, calibration_file):
     return Calibration.objects.create(**calibration_infos, **calibration_file)
 
 
-# @pytest.fixture
-# def first_user_calibrations(second_calibration, user):
-#     return list(Calibration.objects.filter(user=user))
-
-
 @pytest.fixture
 def second_user_calibrations_infos(second_user, lu_177_and_cu_64):
 
@@ -353,7 +353,7 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
 
 
 @pytest.fixture
-def clinic_dosimetry_invalid_infos(clinic_dosimetry):
+def clinic_dosimetry_update_delete(clinic_dosimetry):
     clinic_dosimetry.status = ClinicDosimetryAnalysis.INVALID_INFOS
     clinic_dosimetry.save()
     return clinic_dosimetry
@@ -361,11 +361,20 @@ def clinic_dosimetry_invalid_infos(clinic_dosimetry):
 
 @pytest.fixture
 def preclinic_dosimetry(preclinic_dosimetry_info, preclinic_dosimetry_file):
-    return PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info, **preclinic_dosimetry_file)
+
+    # TODO: Pensar em uma solução melhor, talvez usar um serviço para isso
+    order_uuid = preclinic_dosimetry_info['order'].uuid
+    order = Order.objects.get(uuid=order_uuid)
+    order.remaining_of_analyzes -= 1
+    order.save()
+
+    analysis = PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info, **preclinic_dosimetry_file)
+
+    return analysis
 
 
 @pytest.fixture
-def preclinic_dosimetry_invalid_infos(preclinic_dosimetry):
+def preclinic_dosimetry_update_delete(preclinic_dosimetry):
     preclinic_dosimetry.status = PreClinicDosimetryAnalysis.INVALID_INFOS
     preclinic_dosimetry.save()
     return preclinic_dosimetry

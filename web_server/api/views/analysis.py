@@ -11,14 +11,18 @@ from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
 
 from web_server.api.decorators import user_from_token_and_user_from_url
-from web_server.service.forms import ClinicDosimetryAnalysisCreateForm, PreClinicDosimetryAnalysisCreateForm
+from web_server.service.forms import (
+                                        ClinicDosimetryAnalysisCreateForm,
+                                        ClinicDosimetryAnalysisUpdateForm,
+                                        PreClinicDosimetryAnalysisCreateForm
+                                     )
 from web_server.service.models import ClinicDosimetryAnalysis, Order, Calibration, PreClinicDosimetryAnalysis
 from web_server.api.forms import ClinicDosimetryAnalysisCreateFormApi
 from .auth import MyTokenAuthentication
-from .errors_msg import MSG_ERROR_RESOURCE, list_errors
+from .errors_msg import MSG_ERROR_RESOURCE, ERROR_CALIBRATION_ID, list_errors
 
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'DELETE', 'PUT'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
@@ -26,7 +30,8 @@ def analysis_read_update_delete(request, user_id, order_id, analysis_id):
 
     dispatcher = {
         'GET': _read_analysis,
-        'DELETE': _delete_analysis
+        'DELETE': _delete_analysis,
+        'PUT': _update_analysis
     }
 
     view = dispatcher[request.method]
@@ -105,6 +110,53 @@ def _list_analysis(request, user_id, order_id):
     return Response(data)
 
 
+def _update_analysis(request, user_id, order_id, analysis_id):
+
+    data = request.data
+
+    user = request.user
+
+    try:
+        order = Order.objects.get(user=user, uuid=order_id)
+    except ObjectDoesNotExist:
+        return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
+
+    data['user'] = user
+    data['order'] = order
+
+    form = ClinicDosimetryAnalysisCreateFormApi(data)
+
+    if not form.is_valid():
+        return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+    try:
+        calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'], user=user)
+    except ObjectDoesNotExist:
+        return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.NOT_FOUND)
+
+    data['calibration'] = calibration
+
+    try:
+        # analysis = ClinicDosimetryAnalysis.objects.get(uuid=analysis_id)
+        # analysis = ClinicDosimetryAnalysis.objects.get(uuid=analysis_id, order__uuid=order_id)
+        analysis = ClinicDosimetryAnalysis.objects.get(uuid=analysis_id, user=user, order=order)
+    except ObjectDoesNotExist:
+        return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
+
+    if analysis.status != ClinicDosimetryAnalysis.INVALID_INFOS:
+        msg = 'Não foi possivel deletar essa análise.'
+        return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
+
+    form_analysis = ClinicDosimetryAnalysisUpdateForm(data, request.FILES, instance=analysis)
+
+    if not form_analysis.is_valid():
+        return Response(data={'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+    form_analysis.save()
+
+    return Response(status=HTTPStatus.NO_CONTENT)
+
+
 def _create_analysis(request, user_id, order_id):
 
     data = request.data
@@ -130,8 +182,7 @@ def _create_analysis(request, user_id, order_id):
         try:
             calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'], user__uuid=user_id)
         except ObjectDoesNotExist:
-            return Response(data={'errors': ['Calibração com esse id não existe para esse usuário.']},
-                            status=HTTPStatus.BAD_REQUEST)
+            return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.BAD_REQUEST)
 
         data.update({'user': user, 'order': order, 'calibration': calibration})
 
