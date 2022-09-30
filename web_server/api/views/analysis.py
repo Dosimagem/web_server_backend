@@ -11,13 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
 
 from web_server.api.decorators import user_from_token_and_user_from_url
-from web_server.service.forms import (
-                                        ClinicDosimetryAnalysisCreateForm,
-                                        ClinicDosimetryAnalysisUpdateForm,
-                                        PreClinicDosimetryAnalysisCreateForm,
-                                        PreClinicDosimetryAnalysisUpdateForm
-                                     )
-from web_server.service.models import ClinicDosimetryAnalysis, Order, Calibration, PreClinicDosimetryAnalysis
+from web_server.service.analysis_svc import AnalisysChoice
+from web_server.service.models import Order, Calibration
 from web_server.api.forms import (PreClinicAndClinicDosimetryAnalysisCreateFormApi,
                                   PreClinicAndClinicDosimetryAnalysisUpdateFormApi)
 from .auth import MyTokenAuthentication
@@ -61,12 +56,13 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
 
     try:
         order = Order.objects.get(user__uuid=user_id, uuid=order_id)
-        model = _get_analisysis_model(order)
-        analysis = model.objects.get(uuid=analysis_id, user__uuid=user_id, order__uuid=order_id)
+        Model = AnalisysChoice(order=order).model
+        analysis = Model.objects.get(uuid=analysis_id, user__uuid=user_id, order__uuid=order_id)
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
-    if analysis.status == model.INVALID_INFOS:
+    # TODO: Colocar isso em uma camada de serviço
+    if analysis.status == Model.INVALID_INFOS:
         analysis.delete()
         order.remaining_of_analyzes += 1
         order.save()
@@ -86,8 +82,8 @@ def _read_analysis(request, user_id, order_id, analysis_id):
 
     try:
         order = Order.objects.get(user__uuid=user_id, uuid=order_id)
-        model = _get_analisysis_model(order)
-        analysis = model.objects.get(uuid=analysis_id, user__uuid=user_id, order__uuid=order_id)
+        Model = AnalisysChoice(order=order).model
+        analysis = Model.objects.get(uuid=analysis_id, user__uuid=user_id, order__uuid=order_id)
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
@@ -101,8 +97,8 @@ def _list_analysis(request, user_id, order_id):
     except ObjectDoesNotExist:
         return Response(status=HTTPStatus.NOT_FOUND)
 
-    model = _get_analisysis_model(order)
-    list_ = model.objects.filter(user__uuid=user_id, order__uuid=order_id)
+    Model = AnalisysChoice(order=order).model
+    list_ = Model.objects.filter(user__uuid=user_id, order__uuid=order_id)
 
     data = {
         'count': len(list_),
@@ -138,8 +134,10 @@ def _update_analysis(request, user_id, order_id, analysis_id):
 
     data['calibration'] = calibration
 
+    analisys_choice = AnalisysChoice(order=order)
+
     try:
-        Model = _get_analisysis_model(order)
+        Model = analisys_choice.model
         analysis = Model.objects.get(uuid=analysis_id, user=user, order=order)
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
@@ -148,9 +146,8 @@ def _update_analysis(request, user_id, order_id, analysis_id):
         msg = 'Não foi possivel atualizar essa análise.'
         return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
 
-    Form = _get_analisysis_form_uodate(order)
-
-    form_analysis = Form(data, request.FILES, instance=analysis)
+    AnalysisForm = analisys_choice.update_form
+    form_analysis = AnalysisForm(data, request.FILES, instance=analysis)
 
     if not form_analysis.is_valid():
         return Response(data={'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
@@ -189,10 +186,8 @@ def _create_analysis(request, user_id, order_id):
 
         data.update({'user': user, 'order': order, 'calibration': calibration})
 
-        if order.service_name == Order.CLINIC_DOSIMETRY:
-            form_analysis = ClinicDosimetryAnalysisCreateForm(data, request.FILES)
-        elif order.service_name == Order.PRECLINIC_DOSIMETRY:
-            form_analysis = PreClinicDosimetryAnalysisCreateForm(data, request.FILES)
+        AnalysisFormClass = AnalisysChoice(order=order).create_form
+        form_analysis = AnalysisFormClass(data, request.FILES)
 
         if not form_analysis.is_valid():
             return Response({'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
@@ -204,23 +199,3 @@ def _create_analysis(request, user_id, order_id):
             new_analysis = form_analysis.save()
 
         return Response(new_analysis.to_dict(request), status=HTTPStatus.CREATED)
-
-
-# TODO: Colocar isso em uma camada de serviço
-
-def _get_analisysis_model(order):
-    if order.service_name == Order.PRECLINIC_DOSIMETRY:
-        model = PreClinicDosimetryAnalysis
-    elif order.service_name == Order.CLINIC_DOSIMETRY:
-        model = ClinicDosimetryAnalysis
-    return model
-
-
-# TODO: Colocar isso em uma camada de serviço
-
-def _get_analisysis_form_uodate(order):
-    if order.service_name == Order.PRECLINIC_DOSIMETRY:
-        form = PreClinicDosimetryAnalysisUpdateForm
-    elif order.service_name == Order.CLINIC_DOSIMETRY:
-        form = ClinicDosimetryAnalysisUpdateForm
-    return form
