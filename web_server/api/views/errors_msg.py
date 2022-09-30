@@ -1,6 +1,6 @@
 MSG_ERROR_TOKEN_USER = ['O token e o ID do usuário não correspondem.']
 MSG_ERROR_RESOURCE = ['Este usuário não possui este recurso cadastrado.']
-
+ERROR_CALIBRATION_ID = ['Calibração com esse id não existe para esse usuário.']
 
 ERRORS_MAP_PT = {
     'syringe_activity': 'atividade da seringa',

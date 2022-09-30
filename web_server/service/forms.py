@@ -83,6 +83,10 @@ class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
                   'administration_datetime')
 
 
+class ClinicDosimetryAnalysisUpdateForm(ClinicDosimetryAnalysisCreateForm):
+    ...
+
+
 class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
 
     class Meta:
@@ -94,3 +98,7 @@ class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
                   'analysis_name',
                   'injected_activity',
                   'administration_datetime')
+
+
+class PreClinicDosimetryAnalysisUpdateForm(PreClinicDosimetryAnalysisCreateForm):
+    ...
