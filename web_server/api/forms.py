@@ -1,5 +1,9 @@
 from django import forms
 
 
-class ClinicDosimetryAnalysisCreateFormApi(forms.Form):
+class PreClinicAndClinicDosimetryAnalysisCreateFormApi(forms.Form):
     calibration_id = forms.UUIDField()
+
+
+class PreClinicAndClinicDosimetryAnalysisUpdateFormApi(PreClinicAndClinicDosimetryAnalysisCreateFormApi):
+    ...

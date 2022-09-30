@@ -14,10 +14,12 @@ from web_server.api.decorators import user_from_token_and_user_from_url
 from web_server.service.forms import (
                                         ClinicDosimetryAnalysisCreateForm,
                                         ClinicDosimetryAnalysisUpdateForm,
-                                        PreClinicDosimetryAnalysisCreateForm
+                                        PreClinicDosimetryAnalysisCreateForm,
+                                        PreClinicDosimetryAnalysisUpdateForm
                                      )
 from web_server.service.models import ClinicDosimetryAnalysis, Order, Calibration, PreClinicDosimetryAnalysis
-from web_server.api.forms import ClinicDosimetryAnalysisCreateFormApi
+from web_server.api.forms import (PreClinicAndClinicDosimetryAnalysisCreateFormApi,
+                                  PreClinicAndClinicDosimetryAnalysisUpdateFormApi)
 from .auth import MyTokenAuthentication
 from .errors_msg import MSG_ERROR_RESOURCE, ERROR_CALIBRATION_ID, list_errors
 
@@ -124,7 +126,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     data['user'] = user
     data['order'] = order
 
-    form = ClinicDosimetryAnalysisCreateFormApi(data)
+    form = PreClinicAndClinicDosimetryAnalysisUpdateFormApi(data)
 
     if not form.is_valid():
         return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
@@ -137,17 +139,18 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     data['calibration'] = calibration
 
     try:
-        # analysis = ClinicDosimetryAnalysis.objects.get(uuid=analysis_id)
-        # analysis = ClinicDosimetryAnalysis.objects.get(uuid=analysis_id, order__uuid=order_id)
-        analysis = ClinicDosimetryAnalysis.objects.get(uuid=analysis_id, user=user, order=order)
+        Model = _get_analisysis_model(order)
+        analysis = Model.objects.get(uuid=analysis_id, user=user, order=order)
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
-    if analysis.status != ClinicDosimetryAnalysis.INVALID_INFOS:
-        msg = 'Não foi possivel deletar essa análise.'
+    if analysis.status != Model.INVALID_INFOS:
+        msg = 'Não foi possivel atualizar essa análise.'
         return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
 
-    form_analysis = ClinicDosimetryAnalysisUpdateForm(data, request.FILES, instance=analysis)
+    Form = _get_analisysis_form_uodate(order)
+
+    form_analysis = Form(data, request.FILES, instance=analysis)
 
     if not form_analysis.is_valid():
         return Response(data={'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
@@ -161,7 +164,7 @@ def _create_analysis(request, user_id, order_id):
 
     data = request.data
 
-    form = ClinicDosimetryAnalysisCreateFormApi(data)
+    form = PreClinicAndClinicDosimetryAnalysisCreateFormApi(data)
 
     if not form.is_valid():
         return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
@@ -211,3 +214,13 @@ def _get_analisysis_model(order):
     elif order.service_name == Order.CLINIC_DOSIMETRY:
         model = ClinicDosimetryAnalysis
     return model
+
+
+# TODO: Colocar isso em uma camada de serviço
+
+def _get_analisysis_form_uodate(order):
+    if order.service_name == Order.PRECLINIC_DOSIMETRY:
+        form = PreClinicDosimetryAnalysisUpdateForm
+    elif order.service_name == Order.CLINIC_DOSIMETRY:
+        form = ClinicDosimetryAnalysisUpdateForm
+    return form

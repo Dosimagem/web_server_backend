@@ -203,11 +203,11 @@ def test_fail_create_preclinic_dosimetry_wrong_(client_api_auth,
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
 
-def test_fail_create_preclinic_dosimetry_witth_order_from_another_user(client_api,
-                                                                       user,
-                                                                       second_user,
-                                                                       tree_orders_of_tow_users,
-                                                                       form_data_preclinic_dosimetry):
+def test_fail_create_preclinic_dosimetry_with_order_from_another_user(client_api,
+                                                                      user,
+                                                                      second_user,
+                                                                      tree_orders_of_tow_users,
+                                                                      form_data_preclinic_dosimetry):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
 
@@ -258,11 +258,11 @@ def test_fail_create_missing_fields(field,
     assert body['errors'] == error
 
 
-def test_fail_create_preclinic_dosimetry_whith_calibration_of_another_user(client_api_auth,
-                                                                           user,
-                                                                           preclinic_order,
-                                                                           second_user_calibrations,
-                                                                           form_data_preclinic_dosimetry):
+def test_fail_create_preclinic_dosimetry_with_calibration_of_another_user(client_api_auth,
+                                                                          user,
+                                                                          preclinic_order,
+                                                                          second_user_calibrations,
+                                                                          form_data_preclinic_dosimetry):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
     '''
@@ -280,40 +280,3 @@ def test_fail_create_preclinic_dosimetry_whith_calibration_of_another_user(clien
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
     assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
-
-
-def test_list_preclinic_dosimetry(client_api_auth, user, preclinic_order, tree_preclinic_dosimetry_of_first_user):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
-    '''
-
-    url = resolve_url('api:analysis-list-create', user.uuid, preclinic_order.uuid)
-    resp = client_api_auth.get(url)
-    body = resp.json()
-
-    assert resp.status_code == HTTPStatus.OK
-
-    analysis_list = body['row']
-    analysis_list_db = PreClinicDosimetryAnalysis.objects.all()
-
-    assert body['count']
-    assert body['count'] == len(analysis_list)
-
-    for analysis_response, analysis_db in zip(analysis_list, analysis_list_db):
-        assert analysis_response['id'] == str(analysis_db.uuid)
-        assert analysis_response['userId'] == str(analysis_db.user.uuid)
-        assert analysis_response['orderId'] == str(analysis_db.order.uuid)
-        assert analysis_response['calibrationId'] == str(analysis_db.calibration.uuid)
-        assert analysis_response['status'] == analysis_db.get_status_display()
-        assert analysis_response['active'] == analysis_db.active
-        assert analysis_response['serviceName'] == analysis_db.order.get_service_name_display()
-        assert analysis_response['createdAt'] == analysis_db.created_at.strftime(FORMAT_DATE)
-        assert analysis_response['modifiedAt'] == analysis_db.modified_at.strftime(FORMAT_DATE)
-
-        assert analysis_response['injectedActivity'] == analysis_db.injected_activity
-        assert analysis_response['analysisName'] == analysis_db.analysis_name
-        assert analysis_response['administrationDatetime'] == analysis_db.administration_datetime.strftime(FORMAT_DATE)
-
-        assert analysis_response['imagesUrl'].startswith(
-            f'http://testserver/media/{analysis_db.user.id}/preclinic_dosimetry'
-            )
