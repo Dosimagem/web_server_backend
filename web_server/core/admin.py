@@ -201,8 +201,8 @@ class UserProfileModelAdmin(admin.ModelAdmin):
 
     form = ProfileCreateForm
 
-    def change_view(self, request, object_id, extra_content=None):
-        return super(UserProfileModelAdmin, self).change_view(request, object_id)
+    # def change_view(self, request, object_id, extra_content=None):
+    #     return super(UserProfileModelAdmin, self).change_view(request, object_id)
 
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
+    # def save_model(self, request, obj, form, change):
+    #     super().save_model(request, obj, form, change)

@@ -64,7 +64,7 @@ def test_fail_delete_preclinic_dosimetry_successfull_invalid_status(client_api_a
 
     assert PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body == {'errors': 'Não foi possivel deletar essa análise.'}
+    assert body == {'errors': ['Não foi possivel deletar essa análise.']}
 
 
 def test_fail_delete_clinic_dosimetry_wrong_analysis_id(client_api_auth, preclinic_dosimetry):

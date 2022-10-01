@@ -84,7 +84,10 @@ class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
 
 
 class ClinicDosimetryAnalysisUpdateForm(ClinicDosimetryAnalysisCreateForm):
-    ...
+    def change_status_and_save(self):
+        self.instance.status = ClinicDosimetryAnalysis.ANALYZING_INFOS
+        super().save()
+        return self.instance
 
 
 class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
@@ -101,4 +104,7 @@ class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
 
 
 class PreClinicDosimetryAnalysisUpdateForm(PreClinicDosimetryAnalysisCreateForm):
-    ...
+    def change_status_and_save(self):
+        self.instance.status = PreClinicDosimetryAnalysis.ANALYZING_INFOS
+        super().save()
+        return self.instance

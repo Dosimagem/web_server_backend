@@ -73,6 +73,7 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
     search_fields = ('analysis_name',)
     list_per_page = 20
+    list_filter = ('user__profile__clinic', 'status', 'active',)
 
 
 @admin.register(PreClinicDosimetryAnalysis)
