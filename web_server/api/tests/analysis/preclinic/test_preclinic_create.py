@@ -280,3 +280,36 @@ def test_fail_create_preclinic_dosimetry_with_calibration_of_another_user(client
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
     assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
+
+
+@pytest.mark.parametrize('field, value, error', [
+    ('calibrationId', 'not is uuid', ['Insira um UUID válido.']),
+    ('injectedActivity', '-1', ['Certifique-se que atividade injetada seja maior ou igual a 0.0.']),
+    ('injectedActivity', 'not ia a number', ['Informe um número.']),
+    ('administrationDatetime', 'not is a datatime', ['Informe uma data/hora válida.']),
+    ('analysisName', 'ss', ['Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.'])
+    ])
+def test_fail_create_invalid_fields(field,
+                                    value,
+                                    error,
+                                    client_api_auth,
+                                    preclinic_order,
+                                    form_data_preclinic_dosimetry):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
+    '''
+
+    form_data_preclinic_dosimetry[field] = value
+
+    user_uuid = preclinic_order.user.uuid
+    order_uuid = preclinic_order.uuid
+
+    url = resolve_url('api:analysis-list-create', user_uuid, order_uuid)
+    resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    assert body['errors'] == error

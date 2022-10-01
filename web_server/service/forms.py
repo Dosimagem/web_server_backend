@@ -18,7 +18,6 @@ class CreateOrderForm(forms.ModelForm):
         fields = ('user',
                   'quantity_of_analyzes',
                   'remaining_of_analyzes',
-                  'service_name',
                   'price',
                   'service_name',
                   'status_payment',

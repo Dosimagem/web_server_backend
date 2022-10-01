@@ -189,3 +189,25 @@ def test_fail_create_missing_fields(client_api_auth, user, form_data, field, err
     assert not Calibration.objects.exists()
 
     assert body['errors'] == error
+
+
+def test_fail_create_calibration_name_length_must_least_3(client_api_auth, user, form_data):
+    '''
+    /api/v1/users/<uuid>/calibrations/ - POST
+    '''
+
+    url = resolve_url('api:calibration-list-create', user.uuid)
+
+    form_data['calibrationName'] = 'mo'
+
+    response = client_api_auth.post(url, data=form_data, format='multipart')
+
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    body = response.json()
+
+    assert not Calibration.objects.exists()
+
+    expected = ['Certifique-se de que o nome da calibração tenha no mínimo 3 caracteres.']
+
+    assert body['errors'] == expected

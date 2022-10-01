@@ -67,3 +67,16 @@ def test_invalid_create_form_analysis_name_must_be_unique_per_order(preclinic_do
     assert not form.is_valid()
 
     assert form.errors == {'__all__': ['Preclinic Dosimetry com este Order e Analysis Name já existe.']}
+
+
+def test_invalid_analysis_name_length_must_least_3(preclinic_dosimetry_info, preclinic_dosimetry_file):
+
+    preclinic_dosimetry_info['analysis_name'] = '2'
+
+    form = PreClinicDosimetryAnalysisCreateForm(data=preclinic_dosimetry_info, files=preclinic_dosimetry_file)
+
+    assert not form.is_valid()
+
+    expected = ['Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 1).']
+
+    assert form.errors == {'analysis_name': expected}

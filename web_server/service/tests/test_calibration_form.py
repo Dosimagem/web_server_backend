@@ -72,9 +72,7 @@ def test_invalid_isotope(calibration_infos, calibration_file):
     assert form.errors == {'isotope': [_('Select a valid choice. That choice is not one of the available choices.')]}
 
 
-def test_valid_create_form_field_save(settings, tmp_path, calibration_infos, calibration_file):
-
-    settings.MEDIA_ROOT = tmp_path / 'media'
+def test_valid_create_form_field_save(calibration_infos, calibration_file):
 
     form = CreateCalibrationForm(data=calibration_infos, files=calibration_file)
 
@@ -83,3 +81,16 @@ def test_valid_create_form_field_save(settings, tmp_path, calibration_infos, cal
     assert form.save()
 
     assert Calibration.objects.exists()
+
+
+def test_invalid_calibration_name_length_must_least_3(calibration_infos, calibration_file):
+
+    calibration_infos['calibration_name'] = '22'
+
+    form = CreateCalibrationForm(data=calibration_infos, files=calibration_file)
+
+    assert not form.is_valid()
+
+    expected = ['Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 2).']
+
+    assert form.errors == {'calibration_name': expected}
