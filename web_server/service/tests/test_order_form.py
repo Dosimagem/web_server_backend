@@ -55,23 +55,25 @@ def test_invalid_form_remaining_of_analyzes_must_be_lower_that_quantity_of_analy
     assert form.errors == {'remaining_of_analyzes': [_('Must be lower with the field quantity of analyzes.')]}
 
 
-# def test_invalid_form_service_type(create_oerder_data):
+def test_invalid_form_price(create_order_data):
 
-#     create_oerder_data['service_type'] = 'AAA'
+    create_order_data['price'] = '100.0.0'
 
-#     form = CreateQuotasForm(data=create_oerder_data)
+    form = CreateOrderForm(data=create_order_data)
 
-#     assert not form.is_valid()
+    assert not form.is_valid()
 
-#     assert form.errors == {'service_type': ['Select a valid choice. AAA is not one of the available choices.']}
+    assert form.errors == {'price': ['Informe um número.']}
 
 
-# def test_invalid_form_price(create_oerder_data):
+def test_invalid_form_service_type(create_order_data):
 
-#     create_oerder_data['price'] = '100.0.0'
+    create_order_data['service_name'] = 'AAA'
 
-#     form = CreateQuotasForm(data=create_oerder_data)
+    form = CreateOrderForm(data=create_order_data)
 
-#     assert not form.is_valid()
+    assert not form.is_valid()
 
-#     assert form.errors == {'price': ['Enter a number.']}
+    expected = ['Faça uma escolha válida. AAA não é uma das escolhas disponíveis.']
+
+    assert form.errors == {'service_name': expected}

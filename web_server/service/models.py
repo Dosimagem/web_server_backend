@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from django.db import models
 from django.conf import settings
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MinLengthValidator
 from django.utils.timezone import now
 from django.core.exceptions import ValidationError
 
@@ -89,7 +89,7 @@ class Calibration(CreationModificationBase, models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
     isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='calibrations')
 
-    calibration_name = models.CharField('Calibration Name', max_length=24)
+    calibration_name = models.CharField('Calibration Name', max_length=24, validators=[MinLengthValidator(3)])
     syringe_activity = models.FloatField('Syringe Activity', validators=[MinValueValidator(0.0)])
     residual_syringe_activity = models.FloatField('Residual Syringe Activity', validators=[MinValueValidator(0.0)])
     measurement_datetime = models.DateTimeField('Measurement Datetime')
@@ -140,7 +140,7 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
-    analysis_name = models.CharField('Analysis Name', max_length=24)
+    analysis_name = models.CharField('Analysis Name', max_length=24, validators=[MinLengthValidator(3)])
 
     status = models.CharField('Status', max_length=3, choices=STATUS, default=ANALYZING_INFOS)
     report = models.FileField('Report', blank=True, null=True, upload_to=upload_report_to)

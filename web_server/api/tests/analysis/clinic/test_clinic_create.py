@@ -9,8 +9,6 @@ from django.shortcuts import resolve_url
 from web_server.service.models import ClinicDosimetryAnalysis, FORMAT_DATE, Order, PreClinicDosimetryAnalysis
 
 
-# POST
-
 def test_create_clinic_dosimetry_successful(client_api_auth, user, clinic_order, form_data_clinic_dosimetry):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
@@ -296,6 +294,39 @@ def test_fail_create_missing_fields(field,
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
 
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert not ClinicDosimetryAnalysis.objects.exists()
+
+    assert body['errors'] == error
+
+
+@pytest.mark.parametrize('field, value, error', [
+    ('calibrationId', 'not is uuid', ['Insira um UUID válido.']),
+    ('injectedActivity', '-1', ['Certifique-se que atividade injetada seja maior ou igual a 0.0.']),
+    ('injectedActivity', 'not ia a number', ['Informe um número.']),
+    ('administrationDatetime', 'not is a datatime', ['Informe uma data/hora válida.']),
+    ('analysisName', 'ss', ['Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.'])
+    ])
+def test_fail_create_invalid_fields(field,
+                                    value,
+                                    error,
+                                    client_api_auth,
+                                    clinic_order,
+                                    form_data_clinic_dosimetry):
+    '''
+    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
+    '''
+
+    form_data_clinic_dosimetry[field] = value
+
+    user_uuid = clinic_order.user.uuid
+    order_uuid = clinic_order.uuid
+
+    url = resolve_url('api:analysis-list-create', user_uuid, order_uuid)
+    resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
