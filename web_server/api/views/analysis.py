@@ -67,7 +67,7 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
         order.remaining_of_analyzes += 1
         order.save()
     else:
-        msg = 'Não foi possivel deletar essa análise.'
+        msg = ['Não foi possivel deletar essa análise.']
         return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
 
     data = {
@@ -143,7 +143,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
     if analysis.status != Model.INVALID_INFOS:
-        msg = 'Não foi possivel atualizar essa análise.'
+        msg = ['Não foi possivel atualizar essa análise.']
         return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
 
     AnalysisForm = analisys_choice.update_form
@@ -152,7 +152,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     if not form_analysis.is_valid():
         return Response(data={'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-    form_analysis.save()
+    form_analysis.change_status_and_save()
 
     return Response(status=HTTPStatus.NO_CONTENT)
 

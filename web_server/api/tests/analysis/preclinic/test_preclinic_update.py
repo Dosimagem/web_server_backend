@@ -54,6 +54,7 @@ def test_update_preclinic_dosimetry_successfull(client_api_auth,
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.administration_datetime == update_form_data['administrationDatetime']
     assert analysis_db.images.file.read() == b'New File Update'
+    assert analysis_db.status == PreClinicDosimetryAnalysis.ANALYZING_INFOS
 
 
 def test_update_preclinic_dosimetry_optional_images_successfull(client_api_auth,
@@ -86,6 +87,7 @@ def test_update_preclinic_dosimetry_optional_images_successfull(client_api_auth,
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.administration_datetime == update_form_data['administrationDatetime']
     assert analysis_db.images.file.read() == preclinic_dosimetry_update_delete.images.file.read()
+    assert analysis_db.status == PreClinicDosimetryAnalysis.ANALYZING_INFOS
 
 
 def test_fail_update_preclinic_dosimetry_successfull_invalid_status(client_api_auth,
@@ -113,7 +115,7 @@ def test_fail_update_preclinic_dosimetry_successfull_invalid_status(client_api_a
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body == {'errors': 'Não foi possivel atualizar essa análise.'}
+    assert body == {'errors': ['Não foi possivel atualizar essa análise.']}
 
     _verify_unchanged_information_db(preclinic_dosimetry)
 

@@ -135,7 +135,7 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
         (ANALYZING_INFOS, 'Verificando informações'),
         (INVALID_INFOS, 'Informações inválidas'),
         (PROCESSING, 'Processando a análise'),
-        (CONCLUDED, 'Analise conluída'),
+        (CONCLUDED, 'Análise concluída'),
     )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
