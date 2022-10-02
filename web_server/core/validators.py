@@ -1,3 +1,5 @@
+import re
+
 
 import requests
 from validate_docbr import CPF, CNPJ
@@ -26,3 +28,15 @@ def validate_cnpj(value):
     if response.status_code == 404:
         message = response.json()['message']
         raise ValidationError(message, 'invalid_by_api')
+
+
+def validate_phone(value):
+
+    pattern = r'(\d{2})\(\d{2}\)(\d{4,5})(-)(\d{4})'
+
+    match = re.search(pattern, value)
+
+    if not match:
+        raise ValidationError(
+            'Número de telefone inválido. O formato deve ser xx(xx)xxxx-xxxx ou xx(xx)xxxxx-xxxx.',
+            'phone_invalid')

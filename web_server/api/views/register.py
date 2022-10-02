@@ -15,7 +15,7 @@ from .errors_msg import list_errors
 User = get_user_model()
 
 
-class ProfileValidataionError(Exception):
+class ProfileValidationError(Exception):
     def __init__(self, form_error, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.form_error = form_error
@@ -31,7 +31,7 @@ def _register_user_profile_token(form_user, data):
         form_profile = ProfileCreateForm(data, instance=user.profile)
 
         if not form_profile.is_valid():
-            raise ProfileValidataionError(form_error=form_profile.errors)
+            raise ProfileValidationError(form_error=form_profile.errors)
 
         form_profile.save()
         Token.objects.create(user=user)
@@ -46,6 +46,8 @@ def register(request):
 
     data = request.data
 
+    # TODO: put here form for clean the mask of cpf and cnpj
+
     form_user = MyUserCreationForm(data)
 
     if not form_user.is_valid():
@@ -54,7 +56,7 @@ def register(request):
     try:
         return _register_user_profile_token(form_user, data)
 
-    except ProfileValidataionError as e:
+    except ProfileValidationError as e:
         return Response({'errors': list_errors(e.form_error)}, status=HTTPStatus.BAD_REQUEST)
 
 

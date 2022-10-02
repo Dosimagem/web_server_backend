@@ -93,9 +93,6 @@ def test_fail_profile_invalid_cnpj(client_api, second_register_infos):
 
 
 def test_fail_profile_invalid_cnpj_api(api_cnpj_fail, client_api, second_register_infos):
-    '''
-    Clinic, CPF and CNPJ.
-    '''
 
     resp = client_api.post(URL_REGISTER, data=second_register_infos, format='json')
 
@@ -104,6 +101,21 @@ def test_fail_profile_invalid_cnpj_api(api_cnpj_fail, client_api, second_registe
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
     assert 'CNPJ 83.398.534/0001-45 não encontrado.' in errors_list
+
+
+def test_fail_profile_invalid_phone(api_cnpj_successfull, client_api, register_infos):
+
+    register_infos['phone'] = '222'
+
+    resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
+
+    errors_list = resp.json()['errors']
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    expected = 'Número de telefone inválido. O formato deve ser xx(xx)xxxx-xxxx ou xx(xx)xxxxx-xxxx.'
+
+    assert expected in errors_list
 
 
 @pytest.mark.parametrize('field, error', [

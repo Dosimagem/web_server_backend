@@ -18,9 +18,6 @@ class ProfileCreateForm(forms.ModelForm):
     def clean_role(self):
         return self.cleaned_data['role'].lower()
 
-    def clean_phone(self):
-        return ''.join(d for d in self.cleaned_data['phone'] if d.isdigit())
-
     def _unique(self, field, msg_error):
         instance = self.instance
 
