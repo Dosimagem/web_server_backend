@@ -33,7 +33,7 @@ def register_infos():
         name='João Silva',
         cnpj='42438610000111',  # 42.438.610/0001-11
         cpf='93743851121',  # 937.438.511-21
-        phone='11111111',
+        phone='55(33)1111-1111',
         role='Médico'
     )
 
@@ -71,7 +71,7 @@ def second_register_infos():
         name='Maria Silva',
         cnpj='83398534000145',  # 83.398.534/0001-45
         cpf='52450318097',  # 524.503.180-97
-        phone='22222222',
+        phone='55(41)22222-2222',
         role='Fisica médica'
     )
 

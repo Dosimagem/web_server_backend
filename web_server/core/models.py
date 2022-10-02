@@ -9,7 +9,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
-from web_server.core.validators import validate_cnpj, validate_cpf
+from web_server.core.validators import validate_cnpj, validate_cpf, validate_phone
 
 
 class CreationModificationBase(models.Model):
@@ -127,7 +127,7 @@ class UserProfile(CreationModificationBase, models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
 
     name = models.CharField(_('Name'), max_length=150)
-    phone = models.CharField(_('Phone'), max_length=30)
+    phone = models.CharField(_('Phone'), max_length=30, validators=[validate_phone])
 
     clinic = models.CharField(_('Clinic'), max_length=30)
     role = models.CharField(_('Role'), max_length=30)

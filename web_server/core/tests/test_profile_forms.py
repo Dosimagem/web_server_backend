@@ -66,13 +66,11 @@ def test_field_missing(api_cnpj_successfull, profile_infos, field):
 def test_form_clean(db):
     '''
     name: UseR sUname -> User Surname
-    phone: +55(11)444020824 -> 551144020824
     institution: any HOSpital -> Any Hospital',
     role: PhysIcian -> physician
     '''
     d = {
         'name': 'UseR sUrname',
-        'phone': '+55(11)444020824 ',
         'clinic': 'any HOSpital ',
         'role': 'PhysIcian',
         }
@@ -81,7 +79,6 @@ def test_form_clean(db):
     form.full_clean()
 
     assert form.cleaned_data['name'] == d['name'].title()
-    assert form.cleaned_data['phone'] == '5511444020824'
     assert form.cleaned_data['clinic'] == d['clinic'].strip().title()
     assert form.cleaned_data['role'] == d['role'].lower()
 
@@ -137,6 +134,17 @@ def test_cnpj_invalid(second_register_infos, db):
     assert not form.is_valid()
 
     assert form.errors['cnpj'] == ['CNPJ invalid.']
+
+
+def test_phone_invalid():
+
+    form = ProfileCreateForm({'phone': '22222-2222'})
+
+    assert not form.is_valid()
+
+    expected = ['Número de telefone inválido. O formato deve ser xx(xx)xxxx-xxxx ou xx(xx)xxxxx-xxxx.']
+
+    assert form.errors['phone'] == expected
 
 
 def test_cnpj_api_invalid(api_cnpj_fail, second_register_infos, db):
