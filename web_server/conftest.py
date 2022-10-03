@@ -99,7 +99,7 @@ def second_user_profile_info(second_register_infos):
 @pytest.fixture
 def user(django_user_model, user_info, user_profile_info):
     user = django_user_model.objects.create_user(**user_info)
-    user.email_verify = True
+    user.email_verified = True
     user.save()
     UserProfile.objects.filter(user=user).update(**user_profile_info)
     Token.objects.create(user=user)
