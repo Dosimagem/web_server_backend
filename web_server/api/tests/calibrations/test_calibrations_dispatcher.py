@@ -23,7 +23,7 @@ def test_list_create_not_allowed_method(client_api_auth, first_calibration):
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
 
 
-def test_list_create_token_view_and_user_id_dont_match(client_api_auth, first_calibration):
+def test_list_create_token_id_and_user_id_dont_match(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/ - GET, POST
     The token does not belong to the user
@@ -53,7 +53,7 @@ def test_read_update_delete_not_allowed_method(client_api_auth, first_calibratio
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
 
 
-def test_read_update_delete_view_and_user_id_dont_match(client_api_auth, first_calibration):
+def test_read_update_delete_id_and_user_id_dont_match(client_api_auth, first_calibration):
     '''
     /api/v1/users/<uuid>/calibrations/<uuid> - GET, PUT, DELETE
     The token does not belong to the user

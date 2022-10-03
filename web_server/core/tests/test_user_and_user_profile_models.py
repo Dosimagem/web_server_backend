@@ -47,3 +47,11 @@ def test_cnpj_mask(user):
 
 def test_cpf_mask(user):
     assert user.profile._cpf_mask() == '937.438.511-21'
+
+
+def test_default_value_user(db):
+    user = User.objects.create(email='user1@email.com')
+
+    assert not user.email_verify
+    assert not user.is_staff
+    assert user.is_active
