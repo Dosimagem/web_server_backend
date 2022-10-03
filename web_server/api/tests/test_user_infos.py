@@ -140,7 +140,7 @@ def test_read_update_user_wrong_token(client_api, user):
     assert response.json() == {'detail': _('Invalid token.')}
 
 
-def test_read_update_token_view_and_user_id_dont_match(client_api_auth, user, second_user):
+def test_read_update_token_id_and_user_id_dont_match(client_api_auth, user, second_user):
     '''
     /api/v1/users/<uuid> - GET, PATCH
     The token does not belong to the user

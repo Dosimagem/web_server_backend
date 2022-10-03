@@ -22,7 +22,7 @@ def test_list_create_analysis_not_allowed_method(client_api_auth, user, clinic_o
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
 
 
-def test_list_create_token_view_and_user_id_dont_match(client_api, user, second_user, clinic_order):
+def test_list_create_token_id_and_user_id_dont_match(client_api, user, second_user, clinic_order):
     '''
     /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET, POST
     The token does not belong to the user
