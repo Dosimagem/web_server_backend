@@ -47,8 +47,8 @@ class UserAdmin(admin.ModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     change_password_form = AdminPasswordChangeForm
-    list_display = ('email', 'uuid', 'is_staff')
-    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
+    list_display = ('email', 'uuid', 'is_staff', 'email_verified',)
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups', 'email_verified',)
     search_fields = ('email', )
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)

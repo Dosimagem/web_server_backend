@@ -73,7 +73,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ),
     )
 
-    email_verify = models.BooleanField('email_verify', default=False)
+    email_verified = models.BooleanField('email_verified', default=False)
 
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 

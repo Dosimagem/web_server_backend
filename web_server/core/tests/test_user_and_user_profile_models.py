@@ -52,6 +52,6 @@ def test_cpf_mask(user):
 def test_default_value_user(db):
     user = User.objects.create(email='user1@email.com')
 
-    assert not user.email_verify
+    assert not user.email_verified
     assert not user.is_staff
     assert user.is_active

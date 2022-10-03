@@ -14,7 +14,7 @@ from web_server.core.forms import ProfileUpdateForm
 from .auth import MyTokenAuthentication
 from .errors_msg import list_errors
 from web_server.api.decorators import user_from_token_and_user_from_url
-from web_server.api.forms import UpdateEmailForm
+from web_server.core.forms import UpdateEmailForm
 
 
 User = get_user_model()
@@ -42,11 +42,26 @@ def users_read_update(request, user_id):
         return Response(status=HTTPStatus.NO_CONTENT)
 
 
-@api_view(['PATCH'])
+@api_view(['PATCH', 'GET'])
 @authentication_classes([MyTokenAuthentication])
 @permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
-def update_email(request, user_id):
+def read_update_email(request, user_id):
+    '''
+    Read and update user email
+    '''
+
+    dispatcher = {
+        'GET': _read_email,
+        'PATCH': _update_email
+    }
+
+    view = dispatcher[request.method]
+
+    return view(request)
+
+
+def _update_email(request):
 
     data = request.data
 
@@ -55,7 +70,13 @@ def update_email(request, user_id):
     if not form.is_valid():
         return Response({'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-    form.instance.email_verify = False
+    form.instance.email_verified = False
     form.save()
 
     return Response(status=HTTPStatus.NO_CONTENT)
+
+
+def _read_email(request):
+    user = request.user
+    data = {'email': user.email, 'verified': user.email_verified}
+    return Response(data)

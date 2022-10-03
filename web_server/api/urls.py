@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views.register import register, MyObtainAuthToken
-from .views.users import users_read_update, update_email
+from .views.users import users_read_update, read_update_email
 from .views.orders import orders_list, orders_read
 from .views.isotopes import isotope
 from .views.calibrations import calibrations_list_create, calibrations_read_update_delete
@@ -14,7 +14,7 @@ urlpatterns = [
     path('users/login/',  MyObtainAuthToken.as_view(), name='login'),
     #
     path('users/<uuid:user_id>', users_read_update, name='users-read-update'),
-    path('users/<uuid:user_id>/email', update_email, name='update-email'),
+    path('users/<uuid:user_id>/email', read_update_email, name='read-update-email'),
     #
     path('users/<uuid:user_id>/orders/', orders_list, name='order-list'),
     path('users/<uuid:user_id>/orders/<uuid:order_id>', orders_read, name='order-read'),

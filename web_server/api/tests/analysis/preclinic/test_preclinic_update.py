@@ -13,7 +13,7 @@ from web_server.conftest import DATETIME_TIMEZONE
 from web_server.service.models import PreClinicDosimetryAnalysis, Order
 
 
-def _verify_unchanged_information_db(preclinic_dosimetry):
+def _verified_unchanged_information_db(preclinic_dosimetry):
 
     analysis_db = PreClinicDosimetryAnalysis.objects.get(id=preclinic_dosimetry.id)
 
@@ -117,7 +117,7 @@ def test_fail_update_preclinic_dosimetry_successfull_invalid_status(client_api_a
 
     assert body == {'errors': ['Não foi possivel atualizar essa análise.']}
 
-    _verify_unchanged_information_db(preclinic_dosimetry)
+    _verified_unchanged_information_db(preclinic_dosimetry)
 
 
 def test_fail_update_preclinic_dosimetry_wrong_calibration_id(client_api_auth, preclinic_dosimetry_update_delete):
@@ -142,7 +142,7 @@ def test_fail_update_preclinic_dosimetry_wrong_calibration_id(client_api_auth, p
     assert resp.status_code == HTTPStatus.NOT_FOUND
     assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
 
-    _verify_unchanged_information_db(preclinic_dosimetry_update_delete)
+    _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
 def test_fail_update_preclinic_dosimetry_wrong_analysis_id(client_api_auth, preclinic_dosimetry_update_delete):
@@ -167,7 +167,7 @@ def test_fail_update_preclinic_dosimetry_wrong_analysis_id(client_api_auth, prec
     assert resp.status_code == HTTPStatus.NOT_FOUND
     assert body['errors'] == ['Este usuário não possui este recurso cadastrado.']
 
-    _verify_unchanged_information_db(preclinic_dosimetry_update_delete)
+    _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
 def test_fail_update_preclinic_dosimetry_wrong_another_order(client_api_auth, user, preclinic_dosimetry_update_delete):
@@ -200,7 +200,7 @@ def test_fail_update_preclinic_dosimetry_wrong_another_order(client_api_auth, us
     assert resp.status_code == HTTPStatus.NOT_FOUND
     assert body['errors'] == ['Este usuário não possui este recurso cadastrado.']
 
-    _verify_unchanged_information_db(preclinic_dosimetry_update_delete)
+    _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
 def test_fail_update_preclinic_dosimetry_wrong_another_user(client_api,
@@ -230,7 +230,7 @@ def test_fail_update_preclinic_dosimetry_wrong_another_user(client_api,
     assert resp.status_code == HTTPStatus.NOT_FOUND
     assert body['errors'] == ['Este usuário não possui este recurso cadastrado.']
 
-    _verify_unchanged_information_db(preclinic_dosimetry_update_delete)
+    _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
 @pytest.mark.parametrize('field, error', [
@@ -270,7 +270,7 @@ def test_fail_update_missing_fields(field,
 
     assert body['errors'] == error
 
-    _verify_unchanged_information_db(preclinic_dosimetry_update_delete)
+    _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
 @pytest.mark.parametrize('field, value, error', [
@@ -311,7 +311,7 @@ def test_fail_update_invalid_fields(field,
 
     assert body['errors'] == error
 
-    _verify_unchanged_information_db(preclinic_dosimetry_update_delete)
+    _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
 def test_fail_update_analysis_name_must_be_unique(client_api_auth,
@@ -354,4 +354,4 @@ def test_fail_update_analysis_name_must_be_unique(client_api_auth,
 
     assert body['errors'] == ['Análises com esse nome já existe para esse pedido.']
 
-    _verify_unchanged_information_db(preclinic_dosimetry_update_delete)
+    _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
