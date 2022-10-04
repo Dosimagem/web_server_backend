@@ -45,6 +45,8 @@ def test_list_preclinic_dosimetry_successful(client_api_auth,
             f'http://testserver/media/{analysis_db.user.id}/preclinic_dosimetry'
             )
 
+        assert analysis_response['report'] is None
+
 
 def test_list_preclinic_dosimetry_without_analysis(client_api_auth, user, preclinic_order):
     '''

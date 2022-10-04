@@ -51,6 +51,8 @@ def test_create_preclinic_dosimetry_successfull(client_api_auth, user, preclinic
     # TODO: gerar a url completa
     assert body['imagesUrl'].startswith(f'http://testserver/media/{preclinic_dosi_db.user.id}/preclinic_dosimetry')
 
+    assert body['report'] is None
+
 
 def test_fail_create_preclinic_dosimetry_wrong_administration_datetime(client_api_auth,
                                                                        user,
