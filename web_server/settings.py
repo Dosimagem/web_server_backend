@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'web_server.core',
     'web_server.service',
     'web_server.api',
+    'web_server.radiosynoviorthesis',
     #
     'rest_framework',
     'rest_framework.authtoken',
