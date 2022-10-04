@@ -10,6 +10,8 @@ def test_forms_successfull(calculator_input):
 
     assert form.is_valid()
 
+    assert form.cleaned_data['thickness'] == '1 mm'
+
 
 @pytest.mark.parametrize('field, value, error', [
     ('radionuclide', 'AA-666',
