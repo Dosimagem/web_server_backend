@@ -19,6 +19,11 @@ class Order(CreationModificationBase, models.Model):
     CLINIC_DOSIMETRY = 'DC'
     PRECLINIC_DOSIMETRY = 'PCD'
 
+    SERVICES_CODES = {
+        CLINIC_DOSIMETRY: '01',
+        PRECLINIC_DOSIMETRY: '02'
+    }
+
     SERVICES_NAMES = (
         (CLINIC_DOSIMETRY, 'Dosimetria Clinica'),
         (PRECLINIC_DOSIMETRY, 'Dosimetria Preclinica')
@@ -40,9 +45,10 @@ class Order(CreationModificationBase, models.Model):
     status_payment = models.CharField('Status payment', max_length=3, choices=STATUS_PAYMENT, default=AWAITING_PAYMENT)
     service_name = models.CharField('Service name', max_length=3, choices=SERVICES_NAMES)
     permission = models.BooleanField('Permission', default=False)
+    code = models.CharField('Code', max_length=20)
 
     def __str__(self):
-        return f'{self.user.profile.clinic} <{self.get_service_name_display()}>'
+        return self.code
 
     class Meta:
         verbose_name = 'Order'
@@ -50,6 +56,23 @@ class Order(CreationModificationBase, models.Model):
 
     def is_analysis_available(self):
         return self.remaining_of_analyzes > 0
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if not self.code:
+            self.code = self._generate_code()
+            self.save()
+
+    def _generate_code(self):
+        clinic_id = self.user.id
+        year = self.created_at.year
+        id = self.id
+        code = self._code_service()
+        return f'{clinic_id:04}.{year}/{id:04}-{code:02}'
+
+    def _code_service(self):
+        return self.SERVICES_CODES[self.service_name]
 
 
 class Isotope(CreationModificationBase, models.Model):
@@ -116,6 +139,9 @@ class Calibration(CreationModificationBase, models.Model):
             'measurement_datetime': self.measurement_datetime.strftime(FORMAT_DATE),
             'phantom_volume': self.phantom_volume,
             'acquisition_time': self.acquisition_time,
+            'createAt': self.created_at,
+            'modifiedAt': self.modified_at,
+
         }
 
         if self.images.name:

@@ -33,7 +33,7 @@ def test_delete_orders_must_not_delete_user(user, clinic_order):
 
 
 def test_orders_str(clinic_order):
-    assert str(clinic_order) == f'{clinic_order.user.profile.clinic} <{clinic_order.get_service_name_display()}>'
+    assert str(clinic_order) == clinic_order.code
 
 
 def test_orders_positive_integer_constraint(user):
@@ -61,3 +61,18 @@ def test_default_values(user):
     assert not order_db.permission
     assert order_db.quantity_of_analyzes == 0
     assert order_db.remaining_of_analyzes == 0
+
+
+def test_get_code_service_order(clinic_order):
+
+    assert '01' == clinic_order._code_service()
+
+
+def test_order_code(clinic_order):
+
+    clinic_id = clinic_order.user.id
+    year = clinic_order.created_at.year
+    order_id = clinic_order.id
+    expected = f'{clinic_id:04}.{year}/{order_id:04}-01'
+
+    assert expected == clinic_order.code
