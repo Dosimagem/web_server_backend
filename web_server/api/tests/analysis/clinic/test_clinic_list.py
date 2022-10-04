@@ -42,6 +42,8 @@ def test_list_clinic_dosimetry_successful(client_api_auth, user, clinic_order, t
             f'http://testserver/media/{analysis_db.user.id}/clinic_dosimetry'
             )
 
+        assert analysis_response['report'] is None
+
 
 def test_list_clinic_dosimetry_without_analysis(client_api_auth, user, clinic_order):
     '''

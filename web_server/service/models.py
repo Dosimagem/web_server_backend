@@ -203,7 +203,8 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
             'modified_at': self.modified_at.strftime(FORMAT_DATE),
             'injected_activity': self.injected_activity,
             'analysis_name': self.analysis_name,
-            'administration_datetime': self.administration_datetime.strftime(FORMAT_DATE)
+            'administration_datetime': self.administration_datetime.strftime(FORMAT_DATE),
+            'report': None
         }
 
         if self.report.name:
