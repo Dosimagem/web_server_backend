@@ -52,4 +52,5 @@ def order_to_dict(order):
         'permission': order.permission,
         'created_at': order.created_at.date(),
         'analysis_status': analysis_infos,
+        'code': order.code,
     }

@@ -16,10 +16,11 @@ class UserOrderModelAdmin(admin.ModelAdmin):
                    'status_payment',
                    'service_name',
                    'permission',
+                   'code'
                    )
 
     list_display_links = ('user',)
-    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
+    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at', 'code')
     search_fields = ('user__profile__clinic',)
     list_per_page = 20
 
