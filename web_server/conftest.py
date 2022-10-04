@@ -5,6 +5,7 @@ import pytest
 from django.core.files.base import ContentFile
 from rest_framework.authtoken.models import Token
 from django.utils.timezone import make_aware
+from rest_framework.test import APIClient
 
 from web_server.core.models import UserProfile
 from web_server.service.models import ClinicDosimetryAnalysis, Isotope, Order, Calibration, PreClinicDosimetryAnalysis
@@ -18,6 +19,17 @@ def disable_SQL_logging(settings):
 @pytest.fixture(autouse=True)
 def mediafiles(settings, tmp_path):
     settings.MEDIA_ROOT = tmp_path / 'media'
+
+
+@pytest.fixture
+def client_api():
+    return APIClient()
+
+
+@pytest.fixture
+def client_api_auth(client_api, user):
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
+    return client_api
 
 
 @pytest.fixture
