@@ -14,11 +14,16 @@ class CalculatorForm(forms.Form):
     )
 
     THICKNESS_OPTIONS = (
-        ('1 mm', 1),
-        ('2 mm', 2),
-        ('3 mm', 3),
+        ('1', 1),
+        ('2', 2),
+        ('3', 3),
     )
 
     radionuclide = forms.ChoiceField(choices=ISOTOPES_OPTIONS)
     thickness = forms.ChoiceField(choices=THICKNESS_OPTIONS)
     surface = forms.FloatField(validators=[MinValueValidator(0.0)])
+
+    def clean_thickness(self):
+        thickness = self.cleaned_data['thickness']
+
+        return f'{thickness} mm'

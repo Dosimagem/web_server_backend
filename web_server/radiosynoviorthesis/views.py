@@ -29,6 +29,6 @@ def calulator_radiosynoviorthesis(request, user_id):
     if not form.is_valid():
         return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.OK)
 
-    data = radiosysnoviorthesis(**data)
+    data = radiosysnoviorthesis(**form.cleaned_data)
 
     return Response(data)
