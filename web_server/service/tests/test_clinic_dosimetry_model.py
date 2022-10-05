@@ -137,3 +137,10 @@ def test_model_code_and_service_name():
 
     assert ClinicDosimetryAnalysis.CODE == 1
     assert ClinicDosimetryAnalysis.SERVICE_NAME_CODE == 'DC'
+
+
+def test_save_with_conclude_status_must_be_report(clinic_dosimetry):
+
+    with pytest.raises(ValidationError):
+        clinic_dosimetry.status = ClinicDosimetryAnalysis.CONCLUDED
+        clinic_dosimetry.full_clean()

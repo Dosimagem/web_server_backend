@@ -138,3 +138,10 @@ def test_model_code_and_service_name():
 
     assert PreClinicDosimetryAnalysis.CODE == 2
     assert PreClinicDosimetryAnalysis.SERVICE_NAME_CODE == 'PCD'
+
+
+def test_save_with_conclude_status_must_be_report(preclinic_dosimetry):
+
+    with pytest.raises(ValidationError):
+        preclinic_dosimetry.status = PreClinicDosimetryAnalysis.CONCLUDED
+        preclinic_dosimetry.full_clean()
