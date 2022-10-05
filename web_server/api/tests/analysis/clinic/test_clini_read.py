@@ -41,7 +41,7 @@ def test_read_clinic_dosimetry_successfull(client_api_auth, clinic_dosimetry):
         f'http://testserver/media/{analysis_db.user.id}/clinic_dosimetry'
         )
 
-    assert body['report'] is None
+    assert body['report'] == ''
 
 
 def test_fail_read_clinic_dosimetry_wrong_analysis_id(client_api_auth, clinic_dosimetry):
