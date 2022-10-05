@@ -216,6 +216,10 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
             if order.service_name != self.SERVICE_NAME_CODE:
                 raise ValidationError('Este serviço não foi contratado nesse pedido.')
 
+        if self.status == self.CONCLUDED:
+            if self.report.name is None or self.report.name == '':
+                raise ValidationError('É necessario anexar o relatório.')
+
 
 class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
