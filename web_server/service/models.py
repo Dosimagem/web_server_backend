@@ -128,7 +128,6 @@ class Calibration(CreationModificationBase, models.Model):
         return self.calibration_name
 
     def to_dict(self, request):
-        # TODO: Clocar da data de criação e modificação
         dict_ = {
             'id': self.uuid,
             'user_id': self.user.uuid,
@@ -141,7 +140,6 @@ class Calibration(CreationModificationBase, models.Model):
             'acquisition_time': self.acquisition_time,
             'createAt': self.created_at,
             'modifiedAt': self.modified_at,
-
         }
 
         if self.images.name:
@@ -204,7 +202,7 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
             'injected_activity': self.injected_activity,
             'analysis_name': self.analysis_name,
             'administration_datetime': self.administration_datetime.strftime(FORMAT_DATE),
-            'report': None
+            'report': ''
         }
 
         if self.report.name:
