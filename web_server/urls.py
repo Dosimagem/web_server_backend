@@ -4,11 +4,16 @@ from django.urls import path, include
 from django.conf.urls.static import static
 
 
+def trigger_error(request):
+    return 1 / 0
+
+
 urlpatterns = [
     path('dosimagem/admin/', admin.site.urls),
     path('', include('web_server.core.urls')),
     path('api/v1/', include('web_server.api.urls')),
     path('api/v1/', include('web_server.radiosynoviorthesis.urls')),
+    path('sentry-debug/', trigger_error),
 ]
 
 if settings.DEBUG:

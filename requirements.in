@@ -13,3 +13,4 @@ Collectfast
 django-debug-toolbar
 validate-docbr
 requests
+sentry-sdk
