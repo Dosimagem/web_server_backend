@@ -9,6 +9,7 @@ from web_server.service.models import Calibration, ClinicDosimetryAnalysis, Isot
 @admin.register(Order)
 class UserOrderModelAdmin(admin.ModelAdmin):
     list_display = (
+                   'code',
                    'user',
                    'quantity_of_analyzes',
                    'remaining_of_analyzes',
@@ -16,10 +17,9 @@ class UserOrderModelAdmin(admin.ModelAdmin):
                    'status_payment',
                    'service_name',
                    'permission',
-                   'code'
                    )
 
-    list_display_links = ('user',)
+    list_display_links = ('code', 'user',)
     readonly_fields = ('id', 'uuid', 'created_at', 'modified_at', 'code')
     search_fields = ('user__profile__clinic',)
     list_per_page = 20
@@ -60,8 +60,8 @@ class CalibrationModelAdmin(admin.ModelAdmin):
 class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_display = (
                 'analysis_name',
-                'user',
                 'order',
+                'user',
                 'calibration',
                 'status',
                 'injected_activity',
@@ -74,15 +74,15 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
     search_fields = ('analysis_name',)
     list_per_page = 20
-    list_filter = ('user__profile__clinic', 'status', 'active',)
+    list_filter = ('user__profile__clinic', 'status', 'active', 'order')
 
 
 @admin.register(PreClinicDosimetryAnalysis)
 class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_display = (
                 'analysis_name',
-                'user',
                 'order',
+                'user',
                 'calibration',
                 'status',
                 'injected_activity',
@@ -95,3 +95,4 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
     search_fields = ('analysis_name',)
     list_per_page = 20
+    list_filter = ('user__profile__clinic', 'status', 'active', 'order')
