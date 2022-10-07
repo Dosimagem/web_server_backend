@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from django.conf.locale.pt_BR import formats as pt_BR_formats
+
 import dj_database_url
 from decouple import config, Csv
 
@@ -262,3 +264,5 @@ if SENTRY_DSN:
         traces_sample_rate=1.0,
         send_default_pii=True
     )
+
+pt_BR_formats.DATETIME_FORMAT = "d/m/Y H:i:s"

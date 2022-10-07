@@ -34,8 +34,8 @@ class UserAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
-        }),
+            'fields': ('is_active', 'is_staff',),
+            }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
@@ -47,11 +47,12 @@ class UserAdmin(admin.ModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     change_password_form = AdminPasswordChangeForm
-    list_display = ('email', 'uuid', 'is_staff', 'email_verified',)
-    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups', 'email_verified',)
+    list_display = ('id', 'email', 'uuid', 'is_staff', 'email_verified',)
+    readonly_fields = ('id', 'uuid', 'date_joined',)
+    list_display_links = ('id', 'email',)
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'email_verified',)
     search_fields = ('email', )
     ordering = ('email',)
-    filter_horizontal = ('groups', 'user_permissions',)
 
     def get_fieldsets(self, request, obj=None):
         if not obj:
@@ -200,9 +201,3 @@ class UserProfileModelAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'clinic',)
 
     form = ProfileCreateForm
-
-    # def change_view(self, request, object_id, extra_content=None):
-    #     return super(UserProfileModelAdmin, self).change_view(request, object_id)
-
-    # def save_model(self, request, obj, form, change):
-    #     super().save_model(request, obj, form, change)
