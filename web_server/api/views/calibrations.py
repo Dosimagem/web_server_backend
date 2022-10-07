@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework.decorators import (
     api_view,
@@ -9,7 +10,7 @@ from rest_framework.decorators import (
 )
 from rest_framework.permissions import IsAuthenticated
 
-from web_server.service.models import Calibration, Isotope
+from web_server.service.models import Calibration, Isotope, DosimetryAnalysisBase
 from web_server.service.forms import CreateCalibrationForm, IsotopeForm, UpdateCalibrationForm
 from web_server.api.decorators import user_from_token_and_user_from_url
 from .auth import MyTokenAuthentication
@@ -61,10 +62,19 @@ def _read_calibration(request, user_id, calibration_id):
 
 
 def _update_calibration(request, user_id, calibration_id):
-    if cali := Calibration.objects.filter(user__uuid=user_id, uuid=calibration_id).first():
+
+    try:
+        cali = Calibration.objects.get(user__uuid=user_id, uuid=calibration_id)
+
+        # TODO: Colocar isso em uma camada de serviço (Regra de Negocio)
+        if cali.clinic_dosimetry_analysis.exclude(status=DosimetryAnalysisBase.INVALID_INFOS).exists():
+            data = {
+                'errors': [("Apenas calibração associadas com análises com o status "
+                            "'Informações Inválidas' pode ser atualizada/deletada.")]
+            }
+            return Response(data=data, status=HTTPStatus.CONFLICT)
 
         # TODO: codigo repetido
-
         data = request.data
 
         form_isopote = IsotopeForm(data)
@@ -86,17 +96,29 @@ def _update_calibration(request, user_id, calibration_id):
 
         return Response(status=HTTPStatus.NO_CONTENT)
 
-    return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
+    except ObjectDoesNotExist:
+        return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
 
 def _delete_calibration(request, user_id, calibration_id):
 
-    if cali := Calibration.objects.filter(user__uuid=user_id, uuid=calibration_id).first():
+    try:
+        cali = Calibration.objects.get(user__uuid=user_id, uuid=calibration_id)
+
+        # TODO: Colocar isso em uma camada de serviço (Regra de Negocio)
+        if cali.clinic_dosimetry_analysis.exclude(status=DosimetryAnalysisBase.INVALID_INFOS).exists():
+            data = {
+                'errors': [("Apenas calibração associadas com análises com o status "
+                            "'Informações Inválidas' pode ser atualizada/deletada.")]
+            }
+            return Response(data=data, status=HTTPStatus.CONFLICT)
+
         cali.delete()
         data = {'id': calibration_id, 'message': 'Calibração deletada com sucesso!'}
         return Response(data=data)
 
-    return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
+    except ObjectDoesNotExist:
+        return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
 
 def _list_calibrations(request, user_id):
