@@ -14,7 +14,7 @@ from web_server.service.models import Calibration, Isotope, DosimetryAnalysisBas
 from web_server.service.forms import CreateCalibrationForm, IsotopeForm, UpdateCalibrationForm
 from web_server.api.decorators import user_from_token_and_user_from_url
 from .auth import MyTokenAuthentication
-from .errors_msg import MSG_ERROR_RESOURCE, list_errors
+from web_server.core.errors_msg import MSG_ERROR_RESOURCE, list_errors
 
 
 User = get_user_model()

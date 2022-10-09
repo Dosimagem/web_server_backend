@@ -4,7 +4,7 @@ from uuid import uuid4
 from django.shortcuts import resolve_url
 
 from web_server.service.models import FORMAT_DATE
-from web_server.api.views.errors_msg import MSG_ERROR_RESOURCE
+from web_server.core.errors_msg import MSG_ERROR_RESOURCE
 
 
 def test_read_calibration_successful(client_api_auth, calibration_with_images):

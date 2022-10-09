@@ -16,7 +16,7 @@ from web_server.service.models import Order, Calibration
 from web_server.api.forms import (PreClinicAndClinicDosimetryAnalysisCreateFormApi,
                                   PreClinicAndClinicDosimetryAnalysisUpdateFormApi)
 from .auth import MyTokenAuthentication
-from .errors_msg import MSG_ERROR_RESOURCE, ERROR_CALIBRATION_ID, list_errors
+from web_server.core.errors_msg import MSG_ERROR_RESOURCE, ERROR_CALIBRATION_ID, list_errors
 
 
 @api_view(['GET', 'DELETE', 'PUT'])

@@ -13,6 +13,7 @@ urlpatterns = [
     path('', include('web_server.core.urls')),
     path('api/v1/', include('web_server.api.urls')),
     path('api/v1/', include('web_server.radiosynoviorthesis.urls')),
+    path('api/v1/', include('web_server.benefits.urls')),
     path('sentry-debug/', trigger_error),
 ]
 

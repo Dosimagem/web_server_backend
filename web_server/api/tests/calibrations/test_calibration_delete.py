@@ -4,7 +4,7 @@ from uuid import uuid4
 from django.shortcuts import resolve_url
 
 from web_server.service.models import Calibration, DosimetryAnalysisBase
-from web_server.api.views.errors_msg import MSG_ERROR_RESOURCE
+from web_server.core.errors_msg import MSG_ERROR_RESOURCE
 
 
 def test_successful_delete(client_api_auth, first_calibration):

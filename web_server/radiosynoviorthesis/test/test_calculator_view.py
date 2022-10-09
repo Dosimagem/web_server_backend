@@ -4,7 +4,7 @@ from uuid import uuid4
 import pytest
 from django.shortcuts import resolve_url
 
-from web_server.api.views.errors_msg import MSG_ERROR_TOKEN_USER
+from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 
 def test_successfull(client_api_auth, user, calculator_input):

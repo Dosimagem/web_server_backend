@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from django.shortcuts import resolve_url
 
-from web_server.api.views.errors_msg import MSG_ERROR_TOKEN_USER
+from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 
 def test_list_create_analysis_not_allowed_method(client_api_auth, user, clinic_order):

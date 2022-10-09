@@ -5,7 +5,7 @@ from django.shortcuts import resolve_url
 
 from web_server.service.models import Order
 from web_server.service.order_svc import OrderInfos
-from web_server.api.views.errors_msg import (
+from web_server.core.errors_msg import (
     MSG_ERROR_TOKEN_USER,
     MSG_ERROR_RESOURCE,
 )
