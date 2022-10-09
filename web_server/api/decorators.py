@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from rest_framework.response import Response
 
-from web_server.api.views.errors_msg import MSG_ERROR_TOKEN_USER
+from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 
 def user_from_token_and_user_from_url(view):

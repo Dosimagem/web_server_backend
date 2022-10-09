@@ -10,7 +10,7 @@ from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
 
 from web_server.core.forms import MyUserCreationForm, ProfileCreateForm
-from .errors_msg import list_errors
+from web_server.core.errors_msg import list_errors
 
 User = get_user_model()
 
