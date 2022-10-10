@@ -22,6 +22,8 @@ class ProfileCreateForm(forms.ModelForm):
     def clean_role(self):
         return self.cleaned_data['role'].lower()
 
+    # TODO: Verficar depois se o nome da clinica e cnpj precisa ser unicos.
+
     def _unique(self, field, msg_error):
         instance = self.instance
 
@@ -34,14 +36,6 @@ class ProfileCreateForm(forms.ModelForm):
             if queryset.exists():
                 raise ValidationError(msg_error,  code='exists')
 
-    def clean_clinic(self):
-
-        clinic = self.cleaned_data['clinic'].title()
-
-        self._unique({'clinic': clinic}, _('Clinic already exists'))
-
-        return clinic
-
     def clean_cpf(self):
 
         cpf = self.cleaned_data['cpf']
@@ -50,13 +44,23 @@ class ProfileCreateForm(forms.ModelForm):
 
         return cpf
 
-    def clean_cnpj(self):
+    def clean_clinic(self):
 
-        cnpj = self.cleaned_data['cnpj']
+        clinic = self.cleaned_data['clinic'].title()
 
-        self._unique({'cnpj': cnpj}, _('CNPJ already exists'))
+        # TODO: Should the clinic name be unique?
+        # self._unique({'clinic': clinic}, _('Clinic already exists'))
 
-        return cnpj
+        return clinic
+
+    # TODO: Should the CNPJ be unique?
+    # def clean_cnpj(self):
+
+    #     cnpj = self.cleaned_data['cnpj']
+
+    #     self._unique({'cnpj': cnpj}, _('CNPJ already exists'))
+
+    #     return cnpj
 
 
 class ProfileUpdateForm(ProfileCreateForm):

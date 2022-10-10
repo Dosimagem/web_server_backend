@@ -119,8 +119,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         )
 
     def __str__(self):
-        if hasattr(self, 'profile'):
-            return self.profile.clinic
         return self.email
 
 
