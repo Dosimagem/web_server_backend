@@ -14,7 +14,7 @@ User = get_user_model()
 pytestmark = pytest.mark.django_db
 
 
-URL_REGISTER = resolve_url('api:register')
+URL_REGISTER = resolve_url('core:register')
 
 
 def test_successfull_register(api_cnpj_successfull, client_api, register_infos):

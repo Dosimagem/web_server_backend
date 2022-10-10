@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
+from web_server.core.views.index import index
+
 
 def trigger_error(request):
     return 1 / 0
@@ -10,10 +12,13 @@ def trigger_error(request):
 
 urlpatterns = [
     path('dosimagem/admin/', admin.site.urls),
-    path('', include('web_server.core.urls')),
+    path('', index),
+    # API
+    path('api/v1/', include('web_server.core.urls')),
     path('api/v1/', include('web_server.api.urls')),
     path('api/v1/', include('web_server.radiosynoviorthesis.urls')),
     path('api/v1/', include('web_server.benefits.urls')),
+    #
     path('sentry-debug/', trigger_error),
 ]
 

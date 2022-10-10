@@ -13,9 +13,12 @@ from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 User = get_user_model()
 
 
+END_POINT = 'core:users-read-update'
+
+
 def test_read_user_info_by_id(client_api, user):
 
-    url = resolve_url('api:users-read-update', user_id=user.uuid)
+    url = resolve_url(END_POINT, user_id=user.uuid)
 
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
     response = client_api.get(url)
@@ -35,7 +38,7 @@ def test_read_user_info_by_id(client_api, user):
 
 def test_update_user_infos(api_cnpj_successfull, client_api_auth, user):
 
-    url = resolve_url('api:users-read-update', user_id=user.uuid)
+    url = resolve_url(END_POINT, user_id=user.uuid)
 
     payload = {
         'name': 'João Sliva Carvalho',
@@ -55,7 +58,7 @@ def test_update_user_infos(api_cnpj_successfull, client_api_auth, user):
 
 def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
 
-    url = resolve_url('api:users-read-update', user_id=user.uuid)
+    url = resolve_url(END_POINT, user_id=user.uuid)
 
     payload = {
         'name': 'João Sliva Carvalho',
@@ -77,7 +80,7 @@ def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
 
 def test_fail_update_user_infos_cnpj_unique_constrain(client_api_auth, user, second_user):
 
-    url = resolve_url('api:users-read-update', user_id=user.uuid)
+    url = resolve_url(END_POINT, user_id=user.uuid)
 
     payload = {
         'name': 'João Sliva Carvalho',
@@ -99,7 +102,7 @@ def test_fail_update_user_infos_cnpj_unique_constrain(client_api_auth, user, sec
 
 def test_fail_update_user_infos_clinic_unique_constrain(api_cnpj_successfull, client_api_auth, user, second_user):
 
-    url = resolve_url('api:users-read-update', user_id=user.uuid)
+    url = resolve_url(END_POINT, user_id=user.uuid)
 
     payload = {
         'name': 'João Sliva Carvalho',
@@ -121,7 +124,7 @@ def test_fail_update_user_infos_clinic_unique_constrain(api_cnpj_successfull, cl
 
 def test_read_update_user_without_token(client_api):
 
-    url = resolve_url('api:users-read-update', user_id=uuid4())
+    url = resolve_url(END_POINT, user_id=uuid4())
 
     response = client_api.get(url)
 
@@ -131,7 +134,7 @@ def test_read_update_user_without_token(client_api):
 
 def test_read_update_user_wrong_token(client_api, user):
 
-    url = resolve_url('api:users-read-update', user_id=user.uuid)
+    url = resolve_url(END_POINT, user_id=user.uuid)
 
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + 'token')
     response = client_api.get(url)
@@ -146,7 +149,7 @@ def test_read_update_token_id_and_user_id_dont_match(client_api_auth, user, seco
     The token does not belong to the user
     '''
 
-    url = resolve_url('api:users-read-update', user_id=second_user.uuid)
+    url = resolve_url(END_POINT, user_id=second_user.uuid)
     response = client_api_auth.get(url)
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
@@ -161,5 +164,5 @@ def test_read_update_user_not_allowed_method(method, user):
     http = HTTP_METHODS[method]
 
     header = {'HTTP_AUTHORIZATION': f'Bearer {user.auth_token.key}'}
-    resp = http(resolve_url('api:users-read-update', user_id=user.uuid), **header)
+    resp = http(resolve_url(END_POINT, user_id=user.uuid), **header)
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED

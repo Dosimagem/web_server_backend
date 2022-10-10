@@ -12,7 +12,7 @@ from web_server.api.tests.conftest import HTTP_METHODS
 
 User = get_user_model()
 
-URL_LOGIN = resolve_url('api:login')
+URL_LOGIN = resolve_url('core:login')
 
 pytestmark = pytest.mark.django_db
 

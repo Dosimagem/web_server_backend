@@ -10,10 +10,10 @@ from rest_framework.decorators import (
                                         )
 from rest_framework.permissions import IsAuthenticated
 
-from web_server.api.decorators import user_from_token_and_user_from_url
+from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.service.models import Order
 from web_server.service.order_svc import order_to_dict
-from .auth import MyTokenAuthentication
+from web_server.core.views.auth import MyTokenAuthentication
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE
 
 User = get_user_model()
