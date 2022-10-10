@@ -24,7 +24,10 @@ ERRORS_MAP_PT = {
     'calibration_id': 'id de calibração',
     'analysis_name': 'nome da análise',
     'injected_activity': 'atividade injetada',
-    'administration_datetime': 'hora e data de adminstração'
+    'administration_datetime': 'hora e data de adminstração',
+    'surface': 'superfície',
+    'thickness': 'espessura',
+    'radionuclide': 'radionicleotideo',
 }
 
 
@@ -34,43 +37,67 @@ def list_errors(errors):
 
     for field_name, field_errors in errors.items():
         for error in field_errors:
+
+            msg = error
+
             if error == 'Este campo é obrigatório.':
                 name = ERRORS_MAP_PT.get(field_name, field_name)
                 msg = f'O campo {name} é obrigatório.'
+
             elif error == 'Certifique-se que este valor seja maior ou igual a 0.0.':
                 name = ERRORS_MAP_PT.get(field_name, field_name)
                 msg = f'Certifique-se que {name} seja maior ou igual a 0.0.'
+
             elif error == 'Calibration com este User e Calibration Name já existe.':
                 msg = 'Calibração com esse nome ja existe para este usuário.'
+
             elif (error == 'Preclinic Dosimetry com este Order e Analysis Name já existe.'
                     or
                   error == 'Clinic Dosimetry com este Order e Analysis Name já existe.'
                   ):
                 msg = 'Análises com esse nome já existe para esse pedido.'
+
             elif error == 'Isotope not registered.':
                 msg = 'Isotopo não registrado.'
+
             elif error.startswith('Certifique-se de que o valor tenha no máximo') and field_name == 'isotope':
                 msg = 'Isotopo inválido.'
+
             elif error.startswith('Certifique-se de que o valor tenha no máximo') and field_name == 'cnpj':
                 msg = 'CNPJ inválido.'
+
             elif error.endswith('already exists'):
                 name = ERRORS_MAP_PT.get(field_name, field_name).capitalize()
                 name = 'CPF' if name == 'Cpf' else name
                 name = 'CNPJ' if name == 'Cnpj' else name
                 msg = f'{name} já existe.'
+
             elif error == 'The two email fields didn’t match.':
                 msg = 'Os campos emails não correspondem.'
+
             elif error == 'CNPJ invalid.':
                 msg = 'CNPJ inválido.'
+
             elif error == 'CPF invalid.':
                 msg = 'CPF inválido.'
+
             elif error.startswith('Certifique-se de que o valor tenha no mínimo 3 caracteres'):
                 if field_name == 'calibration_name':
                     msg = 'Certifique-se de que o nome da calibração tenha no mínimo 3 caracteres.'
                 elif field_name == 'analysis_name':
                     msg = 'Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.'
-            else:
-                msg = error
+
+            elif 'Faça uma escolha válida' in error:
+                if field_name == 'radionuclide':
+                    msg = 'Radionicleotideo inválido.'
+                elif field_name == 'thickness':
+                    msg = 'Espessura sinovial inválida.'
+
+            # elif 'Certifique-se que este valor seja maior ou igual a 0.0.' in error:
+            #     msg = 'Certifique-se que o valor da superfície seja maior ou igual a 0.0.'
+
+            elif 'Informe um número.' in error and field_name == 'surface':
+                msg = 'Superficie precisa ser um número.'
 
             list_.append(msg)
 

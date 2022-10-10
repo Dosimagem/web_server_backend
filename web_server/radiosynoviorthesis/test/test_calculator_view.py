@@ -26,7 +26,7 @@ def test_successfull(client_api_auth, user, calculator_input):
 @pytest.mark.parametrize('field, value, error', [
     ('radionuclide', 'AA-666', ['Radionicleotideo inválido.']),
     ('thickness', '4 cm', ['Espessura sinovial inválida.']),
-    ('surface', -10, ['Certifique-se que o valor da superfície seja maior ou igual a 0.0.']),
+    ('surface', -10, ['Certifique-se que superfície seja maior ou igual a 0.0.']),
     ('surface', 'd-10', ['Superficie precisa ser um número.']),
 ])
 def test_fail_invalid(client_api_auth, user, calculator_input, field, value, error):
@@ -48,9 +48,9 @@ def test_fail_invalid(client_api_auth, user, calculator_input, field, value, err
 
 
 @pytest.mark.parametrize('field, error', [
-    ('radionuclide', ['Radionicleotideo é obrigatório.']),
-    ('thickness', ['Espessura é obrigatório.']),
-    ('surface', ['Superfície é obrigatório.']),
+    ('radionuclide', ['O campo radionicleotideo é obrigatório.']),
+    ('thickness', ['O campo espessura é obrigatório.']),
+    ('surface', ['O campo superfície é obrigatório.']),
 ])
 def test_fail_missing_fields(client_api_auth, user, calculator_input, field, error):
     '''
