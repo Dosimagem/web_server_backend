@@ -71,7 +71,7 @@ def test_get_code_service_order(clinic_order):
 def test_order_code(clinic_order):
 
     clinic_id = clinic_order.user.id
-    year = clinic_order.created_at.year
+    year = str(clinic_order.created_at.year)[2:]
     order_id = clinic_order.id
     expected = f'{clinic_id:04}.{year}/{order_id:04}-01'
 

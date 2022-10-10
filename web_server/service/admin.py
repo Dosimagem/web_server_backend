@@ -61,6 +61,7 @@ class CalibrationModelAdmin(admin.ModelAdmin):
 @admin.register(ClinicDosimetryAnalysis)
 class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_display = (
+                'code',
                 'analysis_name',
                 'order',
                 'user',
@@ -72,8 +73,8 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                 'report',
                 'active',
                 )
-    list_display_links = ('analysis_name',)
-    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
+    list_display_links = ('code', 'analysis_name',)
+    readonly_fields = ('code', 'id', 'uuid', 'created_at', 'modified_at',)
     search_fields = ('analysis_name',)
     list_per_page = 20
     list_filter = ('user', 'status', 'active', 'order')
@@ -82,6 +83,7 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
 @admin.register(PreClinicDosimetryAnalysis)
 class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_display = (
+                'code',
                 'analysis_name',
                 'order',
                 'user',
@@ -93,8 +95,8 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                 'report',
                 'active',
                 )
-    list_display_links = ('analysis_name',)
-    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
+    list_display_links = ('code', 'analysis_name',)
+    readonly_fields = ('code', 'id', 'uuid', 'created_at', 'modified_at',)
     search_fields = ('analysis_name',)
     list_per_page = 20
     list_filter = ('user', 'status', 'active', 'order')
