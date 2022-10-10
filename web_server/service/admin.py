@@ -22,6 +22,7 @@ class UserOrderModelAdmin(admin.ModelAdmin):
     list_display_links = ('code', 'user',)
     readonly_fields = ('id', 'uuid', 'created_at', 'modified_at', 'code')
     search_fields = ('user__profile__clinic',)
+    list_filter = ('user',)
     list_per_page = 20
 
     form = CreateOrderForm
@@ -53,6 +54,7 @@ class CalibrationModelAdmin(admin.ModelAdmin):
     list_display_links = ('calibration_name',)
     readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
     search_fields = ('calibration_name',)
+    list_filter = ('user',)
     list_per_page = 20
 
 
@@ -74,7 +76,7 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
     search_fields = ('analysis_name',)
     list_per_page = 20
-    list_filter = ('user__profile__clinic', 'status', 'active', 'order')
+    list_filter = ('user', 'status', 'active', 'order')
 
 
 @admin.register(PreClinicDosimetryAnalysis)
@@ -95,4 +97,4 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     readonly_fields = ('id', 'uuid', 'created_at', 'modified_at',)
     search_fields = ('analysis_name',)
     list_per_page = 20
-    list_filter = ('user__profile__clinic', 'status', 'active', 'order')
+    list_filter = ('user', 'status', 'active', 'order')

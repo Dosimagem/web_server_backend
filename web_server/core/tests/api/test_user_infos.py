@@ -77,49 +77,49 @@ def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
 
     assert body['errors'] == expected
 
+# TODO: Should the CNPJ be unique?
+# def test_fail_update_user_infos_cnpj_unique_constrain(client_api_auth, user, second_user):
 
-def test_fail_update_user_infos_cnpj_unique_constrain(client_api_auth, user, second_user):
+#     url = resolve_url(END_POINT, user_id=user.uuid)
 
-    url = resolve_url(END_POINT, user_id=user.uuid)
+#     payload = {
+#         'name': 'João Sliva Carvalho',
+#         'role': 'médico',
+#         'cnpj': second_user.profile.cnpj,
+#         'clinic': 'Clinica A'
+#     }
 
-    payload = {
-        'name': 'João Sliva Carvalho',
-        'role': 'médico',
-        'cnpj': second_user.profile.cnpj,
-        'clinic': 'Clinica A'
-    }
+#     response = client_api_auth.patch(url, payload, format='json')
 
-    response = client_api_auth.patch(url, payload, format='json')
+#     assert response.status_code == HTTPStatus.BAD_REQUEST
 
-    assert response.status_code == HTTPStatus.BAD_REQUEST
+#     body = response.json()
 
-    body = response.json()
+#     expected = ['CNPJ já existe.']
 
-    expected = ['CNPJ já existe.']
+#     assert body['errors'] == expected
 
-    assert body['errors'] == expected
+# TODO: Should the Clinic name be unique?
+# def test_fail_update_user_infos_clinic_unique_constrain(api_cnpj_successfull, client_api_auth, user, second_user):
 
+#     url = resolve_url(END_POINT, user_id=user.uuid)
 
-def test_fail_update_user_infos_clinic_unique_constrain(api_cnpj_successfull, client_api_auth, user, second_user):
+#     payload = {
+#         'name': 'João Sliva Carvalho',
+#         'role': 'médico',
+#         'cnpj': '42438610000111',
+#         'clinic': second_user.profile.clinic
+#     }
 
-    url = resolve_url(END_POINT, user_id=user.uuid)
+#     response = client_api_auth.patch(url, payload, format='json')
 
-    payload = {
-        'name': 'João Sliva Carvalho',
-        'role': 'médico',
-        'cnpj': '42438610000111',
-        'clinic': second_user.profile.clinic
-    }
+#     assert response.status_code == HTTPStatus.BAD_REQUEST
 
-    response = client_api_auth.patch(url, payload, format='json')
+#     body = response.json()
 
-    assert response.status_code == HTTPStatus.BAD_REQUEST
+#     expected = ['Clínica já existe.']
 
-    body = response.json()
-
-    expected = ['Clínica já existe.']
-
-    assert body['errors'] == expected
+#     assert body['errors'] == expected
 
 
 def test_read_update_user_without_token(client_api):
