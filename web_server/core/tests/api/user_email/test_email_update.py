@@ -3,6 +3,9 @@ from http import HTTPStatus
 from django.shortcuts import resolve_url
 
 
+END_POINT = 'core:read-update-email'
+
+
 def test_update(client_api_auth, user):
     '''
     /api/v1/users/<uuid>/email - PATCH
@@ -10,7 +13,7 @@ def test_update(client_api_auth, user):
 
     new_email = 'user1_new@email.com'
 
-    url = resolve_url('api:read-update-email', user.uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api_auth.patch(url, data={'email': new_email}, format='json')
     assert resp.status_code == HTTPStatus.NO_CONTENT
@@ -29,7 +32,7 @@ def test_fail_update_invalid_email(client_api_auth, user):
 
     new_email = 'user1_newemail.com'
 
-    url = resolve_url('api:read-update-email', user.uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api_auth.patch(url, data={'email': new_email}, format='json')
     body = resp.json()
@@ -45,7 +48,7 @@ def test_fail_update_email_must_be_unique(client_api_auth, user, second_user):
 
     new_email = second_user.email
 
-    url = resolve_url('api:read-update-email', user.uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api_auth.patch(url, data={'email': new_email}, format='json')
     body = resp.json()
@@ -68,7 +71,7 @@ def test_fail_update_must_be_auth(client_api, user):
 
     new_email = 'user1_new@email.com'
 
-    url = resolve_url('api:read-update-email', user.uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api.patch(url, data={'email': new_email}, format='json')
     body = resp.json()

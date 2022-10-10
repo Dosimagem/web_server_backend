@@ -9,8 +9,8 @@ from rest_framework.decorators import (
     permission_classes
 )
 from rest_framework.permissions import IsAuthenticated
-from web_server.api.decorators import user_from_token_and_user_from_url
-from web_server.api.views.auth import MyTokenAuthentication
+from web_server.core.decorators import user_from_token_and_user_from_url
+from web_server.core.views.auth import MyTokenAuthentication
 
 LIST_BENEFITS = [
     {

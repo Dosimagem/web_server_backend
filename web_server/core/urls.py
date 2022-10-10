@@ -1,8 +1,13 @@
 from django.urls import path
 
-from .views import index
+from .views.register import register, MyObtainAuthToken
+from .views.users import users_read_update, read_update_email
 
 app_name = 'core'
 urlpatterns = [
-    path('', index, name='index'),
+    path('users/register/', register, name='register'),
+    path('users/login/',  MyObtainAuthToken.as_view(), name='login'),
+    #
+    path('users/<uuid:user_id>', users_read_update, name='users-read-update'),
+    path('users/<uuid:user_id>/email', read_update_email, name='read-update-email'),
 ]

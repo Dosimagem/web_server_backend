@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 from rest_framework.response import Response
 
-from web_server.api.decorators import user_from_token_and_user_from_url
+from web_server.core.decorators import user_from_token_and_user_from_url
 
 
 @user_from_token_and_user_from_url

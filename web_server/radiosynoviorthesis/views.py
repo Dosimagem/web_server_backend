@@ -9,11 +9,11 @@ from rest_framework.decorators import (
 )
 from rest_framework.permissions import IsAuthenticated
 
-from web_server.api.views.auth import MyTokenAuthentication
+from web_server.core.views.auth import MyTokenAuthentication
 from web_server.core.errors_msg import list_errors
 from web_server.radiosynoviorthesis.forms import CalculatorForm
 from web_server.radiosynoviorthesis.calculator import radiosysnoviorthesis
-from web_server.api.decorators import user_from_token_and_user_from_url
+from web_server.core.decorators import user_from_token_and_user_from_url
 
 
 @api_view(['POST'])

@@ -10,12 +10,12 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
 
-from web_server.api.decorators import user_from_token_and_user_from_url
+from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.service.analysis_svc import AnalisysChoice
 from web_server.service.models import Order, Calibration
 from web_server.api.forms import (PreClinicAndClinicDosimetryAnalysisCreateFormApi,
                                   PreClinicAndClinicDosimetryAnalysisUpdateFormApi)
-from .auth import MyTokenAuthentication
+from web_server.core.views.auth import MyTokenAuthentication
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE, ERROR_CALIBRATION_ID, list_errors
 
 
