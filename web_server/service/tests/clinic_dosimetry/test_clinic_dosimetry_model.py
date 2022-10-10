@@ -105,15 +105,16 @@ def test_default_values(user, first_calibration, clinic_order):
 
 def test_str(clinic_dosimetry):
 
-    analyis = ClinicDosimetryAnalysis.objects.first()
+    analysis = ClinicDosimetryAnalysis.objects.first()
 
-    infos = analyis._infos()
+    clinic_id = analysis.user.pk
+    isotope = analysis.calibration.isotope
+    year = str(analysis.created_at.year)[2:]
+    order_id = analysis.order.pk
+    analysis_id = analysis.pk
+    code = analysis.CODE
 
-    clinic = infos['clinic']
-    isotope = infos['isotope']
-    year = infos['year']
-
-    assert str(analyis) == f'{clinic:04}.{isotope}.{year}/0001-{ClinicDosimetryAnalysis.CODE}'
+    assert str(analysis) == f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{analysis_id:04}-{code:02}'
 
 
 def test_status(clinic_dosimetry_info):
@@ -135,7 +136,7 @@ def test_status_options():
 
 def test_model_code_and_service_name():
 
-    assert ClinicDosimetryAnalysis.CODE == 1
+    assert ClinicDosimetryAnalysis.CODE == '01'
     assert ClinicDosimetryAnalysis.SERVICE_NAME_CODE == 'DC'
 
 
@@ -144,3 +145,15 @@ def test_save_with_conclude_status_must_be_report(clinic_dosimetry):
     with pytest.raises(ValidationError):
         clinic_dosimetry.status = ClinicDosimetryAnalysis.CONCLUDED
         clinic_dosimetry.full_clean()
+
+
+def test_order_code(clinic_dosimetry):
+
+    clinic_id = clinic_dosimetry.user.id
+    year = str(clinic_dosimetry.created_at.year)[2:]
+    order_id = clinic_dosimetry.order.id
+    analysis_id = clinic_dosimetry.id
+    isotope = clinic_dosimetry.calibration.isotope
+    expected = f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{analysis_id:04}-01'
+
+    assert expected == clinic_dosimetry.code

@@ -66,7 +66,7 @@ class Order(CreationModificationBase, models.Model):
 
     def _generate_code(self):
         clinic_id = self.user.id
-        year = self.created_at.year
+        year = str(self.created_at.year)[2:]
         id = self.id
         code = self._code_service()
         return f'{clinic_id:04}.{year}/{id:04}-{code:02}'
@@ -175,20 +175,13 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
 
     injected_activity = models.FloatField('Injected Activity', validators=[MinValueValidator(0.0)])
     administration_datetime = models.DateTimeField('Administration Datetime')
+    code = models.CharField('Code', max_length=30)
 
     class Meta:
         abstract = True
 
     def __str__(self):
-        infos = self._infos()
-        # TODO:  Falta fazer a logica do 0001
-        return f'{infos["clinic"]:04}.{infos["isotope"]}.{infos["year"]}/0001-{self.CODE}'
-
-    def _infos(self):
-        clinic = self.user.profile.id
-        isotope = self.calibration.isotope.name.replace('-', '')
-        year = str(self.created_at.year)[2:]
-        return {'clinic': clinic, 'isotope': isotope, 'year': year}
+        return self.code
 
     def to_dict(self, request):
         dict_ = {
@@ -223,11 +216,21 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
             if self.report.name is None or self.report.name == '':
                 raise ValidationError('É necessario anexar o relatório.')
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if not self.code:
+            self.code = self._generate_code()
+            self.save()
+
+    def _generate_code(self):
+        raise NotImplementedError()
+
 
 class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
-    CODE = 1
     SERVICE_NAME_CODE = Order.CLINIC_DOSIMETRY
+    CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
     user = models.ForeignKey('core.CustomUser',
                              on_delete=models.CASCADE,
@@ -241,16 +244,25 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
     images = models.FileField('Images', upload_to=upload_clinic_dosimetry_to)
 
     class Meta:
-        db_table = 'clinic_dosimetry_analyis'
+        db_table = 'clinic_dosimetry_analysis'
         verbose_name = 'Clinic Dosimetry'
         verbose_name_plural = 'Clinic Dosimetries'
         unique_together = ('order', 'analysis_name',)
 
+    def _generate_code(self):
+        clinic_id = self.user.pk
+        year = str(self.created_at.year)[2:]
+        isotope = self.calibration.isotope
+        order_id = self.order.pk
+        id = self.pk
+        code = self.CODE
+        return f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{id:04}-{code:02}'
+
 
 class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
-    CODE = 2
     SERVICE_NAME_CODE = Order.PRECLINIC_DOSIMETRY
+    CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
     user = models.ForeignKey('core.CustomUser',
                              on_delete=models.CASCADE,
@@ -265,7 +277,16 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
     images = models.FileField('Images', upload_to=upload_preclinic_dosimetry_to)
 
     class Meta:
-        db_table = 'preclinic_dosimetry_analyis'
+        db_table = 'preclinic_dosimetry_analysis'
         verbose_name = 'Preclinic Dosimetry'
         verbose_name_plural = 'Preclinic Dosimetries'
         unique_together = ('order', 'analysis_name',)
+
+    def _generate_code(self):
+        clinic_id = self.user.pk
+        year = str(self.created_at.year)[2:]
+        isotope = self.calibration.isotope
+        order_id = self.order.pk
+        id = self.pk
+        code = self.CODE
+        return f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{id:04}-{code:02}'
