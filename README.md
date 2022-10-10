@@ -28,7 +28,7 @@ Desenvolvimento das funcionalidades
 - Usuários [ OK ]
   - Esqueceu a senha
   - Alteracao de informações do usuario
-- Serviços [ nOK ]
+- Serviços [ OK ]
 
 
 # 2) Rotas
