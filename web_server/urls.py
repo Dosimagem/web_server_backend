@@ -15,7 +15,7 @@ urlpatterns = [
     path('', index),
     # API
     path('api/v1/', include('web_server.core.urls')),
-    path('api/v1/', include('web_server.api.urls')),
+    path('api/v1/', include('web_server.service.urls')),
     path('api/v1/', include('web_server.radiosynoviorthesis.urls')),
     path('api/v1/', include('web_server.benefits.urls')),
     #

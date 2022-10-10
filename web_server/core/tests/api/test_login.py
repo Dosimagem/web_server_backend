@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import get_language
 from django.conf import settings
 
-from web_server.api.tests.conftest import HTTP_METHODS
+from web_server.conftest import HTTP_METHODS
 
 
 User = get_user_model()
