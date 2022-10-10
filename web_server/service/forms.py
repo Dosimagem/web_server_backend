@@ -107,3 +107,11 @@ class PreClinicDosimetryAnalysisUpdateForm(PreClinicDosimetryAnalysisCreateForm)
         self.instance.status = PreClinicDosimetryAnalysis.ANALYZING_INFOS
         super().save()
         return self.instance
+
+
+class PreClinicAndClinicDosimetryAnalysisCreateFormApi(forms.Form):
+    calibration_id = forms.UUIDField()
+
+
+class PreClinicAndClinicDosimetryAnalysisUpdateFormApi(PreClinicAndClinicDosimetryAnalysisCreateFormApi):
+    ...

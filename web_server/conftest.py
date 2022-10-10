@@ -11,6 +11,15 @@ from web_server.core.models import UserProfile
 from web_server.service.models import ClinicDosimetryAnalysis, Isotope, Order, Calibration, PreClinicDosimetryAnalysis
 
 
+HTTP_METHODS = {
+    'get': APIClient().get,
+    'post': APIClient().post,
+    'put': APIClient().put,
+    'patch': APIClient().patch,
+    'delete': APIClient().delete
+}
+
+
 @pytest.fixture(autouse=True)
 def disable_SQL_logging(settings):
     settings.LOGGER_SQL = False

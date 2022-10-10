@@ -6,7 +6,7 @@ from django.shortcuts import resolve_url
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
-from web_server.api.tests.conftest import HTTP_METHODS
+from web_server.conftest import HTTP_METHODS
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 
