@@ -339,9 +339,8 @@ def preclinic_dosimetry_file():
 
 
 @pytest.fixture
-def clinic_dosimetry_info(user, first_calibration, clinic_order):
+def clinic_dosimetry_info(first_calibration, clinic_order):
     return {
-        'user': user,
         'calibration': first_calibration,
         'order': clinic_order,
         'analysis_name': 'Analysis 1',
@@ -351,9 +350,8 @@ def clinic_dosimetry_info(user, first_calibration, clinic_order):
 
 
 @pytest.fixture
-def preclinic_dosimetry_info(user, first_calibration, preclinic_order):
+def preclinic_dosimetry_info(first_calibration, preclinic_order):
     return {
-        'user': user,
         'calibration': first_calibration,
         'order': preclinic_order,
         'analysis_name': 'Analysis 1',

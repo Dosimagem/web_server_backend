@@ -5,15 +5,12 @@ from django.shortcuts import resolve_url
 from web_server.service.models import FORMAT_DATE, PreClinicDosimetryAnalysis
 
 
-def test_list_preclinic_dosimetry_successful(client_api_auth,
-                                             user,
-                                             preclinic_order,
-                                             tree_preclinic_dosimetry_of_first_user):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
-    '''
+# /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
 
-    url = resolve_url('service:analysis-list-create', user.uuid, preclinic_order.uuid)
+
+def test_list_successful(client_api_auth, preclinic_order, tree_preclinic_dosimetry_of_first_user):
+
+    url = resolve_url('service:analysis-list-create',  preclinic_order.user.uuid, preclinic_order.uuid)
     resp = client_api_auth.get(url)
     body = resp.json()
 
@@ -27,7 +24,7 @@ def test_list_preclinic_dosimetry_successful(client_api_auth,
 
     for analysis_response, analysis_db in zip(analysis_list, analysis_list_db):
         assert analysis_response['id'] == str(analysis_db.uuid)
-        assert analysis_response['userId'] == str(analysis_db.user.uuid)
+        assert analysis_response['userId'] == str(analysis_db.order.user.uuid)
         assert analysis_response['orderId'] == str(analysis_db.order.uuid)
         assert analysis_response['calibrationId'] == str(analysis_db.calibration.uuid)
         assert analysis_response['status'] == analysis_db.get_status_display()
@@ -42,18 +39,15 @@ def test_list_preclinic_dosimetry_successful(client_api_auth,
 
         # TODO: Pensar uma forma melhor
         assert analysis_response['imagesUrl'].startswith(
-            f'http://testserver/media/{analysis_db.user.id}/preclinic_dosimetry'
+            f'http://testserver/media/{analysis_db.order.user.id}/preclinic_dosimetry'
             )
 
         assert analysis_response['report'] == ''
 
 
-def test_list_preclinic_dosimetry_without_analysis(client_api_auth, user, preclinic_order):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
-    '''
+def test_list_preclinic_dosimetry_without_analysis(client_api_auth, preclinic_order):
 
-    url = resolve_url('service:analysis-list-create', user.uuid, preclinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
     resp = client_api_auth.get(url)
     body = resp.json()
 

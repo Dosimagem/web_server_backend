@@ -7,10 +7,10 @@ from web_server.service.models import Calibration, DosimetryAnalysisBase
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE
 
 
-def test_update_successful(client_api_auth, form_data, first_calibration):
-    '''
-    /api/v1/users/<uuid>/calibrations/<uuid> - PUT
-    '''
+# /api/v1/users/<uuid>/calibrations/<uuid> - PUT
+
+
+def test_successful(client_api_auth, form_data, first_calibration):
 
     update_form_data = form_data.copy()
     update_form_data['syringeActivity'] = 100.0
@@ -35,10 +35,7 @@ def test_update_successful(client_api_auth, form_data, first_calibration):
     assert calibration_db.acquisition_time == update_form_data['acquisitionTime']
 
 
-def test_fail_update_by_wrong_data(client_api_auth, form_data, first_calibration):
-    '''
-    /api/v1/users/<uuid>/calibrations/<uuid> - PUT
-    '''
+def test_fail_by_wrong_data(client_api_auth, form_data, first_calibration):
 
     update_form_data = form_data.copy()
     update_form_data['syringeActivity'] = -100.0
@@ -68,10 +65,7 @@ def test_fail_update_by_wrong_data(client_api_auth, form_data, first_calibration
     assert calibration_db.acquisition_time == form_data['acquisitionTime']
 
 
-def test_fail_update_isotope_invalid(client_api_auth, first_calibration, form_data):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+def test_fai_isotope_invalid(client_api_auth, first_calibration, form_data):
 
     url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
 
@@ -101,10 +95,7 @@ def test_fail_update_isotope_invalid(client_api_auth, first_calibration, form_da
     assert calibration_db.acquisition_time == form_data['acquisitionTime']
 
 
-def test_fail_update_wrong_calibration_id(client_api_auth, form_data, first_calibration):
-    '''
-    /api/v1/users/<uuid>/calibrations/<uuid> - PUT
-    '''
+def test_fail_wrong_calibration_id(client_api_auth, form_data, first_calibration):
 
     url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, uuid4())
 
@@ -121,9 +112,6 @@ def test_fail_update_calibration_the_another_user(client_api_auth,
                                                   form_data,
                                                   first_calibration,
                                                   second_user_calibrations):
-    '''
-    /api/v1/users/<uuid>/calibrations/<uuid> - PUT
-    '''
 
     second_user_calibration_uuid = second_user_calibrations[0].uuid
 
@@ -143,13 +131,10 @@ def test_fail_update_calibration_the_another_user(client_api_auth,
     assert body['errors'] == MSG_ERROR_RESOURCE
 
 
-def test_fail_update_calibration_name_must_be_unique_per_user(client_api_auth,
-                                                              second_calibration,
-                                                              form_data,
-                                                              second_form_data):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+def test_fail_calibration_name_must_be_unique_per_user(client_api_auth,
+                                                       second_calibration,
+                                                       form_data,
+                                                       second_form_data):
 
     url = resolve_url('service:calibration-read-update-delete', second_calibration.user.uuid, second_calibration.uuid)
 
@@ -168,13 +153,8 @@ def test_fail_update_calibration_name_must_be_unique_per_user(client_api_auth,
     assert body['errors'] == expected
 
 
-def test_fail_update_calibration_calibration_used_in_a_analysis(client_api_auth,
-                                                                clinic_dosimetry,
-                                                                form_data,
-                                                                second_form_data):
+def test_fail_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry, form_data, second_form_data):
     '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-
     Calibrations can be update only when associated with analyzes with Invalid information
     '''
 
@@ -196,13 +176,8 @@ def test_fail_update_calibration_calibration_used_in_a_analysis(client_api_auth,
     assert [expected] == body['errors']
 
 
-def test_success_update_calibration_calibration_used_in_a_analysis(client_api_auth,
-                                                                   clinic_dosimetry,
-                                                                   form_data,
-                                                                   second_form_data):
+def test_success_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry, form_data, second_form_data):
     '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-
     Calibrations can be update only when associated with analyzes with Invalid information
     '''
 

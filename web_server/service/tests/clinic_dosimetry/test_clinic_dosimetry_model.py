@@ -55,8 +55,7 @@ def test_delete_clinic_dosimetry_must_not_delete_order(clinic_order, clinic_dosi
 
 
 def test_clinic_dosimetry_one_to_many_relation(user, first_calibration, clinic_order):
-    analyis_1 = ClinicDosimetryAnalysis.objects.create(user=user,
-                                                       calibration=first_calibration,
+    analyis_1 = ClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
                                                        order=clinic_order,
                                                        analysis_name='Analysis 1',
                                                        injected_activity=50,
@@ -64,8 +63,7 @@ def test_clinic_dosimetry_one_to_many_relation(user, first_calibration, clinic_o
                                                        images=ContentFile(b'CT e SPET files', name='images.zip')
                                                        )
 
-    analyis_2 = ClinicDosimetryAnalysis.objects.create(user=user,
-                                                       calibration=first_calibration,
+    analyis_2 = ClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
                                                        order=clinic_order,
                                                        analysis_name='Analysis 2',
                                                        injected_activity=50,
@@ -73,25 +71,20 @@ def test_clinic_dosimetry_one_to_many_relation(user, first_calibration, clinic_o
                                                        images=ContentFile(b'CT e SPET files', name='images.zip')
                                                        )
 
-    assert user.clinic_dosimetry_analysis.count() == 2
-
     assert first_calibration.clinic_dosimetry_analysis.count() == 2
 
     assert clinic_order.clinic_dosimetry_analysis.count() == 2
 
-    assert analyis_1.user == user
     assert analyis_1.calibration == first_calibration
     assert analyis_1.order == clinic_order
 
-    assert analyis_2.user == user
     assert analyis_2.calibration == first_calibration
     assert analyis_2.order == clinic_order
 
 
 def test_default_values(user, first_calibration, clinic_order):
 
-    analyis = ClinicDosimetryAnalysis.objects.create(user=user,
-                                                     calibration=first_calibration,
+    analyis = ClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
                                                      order=clinic_order,
                                                      analysis_name='Analysis 1',
                                                      injected_activity=50,
@@ -107,7 +100,7 @@ def test_str(clinic_dosimetry):
 
     analysis = ClinicDosimetryAnalysis.objects.first()
 
-    clinic_id = analysis.user.pk
+    clinic_id = analysis.order.user.pk
     isotope = analysis.calibration.isotope
     year = str(analysis.created_at.year)[2:]
     order_id = analysis.order.pk
@@ -149,7 +142,7 @@ def test_save_with_conclude_status_must_be_report(clinic_dosimetry):
 
 def test_order_code(clinic_dosimetry):
 
-    clinic_id = clinic_dosimetry.user.id
+    clinic_id = clinic_dosimetry.order.user.id
     year = str(clinic_dosimetry.created_at.year)[2:]
     order_id = clinic_dosimetry.order.id
     analysis_id = clinic_dosimetry.id

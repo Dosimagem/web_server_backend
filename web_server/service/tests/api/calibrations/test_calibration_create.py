@@ -7,10 +7,10 @@ from django.shortcuts import resolve_url
 from web_server.service.models import Calibration, FORMAT_DATE
 
 
-def test_create_successful(client_api_auth, user, form_data, calibration_infos, calibration_file):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+# /api/v1/users/<uuid>/calibrations/ - POST
+
+
+def test_successful(client_api_auth, user, form_data, calibration_infos, calibration_file):
 
     assert not Calibration.objects.exists()
 
@@ -41,10 +41,7 @@ def test_create_successful(client_api_auth, user, form_data, calibration_infos, 
     assert body['imagesUrl'].startswith(f'http://testserver/media/{cali_db.user.id}/calibration')
 
 
-def test_fail_create_negative_float_numbers(client_api_auth, user, form_data):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+def test_fail_negative_float_numbers(client_api_auth, user, form_data):
 
     url = resolve_url('service:calibration-list-create', user.uuid)
 
@@ -71,10 +68,7 @@ def test_fail_create_negative_float_numbers(client_api_auth, user, form_data):
     assert body['errors'] == expected
 
 
-def test_fail_create_calibration_name_must_be_unique_per_user(client_api_auth, user, form_data):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+def test_fail_calibration_name_must_be_unique_per_user(client_api_auth, user, form_data):
 
     url = resolve_url('service:calibration-list-create', user.uuid)
 
@@ -97,10 +91,7 @@ def test_fail_create_calibration_name_must_be_unique_per_user(client_api_auth, u
     assert body['errors'] == expected
 
 
-def test_fail_create_datetime_invalid(client_api_auth, user, form_data):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+def test_fail_datetime_invalid(client_api_auth, user, form_data):
 
     url = resolve_url('service:calibration-list-create', user.uuid)
 
@@ -117,10 +108,7 @@ def test_fail_create_datetime_invalid(client_api_auth, user, form_data):
     assert body['errors'] == ['Informe uma data/hora válida.']
 
 
-def test_fail_create_isotope_invalid(client_api_auth, user, form_data):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+def test_fail_isotope_invalid(client_api_auth, user, form_data):
 
     url = resolve_url('service:calibration-list-create', user.uuid)
 
@@ -139,10 +127,7 @@ def test_fail_create_isotope_invalid(client_api_auth, user, form_data):
     assert body['errors'] == expected
 
 
-def test_fail_create_isotope_invalid_by_size(client_api_auth, user, form_data):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+def test_fail_isotope_invalid_by_size(client_api_auth, user, form_data):
 
     url = resolve_url('service:calibration-list-create', user.uuid)
 
@@ -171,10 +156,7 @@ def test_fail_create_isotope_invalid_by_size(client_api_auth, user, form_data):
     ('acquisitionTime', ['O campo tempo de aquisição é obrigatório.']),
     ('images', ['O campo imagens é obrigatório.']),
     ])
-def test_fail_create_missing_fields(client_api_auth, user, form_data, field, error):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+def test_fail_missing_fields(client_api_auth, user, form_data, field, error):
 
     form_data.pop(field)
 
@@ -191,10 +173,7 @@ def test_fail_create_missing_fields(client_api_auth, user, form_data, field, err
     assert body['errors'] == error
 
 
-def test_fail_create_calibration_name_length_must_least_3(client_api_auth, user, form_data):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - POST
-    '''
+def test_fail_calibration_name_length_must_least_3(client_api_auth, user, form_data):
 
     url = resolve_url('service:calibration-list-create', user.uuid)
 

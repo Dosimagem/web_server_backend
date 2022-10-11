@@ -9,10 +9,11 @@ from django.shortcuts import resolve_url
 from web_server.service.models import ClinicDosimetryAnalysis, FORMAT_DATE, Order, PreClinicDosimetryAnalysis
 
 
-def test_create_clinic_dosimetry_successful(client_api_auth, user, clinic_order, form_data_clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
+# /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
 
+
+def test_successful(client_api_auth, clinic_order, form_data_clinic_dosimetry):
+    '''
     After analyses create order remaining of analyzes must be decreased by one
     '''
 
@@ -21,7 +22,7 @@ def test_create_clinic_dosimetry_successful(client_api_auth, user, clinic_order,
 
     assert Order.objects.get(id=clinic_order.id).remaining_of_analyzes == clinic_order.remaining_of_analyzes
 
-    url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()
 
@@ -35,7 +36,7 @@ def test_create_clinic_dosimetry_successful(client_api_auth, user, clinic_order,
     assert Order.objects.get(id=clinic_order.id).remaining_of_analyzes == clinic_order.remaining_of_analyzes - 1
 
     assert body['id'] == str(clinic_dosi_db.uuid)
-    assert body['userId'] == str(clinic_dosi_db.user.uuid)
+    assert body['userId'] == str(clinic_dosi_db.order.user.uuid)
     assert body['orderId'] == str(clinic_dosi_db.order.uuid)
     assert body['calibrationId'] == str(clinic_dosi_db.calibration.uuid)
     assert body['status'] == clinic_dosi_db.get_status_display()
@@ -49,22 +50,16 @@ def test_create_clinic_dosimetry_successful(client_api_auth, user, clinic_order,
     assert body['administrationDatetime'] == clinic_dosi_db.administration_datetime.strftime(FORMAT_DATE)
 
     # TODO: Pensar uma forma melhor
-    assert body['imagesUrl'].startswith(f'http://testserver/media/{clinic_dosi_db.user.id}/clinic_dosimetry')
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{clinic_dosi_db.order.user.id}/clinic_dosimetry')
 
 
-def test_fail_create_clinic_dosimetry_wrong_administration_datetime(client_api_auth,
-                                                                    user,
-                                                                    clinic_order,
-                                                                    form_data_clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-    '''
+def test_fail_wrong_administration_datetime(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     form_data_clinic_dosimetry['administrationDatetime'] = 'w'
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()
@@ -76,19 +71,13 @@ def test_fail_create_clinic_dosimetry_wrong_administration_datetime(client_api_a
     assert body['errors'] == ['Informe uma data/hora válida.']
 
 
-def test_fail_create_preclinic_dosimetry_injected_activity_must_be_positive(client_api_auth,
-                                                                            user,
-                                                                            clinic_order,
-                                                                            form_data_clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-    '''
+def test_fail_activity_must_be_positive(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     form_data_clinic_dosimetry['injectedActivity'] = -form_data_clinic_dosimetry['injectedActivity']
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()
@@ -100,14 +89,11 @@ def test_fail_create_preclinic_dosimetry_injected_activity_must_be_positive(clie
     assert body['errors'] == ['Certifique-se que atividade injetada seja maior ou igual a 0.0.']
 
 
-def test_fail_create_analisys_name_must_be_unique_per_order(client_api_auth,
-                                                            user,
-                                                            form_data_clinic_dosimetry,
-                                                            clinic_dosimetry_info,
-                                                            clinic_dosimetry_file):
+def test_fail_analisys_name_must_be_unique_per_order(client_api_auth,
+                                                     form_data_clinic_dosimetry,
+                                                     clinic_dosimetry_info,
+                                                     clinic_dosimetry_file):
     '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-
     The analysis name must be unique in an order
     '''
 
@@ -121,7 +107,7 @@ def test_fail_create_analisys_name_must_be_unique_per_order(client_api_auth,
 
     form_data_clinic_dosimetry['images'] = images
 
-    url = resolve_url('service:analysis-list-create', user.uuid, order.uuid)
+    url = resolve_url('service:analysis-list-create', order.user.uuid, order.uuid)
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()
 
@@ -132,10 +118,8 @@ def test_fail_create_analisys_name_must_be_unique_per_order(client_api_auth,
     assert body['errors'] == ['Análises com esse nome já existe para esse pedido.']
 
 
-def test_fail_create_not_have_remaining_of_analyzes(client_api_auth, user, form_data_clinic_dosimetry):
+def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_clinic_dosimetry):
     '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-
     All requests for quotas have already been used in use
     '''
 
@@ -159,19 +143,13 @@ def test_fail_create_not_have_remaining_of_analyzes(client_api_auth, user, form_
     assert body['errors'] == ['Todas as análises para essa pedido já foram usadas.']
 
 
-def test_fail_create_clinic_dosimetry_missing_calibration_id(client_api_auth,
-                                                             user,
-                                                             clinic_order,
-                                                             form_data_clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-    '''
+def test_fail_missing_calibration_id(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     form_data_clinic_dosimetry.pop('calibrationId')
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
 
@@ -184,19 +162,13 @@ def test_fail_create_clinic_dosimetry_missing_calibration_id(client_api_auth,
     assert body['errors'] == ['O campo id de calibração é obrigatório.']
 
 
-def test_fail_create_clinic_dosimetry_wrong_calibration_id(client_api_auth,
-                                                           user,
-                                                           clinic_order,
-                                                           form_data_clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-    '''
+def test_fail_wrong_calibration_id(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     form_data_clinic_dosimetry['calibrationId'] = uuid4()
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
 
@@ -209,14 +181,11 @@ def test_fail_create_clinic_dosimetry_wrong_calibration_id(client_api_auth,
     assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
 
 
-def test_fail_create_clinic_dosimetry_wrong_order_id(client_api_auth, user, clinic_order, form_data_clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-    '''
+def test_fail_wrong_order_id(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-list-create', user.uuid, uuid4())
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, uuid4())
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
 
@@ -225,14 +194,12 @@ def test_fail_create_clinic_dosimetry_wrong_order_id(client_api_auth, user, clin
     assert not ClinicDosimetryAnalysis.objects.exists()
 
 
-def test_fail_create_clinic_dosimetry_with_order_from_another_user(client_api_auth,
-                                                                   user,
-                                                                   second_user,
-                                                                   tree_orders_of_tow_users,
-                                                                   form_data_clinic_dosimetry):
+def test_fail_with_order_from_another_user(client_api_auth,
+                                           user,
+                                           second_user,
+                                           tree_orders_of_tow_users,
+                                           form_data_clinic_dosimetry):
     '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-
     User must be create analysis only in your own orders
     '''
 
@@ -247,20 +214,16 @@ def test_fail_create_clinic_dosimetry_with_order_from_another_user(client_api_au
     assert not ClinicDosimetryAnalysis.objects.exists()
 
 
-def test_fail_create_clinic_dosimetry_whith_calibration_of_another_user(client_api_auth,
-                                                                        user,
-                                                                        clinic_order,
-                                                                        second_user_calibrations,
-                                                                        form_data_clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-    '''
+def test_fail_whith_calibration_of_another_user(client_api_auth,
+                                                clinic_order,
+                                                second_user_calibrations,
+                                                form_data_clinic_dosimetry):
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
     form_data_clinic_dosimetry['calibrationId'] = second_user_calibrations[0].uuid
 
-    url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()
 
@@ -278,19 +241,11 @@ def test_fail_create_clinic_dosimetry_whith_calibration_of_another_user(client_a
     ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
     ('administrationDatetime', ['O campo hora e data de adminstração é obrigatório.']),
     ])
-def test_fail_create_missing_fields(field,
-                                    error,
-                                    client_api_auth,
-                                    user,
-                                    clinic_order,
-                                    form_data_clinic_dosimetry):
-    '''
-     /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
-    '''
+def test_fail_missing_fields(field, error, client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     form_data_clinic_dosimetry.pop(field)
 
-    url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
 
@@ -310,15 +265,7 @@ def test_fail_create_missing_fields(field,
     ('administrationDatetime', 'not is a datatime', ['Informe uma data/hora válida.']),
     ('analysisName', 'ss', ['Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.'])
     ])
-def test_fail_create_invalid_fields(field,
-                                    value,
-                                    error,
-                                    client_api_auth,
-                                    clinic_order,
-                                    form_data_clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+def test_fail_invalid_fields(field, value, error, client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     form_data_clinic_dosimetry[field] = value
 

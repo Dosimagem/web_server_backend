@@ -7,10 +7,10 @@ from web_server.service.models import Calibration, DosimetryAnalysisBase
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE
 
 
-def test_successful_delete(client_api_auth, first_calibration):
-    '''
-    /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
-    '''
+# /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
+
+
+def test_successful(client_api_auth, first_calibration):
 
     url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
 
@@ -25,10 +25,7 @@ def test_successful_delete(client_api_auth, first_calibration):
     assert 'Calibração deletada com sucesso!' == body['message']
 
 
-def test_fail_delete_wrong_calibration_id(client_api_auth, first_calibration):
-    '''
-    /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
-    '''
+def test_fail_wrong_calibration_id(client_api_auth, first_calibration):
 
     url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, uuid4())
     response = client_api_auth.delete(url)
@@ -43,9 +40,6 @@ def test_fail_delete_wrong_calibration_id(client_api_auth, first_calibration):
 
 
 def test_fail_delete_calibration_the_another_user(client_api_auth, first_calibration, second_user_calibrations):
-    '''
-    /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
-    '''
 
     second_user_calibration_uuid = second_user_calibrations[0].uuid
 
@@ -65,8 +59,6 @@ def test_fail_delete_calibration_the_another_user(client_api_auth, first_calibra
 
 def test_fail_delete_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry):
     '''
-    /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
-
     Calibrations can be deleted when associated with analyzes with Invalid information status
     '''
 
@@ -92,8 +84,6 @@ def test_fail_delete_calibration_used_in_a_analysis(client_api_auth, clinic_dosi
 
 def test_successful_delete_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry):
     '''
-    /api/v1/users/<uuid>/calibrations/<uuid> - DELETE
-
     Calibrations can be deleted when associated with analyzes with Invalid information status
     '''
 

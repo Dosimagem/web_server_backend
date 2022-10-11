@@ -6,12 +6,12 @@ from django.shortcuts import resolve_url
 from web_server.service.models import PreClinicDosimetryAnalysis, Order
 
 
-def test_delete_preclinic_dosimetry_successfull(client_api_auth, preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
-    '''
+# /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
 
-    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+
+def test_successfull(client_api_auth, preclinic_dosimetry_update_delete):
+
+    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
     order_uuid = preclinic_dosimetry_update_delete.order.uuid
     analysis_uuid = preclinic_dosimetry_update_delete.uuid
 
@@ -36,13 +36,12 @@ def test_delete_preclinic_dosimetry_successfull(client_api_auth, preclinic_dosim
     assert body == {'id': str(analysis_uuid), 'message': 'Análise deletada com sucesso!'}
 
 
-def test_fail_delete_preclinic_dosimetry_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
+def test_fail_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
     '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
     The analysis must have INVALID_INFOS status
     '''
 
-    user_uuid = preclinic_dosimetry.user.uuid
+    user_uuid = preclinic_dosimetry.order.user.uuid
     order_uuid = preclinic_dosimetry.order.uuid
     analysis_uuid = preclinic_dosimetry.uuid
 
@@ -67,12 +66,9 @@ def test_fail_delete_preclinic_dosimetry_successfull_invalid_status(client_api_a
     assert body == {'errors': ['Não foi possivel deletar essa análise.']}
 
 
-def test_fail_delete_clinic_dosimetry_wrong_analysis_id(client_api_auth, preclinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
-    '''
+def test_fail_wrong_analysis_id(client_api_auth, preclinic_dosimetry):
 
-    user_uuid = preclinic_dosimetry.user.uuid
+    user_uuid = preclinic_dosimetry.order.user.uuid
     order_uuid = preclinic_dosimetry.order.uuid
     analysis_uuid = uuid4()
 
@@ -89,13 +85,8 @@ def test_fail_delete_clinic_dosimetry_wrong_analysis_id(client_api_auth, preclin
     assert body['errors'] == ['Este usuário não possui este recurso cadastrado.']
 
 
-def test_fail_delete_clinic_dosimetry_using_another_order(client_api_auth,
-                                                          user,
-                                                          preclinic_dosimetry,
-                                                          create_order_data):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
-    '''
+def test_fail_using_another_order(client_api_auth, user, preclinic_dosimetry, create_order_data):
+
     order = Order.objects.create(user=user,
                                  quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
                                  remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
@@ -105,7 +96,7 @@ def test_fail_delete_clinic_dosimetry_using_another_order(client_api_auth,
 
     assert PreClinicDosimetryAnalysis.objects.exists()
 
-    user_uuid = preclinic_dosimetry.user.uuid
+    user_uuid = preclinic_dosimetry.order.user.uuid
     order_uuid = order.uuid
     analysis_uuid = preclinic_dosimetry.uuid
 
@@ -120,10 +111,7 @@ def test_fail_delete_clinic_dosimetry_using_another_order(client_api_auth,
     assert body['errors'] == ['Este usuário não possui este recurso cadastrado.']
 
 
-def test_fail_delete_clinic_dosimetry_using_another_user(client_api, second_user, preclinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
-    '''
+def test_fail_using_another_user(client_api, second_user, preclinic_dosimetry):
 
     user_uuid = second_user.uuid
     order_uuid = preclinic_dosimetry.order.uuid

@@ -24,12 +24,11 @@ def _verified_unchanged_information_db(preclinic_dosimetry):
     assert analysis_db.images.file.read() == preclinic_dosimetry.images.file.read()
 
 
-def test_update_preclinic_dosimetry_successfull(client_api_auth,
-                                                second_calibration,
-                                                preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+# /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
+
+
+def test_successfull(client_api_auth, second_calibration, preclinic_dosimetry_update_delete):
+
     update_form_data = {}
 
     update_form_data['calibrationId'] = second_calibration.uuid
@@ -38,7 +37,7 @@ def test_update_preclinic_dosimetry_successfull(client_api_auth,
     update_form_data['analysisName'] = 'New analsysis name'
     update_form_data['images'] = ContentFile(b'New File Update', name='images.zip')
 
-    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
     order_uuid = preclinic_dosimetry_update_delete.order.uuid
     analysis_uuid = preclinic_dosimetry_update_delete.uuid
 
@@ -57,12 +56,7 @@ def test_update_preclinic_dosimetry_successfull(client_api_auth,
     assert analysis_db.status == PreClinicDosimetryAnalysis.ANALYZING_INFOS
 
 
-def test_update_preclinic_dosimetry_optional_images_successfull(client_api_auth,
-                                                                second_calibration,
-                                                                preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+def test_optional_images_successfull(client_api_auth, second_calibration, preclinic_dosimetry_update_delete):
 
     update_form_data = {}
 
@@ -71,7 +65,7 @@ def test_update_preclinic_dosimetry_optional_images_successfull(client_api_auth,
     update_form_data['injectedActivity'] = 100.0
     update_form_data['analysisName'] = 'New analsysis name'
 
-    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
     order_uuid = preclinic_dosimetry_update_delete.order.uuid
     analysis_uuid = preclinic_dosimetry_update_delete.uuid
 
@@ -90,11 +84,8 @@ def test_update_preclinic_dosimetry_optional_images_successfull(client_api_auth,
     assert analysis_db.status == PreClinicDosimetryAnalysis.ANALYZING_INFOS
 
 
-def test_fail_update_preclinic_dosimetry_successfull_invalid_status(client_api_auth,
-                                                                    second_calibration,
-                                                                    preclinic_dosimetry):
+def test_fail_successfull_invalid_status(client_api_auth, second_calibration, preclinic_dosimetry):
     '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
     The analysis must have INVALID_INFOS status
     '''
 
@@ -105,7 +96,7 @@ def test_fail_update_preclinic_dosimetry_successfull_invalid_status(client_api_a
     update_form_data['injectedActivity'] = 100.0
     update_form_data['analysisName'] = 'New analsysis name'
 
-    user_uuid = preclinic_dosimetry.user.uuid
+    user_uuid = preclinic_dosimetry.order.user.uuid
     order_uuid = preclinic_dosimetry.order.uuid
     analysis_uuid = preclinic_dosimetry.uuid
 
@@ -120,10 +111,8 @@ def test_fail_update_preclinic_dosimetry_successfull_invalid_status(client_api_a
     _verified_unchanged_information_db(preclinic_dosimetry)
 
 
-def test_fail_update_preclinic_dosimetry_wrong_calibration_id(client_api_auth, preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+def test_fail_wrong_calibration_id(client_api_auth, preclinic_dosimetry_update_delete):
+
     update_form_data = {}
 
     update_form_data['calibrationId'] = uuid4()
@@ -131,7 +120,7 @@ def test_fail_update_preclinic_dosimetry_wrong_calibration_id(client_api_auth, p
     update_form_data['injectedActivity'] = 100.0
     update_form_data['analysisName'] = 'New analsysis name'
 
-    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
     order_uuid = preclinic_dosimetry_update_delete.order.uuid
     analysis_uuid = preclinic_dosimetry_update_delete.uuid
 
@@ -145,10 +134,8 @@ def test_fail_update_preclinic_dosimetry_wrong_calibration_id(client_api_auth, p
     _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
-def test_fail_update_preclinic_dosimetry_wrong_analysis_id(client_api_auth, preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+def test_fail_wrong_analysis_id(client_api_auth, preclinic_dosimetry_update_delete):
+
     update_form_data = {}
 
     update_form_data['calibrationId'] = preclinic_dosimetry_update_delete.calibration.uuid
@@ -156,7 +143,7 @@ def test_fail_update_preclinic_dosimetry_wrong_analysis_id(client_api_auth, prec
     update_form_data['injectedActivity'] = 100.0
     update_form_data['analysisName'] = 'New analsysis name'
 
-    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
     order_uuid = preclinic_dosimetry_update_delete.order.uuid
     analysis_uuid = uuid4()
 
@@ -170,10 +157,7 @@ def test_fail_update_preclinic_dosimetry_wrong_analysis_id(client_api_auth, prec
     _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
-def test_fail_update_preclinic_dosimetry_wrong_another_order(client_api_auth, user, preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+def test_fail_wrong_another_order(client_api_auth, user, preclinic_dosimetry_update_delete):
 
     order = Order.objects.create(user=user,
                                  quantity_of_analyzes=10,
@@ -189,7 +173,7 @@ def test_fail_update_preclinic_dosimetry_wrong_another_order(client_api_auth, us
     update_form_data['injectedActivity'] = 100.0
     update_form_data['analysisName'] = 'New analsysis name'
 
-    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
     order_uuid = order.uuid
     analysis_uuid = preclinic_dosimetry_update_delete.uuid
 
@@ -203,13 +187,7 @@ def test_fail_update_preclinic_dosimetry_wrong_another_order(client_api_auth, us
     _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
-def test_fail_update_preclinic_dosimetry_wrong_another_user(client_api,
-                                                            second_user,
-                                                            second_user_calibrations,
-                                                            preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+def test_fail_wrong_another_user(client_api, second_user, second_user_calibrations, preclinic_dosimetry_update_delete):
 
     update_form_data = {}
 
@@ -239,13 +217,7 @@ def test_fail_update_preclinic_dosimetry_wrong_another_user(client_api,
     ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
     ('administrationDatetime', ['O campo hora e data de adminstração é obrigatório.']),
     ])
-def test_fail_update_missing_fields(field,
-                                    error,
-                                    client_api_auth,
-                                    preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+def test_fail_missing_fields(field, error, client_api_auth, preclinic_dosimetry_update_delete):
 
     update_form_data = {}
 
@@ -256,7 +228,7 @@ def test_fail_update_missing_fields(field,
 
     update_form_data.pop(field)
 
-    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
     order_uuid = preclinic_dosimetry_update_delete.order.uuid
     analysis_uuid = preclinic_dosimetry_update_delete.uuid
 
@@ -279,14 +251,7 @@ def test_fail_update_missing_fields(field,
     ('injectedActivity', 'not ia a number', ['Informe um número.']),
     ('administrationDatetime', 'not is a datatime', ['Informe uma data/hora válida.']),
     ])
-def test_fail_update_invalid_fields(field,
-                                    value,
-                                    error,
-                                    client_api_auth,
-                                    preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+def test_fail_invalid_fields(field, value, error, client_api_auth, preclinic_dosimetry_update_delete):
 
     update_form_data = {}
 
@@ -297,7 +262,7 @@ def test_fail_update_invalid_fields(field,
 
     update_form_data[field] = value
 
-    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
     order_uuid = preclinic_dosimetry_update_delete.order.uuid
     analysis_uuid = preclinic_dosimetry_update_delete.uuid
 
@@ -314,17 +279,12 @@ def test_fail_update_invalid_fields(field,
     _verified_unchanged_information_db(preclinic_dosimetry_update_delete)
 
 
-def test_fail_update_analysis_name_must_be_unique(client_api_auth,
-                                                  user,
-                                                  first_calibration,
-                                                  preclinic_order,
-                                                  preclinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
-    '''
+def test_fail_analysis_name_must_be_unique(client_api_auth,
+                                           first_calibration,
+                                           preclinic_order,
+                                           preclinic_dosimetry_update_delete):
 
     other_analysis = PreClinicDosimetryAnalysis.objects.create(
-                                                            user=user,
                                                             calibration=first_calibration,
                                                             order=preclinic_order,
                                                             analysis_name='Analysis 2',
@@ -340,7 +300,7 @@ def test_fail_update_analysis_name_must_be_unique(client_api_auth,
     update_form_data['injectedActivity'] = 100.0
     update_form_data['analysisName'] = other_analysis.analysis_name
 
-    user_uuid = preclinic_dosimetry_update_delete.user.uuid
+    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
     order_uuid = preclinic_dosimetry_update_delete.order.uuid
     analysis_uuid = preclinic_dosimetry_update_delete.uuid
 
