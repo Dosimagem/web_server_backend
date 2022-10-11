@@ -56,59 +56,54 @@ def test_delete_clinic_dosimetry_must_not_delete_order(preclinic_order, preclini
 
 def test_clinic_dosimetry_one_to_many_relation(user, first_calibration, preclinic_order):
 
-    analyis_1 = PreClinicDosimetryAnalysis.objects.create(user=user,
-                                                          calibration=first_calibration,
-                                                          order=preclinic_order,
-                                                          analysis_name='Analysis 1',
-                                                          injected_activity=50,
-                                                          administration_datetime=DATETIME_TIMEZONE,
-                                                          images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                          )
+    analysis_1 = PreClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
+                                                           order=preclinic_order,
+                                                           analysis_name='Analysis 1',
+                                                           injected_activity=50,
+                                                           administration_datetime=DATETIME_TIMEZONE,
+                                                           images=ContentFile(b'CT e SPET files', name='images.zip')
+                                                           )
 
-    analyis_2 = PreClinicDosimetryAnalysis.objects.create(user=user,
-                                                          calibration=first_calibration,
-                                                          order=preclinic_order,
-                                                          analysis_name='Analysis 2',
-                                                          injected_activity=50,
-                                                          administration_datetime=DATETIME_TIMEZONE,
-                                                          images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                          )
-
-    assert user.preclinic_dosimetry_analysis.count() == 2
+    analysis_2 = PreClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
+                                                           order=preclinic_order,
+                                                           analysis_name='Analysis 2',
+                                                           injected_activity=50,
+                                                           administration_datetime=DATETIME_TIMEZONE,
+                                                           images=ContentFile(b'CT e SPET files', name='images.zip')
+                                                           )
 
     assert first_calibration.preclinic_dosimetry_analysis.count() == 2
 
     assert preclinic_order.preclinic_dosimetry_analysis.count() == 2
 
-    assert analyis_1.user == user
-    assert analyis_1.calibration == first_calibration
-    assert analyis_1.order == preclinic_order
+    assert analysis_1.order.user == user
+    assert analysis_1.calibration == first_calibration
+    assert analysis_1.order == preclinic_order
 
-    assert analyis_2.user == user
-    assert analyis_2.calibration == first_calibration
-    assert analyis_2.order == preclinic_order
+    assert analysis_2.order.user == user
+    assert analysis_2.calibration == first_calibration
+    assert analysis_2.order == preclinic_order
 
 
 def test_default_values(user, first_calibration, preclinic_order):
 
-    analyis = PreClinicDosimetryAnalysis.objects.create(user=user,
-                                                        calibration=first_calibration,
-                                                        order=preclinic_order,
-                                                        analysis_name='Analysis 1',
-                                                        injected_activity=50,
-                                                        administration_datetime=DATETIME_TIMEZONE,
-                                                        images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                        )
+    analysis = PreClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
+                                                         order=preclinic_order,
+                                                         analysis_name='Analysis 1',
+                                                         injected_activity=50,
+                                                         administration_datetime=DATETIME_TIMEZONE,
+                                                         images=ContentFile(b'CT e SPET files', name='images.zip')
+                                                         )
 
-    assert analyis.status == PreClinicDosimetryAnalysis.ANALYZING_INFOS
-    assert analyis.active
+    assert analysis.status == PreClinicDosimetryAnalysis.ANALYZING_INFOS
+    assert analysis.active
 
 
 def test_str(preclinic_dosimetry):
 
     analysis = PreClinicDosimetryAnalysis.objects.first()
 
-    clinic_id = analysis.user.pk
+    clinic_id = analysis.order.user.pk
     isotope = analysis.calibration.isotope
     year = str(analysis.created_at.year)[2:]
     order_id = analysis.order.pk
@@ -150,7 +145,7 @@ def test_save_with_conclude_status_must_be_report(preclinic_dosimetry):
 
 def test_order_code(clinic_dosimetry):
 
-    clinic_id = clinic_dosimetry.user.id
+    clinic_id = clinic_dosimetry.order.user.id
     year = str(clinic_dosimetry.created_at.year)[2:]
     order_id = clinic_dosimetry.order.id
     analysis_id = clinic_dosimetry.id

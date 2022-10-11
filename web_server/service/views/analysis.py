@@ -57,7 +57,7 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
     try:
         order = Order.objects.get(user__uuid=user_id, uuid=order_id)
         Model = AnalisysChoice(order=order).model
-        analysis = Model.objects.get(uuid=analysis_id, user__uuid=user_id, order__uuid=order_id)
+        analysis = Model.objects.get(uuid=analysis_id, order=order)
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
@@ -83,7 +83,7 @@ def _read_analysis(request, user_id, order_id, analysis_id):
     try:
         order = Order.objects.get(user__uuid=user_id, uuid=order_id)
         Model = AnalisysChoice(order=order).model
-        analysis = Model.objects.get(uuid=analysis_id, user__uuid=user_id, order__uuid=order_id)
+        analysis = Model.objects.get(uuid=analysis_id, order=order)
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
@@ -98,7 +98,7 @@ def _list_analysis(request, user_id, order_id):
         return Response(status=HTTPStatus.NOT_FOUND)
 
     Model = AnalisysChoice(order=order).model
-    list_ = Model.objects.filter(user__uuid=user_id, order__uuid=order_id)
+    list_ = Model.objects.filter(order=order)
 
     data = {
         'count': len(list_),
@@ -119,7 +119,6 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
-    data['user'] = user
     data['order'] = order
 
     form = PreClinicAndClinicDosimetryAnalysisUpdateFormApi(data)
@@ -138,7 +137,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
 
     try:
         Model = analisys_choice.model
-        analysis = Model.objects.get(uuid=analysis_id, user=user, order=order)
+        analysis = Model.objects.get(uuid=analysis_id, order=order)
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
@@ -184,7 +183,7 @@ def _create_analysis(request, user_id, order_id):
         except ObjectDoesNotExist:
             return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.BAD_REQUEST)
 
-        data.update({'user': user, 'order': order, 'calibration': calibration})
+        data.update({'order': order, 'calibration': calibration})
 
         AnalysisFormClass = AnalisysChoice(order=order).create_form
         form_analysis = AnalysisFormClass(data, request.FILES)

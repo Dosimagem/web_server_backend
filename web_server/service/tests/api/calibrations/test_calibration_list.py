@@ -5,10 +5,10 @@ from django.shortcuts import resolve_url
 from web_server.service.models import Calibration, FORMAT_DATE
 
 
-def test_list_successful(client_api_auth, first_calibration):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - GET
-    '''
+# /api/v1/users/<uuid>/calibrations/ - GET
+
+
+def test_successful(client_api_auth, first_calibration):
 
     url = resolve_url('service:calibration-list-create', first_calibration.user.uuid)
 
@@ -36,10 +36,7 @@ def test_list_successful(client_api_auth, first_calibration):
         assert cali_response['acquisitionTime'] == cali_db.acquisition_time
 
 
-def test_try_list_for_user_without_calibrations(client_api_auth, user):
-    '''
-    /api/v1/users/<uuid>/calibrations/ - GET
-    '''
+def test_user_without_calibrations(client_api_auth, user):
 
     url = resolve_url('service:calibration-list-create', user.uuid)
 

@@ -39,7 +39,7 @@ def test_upload_name_images_clinic_dosinetry_analysis(mocker, clinic_dosimetry, 
 
     mocker.patch('web_server.service.models.now', return_value=t)
 
-    id = clinic_dosimetry.user.id
+    id = clinic_dosimetry.order.user.id
 
     expected = f'{id}/clinic_dosimetry_{time_stamp_str}.zip'
 
@@ -53,7 +53,7 @@ def test_upload_name_images_preclinic_dosinetry_analysis(mocker, preclinic_dosim
 
     mocker.patch('web_server.service.models.now', return_value=t)
 
-    id = preclinic_dosimetry.user.id
+    id = preclinic_dosimetry.order.user.id
 
     expected = f'{id}/preclinic_dosimetry_{time_stamp_str}.zip'
 
@@ -67,7 +67,7 @@ def test_report_name(mocker, clinic_dosimetry, datetime_now):
 
     mocker.patch('web_server.service.models.now', return_value=t)
 
-    id = clinic_dosimetry.user.id
+    id = clinic_dosimetry.order.user.id
 
     expected = f'{id}/report_{time_stamp_str}.zip'
 

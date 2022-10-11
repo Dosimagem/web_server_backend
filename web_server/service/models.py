@@ -94,7 +94,11 @@ def upload_to(instance, filename, type):
 
     _, extension = os.path.splitext(filename)
 
-    id = instance.user.id
+    if type == 'calibration':
+        id = instance.user.id
+    else:
+        id = instance.order.user.id
+
     filename = f'{type}_{time}{extension}'
 
     return f'{id}/{filename}'
@@ -186,7 +190,7 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
     def to_dict(self, request):
         dict_ = {
             'id': self.uuid,
-            'user_id': self.user.uuid,
+            'user_id': self.order.user.uuid,
             'order_id': self.order.uuid,
             'calibration_id': self.calibration.uuid,
             'status': self.get_status_display(),
@@ -232,9 +236,9 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
     SERVICE_NAME_CODE = Order.CLINIC_DOSIMETRY
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
-    user = models.ForeignKey('core.CustomUser',
-                             on_delete=models.CASCADE,
-                             related_name='clinic_dosimetry_analysis')
+    # user = models.ForeignKey('core.CustomUser',
+    #                          on_delete=models.CASCADE,
+    #                          related_name='clinic_dosimetry_analysis')
     calibration = models.ForeignKey('Calibration',
                                     on_delete=models.CASCADE,
                                     related_name='clinic_dosimetry_analysis')
@@ -250,7 +254,7 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
         unique_together = ('order', 'analysis_name',)
 
     def _generate_code(self):
-        clinic_id = self.user.pk
+        clinic_id = self.order.user.pk
         year = str(self.created_at.year)[2:]
         isotope = self.calibration.isotope
         order_id = self.order.pk
@@ -264,9 +268,9 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
     SERVICE_NAME_CODE = Order.PRECLINIC_DOSIMETRY
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
-    user = models.ForeignKey('core.CustomUser',
-                             on_delete=models.CASCADE,
-                             related_name='preclinic_dosimetry_analysis')
+    # user = models.ForeignKey('core.CustomUser',
+    #                          on_delete=models.CASCADE,
+    #                          related_name='preclinic_dosimetry_analysis')
     calibration = models.ForeignKey('Calibration',
                                     on_delete=models.CASCADE,
                                     related_name='preclinic_dosimetry_analysis')
@@ -283,7 +287,7 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
         unique_together = ('order', 'analysis_name',)
 
     def _generate_code(self):
-        clinic_id = self.user.pk
+        clinic_id = self.order.user.pk
         year = str(self.created_at.year)[2:]
         isotope = self.calibration.isotope
         order_id = self.order.pk

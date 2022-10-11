@@ -3,11 +3,11 @@
   "model": "admin.logentry",
   "pk": 1,
   "fields": {
-    "action_time": "2022-09-22T03:42:16.806Z",
+    "action_time": "2022-10-12T21:38:55.923Z",
     "user": 1,
     "content_type": 8,
     "object_id": "1",
-    "object_repr": "Clinica A <Dosimetria Clinica>",
+    "object_repr": "0004.22/0001-01",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -16,692 +16,53 @@
   "model": "admin.logentry",
   "pk": 2,
   "fields": {
-    "action_time": "2022-09-22T03:42:37.862Z",
+    "action_time": "2022-10-12T21:39:16.959Z",
     "user": 1,
     "content_type": 8,
     "object_id": "2",
-    "object_repr": "Clinica A <Dosimetria Preclinica>",
+    "object_repr": "0004.22/0002-02",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
 },
 {
-  "model": "admin.logentry",
-  "pk": 3,
-  "fields": {
-    "action_time": "2022-09-22T03:42:48.962Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "1",
-    "object_repr": "Clinica A <Dosimetria Clinica>",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status payment\", \"Permission\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 4,
-  "fields": {
-    "action_time": "2022-09-22T04:06:43.584Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "3",
-    "object_repr": "Clinica B <Dosimetria Clinica>",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 5,
-  "fields": {
-    "action_time": "2022-09-22T04:08:07.208Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "3",
-    "object_repr": "Calibração AA",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Isotope\", \"Calibration Name\", \"Syringe Activity\", \"Measurement Datetime\", \"Phantom Volume\", \"Acquisition Time\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 6,
-  "fields": {
-    "action_time": "2022-09-22T04:10:08.579Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "4",
-    "object_repr": "Clinica B <Dosimetria Preclinica>",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 7,
-  "fields": {
-    "action_time": "2022-09-22T04:11:50.420Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "3",
-    "object_repr": "0008.Ga68.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Calibration\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 8,
-  "fields": {
-    "action_time": "2022-09-22T04:12:17.069Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "1",
-    "object_repr": "Calibração B",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 9,
-  "fields": {
-    "action_time": "2022-09-22T04:26:08.579Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "2",
-    "object_repr": "Calibração AAA",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Residual Syringe Activity\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 10,
-  "fields": {
-    "action_time": "2022-09-22T04:26:08.929Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "2",
-    "object_repr": "Calibração AAA",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 11,
-  "fields": {
-    "action_time": "2022-09-22T04:26:49.873Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "2",
-    "object_repr": "Calibração AAA",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Syringe Activity\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 12,
-  "fields": {
-    "action_time": "2022-09-22T04:27:10.645Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "2",
-    "object_repr": "Calibração AAA",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Syringe Activity\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 13,
-  "fields": {
-    "action_time": "2022-09-22T18:26:50.729Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "3",
-    "object_repr": "Calibração B1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 14,
-  "fields": {
-    "action_time": "2022-09-22T18:27:11.809Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "2",
-    "object_repr": "Calibração 1A",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\", \"Syringe Activity\", \"Residual Syringe Activity\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 15,
-  "fields": {
-    "action_time": "2022-09-22T18:27:45.326Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "1",
-    "object_repr": "Calibração A2",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\", \"Syringe Activity\", \"Residual Syringe Activity\", \"Phantom Volume\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 16,
-  "fields": {
-    "action_time": "2022-09-22T18:27:55.823Z",
-    "user": 1,
-    "content_type": 10,
-    "object_id": "2",
-    "object_repr": "Calibração A1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Calibration Name\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 17,
-  "fields": {
-    "action_time": "2022-09-22T18:33:04.834Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "1",
-    "object_repr": "0008.Ga68.22/0001-2",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 18,
-  "fields": {
-    "action_time": "2022-09-22T18:33:15.732Z",
-    "user": 1,
-    "content_type": 12,
-    "object_id": "1",
-    "object_repr": "0003.F18.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 19,
-  "fields": {
-    "action_time": "2022-09-22T18:33:26.775Z",
-    "user": 1,
-    "content_type": 12,
-    "object_id": "3",
-    "object_repr": "0008.Ga68.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 20,
-  "fields": {
-    "action_time": "2022-09-22T18:33:36.763Z",
-    "user": 1,
-    "content_type": 12,
-    "object_id": "4",
-    "object_repr": "0008.Ga68.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 21,
-  "fields": {
-    "action_time": "2022-09-22T18:33:43.887Z",
-    "user": 1,
-    "content_type": 12,
-    "object_id": "2",
-    "object_repr": "0003.F18.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Analysis Name\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 22,
-  "fields": {
-    "action_time": "2022-09-28T15:47:58.977Z",
-    "user": 1,
-    "content_type": 12,
-    "object_id": "1",
-    "object_repr": "0008.Ga68.22/0001-2",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 23,
-  "fields": {
-    "action_time": "2022-09-28T15:48:25.244Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "4",
-    "object_repr": "0008.Ga68.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 24,
-  "fields": {
-    "action_time": "2022-09-28T15:48:32.395Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "3",
-    "object_repr": "0008.Ga68.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 25,
-  "fields": {
-    "action_time": "2022-09-28T15:48:40.931Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "2",
-    "object_repr": "0003.F18.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 26,
-  "fields": {
-    "action_time": "2022-09-28T15:48:48.220Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "1",
-    "object_repr": "0003.F18.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 27,
-  "fields": {
-    "action_time": "2022-09-28T15:48:57.309Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "3",
-    "object_repr": "0008.Ga68.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 28,
-  "fields": {
-    "action_time": "2022-09-28T15:49:08.645Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "4",
-    "object_repr": "0008.Ga68.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 29,
-  "fields": {
-    "action_time": "2022-09-30T02:58:57.557Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "4",
-    "object_repr": "0008.Ga68.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 30,
-  "fields": {
-    "action_time": "2022-09-30T03:53:27.671Z",
-    "user": 1,
-    "content_type": 6,
-    "object_id": "2",
-    "object_repr": "Clinica A",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Email address\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 31,
-  "fields": {
-    "action_time": "2022-09-30T03:53:41.374Z",
-    "user": 1,
-    "content_type": 6,
-    "object_id": "2",
-    "object_repr": "Clinica A",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Email address\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 32,
-  "fields": {
-    "action_time": "2022-10-01T01:34:10.669Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "5",
-    "object_repr": "0003.I124.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 33,
-  "fields": {
-    "action_time": "2022-10-01T01:47:43.853Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "1",
-    "object_repr": "0003.F18.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 34,
-  "fields": {
-    "action_time": "2022-10-01T01:47:50.457Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "2",
-    "object_repr": "0003.I124.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 35,
-  "fields": {
-    "action_time": "2022-10-01T03:28:44.990Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "1",
-    "object_repr": "0003.F18.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 36,
-  "fields": {
-    "action_time": "2022-10-01T03:30:06.527Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "5",
-    "object_repr": "0003.I124.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 37,
-  "fields": {
-    "action_time": "2022-10-01T03:30:55.592Z",
-    "user": 1,
-    "content_type": 11,
-    "object_id": "5",
-    "object_repr": "0003.I124.22/0001-1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 38,
-  "fields": {
-    "action_time": "2022-10-02T05:42:20.375Z",
-    "user": 1,
-    "content_type": 7,
-    "object_id": "3",
-    "object_repr": "Clinica A",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Phone\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 39,
-  "fields": {
-    "action_time": "2022-10-02T05:42:39.140Z",
-    "user": 1,
-    "content_type": 7,
-    "object_id": "8",
-    "object_repr": "Clinica B",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Phone\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 40,
-  "fields": {
-    "action_time": "2022-10-04T04:30:12.814Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "4",
-    "object_repr": "Clinica B <Dosimetria Preclinica>",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 41,
-  "fields": {
-    "action_time": "2022-10-04T04:30:17.631Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "3",
-    "object_repr": "Clinica B <Dosimetria Clinica>",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 42,
-  "fields": {
-    "action_time": "2022-10-04T04:30:21.192Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "2",
-    "object_repr": "Clinica C <Dosimetria Preclinica>",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 43,
-  "fields": {
-    "action_time": "2022-10-04T04:30:24.185Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "1",
-    "object_repr": "Clinica C <Dosimetria Clinica>",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 44,
-  "fields": {
-    "action_time": "2022-10-04T04:35:08.450Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "4",
-    "object_repr": "Clinica B <Dosimetria Preclinica>",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 45,
-  "fields": {
-    "action_time": "2022-10-04T05:07:14.867Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "4",
-    "object_repr": "0007.2022/0004-02",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 46,
-  "fields": {
-    "action_time": "2022-10-04T05:07:18.519Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "3",
-    "object_repr": "0007.2022/0003-01",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 47,
-  "fields": {
-    "action_time": "2022-10-04T05:07:21.408Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "2",
-    "object_repr": "0002.2022/0002-02",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 48,
-  "fields": {
-    "action_time": "2022-10-04T05:07:26.502Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "1",
-    "object_repr": "0002.2022/0001-01",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
   "model": "sessions.session",
-  "pk": "7n1ma0doypkxqq259ilpohbhtjtcr4fq",
+  "pk": "1z9bscfb9ecfhwixnhyjk02zbc26v16l",
   "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hCGAh1cuvcMZGCoVA0kpV0Z765NutDtf-_9lwi0rSVsPS9hZnEWIE6_W6T0yHUHfKd6azK1ui5zlLsiD9rltXF-Xg7376BQL9_aQWSvJgYzjBYY0wTo7UAKo8_MhF5pDcZmlx2bAa0dLYJGAhO9JiPeH85aNuw:1oe6EU:JWuuGkRk5s7Jf2AF0U5Ei3NB576AB3GdoP96HodFtFY",
-    "expire_date": "2022-10-14T02:58:34.338Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "8fpzcqnczot947vn3cs6qrvc44z8n8tj",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hCGAh1cuvcMZGCoVA0kpV0Z765NutDtf-_9lwi0rSVsPS9hZnEWIE6_W6T0yHUHfKd6azK1ui5zlLsiD9rltXF-Xg7376BQL9_aQWSvJgYzjBYY0wTo7UAKo8_MhF5pDcZmlx2bAa0dLYJGAhO9JiPeH85aNuw:1oerjV:BrUcMsqhjtFBp4rK2Wf5A34L8wCk3OikrxLKiXeN5FQ",
-    "expire_date": "2022-10-16T05:41:45.546Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "ujo9yf9rcu8nkx2eoyme6c88epp7v6ts",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hCGAh1cuvcMZGCoVA0kpV0Z765NutDtf-_9lwi0rSVsPS9hZnEWIE6_W6T0yHUHfKd6azK1ui5zlLsiD9rltXF-Xg7376BQL9_aQWSvJgYzjBYY0wTo7UAKo8_MhF5pDcZmlx2bAa0dLYJGAhO9JiPeH85aNuw:1obQta:hoSdsNBj-PQLoEuRNMcHr6dXYLQ3ZK-gDkPNnE4s6dA",
-    "expire_date": "2022-10-06T18:25:58.614Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "w8whlhqy0rxln9kiled7adnqn6svuum5",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hCGAh1cuvcMZGCoVA0kpV0Z765NutDtf-_9lwi0rSVsPS9hZnEWIE6_W6T0yHUHfKd6azK1ui5zlLsiD9rltXF-Xg7376BQL9_aQWSvJgYzjBYY0wTo7UAKo8_MhF5pDcZmlx2bAa0dLYJGAhO9JiPeH85aNuw:1obCzZ:rhEdV_0bnLDPPQoM1RgRLrdr2hcw2Lpx_JwWbobPdDQ",
-    "expire_date": "2022-10-06T03:35:13.917Z"
+    "session_data": ".eJxVjDkOwjAUBe_iGlne4tiU9DmD9TdwACVSnFSIu0OkFNC-mXkvVWBba9maLGVkdVZWnX43BHrItAO-w3SbNc3Tuoyod0UftOlhZnleDvfvoEKr3zoA90Ecxtx7Sp7BoAsYU-YsrstEPouB3EVjkxOXKDBSIOvEJ4RrVO8P4p44CA:1oijLN:P3x8nY9LqGtfIpXxPNBy7vDse-UQudSPRMbbC_59_HQ",
+    "expire_date": "2022-10-26T21:32:49.576Z"
   }
 },
 {
   "model": "core.customuser",
   "pk": 1,
   "fields": {
-    "password": "pbkdf2_sha256$390000$xvuN3RmA6qN4w8pYcXtF7W$AhxkxLi5qO0il52PCOpwz2IJllE68AoQcJq/H7A1Vt0=",
-    "last_login": "2022-09-22T18:25:58.522Z",
+    "password": "pbkdf2_sha256$390000$JhY80yrm6MyADDyMhduhp8$hLgztDwcbmrIpJcpCb6YqRWFSGXRbJ12pFc4kvVUbeQ=",
+    "last_login": "2022-10-12T21:32:49.564Z",
     "is_superuser": true,
-    "uuid": "d4848dd9-fa2b-4b9d-b07d-1f89dd98a247",
+    "uuid": "dcc632e3-7717-4097-8446-ef664ec5d504",
     "email": "admin@admin.com",
     "is_staff": true,
     "is_active": true,
     "email_verified": false,
-    "date_joined": "2022-09-22T03:34:52.482Z",
+    "date_joined": "2022-10-12T21:32:42.908Z",
     "groups": [],
     "user_permissions": []
   }
 },
 {
   "model": "core.customuser",
-  "pk": 2,
+  "pk": 4,
   "fields": {
-    "password": "pbkdf2_sha256$390000$n1ZMLcQjreOuLcmmbl2jez$zpl/TM9RB5DwnVLhbMlBr3qkdcZrQVPEY/utxuD8j6k=",
+    "password": "pbkdf2_sha256$390000$i34C2C4Nmeyaj4FXCEIEdC$69XegslAM05BVyHTOtiDG63gbX1nlP+srcL3pBBMIOQ=",
     "last_login": null,
     "is_superuser": false,
-    "uuid": "bcdb4724-7da5-4ca5-ae9e-f40dcbd4ab87",
+    "uuid": "3d3c7235-f3e1-4d6d-a029-f6700f9f5260",
     "email": "user1@email.com",
     "is_staff": false,
     "is_active": true,
     "email_verified": false,
-    "date_joined": "2022-09-22T03:36:12.049Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "core.customuser",
-  "pk": 7,
-  "fields": {
-    "password": "pbkdf2_sha256$390000$YflL5xqOoN9NPZzvmST80j$3zp5YcFP6BL48bT9P6lbvEIQClftEUA+++jGdasVt/Q=",
-    "last_login": null,
-    "is_superuser": false,
-    "uuid": "efcc86bc-d3c1-436e-9f7e-b49e02a72a60",
-    "email": "user2@email.com",
-    "is_staff": false,
-    "is_active": true,
-    "email_verified": false,
-    "date_joined": "2022-09-22T03:40:11.521Z",
+    "date_joined": "2022-10-12T21:35:32.168Z",
     "groups": [],
     "user_permissions": []
   }
@@ -710,29 +71,14 @@
   "model": "core.userprofile",
   "pk": 3,
   "fields": {
-    "created_at": "2022-09-22T03:36:12.487Z",
-    "modified_at": "2022-09-22T03:36:12.636Z",
-    "user": 2,
-    "name": "João Sliva",
-    "phone": "11111111",
+    "created_at": "2022-10-12T21:35:32.573Z",
+    "modified_at": "2022-10-12T21:35:32.729Z",
+    "user": 4,
+    "name": "João Silva",
+    "phone": "55(11)1111-1111",
     "clinic": "Clinica A",
-    "role": "médico",
-    "cpf": "93743851121",
-    "cnpj": "42438610000111"
-  }
-},
-{
-  "model": "core.userprofile",
-  "pk": 8,
-  "fields": {
-    "created_at": "2022-09-22T03:40:11.962Z",
-    "modified_at": "2022-09-22T03:40:12.523Z",
-    "user": 7,
-    "name": "Maria Silva",
-    "phone": "22222222",
-    "clinic": "Clinica B",
     "role": "fisico médico",
-    "cpf": "52450318097",
+    "cpf": "25660176038",
     "cnpj": "00796966000187"
   }
 },
@@ -740,68 +86,34 @@
   "model": "service.order",
   "pk": 1,
   "fields": {
-    "created_at": "2022-09-22T03:42:16.799Z",
-    "modified_at": "2022-10-04T05:07:26.500Z",
-    "uuid": "0822f0fe-3323-418b-9b0c-ff2be205e968",
-    "user": 2,
+    "created_at": "2022-10-12T21:38:55.916Z",
+    "modified_at": "2022-10-12T21:45:41.541Z",
+    "uuid": "140f0f07-2ab8-4040-99cc-9e463fbcc6ce",
+    "user": 4,
     "quantity_of_analyzes": 10,
     "remaining_of_analyzes": 8,
     "price": "3000.00",
     "status_payment": "CON",
     "service_name": "DC",
     "permission": true,
-    "code": "0002.2022/0001-01"
+    "code": "0004.22/0001-01"
   }
 },
 {
   "model": "service.order",
   "pk": 2,
   "fields": {
-    "created_at": "2022-09-22T03:42:37.856Z",
-    "modified_at": "2022-10-04T05:07:21.406Z",
-    "uuid": "d72c6b60-ea83-488a-bd92-64fe0433cce8",
-    "user": 2,
+    "created_at": "2022-10-12T21:39:16.951Z",
+    "modified_at": "2022-10-12T21:39:16.955Z",
+    "uuid": "f8a0c35e-fe46-42c3-b642-f9d5ab397f2e",
+    "user": 4,
     "quantity_of_analyzes": 5,
     "remaining_of_analyzes": 5,
     "price": "1000.00",
     "status_payment": "APG",
     "service_name": "PCD",
     "permission": false,
-    "code": "0002.2022/0002-02"
-  }
-},
-{
-  "model": "service.order",
-  "pk": 3,
-  "fields": {
-    "created_at": "2022-09-22T04:06:43.569Z",
-    "modified_at": "2022-10-04T05:07:18.517Z",
-    "uuid": "6052ed23-7d98-40e3-bbaf-2d192e074bf3",
-    "user": 7,
-    "quantity_of_analyzes": 5,
-    "remaining_of_analyzes": 3,
-    "price": "1000.00",
-    "status_payment": "CON",
-    "service_name": "DC",
-    "permission": true,
-    "code": "0007.2022/0003-01"
-  }
-},
-{
-  "model": "service.order",
-  "pk": 4,
-  "fields": {
-    "created_at": "2022-09-22T04:10:08.565Z",
-    "modified_at": "2022-10-04T05:07:14.865Z",
-    "uuid": "cd6d2b11-3e05-489f-bcda-9970932f864b",
-    "user": 7,
-    "quantity_of_analyzes": 3,
-    "remaining_of_analyzes": 2,
-    "price": "500.00",
-    "status_payment": "CON",
-    "service_name": "PCD",
-    "permission": true,
-    "code": "0007.2022/0004-02"
+    "code": "0004.22/0002-02"
   }
 },
 {
@@ -934,165 +246,82 @@
   "model": "service.calibration",
   "pk": 1,
   "fields": {
-    "created_at": "2022-09-22T03:53:06.748Z",
-    "modified_at": "2022-09-22T18:27:45.323Z",
-    "uuid": "800b3452-a4d8-4bca-af90-20f75158de66",
-    "user": 2,
-    "isotope": 4,
-    "calibration_name": "Calibração A2",
-    "syringe_activity": 1200.0,
+    "created_at": "2022-10-12T21:40:34.136Z",
+    "modified_at": "2022-10-12T21:40:34.137Z",
+    "uuid": "705de575-602f-4049-9186-1d9c2a2bbd8b",
+    "user": 4,
+    "isotope": 14,
+    "calibration_name": "Calibração A",
+    "syringe_activity": 500.0,
     "residual_syringe_activity": 0.0,
     "measurement_datetime": "2016-04-01T01:12:04Z",
-    "phantom_volume": 2500.0,
-    "acquisition_time": 1800.0,
-    "images": "2/calibration_1663818786742228.zip"
+    "phantom_volume": 2.0,
+    "acquisition_time": 1000.0,
+    "images": "4/calibration_1665610834137123.zip"
   }
 },
 {
   "model": "service.calibration",
   "pk": 2,
   "fields": {
-    "created_at": "2022-09-22T03:56:03.056Z",
-    "modified_at": "2022-09-22T18:27:55.819Z",
-    "uuid": "288c0cff-2016-4611-b0b8-9e3ba23c54ff",
-    "user": 2,
-    "isotope": 7,
-    "calibration_name": "Calibração A1",
-    "syringe_activity": 1000.0,
-    "residual_syringe_activity": 10.0,
-    "measurement_datetime": "2016-04-01T01:12:04Z",
-    "phantom_volume": 200.0,
-    "acquisition_time": 1800.0,
-    "images": "2/calibration_1663818963054752.zip"
-  }
-},
-{
-  "model": "service.calibration",
-  "pk": 3,
-  "fields": {
-    "created_at": "2022-09-22T04:07:30.728Z",
-    "modified_at": "2022-09-22T18:26:50.726Z",
-    "uuid": "ce93f958-cfa5-4d47-bdac-46d2558bfd12",
-    "user": 7,
-    "isotope": 5,
-    "calibration_name": "Calibração B1",
+    "created_at": "2022-10-12T21:41:31.066Z",
+    "modified_at": "2022-10-12T21:41:31.066Z",
+    "uuid": "7259ad41-7fbf-412b-9f5f-8d208d8117d5",
+    "user": 4,
+    "isotope": 1,
+    "calibration_name": "Calibração B",
     "syringe_activity": 1500.0,
     "residual_syringe_activity": 0.0,
-    "measurement_datetime": "2022-09-22T01:12:04Z",
-    "phantom_volume": 200.0,
-    "acquisition_time": 2000.0,
-    "images": "7/calibration_1663819650727151.zip"
+    "measurement_datetime": "2016-04-01T01:12:04Z",
+    "phantom_volume": 2.0,
+    "acquisition_time": 1500.0,
+    "images": "4/calibration_1665610891066588.zip"
   }
 },
 {
   "model": "service.clinicdosimetryanalysis",
   "pk": 1,
   "fields": {
-    "created_at": "2022-09-22T04:04:18.291Z",
-    "modified_at": "2022-09-28T15:48:48.209Z",
-    "uuid": "2f88b13f-03c8-4b48-8736-d5e443f41350",
-    "analysis_name": "Analise A1",
-    "status": "CO",
-    "report": "",
-    "active": true,
-    "injected_activity": 500.0,
-    "administration_datetime": "2016-04-01T01:12:04Z",
-    "user": 2,
-    "calibration": 1,
-    "order": 1,
-    "images": "2/clinic_dosimetry_166381945829157.zip"
-  }
-},
-{
-  "model": "service.clinicdosimetryanalysis",
-  "pk": 2,
-  "fields": {
-    "created_at": "2022-09-22T04:05:25.135Z",
-    "modified_at": "2022-09-28T15:48:40.921Z",
-    "uuid": "28b8ae1b-bfb2-4121-b8c7-c40a4f1ee631",
-    "analysis_name": "Analise A2",
-    "status": "II",
-    "report": "",
-    "active": true,
-    "injected_activity": 250.0,
-    "administration_datetime": "2018-04-01T01:12:04Z",
-    "user": 2,
-    "calibration": 1,
-    "order": 1,
-    "images": "2/clinic_dosimetry_1663819525136112.zip"
-  }
-},
-{
-  "model": "service.clinicdosimetryanalysis",
-  "pk": 3,
-  "fields": {
-    "created_at": "2022-09-22T04:09:26.107Z",
-    "modified_at": "2022-09-28T15:48:57.296Z",
-    "uuid": "981043d7-e640-4308-85d9-a2e7c68b8ee4",
-    "analysis_name": "Analise B1",
-    "status": "PR",
-    "report": "",
-    "active": true,
-    "injected_activity": 2500.0,
-    "administration_datetime": "2019-05-01T01:12:04Z",
-    "user": 7,
-    "calibration": 3,
-    "order": 3,
-    "images": "7/clinic_dosimetry_1663819766107311.zip"
-  }
-},
-{
-  "model": "service.clinicdosimetryanalysis",
-  "pk": 4,
-  "fields": {
-    "created_at": "2022-09-22T04:12:48.726Z",
-    "modified_at": "2022-09-28T15:49:08.634Z",
-    "uuid": "3695cdf9-b3af-44c3-aff8-54287205c83b",
-    "analysis_name": "Analise B2",
+    "created_at": "2022-10-12T21:44:00.081Z",
+    "modified_at": "2022-10-12T21:44:00.089Z",
+    "uuid": "929fb6bb-3a8e-48de-9b8a-54c1f83a6d9e",
+    "analysis_name": "Analise A3",
     "status": "AI",
     "report": "",
     "active": true,
     "injected_activity": 2500.0,
     "administration_datetime": "2019-05-01T01:12:04Z",
-    "user": 7,
-    "calibration": 3,
-    "order": 3,
-    "images": "7/clinic_dosimetry_1663819968726827.zip"
+    "code": "0004.Y-90.22.0001/0001-01",
+    "calibration": 1,
+    "order": 1,
+    "images": "4/clinic_dosimetry_1665611040081899.zip"
   }
 },
 {
-  "model": "service.preclinicdosimetryanalysis",
-  "pk": 1,
+  "model": "service.clinicdosimetryanalysis",
+  "pk": 2,
   "fields": {
-    "created_at": "2022-09-22T04:13:43.992Z",
-    "modified_at": "2022-09-28T15:47:58.927Z",
-    "uuid": "222bc3cd-e7d7-4b99-bc5a-739c9cea423d",
-    "analysis_name": "Analise B1",
-    "status": "II",
+    "created_at": "2022-10-12T21:45:41.544Z",
+    "modified_at": "2022-10-12T21:45:41.553Z",
+    "uuid": "dfc7eda2-2c74-49d8-a34a-aaf6e313a78d",
+    "analysis_name": "Analise A2",
+    "status": "AI",
     "report": "",
     "active": true,
     "injected_activity": 2500.0,
     "administration_datetime": "2019-05-01T01:12:04Z",
-    "user": 7,
-    "calibration": 3,
-    "order": 4,
-    "images": "7/preclinic_dosimetry_166382002399301.zip"
+    "code": "0004.Y-90.22.0001/0002-01",
+    "calibration": 1,
+    "order": 1,
+    "images": "4/clinic_dosimetry_1665611141544845.zip"
   }
 },
 {
   "model": "authtoken.token",
-  "pk": "f9f77c172fe00aa5ffb424c7e96c75c26f7ae593",
+  "pk": "f72452216b6878dde44b971e2cc90290241f2c86",
   "fields": {
-    "user": 2,
-    "created": "2022-09-22T03:36:12.639Z"
-  }
-},
-{
-  "model": "authtoken.token",
-  "pk": "fe68b1c18792b78be2b6d683b00d6d10c7b4e6ec",
-  "fields": {
-    "user": 7,
-    "created": "2022-09-22T03:40:12.526Z"
+    "user": 4,
+    "created": "2022-10-12T21:35:32.731Z"
   }
 }
 ]

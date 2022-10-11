@@ -21,7 +21,6 @@ def test_order_analisys_infos(model, service_name, user, first_calibration):
                                  )
 
     data = {
-        'user': user,
         'calibration': first_calibration,
         'order': order,
         'images': ContentFile(b'CT e SPET files 1', name='images.zip'),

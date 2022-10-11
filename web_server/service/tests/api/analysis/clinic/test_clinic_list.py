@@ -5,10 +5,10 @@ from django.shortcuts import resolve_url
 from web_server.service.models import ClinicDosimetryAnalysis, FORMAT_DATE
 
 
-def test_list_clinic_dosimetry_successful(client_api_auth, user, clinic_order, tree_clinic_dosimetry_of_first_user):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
-    '''
+# /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
+
+
+def test_successful(client_api_auth, user, clinic_order, tree_clinic_dosimetry_of_first_user):
 
     url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
     resp = client_api_auth.get(url)
@@ -24,7 +24,7 @@ def test_list_clinic_dosimetry_successful(client_api_auth, user, clinic_order, t
 
     for analysis_response, analysis_db in zip(analysis_list, analysis_list_db):
         assert analysis_response['id'] == str(analysis_db.uuid)
-        assert analysis_response['userId'] == str(analysis_db.user.uuid)
+        assert analysis_response['userId'] == str(analysis_db.order.user.uuid)
         assert analysis_response['orderId'] == str(analysis_db.order.uuid)
         assert analysis_response['calibrationId'] == str(analysis_db.calibration.uuid)
         assert analysis_response['status'] == analysis_db.get_status_display()
@@ -39,16 +39,13 @@ def test_list_clinic_dosimetry_successful(client_api_auth, user, clinic_order, t
 
         # TODO: Pensar uma forma melhor
         assert analysis_response['imagesUrl'].startswith(
-            f'http://testserver/media/{analysis_db.user.id}/clinic_dosimetry'
+            f'http://testserver/media/{analysis_db.order.user.id}/clinic_dosimetry'
             )
 
         assert analysis_response['report'] == ''
 
 
-def test_list_clinic_dosimetry_without_analysis(client_api_auth, user, clinic_order):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
-    '''
+def test_without_analysis(client_api_auth, user, clinic_order):
 
     url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
     resp = client_api_auth.get(url)

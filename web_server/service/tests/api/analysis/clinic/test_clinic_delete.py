@@ -6,12 +6,12 @@ from django.shortcuts import resolve_url
 from web_server.service.models import ClinicDosimetryAnalysis, Order
 
 
-def test_delete_clinic_dosimetry_successfull(client_api_auth, clinic_dosimetry_update_delete):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
-    '''
+# /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
 
-    user_uuid = clinic_dosimetry_update_delete.user.uuid
+
+def test_delete_clinic_dosimetry_successfull(client_api_auth, clinic_dosimetry_update_delete):
+
+    user_uuid = clinic_dosimetry_update_delete.order.user.uuid
     order_uuid = clinic_dosimetry_update_delete.order.uuid
     analysis_uuid = clinic_dosimetry_update_delete.uuid
 
@@ -38,11 +38,10 @@ def test_delete_clinic_dosimetry_successfull(client_api_auth, clinic_dosimetry_u
 
 def test_fail_delete_clinic_dosimetry_successfull_invalid_status(client_api_auth, clinic_dosimetry):
     '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
     The analysis must have INVALID_INFOS status
     '''
 
-    user_uuid = clinic_dosimetry.user.uuid
+    user_uuid = clinic_dosimetry.order.user.uuid
     order_uuid = clinic_dosimetry.order.uuid
     analysis_uuid = clinic_dosimetry.uuid
 
@@ -68,11 +67,8 @@ def test_fail_delete_clinic_dosimetry_successfull_invalid_status(client_api_auth
 
 
 def test_fail_delete_clinic_dosimetry_wrong_analysis_id(client_api_auth, clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
-    '''
 
-    user_uuid = clinic_dosimetry.user.uuid
+    user_uuid = clinic_dosimetry.order.user.uuid
     order_uuid = clinic_dosimetry.order.uuid
     analysis_uuid = uuid4()
 
@@ -90,9 +86,7 @@ def test_fail_delete_clinic_dosimetry_wrong_analysis_id(client_api_auth, clinic_
 
 
 def test_fail_delete_clinic_dosimetry_using_another_order(client_api_auth, user, clinic_dosimetry, create_order_data):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
-    '''
+
     order = Order.objects.create(user=user,
                                  quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
                                  remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
@@ -102,7 +96,7 @@ def test_fail_delete_clinic_dosimetry_using_another_order(client_api_auth, user,
 
     assert ClinicDosimetryAnalysis.objects.exists()
 
-    user_uuid = clinic_dosimetry.user.uuid
+    user_uuid = clinic_dosimetry.order.user.uuid
     order_uuid = order.uuid
     analysis_uuid = clinic_dosimetry.uuid
 
@@ -118,9 +112,6 @@ def test_fail_delete_clinic_dosimetry_using_another_order(client_api_auth, user,
 
 
 def test_fail_delete_clinic_dosimetry_using_another_user(client_api, second_user, clinic_dosimetry):
-    '''
-    /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
-    '''
 
     user_uuid = second_user.uuid
     order_uuid = clinic_dosimetry.order.uuid

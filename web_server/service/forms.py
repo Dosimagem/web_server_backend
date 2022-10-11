@@ -73,8 +73,7 @@ class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
 
     class Meta:
         model = ClinicDosimetryAnalysis
-        fields = ('user',
-                  'calibration',
+        fields = ('calibration',
                   'order',
                   'images',
                   'analysis_name',
@@ -93,8 +92,7 @@ class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
 
     class Meta:
         model = PreClinicDosimetryAnalysis
-        fields = ('user',
-                  'calibration',
+        fields = ('calibration',
                   'order',
                   'images',
                   'analysis_name',

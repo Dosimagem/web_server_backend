@@ -14,7 +14,6 @@ def test_create_form(clinic_dosimetry_info, clinic_dosimetry_file):
 
 
 @pytest.mark.parametrize('field', [
-    'user',
     'calibration',
     'order',
     'images',
