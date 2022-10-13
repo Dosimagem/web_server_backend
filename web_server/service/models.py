@@ -77,7 +77,7 @@ class Order(CreationModificationBase, models.Model):
 
 class Isotope(CreationModificationBase, models.Model):
 
-    name = models.CharField(max_length=6)
+    name = models.CharField(max_length=6, unique=True)
 
     def __str__(self):
         return self.name
