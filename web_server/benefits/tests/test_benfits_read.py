@@ -3,9 +3,8 @@ from uuid import uuid4
 
 from django.shortcuts import resolve_url
 
-from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 from web_server.benefits.views import LIST_BENEFITS
-
+from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 END_POINT = 'benefits:benefit-read'
 

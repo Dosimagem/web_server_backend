@@ -4,7 +4,6 @@ from web_server.service.models import DosimetryAnalysisBase as analysis
 
 
 class OrderInfos:
-
     def __init__(self, order) -> None:
         self.order = order
         self.queryset_func = self._one_to_many_function()
@@ -34,7 +33,7 @@ class OrderInfos:
         return dict(
             concluded=self.analysis_concluded,
             processing=self.analysis_processing,
-            analyzing_infos=self.analysis_analyzing_infos
+            analyzing_infos=self.analysis_analyzing_infos,
         )
 
 

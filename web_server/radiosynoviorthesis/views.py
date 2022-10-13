@@ -1,19 +1,14 @@
 from http import HTTPStatus
 
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    permission_classes
-)
-from rest_framework.permissions import IsAuthenticated
-
-from web_server.core.views.auth import MyTokenAuthentication
-from web_server.core.errors_msg import list_errors
-from web_server.radiosynoviorthesis.forms import CalculatorForm
-from web_server.radiosynoviorthesis.calculator import radiosysnoviorthesis
 from web_server.core.decorators import user_from_token_and_user_from_url
+from web_server.core.errors_msg import list_errors
+from web_server.core.views.auth import MyTokenAuthentication
+from web_server.radiosynoviorthesis.calculator import radiosysnoviorthesis
+from web_server.radiosynoviorthesis.forms import CalculatorForm
 
 
 @api_view(['POST'])

@@ -1,21 +1,15 @@
 from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
-from rest_framework.response import Response
-from rest_framework.decorators import (
-                                        api_view,
-                                        authentication_classes,
-                                        permission_classes
-                                        )
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-from web_server.core.forms import ProfileUpdateForm
+from web_server.core.decorators import user_from_token_and_user_from_url
+from web_server.core.errors_msg import list_errors
+from web_server.core.forms import ProfileUpdateForm, UpdateEmailForm
 
 from .auth import MyTokenAuthentication
-from web_server.core.errors_msg import list_errors
-from web_server.core.decorators import user_from_token_and_user_from_url
-from web_server.core.forms import UpdateEmailForm
-
 
 User = get_user_model()
 
@@ -35,7 +29,10 @@ def users_read_update(request, user_id):
         form = ProfileUpdateForm(data=request.data, instance=user.profile)
 
         if not form.is_valid():
-            return Response({'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+            return Response(
+                {'errors': list_errors(form.errors)},
+                status=HTTPStatus.BAD_REQUEST,
+            )
 
         form.save()
 
@@ -47,14 +44,11 @@ def users_read_update(request, user_id):
 @permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
 def read_update_email(request, user_id):
-    '''
+    """
     Read and update user email
-    '''
+    """
 
-    dispatcher = {
-        'GET': _read_email,
-        'PATCH': _update_email
-    }
+    dispatcher = {'GET': _read_email, 'PATCH': _update_email}
 
     view = dispatcher[request.method]
 

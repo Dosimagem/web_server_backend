@@ -4,8 +4,7 @@ from http import HTTPStatus
 import pytest
 from django.shortcuts import resolve_url
 
-from web_server.service.models import Calibration, FORMAT_DATE
-
+from web_server.service.models import FORMAT_DATE, Calibration
 
 # /api/v1/users/<uuid>/calibrations/ - POST
 
@@ -146,16 +145,25 @@ def test_fail_isotope_invalid_by_size(client_api_auth, user, form_data):
     assert body['errors'] == expected
 
 
-@pytest.mark.parametrize('field, error', [
-    ('isotope', ['O campo isotopo é obrigatório.']),
-    ('calibrationName', ['O campo Nome da calibração é obrigatório.']),
-    ('syringeActivity', ['O campo atividade da seringa é obrigatório.']),
-    ('residualSyringeActivity', ['O campo atividade residual na seringa é obrigatório.']),
-    ('measurementDatetime', ['O campo hora e data da medição é obrigatório.']),
-    ('phantomVolume', ['O campo volume do fantoma é obrigatório.']),
-    ('acquisitionTime', ['O campo tempo de aquisição é obrigatório.']),
-    ('images', ['O campo imagens é obrigatório.']),
-    ])
+@pytest.mark.parametrize(
+    'field, error',
+    [
+        ('isotope', ['O campo isotopo é obrigatório.']),
+        ('calibrationName', ['O campo Nome da calibração é obrigatório.']),
+        ('syringeActivity', ['O campo atividade da seringa é obrigatório.']),
+        (
+            'residualSyringeActivity',
+            ['O campo atividade residual na seringa é obrigatório.'],
+        ),
+        (
+            'measurementDatetime',
+            ['O campo hora e data da medição é obrigatório.'],
+        ),
+        ('phantomVolume', ['O campo volume do fantoma é obrigatório.']),
+        ('acquisitionTime', ['O campo tempo de aquisição é obrigatório.']),
+        ('images', ['O campo imagens é obrigatório.']),
+    ],
+)
 def test_fail_missing_fields(client_api_auth, user, form_data, field, error):
 
     form_data.pop(field)

@@ -43,7 +43,9 @@ def test_invalid_form_quantity_of_analyzes(create_order_data):
     assert form.errors == {'quantity_of_analyzes': [_('Enter a whole number.')]}
 
 
-def test_invalid_form_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(create_order_data):
+def test_invalid_form_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(
+    create_order_data,
+):
 
     create_order_data['quantity_of_analyzes'] = '1'
     create_order_data['remaining_of_analyzes'] = '2'

@@ -3,20 +3,19 @@ from decimal import Decimal
 
 import pytest
 from django.core.files.base import ContentFile
-from rest_framework.authtoken.models import Token
 from django.utils.timezone import make_aware
+from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
 from web_server.core.models import UserProfile
-from web_server.service.models import ClinicDosimetryAnalysis, Isotope, Order, Calibration, PreClinicDosimetryAnalysis
-
+from web_server.service.models import Calibration, ClinicDosimetryAnalysis, Isotope, Order, PreClinicDosimetryAnalysis
 
 HTTP_METHODS = {
     'get': APIClient().get,
     'post': APIClient().post,
     'put': APIClient().put,
     'patch': APIClient().patch,
-    'delete': APIClient().delete
+    'delete': APIClient().delete,
 }
 
 
@@ -55,16 +54,13 @@ def register_infos():
         cnpj='42438610000111',  # 42.438.610/0001-11
         cpf='93743851121',  # 937.438.511-21
         phone='55(33)1111-1111',
-        role='Médico'
+        role='Médico',
     )
 
 
 @pytest.fixture
 def user_info(register_infos):
-    return dict(
-        email=register_infos['email'],
-        password=register_infos['password1']
-    )
+    return dict(email=register_infos['email'], password=register_infos['password1'])
 
 
 @pytest.fixture
@@ -93,7 +89,7 @@ def second_register_infos():
         cnpj='83398534000145',  # 83.398.534/0001-45
         cpf='52450318097',  # 524.503.180-97
         phone='55(41)22222-2222',
-        role='Fisica médica'
+        role='Fisica médica',
     )
 
 
@@ -101,7 +97,7 @@ def second_register_infos():
 def second_user_login_info(second_register_infos):
     return dict(
         email=second_register_infos['email'],
-        password=second_register_infos['password1']
+        password=second_register_infos['password1'],
     )
 
 
@@ -143,67 +139,72 @@ def create_order_data(user):
         'remaining_of_analyzes': 10,
         'price': '1000.00',
         'service_name': Order.CLINIC_DOSIMETRY,
-        'status_payment': Order.AWAITING_PAYMENT
+        'status_payment': Order.AWAITING_PAYMENT,
     }
 
 
 @pytest.fixture
 def clinic_order(user, create_order_data):
-    return Order.objects.create(user=user,
-                                quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
-                                remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
-                                price=create_order_data['price'],
-                                service_name=create_order_data['service_name']
-                                )
+    return Order.objects.create(
+        user=user,
+        quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
+        remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
+        price=create_order_data['price'],
+        service_name=create_order_data['service_name'],
+    )
 
 
 @pytest.fixture
 def preclinic_order(user):
-    return Order.objects.create(user=user,
-                                quantity_of_analyzes=10,
-                                remaining_of_analyzes=10,
-                                price='1000',
-                                service_name=Order.PRECLINIC_DOSIMETRY
-                                )
+    return Order.objects.create(
+        user=user,
+        quantity_of_analyzes=10,
+        remaining_of_analyzes=10,
+        price='1000',
+        service_name=Order.PRECLINIC_DOSIMETRY,
+    )
 
 
 @pytest.fixture
 def tree_orders_of_tow_users(user, second_user):
-    '''
+    """
     Order Table:
 
     ID_USER  Type               Number    Value   Status Payment
     1        Dosimetry Clinic     10     10.000   Confirmed
     1        Dosimetry Preclinic   5      5.000   Analysis
     2        Dosimetry Clinic      3      3.000   Confimed
-    '''
+    """
 
-    Order.objects.create(user=user,
-                         quantity_of_analyzes=10,
-                         remaining_of_analyzes=10,
-                         price=Decimal('10000.00'),
-                         service_name=Order.CLINIC_DOSIMETRY,
-                         status_payment=Order.CONFIRMED,
-                         permission=True
-                         )
+    Order.objects.create(
+        user=user,
+        quantity_of_analyzes=10,
+        remaining_of_analyzes=10,
+        price=Decimal('10000.00'),
+        service_name=Order.CLINIC_DOSIMETRY,
+        status_payment=Order.CONFIRMED,
+        permission=True,
+    )
 
-    Order.objects.create(user=user,
-                         quantity_of_analyzes=5,
-                         remaining_of_analyzes=5,
-                         price=Decimal('5000.00'),
-                         service_name=Order.PRECLINIC_DOSIMETRY,
-                         status_payment=Order.AWAITING_PAYMENT,
-                         permission=False
-                         )
+    Order.objects.create(
+        user=user,
+        quantity_of_analyzes=5,
+        remaining_of_analyzes=5,
+        price=Decimal('5000.00'),
+        service_name=Order.PRECLINIC_DOSIMETRY,
+        status_payment=Order.AWAITING_PAYMENT,
+        permission=False,
+    )
 
-    Order.objects.create(user=second_user,
-                         quantity_of_analyzes=3,
-                         remaining_of_analyzes=3,
-                         price=Decimal('3000.00'),
-                         service_name=Order.CLINIC_DOSIMETRY,
-                         status_payment=Order.AWAITING_PAYMENT,
-                         permission=False
-                         )
+    Order.objects.create(
+        user=second_user,
+        quantity_of_analyzes=3,
+        remaining_of_analyzes=3,
+        price=Decimal('3000.00'),
+        service_name=Order.CLINIC_DOSIMETRY,
+        status_payment=Order.AWAITING_PAYMENT,
+        permission=False,
+    )
 
     return list(Order.objects.all())
 
@@ -252,7 +253,7 @@ def second_calibration_infos(user, lu_177):
         residual_syringe_activity=0.3,
         measurement_datetime=DATETIME_TIMEZONE,
         phantom_volume=200.0,
-        acquisition_time=1000.0
+        acquisition_time=1000.0,
     )
 
 
@@ -275,26 +276,26 @@ def calibration_with_images(calibration_infos, calibration_file):
 def second_user_calibrations_infos(second_user, lu_177_and_cu_64):
 
     c1 = dict(
-            user=second_user,
-            isotope=lu_177_and_cu_64[0],
-            calibration_name='Calibration A',
-            syringe_activity=500.0,
-            residual_syringe_activity=2.3,
-            measurement_datetime=DATETIME_TIMEZONE,
-            phantom_volume=20.0,
-            acquisition_time=10000.0
-        )
+        user=second_user,
+        isotope=lu_177_and_cu_64[0],
+        calibration_name='Calibration A',
+        syringe_activity=500.0,
+        residual_syringe_activity=2.3,
+        measurement_datetime=DATETIME_TIMEZONE,
+        phantom_volume=20.0,
+        acquisition_time=10000.0,
+    )
 
     c2 = dict(
-            user=second_user,
-            isotope=lu_177_and_cu_64[1],
-            calibration_name='Calibration B',
-            syringe_activity=25.0,
-            residual_syringe_activity=10.3,
-            measurement_datetime=DATETIME_TIMEZONE,
-            phantom_volume=500.0,
-            acquisition_time=1800.0
-        )
+        user=second_user,
+        isotope=lu_177_and_cu_64[1],
+        calibration_name='Calibration B',
+        syringe_activity=25.0,
+        residual_syringe_activity=10.3,
+        measurement_datetime=DATETIME_TIMEZONE,
+        phantom_volume=500.0,
+        acquisition_time=1800.0,
+    )
 
     return [c1, c2]
 
@@ -312,7 +313,7 @@ def api_cnpj_successfull(responses, register_infos):
     return responses.add(
         method='GET',
         url=f'https://brasilapi.com.br/api/cnpj/v1/{register_infos["cnpj"]}',
-        status=200
+        status=200,
     )
 
 
@@ -322,7 +323,7 @@ def api_cnpj_fail(responses, second_register_infos):
         method='GET',
         url=f'https://brasilapi.com.br/api/cnpj/v1/{second_register_infos["cnpj"]}',
         status=404,
-        json={'message': ['CNPJ 83.398.534/0001-45 não encontrado.']}
+        json={'message': ['CNPJ 83.398.534/0001-45 não encontrado.']},
     )
 
 
@@ -345,7 +346,7 @@ def clinic_dosimetry_info(first_calibration, clinic_order):
         'order': clinic_order,
         'analysis_name': 'Analysis 1',
         'injected_activity': 50,
-        'administration_datetime': DATETIME_TIMEZONE
+        'administration_datetime': DATETIME_TIMEZONE,
     }
 
 
@@ -356,7 +357,7 @@ def preclinic_dosimetry_info(first_calibration, preclinic_order):
         'order': preclinic_order,
         'analysis_name': 'Analysis 1',
         'injected_activity': 20,
-        'administration_datetime': DATETIME_TIMEZONE
+        'administration_datetime': DATETIME_TIMEZONE,
     }
 
 
@@ -405,16 +406,22 @@ def preclinic_dosimetry_update_delete(preclinic_dosimetry):
 def tree_clinic_dosimetry_of_first_user(clinic_dosimetry_info):
 
     clinic_dosimetry_info['analysis_name'] = 'Analysis 1'
-    ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
-                                           images=ContentFile(b'CT e SPET files 1', name='images.zip'))
+    ClinicDosimetryAnalysis.objects.create(
+        **clinic_dosimetry_info,
+        images=ContentFile(b'CT e SPET files 1', name='images.zip'),
+    )
 
     clinic_dosimetry_info['analysis_name'] = 'Analysis 2'
-    ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
-                                           images=ContentFile(b'CT e SPET files 2', name='images.zip'))
+    ClinicDosimetryAnalysis.objects.create(
+        **clinic_dosimetry_info,
+        images=ContentFile(b'CT e SPET files 2', name='images.zip'),
+    )
 
     clinic_dosimetry_info['analysis_name'] = 'Analysis 3'
-    ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info,
-                                           images=ContentFile(b'CT e SPET files 3', name='images.zip'))
+    ClinicDosimetryAnalysis.objects.create(
+        **clinic_dosimetry_info,
+        images=ContentFile(b'CT e SPET files 3', name='images.zip'),
+    )
     return ClinicDosimetryAnalysis.objects.all()
 
 
@@ -422,14 +429,20 @@ def tree_clinic_dosimetry_of_first_user(clinic_dosimetry_info):
 def tree_preclinic_dosimetry_of_first_user(preclinic_dosimetry_info):
 
     preclinic_dosimetry_info['analysis_name'] = 'Analysis 1'
-    PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info,
-                                              images=ContentFile(b'CT e SPET files 1', name='images.zip'))
+    PreClinicDosimetryAnalysis.objects.create(
+        **preclinic_dosimetry_info,
+        images=ContentFile(b'CT e SPET files 1', name='images.zip'),
+    )
 
     preclinic_dosimetry_info['analysis_name'] = 'Analysis 2'
-    PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info,
-                                              images=ContentFile(b'CT e SPET files 2', name='images.zip'))
+    PreClinicDosimetryAnalysis.objects.create(
+        **preclinic_dosimetry_info,
+        images=ContentFile(b'CT e SPET files 2', name='images.zip'),
+    )
 
     preclinic_dosimetry_info['analysis_name'] = 'Analysis 3'
-    PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info,
-                                              images=ContentFile(b'CT e SPET files 3', name='images.zip'))
+    PreClinicDosimetryAnalysis.objects.create(
+        **preclinic_dosimetry_info,
+        images=ContentFile(b'CT e SPET files 3', name='images.zip'),
+    )
     return PreClinicDosimetryAnalysis.objects.all()

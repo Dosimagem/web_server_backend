@@ -1,6 +1,6 @@
-from uuid import uuid4
 from http import HTTPStatus
 from unittest.mock import MagicMock
+from uuid import uuid4
 
 from rest_framework.response import Response
 

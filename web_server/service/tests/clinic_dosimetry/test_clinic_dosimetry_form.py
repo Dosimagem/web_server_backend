@@ -1,7 +1,5 @@
 import pytest
-
 from django.utils.translation import gettext as _
-
 
 from web_server.service.forms import ClinicDosimetryAnalysisCreateForm
 
@@ -13,14 +11,17 @@ def test_create_form(clinic_dosimetry_info, clinic_dosimetry_file):
     assert form.is_valid()
 
 
-@pytest.mark.parametrize('field', [
-    'calibration',
-    'order',
-    'images',
-    'analysis_name',
-    'injected_activity',
-    'administration_datetime',
-])
+@pytest.mark.parametrize(
+    'field',
+    [
+        'calibration',
+        'order',
+        'images',
+        'analysis_name',
+        'injected_activity',
+        'administration_datetime',
+    ],
+)
 def test_missing_fields(field, clinic_dosimetry_info, clinic_dosimetry_file):
 
     clinic_dosimetry_file.pop(field) if field == 'images' else clinic_dosimetry_info.pop(field)
@@ -58,9 +59,9 @@ def test_invalid_create_form_field_must_be_positive(clinic_dosimetry_info, calib
     assert form.errors == {'injected_activity': [msg]}
 
 
-def test_invalid_create_form_analysis_name_must_be_unique_per_order(clinic_dosimetry,
-                                                                    clinic_dosimetry_info,
-                                                                    clinic_dosimetry_file):
+def test_invalid_create_form_analysis_name_must_be_unique_per_order(
+    clinic_dosimetry, clinic_dosimetry_info, clinic_dosimetry_file
+):
 
     form = ClinicDosimetryAnalysisCreateForm(data=clinic_dosimetry_info, files=clinic_dosimetry_file)
 

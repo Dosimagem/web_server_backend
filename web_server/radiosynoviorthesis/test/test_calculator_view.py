@@ -8,9 +8,9 @@ from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 
 def test_successfull(client_api_auth, user, calculator_input):
-    '''
+    """
     /api/v1/users/<uuid>/calculator - POST
-    '''
+    """
 
     url = resolve_url('radiosyn:calculator', user.uuid)
 
@@ -23,16 +23,23 @@ def test_successfull(client_api_auth, user, calculator_input):
     assert {'MBq': 6.6, 'mCi': 0.18} == body
 
 
-@pytest.mark.parametrize('field, value, error', [
-    ('radionuclide', 'AA-666', ['Radionicleotideo inválido.']),
-    ('thickness', '4 cm', ['Espessura sinovial inválida.']),
-    ('surface', -10, ['Certifique-se que superfície seja maior ou igual a 0.0.']),
-    ('surface', 'd-10', ['Superficie precisa ser um número.']),
-])
+@pytest.mark.parametrize(
+    'field, value, error',
+    [
+        ('radionuclide', 'AA-666', ['Radionicleotideo inválido.']),
+        ('thickness', '4 cm', ['Espessura sinovial inválida.']),
+        (
+            'surface',
+            -10,
+            ['Certifique-se que superfície seja maior ou igual a 0.0.'],
+        ),
+        ('surface', 'd-10', ['Superficie precisa ser um número.']),
+    ],
+)
 def test_fail_invalid(client_api_auth, user, calculator_input, field, value, error):
-    '''
+    """
     /api/v1/users/<uuid>/calculator - POST
-    '''
+    """
 
     calculator_input[field] = value
 
@@ -47,15 +54,18 @@ def test_fail_invalid(client_api_auth, user, calculator_input, field, value, err
     assert error == body['errors']
 
 
-@pytest.mark.parametrize('field, error', [
-    ('radionuclide', ['O campo radionicleotideo é obrigatório.']),
-    ('thickness', ['O campo espessura é obrigatório.']),
-    ('surface', ['O campo superfície é obrigatório.']),
-])
+@pytest.mark.parametrize(
+    'field, error',
+    [
+        ('radionuclide', ['O campo radionicleotideo é obrigatório.']),
+        ('thickness', ['O campo espessura é obrigatório.']),
+        ('surface', ['O campo superfície é obrigatório.']),
+    ],
+)
 def test_fail_missing_fields(client_api_auth, user, calculator_input, field, error):
-    '''
+    """
     /api/v1/users/<uuid>/calculator - POST
-    '''
+    """
 
     calculator_input.pop(field)
 
@@ -71,9 +81,9 @@ def test_fail_missing_fields(client_api_auth, user, calculator_input, field, err
 
 
 def test_not_allowed_method(client_api_auth, user):
-    '''
+    """
     /api/v1/users/<uuid>/calculator - POST
-    '''
+    """
 
     url = resolve_url('radiosyn:calculator', user.uuid)
 
@@ -91,10 +101,10 @@ def test_not_allowed_method(client_api_auth, user):
 
 
 def test_token_id_and_user_id_dont_match(client_api_auth):
-    '''
+    """
     /api/v1/users/<uuid>/calculator - POST
     The token does not belong to the user
-    '''
+    """
 
     url = resolve_url('radiosyn:calculator', uuid4())
     response = client_api_auth.post(url)
@@ -107,9 +117,9 @@ def test_token_id_and_user_id_dont_match(client_api_auth):
 
 
 def test_auth(client_api, user):
-    '''
-     /api/v1/users/<uuid>/calculator - POST
-    '''
+    """
+    /api/v1/users/<uuid>/calculator - POST
+    """
 
     url = resolve_url('radiosyn:calculator', user.uuid)
 

@@ -2,11 +2,13 @@ from datetime import datetime, timezone
 
 import pytest
 
-from web_server.service.models import (upload_calibration_to,
-                                       upload_clinic_dosimetry_to,
-                                       upload_preclinic_dosimetry_to,
-                                       upload_report_to,
-                                       _timestamp)
+from web_server.service.models import (
+    _timestamp,
+    upload_calibration_to,
+    upload_clinic_dosimetry_to,
+    upload_preclinic_dosimetry_to,
+    upload_report_to,
+)
 
 
 @pytest.fixture

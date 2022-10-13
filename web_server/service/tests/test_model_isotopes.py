@@ -1,7 +1,6 @@
 import pytest
 from django.db.utils import IntegrityError
 
-
 from web_server.service.models import Isotope
 
 

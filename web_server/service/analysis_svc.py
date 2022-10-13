@@ -1,8 +1,10 @@
+from web_server.service.forms import (
+    ClinicDosimetryAnalysisCreateForm,
+    ClinicDosimetryAnalysisUpdateForm,
+    PreClinicDosimetryAnalysisCreateForm,
+    PreClinicDosimetryAnalysisUpdateForm,
+)
 from web_server.service.models import ClinicDosimetryAnalysis, Order, PreClinicDosimetryAnalysis
-from web_server.service.forms import (ClinicDosimetryAnalysisCreateForm,
-                                      ClinicDosimetryAnalysisUpdateForm,
-                                      PreClinicDosimetryAnalysisCreateForm,
-                                      PreClinicDosimetryAnalysisUpdateForm)
 
 
 class AnalisysChoice:

@@ -3,8 +3,7 @@ from uuid import uuid4
 
 from django.shortcuts import resolve_url
 
-from web_server.service.models import PreClinicDosimetryAnalysis, Order
-
+from web_server.service.models import Order, PreClinicDosimetryAnalysis
 
 # /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
 
@@ -21,7 +20,12 @@ def test_successfull(client_api_auth, preclinic_dosimetry_update_delete):
 
     assert PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.delete(url)
 
     body = resp.json()
@@ -33,13 +37,16 @@ def test_successfull(client_api_auth, preclinic_dosimetry_update_delete):
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body == {'id': str(analysis_uuid), 'message': 'Análise deletada com sucesso!'}
+    assert body == {
+        'id': str(analysis_uuid),
+        'message': 'Análise deletada com sucesso!',
+    }
 
 
 def test_fail_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
-    '''
+    """
     The analysis must have INVALID_INFOS status
-    '''
+    """
 
     user_uuid = preclinic_dosimetry.order.user.uuid
     order_uuid = preclinic_dosimetry.order.uuid
@@ -51,7 +58,12 @@ def test_fail_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
 
     assert PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.delete(url)
 
     body = resp.json()
@@ -74,7 +86,12 @@ def test_fail_wrong_analysis_id(client_api_auth, preclinic_dosimetry):
 
     assert PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.delete(url)
     body = resp.json()
 
@@ -87,12 +104,13 @@ def test_fail_wrong_analysis_id(client_api_auth, preclinic_dosimetry):
 
 def test_fail_using_another_order(client_api_auth, user, preclinic_dosimetry, create_order_data):
 
-    order = Order.objects.create(user=user,
-                                 quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
-                                 remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
-                                 price=create_order_data['price'],
-                                 service_name=create_order_data['service_name']
-                                 )
+    order = Order.objects.create(
+        user=user,
+        quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
+        remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
+        price=create_order_data['price'],
+        service_name=create_order_data['service_name'],
+    )
 
     assert PreClinicDosimetryAnalysis.objects.exists()
 
@@ -100,7 +118,12 @@ def test_fail_using_another_order(client_api_auth, user, preclinic_dosimetry, cr
     order_uuid = order.uuid
     analysis_uuid = preclinic_dosimetry.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.delete(url)
     body = resp.json()
 
@@ -117,7 +140,12 @@ def test_fail_using_another_user(client_api, second_user, preclinic_dosimetry):
     order_uuid = preclinic_dosimetry.order.uuid
     analysis_uuid = preclinic_dosimetry.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + second_user.auth_token.key)
     resp = client_api.delete(url)
     body = resp.json()

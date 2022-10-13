@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
-from web_server.core.models import UserProfile
 
+from web_server.core.models import UserProfile
 
 User = get_user_model()
 
