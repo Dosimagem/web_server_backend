@@ -1,13 +1,12 @@
 from datetime import datetime
 
 import pytest
-from django.core.files.base import ContentFile
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.core.files.base import ContentFile
+
 from web_server.conftest import DATETIME_TIMEZONE
-
-from web_server.service.models import Calibration, PreClinicDosimetryAnalysis, Order
-
+from web_server.service.models import Calibration, Order, PreClinicDosimetryAnalysis
 
 User = get_user_model()
 
@@ -56,21 +55,23 @@ def test_delete_clinic_dosimetry_must_not_delete_order(preclinic_order, preclini
 
 def test_clinic_dosimetry_one_to_many_relation(user, first_calibration, preclinic_order):
 
-    analysis_1 = PreClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
-                                                           order=preclinic_order,
-                                                           analysis_name='Analysis 1',
-                                                           injected_activity=50,
-                                                           administration_datetime=DATETIME_TIMEZONE,
-                                                           images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                           )
+    analysis_1 = PreClinicDosimetryAnalysis.objects.create(
+        calibration=first_calibration,
+        order=preclinic_order,
+        analysis_name='Analysis 1',
+        injected_activity=50,
+        administration_datetime=DATETIME_TIMEZONE,
+        images=ContentFile(b'CT e SPET files', name='images.zip'),
+    )
 
-    analysis_2 = PreClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
-                                                           order=preclinic_order,
-                                                           analysis_name='Analysis 2',
-                                                           injected_activity=50,
-                                                           administration_datetime=DATETIME_TIMEZONE,
-                                                           images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                           )
+    analysis_2 = PreClinicDosimetryAnalysis.objects.create(
+        calibration=first_calibration,
+        order=preclinic_order,
+        analysis_name='Analysis 2',
+        injected_activity=50,
+        administration_datetime=DATETIME_TIMEZONE,
+        images=ContentFile(b'CT e SPET files', name='images.zip'),
+    )
 
     assert first_calibration.preclinic_dosimetry_analysis.count() == 2
 
@@ -87,13 +88,14 @@ def test_clinic_dosimetry_one_to_many_relation(user, first_calibration, preclini
 
 def test_default_values(user, first_calibration, preclinic_order):
 
-    analysis = PreClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
-                                                         order=preclinic_order,
-                                                         analysis_name='Analysis 1',
-                                                         injected_activity=50,
-                                                         administration_datetime=DATETIME_TIMEZONE,
-                                                         images=ContentFile(b'CT e SPET files', name='images.zip')
-                                                         )
+    analysis = PreClinicDosimetryAnalysis.objects.create(
+        calibration=first_calibration,
+        order=preclinic_order,
+        analysis_name='Analysis 1',
+        injected_activity=50,
+        administration_datetime=DATETIME_TIMEZONE,
+        images=ContentFile(b'CT e SPET files', name='images.zip'),
+    )
 
     assert analysis.status == PreClinicDosimetryAnalysis.ANALYZING_INFOS
     assert analysis.active
@@ -115,9 +117,11 @@ def test_str(preclinic_dosimetry):
 
 def test_status(preclinic_dosimetry_info):
 
-    analysis = PreClinicDosimetryAnalysis(**preclinic_dosimetry_info,
-                                          images=ContentFile(b'CT e SPET files', name='images.zip'),
-                                          status='AA')
+    analysis = PreClinicDosimetryAnalysis(
+        **preclinic_dosimetry_info,
+        images=ContentFile(b'CT e SPET files', name='images.zip'),
+        status='AA',
+    )
 
     with pytest.raises(ValidationError):
         analysis.full_clean()

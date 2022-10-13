@@ -1,13 +1,13 @@
 from uuid import uuid4
 
-from validate_docbr import CPF, CNPJ
 from django.contrib.auth import get_user_model
-from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from validate_docbr import CNPJ, CPF
 
 from web_server.core.validators import validate_cnpj, validate_cpf, validate_phone
 
@@ -57,6 +57,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     App base User class.
     Email and password are required. Other fields are optional.
     """
+
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     email = models.EmailField(_('email address'), unique=True)
     is_staff = models.BooleanField(
@@ -68,8 +69,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         _('active'),
         default=True,
         help_text=_(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
+            'Designates whether this user should be treated as active. ' 'Unselect this instead of deleting accounts.'
         ),
     )
 

@@ -1,21 +1,21 @@
 from copy import deepcopy
 from http import HTTPStatus
 
-from django.shortcuts import resolve_url
 from django.core.files.base import ContentFile
+from django.shortcuts import resolve_url
 
 from web_server.service.models import Calibration
 
 
 def test_scenario_read_orders_of_users(client_api, tree_orders_of_tow_users, user, second_user):
-    '''
+    """
     Order Table:
 
     ID_USER  Type               Number    price   Status Payment
     1        Dosimetry Clinic     10     10.000   Confirmado
     1        Dosimetry Preclinic   5      5.000   Aguardando pagamento
     2        Dosimetry Clinic      3      3.000   Aguardando pagamento
-    '''
+    """
 
     # User 1
 
@@ -74,7 +74,7 @@ def test_scenario_read_orders_of_users(client_api, tree_orders_of_tow_users, use
 
 
 def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu_64, form_data):
-    '''
+    """
     Isotoper Table:
 
     ID Name
@@ -86,7 +86,7 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
     1    test1@email.com
     2    test2@email.com
 
-    '''
+    """
 
     # get isotopes
 
@@ -172,7 +172,11 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
 
     current_user = user
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
-    url = resolve_url('service:calibration-read-update-delete', current_user.uuid, calibration.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        current_user.uuid,
+        calibration.uuid,
+    )
     response = client_api.put(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.NO_CONTENT
@@ -185,7 +189,11 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
 
     current_user = user
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + current_user.auth_token.key)
-    url = resolve_url('service:calibration-read-update-delete', current_user.uuid, calibration.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        current_user.uuid,
+        calibration.uuid,
+    )
     response = client_api.delete(url)
 
     assert response.status_code == HTTPStatus.OK
@@ -207,9 +215,9 @@ def test_scenario_calibrations_view(client_api, user, second_user, lu_177_and_cu
 
 
 def test_scenario_update_calibration_images(client_api, user, form_data, calibration_with_images):
-    '''
+    """
     Calibration Already file
-    '''
+    """
 
     cali_db = Calibration.objects.first()
 
@@ -220,7 +228,11 @@ def test_scenario_update_calibration_images(client_api, user, form_data, calibra
     form_data['images'] = ContentFile(b'New calibration file', name='images.zip')
 
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
-    url = resolve_url('service:calibration-read-update-delete', user.uuid, calibration_with_images.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        user.uuid,
+        calibration_with_images.uuid,
+    )
     response = client_api.put(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.NO_CONTENT

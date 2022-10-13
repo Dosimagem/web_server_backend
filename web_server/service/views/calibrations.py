@@ -2,20 +2,15 @@ from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework.response import Response
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    permission_classes
-)
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-from web_server.service.models import Calibration, Isotope, DosimetryAnalysisBase
-from web_server.service.forms import CreateCalibrationForm, IsotopeForm, UpdateCalibrationForm
 from web_server.core.decorators import user_from_token_and_user_from_url
-from web_server.core.views.auth import MyTokenAuthentication
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE, list_errors
-
+from web_server.core.views.auth import MyTokenAuthentication
+from web_server.service.forms import CreateCalibrationForm, IsotopeForm, UpdateCalibrationForm
+from web_server.service.models import Calibration, DosimetryAnalysisBase, Isotope
 
 User = get_user_model()
 
@@ -26,10 +21,7 @@ User = get_user_model()
 @user_from_token_and_user_from_url
 def calibrations_list_create(request, user_id):
 
-    dispatcher = {
-        'GET': _list_calibrations,
-        'POST': _create_calibrations
-    }
+    dispatcher = {'GET': _list_calibrations, 'POST': _create_calibrations}
 
     view = dispatcher[request.method]
 
@@ -69,8 +61,12 @@ def _update_calibration(request, user_id, calibration_id):
         # TODO: Colocar isso em uma camada de serviço (Regra de Negocio)
         if cali.clinic_dosimetry_analysis.exclude(status=DosimetryAnalysisBase.INVALID_INFOS).exists():
             data = {
-                'errors': [("Apenas calibração associadas com análises com o status "
-                            "'Informações Inválidas' pode ser atualizada/deletada.")]
+                'errors': [
+                    (
+                        'Apenas calibração associadas com análises com o status '
+                        "'Informações Inválidas' pode ser atualizada/deletada."
+                    )
+                ]
             }
             return Response(data=data, status=HTTPStatus.CONFLICT)
 
@@ -80,7 +76,10 @@ def _update_calibration(request, user_id, calibration_id):
         form_isopote = IsotopeForm(data)
 
         if not form_isopote.is_valid():
-            return Response(data={'errors': list_errors(form_isopote.errors)}, status=HTTPStatus.BAD_REQUEST)
+            return Response(
+                data={'errors': list_errors(form_isopote.errors)},
+                status=HTTPStatus.BAD_REQUEST,
+            )
 
         isotope = Isotope.objects.get(name=form_isopote.cleaned_data['isotope'])
 
@@ -90,7 +89,10 @@ def _update_calibration(request, user_id, calibration_id):
         form = UpdateCalibrationForm(data, request.FILES, instance=cali)
 
         if not form.is_valid():
-            return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+            return Response(
+                data={'errors': list_errors(form.errors)},
+                status=HTTPStatus.BAD_REQUEST,
+            )
 
         cali.save()
 
@@ -108,13 +110,20 @@ def _delete_calibration(request, user_id, calibration_id):
         # TODO: Colocar isso em uma camada de serviço (Regra de Negocio)
         if cali.clinic_dosimetry_analysis.exclude(status=DosimetryAnalysisBase.INVALID_INFOS).exists():
             data = {
-                'errors': [("Apenas calibração associadas com análises com o status "
-                            "'Informações Inválidas' pode ser atualizada/deletada.")]
+                'errors': [
+                    (
+                        'Apenas calibração associadas com análises com o status '
+                        "'Informações Inválidas' pode ser atualizada/deletada."
+                    )
+                ]
             }
             return Response(data=data, status=HTTPStatus.CONFLICT)
 
         cali.delete()
-        data = {'id': calibration_id, 'message': 'Calibração deletada com sucesso!'}
+        data = {
+            'id': calibration_id,
+            'message': 'Calibração deletada com sucesso!',
+        }
         return Response(data=data)
 
     except ObjectDoesNotExist:
@@ -127,10 +136,7 @@ def _list_calibrations(request, user_id):
 
     calibration_list = [q.to_dict(request) for q in calibration]
 
-    data = {
-        'count': len(calibration_list),
-        'row': calibration_list
-    }
+    data = {'count': len(calibration_list), 'row': calibration_list}
 
     return Response(data=data)
 
@@ -142,7 +148,10 @@ def _create_calibrations(request, user_id):
     form_isopote = IsotopeForm(data)
 
     if not form_isopote.is_valid():
-        return Response(data={'errors': list_errors(form_isopote.errors)}, status=HTTPStatus.BAD_REQUEST)
+        return Response(
+            data={'errors': list_errors(form_isopote.errors)},
+            status=HTTPStatus.BAD_REQUEST,
+        )
 
     isotope = Isotope.objects.filter(name=form_isopote.cleaned_data['isotope']).first()
 
@@ -152,7 +161,10 @@ def _create_calibrations(request, user_id):
     form = CreateCalibrationForm(data=data, files=request.FILES)
 
     if not form.is_valid():
-        return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+        return Response(
+            data={'errors': list_errors(form.errors)},
+            status=HTTPStatus.BAD_REQUEST,
+        )
 
     new_calibration = form.save()
 

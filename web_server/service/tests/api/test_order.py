@@ -3,20 +3,17 @@ from uuid import uuid4
 
 from django.shortcuts import resolve_url
 
+from web_server.core.errors_msg import MSG_ERROR_RESOURCE, MSG_ERROR_TOKEN_USER
 from web_server.service.models import Order
 from web_server.service.order_svc import OrderInfos
-from web_server.core.errors_msg import (
-    MSG_ERROR_TOKEN_USER,
-    MSG_ERROR_RESOURCE,
-)
-
 
 # List - GET
 
+
 def test_list_orders_of_user(client_api_auth, clinic_order):
-    '''
+    """
     /api/v1/users/<uuid>/orders/ - GET
-    '''
+    """
 
     url = resolve_url('service:order-list', clinic_order.user.uuid)
 
@@ -53,9 +50,9 @@ def test_list_orders_of_user(client_api_auth, clinic_order):
 
 
 def test_try_list_orders_for_user_without_order(client_api_auth, user):
-    '''
+    """
     /api/v1/users/<uuid>/orders/ - GET
-    '''
+    """
 
     url = resolve_url('service:order-list', user.uuid)
 
@@ -86,9 +83,9 @@ def test_list_not_allowed_method(client_api_auth, clinic_order):
 
 
 def test_list_token_view_and_user_id_dont_match(client_api_auth, clinic_order):
-    '''
+    """
     The token does not belong to the user
-    '''
+    """
 
     url = resolve_url('service:order-list', uuid4())
     response = client_api_auth.get(url)
@@ -104,11 +101,15 @@ def test_list_token_view_and_user_id_dont_match(client_api_auth, clinic_order):
 
 
 def test_read_order_by_id(client_api_auth, clinic_order):
-    '''
+    """
     /api/v1/users/<uuid>/orders/<uuid> - GET
-    '''
+    """
 
-    url = resolve_url('service:order-read', user_id=clinic_order.user.uuid, order_id=clinic_order.uuid)
+    url = resolve_url(
+        'service:order-read',
+        user_id=clinic_order.user.uuid,
+        order_id=clinic_order.uuid,
+    )
 
     response = client_api_auth.get(url)
 
@@ -137,9 +138,9 @@ def test_read_order_by_id(client_api_auth, clinic_order):
 
 
 def test_read_order_by_wrong_id(client_api_auth, clinic_order):
-    '''
+    """
     /api/v1/users/<uuid>/orders/<uuid> - GET
-    '''
+    """
 
     url = resolve_url('service:order-read', user_id=clinic_order.user.uuid, order_id=uuid4())
 
@@ -153,11 +154,11 @@ def test_read_order_by_wrong_id(client_api_auth, clinic_order):
 
 
 def test_try_read_order_for_user_without_order(client_api_auth, user):
-    '''
+    """
     /api/v1/users/<uuid>/orders/<uuid> - GET
 
     The user does not have a order registration
-    '''
+    """
 
     url = resolve_url('service:order-read', user_id=user.uuid, order_id=uuid4())
 
@@ -171,9 +172,9 @@ def test_try_read_order_for_user_without_order(client_api_auth, user):
 
 
 def test_read_view_token_and_user_id_dont_match(client_api_auth, clinic_order):
-    '''
+    """
     The token does not belong to the user
-    '''
+    """
 
     url = resolve_url('service:order-read', user_id=uuid4(), order_id=clinic_order.uuid)
 
@@ -188,7 +189,11 @@ def test_read_view_token_and_user_id_dont_match(client_api_auth, clinic_order):
 
 def test_read_not_allowed_method(client_api_auth, clinic_order):
 
-    url = resolve_url('service:order-read', user_id=clinic_order.user.uuid, order_id=clinic_order.uuid)
+    url = resolve_url(
+        'service:order-read',
+        user_id=clinic_order.user.uuid,
+        order_id=clinic_order.uuid,
+    )
 
     resp = client_api_auth.post(url, format='json')
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED

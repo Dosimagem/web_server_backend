@@ -1,20 +1,26 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ValidationError
 from django.utils.translation import gettext as _
-from django.contrib.auth import get_user_model
 
 from web_server.core.models import CustomUser, UserProfile
-
 
 User = get_user_model()
 
 
 class ProfileCreateForm(forms.ModelForm):
-
     class Meta:
         model = UserProfile
-        fields = ('user', 'name', 'phone', 'clinic', 'role', 'cpf', 'cnpj', )
+        fields = (
+            'user',
+            'name',
+            'phone',
+            'clinic',
+            'role',
+            'cpf',
+            'cnpj',
+        )
 
     def clean_name(self):
         return self.cleaned_data['name'].title()
@@ -31,10 +37,10 @@ class ProfileCreateForm(forms.ModelForm):
 
         if instance is not None:
             if queryset.exclude(id=instance.id).exists():
-                raise ValidationError(msg_error,  code='exists')
+                raise ValidationError(msg_error, code='exists')
         else:
             if queryset.exists():
-                raise ValidationError(msg_error,  code='exists')
+                raise ValidationError(msg_error, code='exists')
 
     def clean_cpf(self):
 
@@ -64,10 +70,14 @@ class ProfileCreateForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(ProfileCreateForm):
-
     class Meta:
         model = UserProfile
-        fields = ('name', 'clinic', 'role', 'cnpj', )
+        fields = (
+            'name',
+            'clinic',
+            'role',
+            'cnpj',
+        )
 
 
 class MyUserCreationForm(UserCreationForm):
@@ -76,19 +86,22 @@ class MyUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'password1', 'password2',)
+        fields = (
+            'email',
+            'password1',
+            'password2',
+        )
 
     def clean_confirmed_email(self):
         email = self.cleaned_data.get('email')
         confimed_email = self.cleaned_data['confirmed_email']
 
         if email != confimed_email:
-            raise forms.ValidationError(['The two email fields didn’t match.'],  code='email_match')
+            raise forms.ValidationError(['The two email fields didn’t match.'], code='email_match')
 
 
 # TODO: Testar de forma unitaria o form.
 class UpdateEmailForm(forms.ModelForm):
-
     class Meta:
         model = User
         fields = ('email',)

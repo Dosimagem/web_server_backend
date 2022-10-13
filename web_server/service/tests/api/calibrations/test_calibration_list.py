@@ -2,8 +2,7 @@ from http import HTTPStatus
 
 from django.shortcuts import resolve_url
 
-from web_server.service.models import Calibration, FORMAT_DATE
-
+from web_server.service.models import FORMAT_DATE, Calibration
 
 # /api/v1/users/<uuid>/calibrations/ - GET
 

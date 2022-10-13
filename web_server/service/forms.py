@@ -2,26 +2,21 @@ from django import forms
 from django.forms import ValidationError
 from django.utils.translation import gettext as _
 
-from web_server.service.models import (
-                                      ClinicDosimetryAnalysis,
-                                      PreClinicDosimetryAnalysis,
-                                      Isotope,
-                                      Order,
-                                      Calibration,
-                                      )
+from web_server.service.models import Calibration, ClinicDosimetryAnalysis, Isotope, Order, PreClinicDosimetryAnalysis
 
 
 class CreateOrderForm(forms.ModelForm):
-
     class Meta:
         model = Order
-        fields = ('user',
-                  'quantity_of_analyzes',
-                  'remaining_of_analyzes',
-                  'price',
-                  'service_name',
-                  'status_payment',
-                  'permission')
+        fields = (
+            'user',
+            'quantity_of_analyzes',
+            'remaining_of_analyzes',
+            'price',
+            'service_name',
+            'status_payment',
+            'permission',
+        )
 
     def clean_remaining_of_analyzes(self):
 
@@ -31,24 +26,26 @@ class CreateOrderForm(forms.ModelForm):
         if (quantity_of_analyzes is not None) and (remaining_of_analyzes > quantity_of_analyzes):
             raise ValidationError(
                 _('Must be lower with the field quantity of analyzes.'),
-                code='lower_or_equal')
+                code='lower_or_equal',
+            )
 
         return remaining_of_analyzes
 
 
 class CreateCalibrationForm(forms.ModelForm):
-
     class Meta:
         model = Calibration
-        fields = ('user',
-                  'isotope',
-                  'calibration_name',
-                  'syringe_activity',
-                  'residual_syringe_activity',
-                  'measurement_datetime',
-                  'phantom_volume',
-                  'acquisition_time',
-                  'images')
+        fields = (
+            'user',
+            'isotope',
+            'calibration_name',
+            'syringe_activity',
+            'residual_syringe_activity',
+            'measurement_datetime',
+            'phantom_volume',
+            'acquisition_time',
+            'images',
+        )
 
 
 class UpdateCalibrationForm(CreateCalibrationForm):
@@ -70,15 +67,16 @@ class IsotopeForm(forms.Form):
 
 
 class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
-
     class Meta:
         model = ClinicDosimetryAnalysis
-        fields = ('calibration',
-                  'order',
-                  'images',
-                  'analysis_name',
-                  'injected_activity',
-                  'administration_datetime')
+        fields = (
+            'calibration',
+            'order',
+            'images',
+            'analysis_name',
+            'injected_activity',
+            'administration_datetime',
+        )
 
 
 class ClinicDosimetryAnalysisUpdateForm(ClinicDosimetryAnalysisCreateForm):
@@ -89,15 +87,16 @@ class ClinicDosimetryAnalysisUpdateForm(ClinicDosimetryAnalysisCreateForm):
 
 
 class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
-
     class Meta:
         model = PreClinicDosimetryAnalysis
-        fields = ('calibration',
-                  'order',
-                  'images',
-                  'analysis_name',
-                  'injected_activity',
-                  'administration_datetime')
+        fields = (
+            'calibration',
+            'order',
+            'images',
+            'analysis_name',
+            'injected_activity',
+            'administration_datetime',
+        )
 
 
 class PreClinicDosimetryAnalysisUpdateForm(PreClinicDosimetryAnalysisCreateForm):

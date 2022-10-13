@@ -8,3 +8,5 @@ pre_commit
 pip-audit
 pytest-responses
 pytest-mock
+blue
+isort

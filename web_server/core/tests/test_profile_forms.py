@@ -5,7 +5,6 @@ from django.utils.translation import gettext as _
 from web_server.core.forms import ProfileCreateForm, ProfileUpdateForm
 from web_server.core.models import UserProfile
 
-
 User = get_user_model()
 
 
@@ -40,12 +39,12 @@ def test_cnpj_missing(profile_infos):
 @pytest.mark.parametrize(
     'field',
     [
-     'user',
-     'name',
-     'phone',
-     'clinic',
-     'role',
-     'cpf',
+        'user',
+        'name',
+        'phone',
+        'clinic',
+        'role',
+        'cpf',
     ],
 )
 def test_field_missing(api_cnpj_successfull, profile_infos, field):
@@ -64,16 +63,16 @@ def test_field_missing(api_cnpj_successfull, profile_infos, field):
 
 
 def test_form_clean(db):
-    '''
+    """
     name: UseR sUname -> User Surname
     institution: any HOSpital -> Any Hospital',
     role: PhysIcian -> physician
-    '''
+    """
     d = {
         'name': 'UseR sUrname',
         'clinic': 'any HOSpital ',
         'role': 'PhysIcian',
-        }
+    }
 
     form = ProfileCreateForm(d)
     form.full_clean()
@@ -81,6 +80,7 @@ def test_form_clean(db):
     assert form.cleaned_data['name'] == d['name'].title()
     assert form.cleaned_data['clinic'] == d['clinic'].strip().title()
     assert form.cleaned_data['role'] == d['role'].lower()
+
 
 # TODO: Should the Clinic name be unique?
 # def test_clinic_must_be_unique(api_cnpj_fail, user, second_register_infos):
@@ -102,6 +102,7 @@ def test_cpf_must_be_unique(api_cnpj_fail, user, second_register_infos):
     assert not form.is_valid()
 
     assert form.errors['cpf'] == ['CPF already exists']
+
 
 # TODO: Should the CNPJ be unique ?
 # def test_cnpj_must_be_unique(user, second_register_infos, db):
@@ -182,7 +183,7 @@ def test_update_profile_form_succesuful(api_cnpj_successfull, user):
         'name': 'João Sliva Carvalho',
         'role': 'médico',
         'cnpj': '42438610000111',
-        'clinic': 'Clinica A'
+        'clinic': 'Clinica A',
     }
 
     assert user.profile.name == 'João Silva'

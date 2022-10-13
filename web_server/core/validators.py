@@ -1,10 +1,9 @@
 import re
 
-
 import requests
-from validate_docbr import CPF, CNPJ
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
+from validate_docbr import CNPJ, CPF
 
 
 def validate_cpf(value):
@@ -39,4 +38,5 @@ def validate_phone(value):
     if not match:
         raise ValidationError(
             'Número de telefone inválido. O formato deve ser xx(xx)xxxx-xxxx ou xx(xx)xxxxx-xxxx.',
-            'phone_invalid')
+            'phone_invalid',
+        )

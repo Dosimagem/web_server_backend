@@ -1,5 +1,4 @@
 import pytest
-
 from django.utils.translation import gettext as _
 
 from web_server.service.forms import PreClinicDosimetryAnalysisCreateForm
@@ -12,14 +11,17 @@ def test_create_form(preclinic_dosimetry_info, preclinic_dosimetry_file):
     assert form.is_valid()
 
 
-@pytest.mark.parametrize('field', [
-    'calibration',
-    'order',
-    'images',
-    'analysis_name',
-    'injected_activity',
-    'administration_datetime',
-])
+@pytest.mark.parametrize(
+    'field',
+    [
+        'calibration',
+        'order',
+        'images',
+        'analysis_name',
+        'injected_activity',
+        'administration_datetime',
+    ],
+)
 def test_missing_fields(field, preclinic_dosimetry_info, preclinic_dosimetry_file):
 
     preclinic_dosimetry_file.pop(field) if field == 'images' else preclinic_dosimetry_info.pop(field)
@@ -57,9 +59,9 @@ def test_invalid_create_form_field_must_be_positive(preclinic_dosimetry_info, pr
     assert form.errors == {'injected_activity': [msg]}
 
 
-def test_invalid_create_form_analysis_name_must_be_unique_per_order(preclinic_dosimetry,
-                                                                    preclinic_dosimetry_info,
-                                                                    preclinic_dosimetry_file):
+def test_invalid_create_form_analysis_name_must_be_unique_per_order(
+    preclinic_dosimetry, preclinic_dosimetry_info, preclinic_dosimetry_file
+):
 
     form = PreClinicDosimetryAnalysisCreateForm(data=preclinic_dosimetry_info, files=preclinic_dosimetry_file)
 

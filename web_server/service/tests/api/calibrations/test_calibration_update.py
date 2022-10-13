@@ -3,9 +3,8 @@ from uuid import uuid4
 
 from django.shortcuts import resolve_url
 
-from web_server.service.models import Calibration, DosimetryAnalysisBase
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE
-
+from web_server.service.models import Calibration, DosimetryAnalysisBase
 
 # /api/v1/users/<uuid>/calibrations/<uuid> - PUT
 
@@ -16,7 +15,11 @@ def test_successful(client_api_auth, form_data, first_calibration):
     update_form_data['syringeActivity'] = 100.0
     update_form_data['calibrationName'] = 'Calibration new'
 
-    url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        first_calibration.user.uuid,
+        first_calibration.uuid,
+    )
 
     response = client_api_auth.put(url, data=update_form_data, format='multipart')
 
@@ -40,7 +43,11 @@ def test_fail_by_wrong_data(client_api_auth, form_data, first_calibration):
     update_form_data = form_data.copy()
     update_form_data['syringeActivity'] = -100.0
 
-    url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        first_calibration.user.uuid,
+        first_calibration.uuid,
+    )
 
     response = client_api_auth.put(url, data=update_form_data, format='multipart')
 
@@ -67,7 +74,11 @@ def test_fail_by_wrong_data(client_api_auth, form_data, first_calibration):
 
 def test_fai_isotope_invalid(client_api_auth, first_calibration, form_data):
 
-    url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        first_calibration.user.uuid,
+        first_calibration.uuid,
+    )
 
     update_form_data = form_data.copy()
     update_form_data['isotope'] = 'wrong'
@@ -97,7 +108,11 @@ def test_fai_isotope_invalid(client_api_auth, first_calibration, form_data):
 
 def test_fail_wrong_calibration_id(client_api_auth, form_data, first_calibration):
 
-    url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, uuid4())
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        first_calibration.user.uuid,
+        uuid4(),
+    )
 
     response = client_api_auth.put(url, data=form_data, format='multipart')
 
@@ -108,10 +123,9 @@ def test_fail_wrong_calibration_id(client_api_auth, form_data, first_calibration
     assert body['errors'] == MSG_ERROR_RESOURCE
 
 
-def test_fail_update_calibration_the_another_user(client_api_auth,
-                                                  form_data,
-                                                  first_calibration,
-                                                  second_user_calibrations):
+def test_fail_update_calibration_the_another_user(
+    client_api_auth, form_data, first_calibration, second_user_calibrations
+):
 
     second_user_calibration_uuid = second_user_calibrations[0].uuid
 
@@ -119,9 +133,11 @@ def test_fail_update_calibration_the_another_user(client_api_auth,
     update_form_data['syringeActivity'] = 100.0
     update_form_data['calibrationName'] = 'Calibration new'
 
-    url = resolve_url('service:calibration-read-update-delete',
-                      first_calibration.user.uuid,
-                      second_user_calibration_uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        first_calibration.user.uuid,
+        second_user_calibration_uuid,
+    )
     response = client_api_auth.put(url, data=form_data, format='multipart')
 
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -131,12 +147,15 @@ def test_fail_update_calibration_the_another_user(client_api_auth,
     assert body['errors'] == MSG_ERROR_RESOURCE
 
 
-def test_fail_calibration_name_must_be_unique_per_user(client_api_auth,
-                                                       second_calibration,
-                                                       form_data,
-                                                       second_form_data):
+def test_fail_calibration_name_must_be_unique_per_user(
+    client_api_auth, second_calibration, form_data, second_form_data
+):
 
-    url = resolve_url('service:calibration-read-update-delete', second_calibration.user.uuid, second_calibration.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        second_calibration.user.uuid,
+        second_calibration.uuid,
+    )
 
     update_form_data = second_form_data.copy()
 
@@ -154,13 +173,17 @@ def test_fail_calibration_name_must_be_unique_per_user(client_api_auth,
 
 
 def test_fail_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry, form_data, second_form_data):
-    '''
+    """
     Calibrations can be update only when associated with analyzes with Invalid information
-    '''
+    """
 
     calibration = clinic_dosimetry.calibration
 
-    url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        calibration.user.uuid,
+        calibration.uuid,
+    )
 
     update_form_data = second_form_data.copy()
 
@@ -170,22 +193,28 @@ def test_fail_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry, 
 
     body = response.json()
 
-    expected = ("Apenas calibração associadas com análises com o status "
-                "'Informações Inválidas' pode ser atualizada/deletada.")
+    expected = (
+        'Apenas calibração associadas com análises com o status '
+        "'Informações Inválidas' pode ser atualizada/deletada."
+    )
 
     assert [expected] == body['errors']
 
 
 def test_success_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry, form_data, second_form_data):
-    '''
+    """
     Calibrations can be update only when associated with analyzes with Invalid information
-    '''
+    """
 
     calibration = clinic_dosimetry.calibration
     clinic_dosimetry.status = DosimetryAnalysisBase.INVALID_INFOS
     clinic_dosimetry.save()
 
-    url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        calibration.user.uuid,
+        calibration.uuid,
+    )
 
     update_form_data = second_form_data.copy()
 

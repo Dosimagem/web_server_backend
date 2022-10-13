@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 
 from web_server.service.models import Calibration, Isotope
 
-
 User = get_user_model()
 
 
@@ -20,7 +19,9 @@ def test_calibration_modified_at(first_calibration):
     assert isinstance(first_calibration.modified_at, datetime)
 
 
-def test_delete_calibration_must_not_delete_user_and_isotope(first_calibration):
+def test_delete_calibration_must_not_delete_user_and_isotope(
+    first_calibration,
+):
 
     first_calibration.delete()
 

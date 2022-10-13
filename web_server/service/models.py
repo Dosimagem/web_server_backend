@@ -1,15 +1,14 @@
-from functools import partial
 import os
+from functools import partial
 from uuid import uuid4
 
-from django.db import models
 from django.conf import settings
-from django.core.validators import MinValueValidator, MinLengthValidator
-from django.utils.timezone import now
 from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator, MinValueValidator
+from django.db import models
+from django.utils.timezone import now
 
 from web_server.core.models import CreationModificationBase
-
 
 FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
@@ -19,14 +18,11 @@ class Order(CreationModificationBase, models.Model):
     CLINIC_DOSIMETRY = 'DC'
     PRECLINIC_DOSIMETRY = 'PCD'
 
-    SERVICES_CODES = {
-        CLINIC_DOSIMETRY: '01',
-        PRECLINIC_DOSIMETRY: '02'
-    }
+    SERVICES_CODES = {CLINIC_DOSIMETRY: '01', PRECLINIC_DOSIMETRY: '02'}
 
     SERVICES_NAMES = (
         (CLINIC_DOSIMETRY, 'Dosimetria Clinica'),
-        (PRECLINIC_DOSIMETRY, 'Dosimetria Preclinica')
+        (PRECLINIC_DOSIMETRY, 'Dosimetria Preclinica'),
     )
 
     AWAITING_PAYMENT = 'APG'
@@ -38,11 +34,20 @@ class Order(CreationModificationBase, models.Model):
     )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='orders',
+    )
     quantity_of_analyzes = models.PositiveIntegerField('Amount of analysis', default=0)
     remaining_of_analyzes = models.PositiveIntegerField('Remaning of analysis', default=0)
     price = models.DecimalField('Price', max_digits=14, decimal_places=2)
-    status_payment = models.CharField('Status payment', max_length=3, choices=STATUS_PAYMENT, default=AWAITING_PAYMENT)
+    status_payment = models.CharField(
+        'Status payment',
+        max_length=3,
+        choices=STATUS_PAYMENT,
+        default=AWAITING_PAYMENT,
+    )
     service_name = models.CharField('Service name', max_length=3, choices=SERVICES_NAMES)
     permission = models.BooleanField('Permission', default=False)
     code = models.CharField('Code', max_length=20)
@@ -113,7 +118,11 @@ upload_report_to = partial(upload_to, type='report')
 class Calibration(CreationModificationBase, models.Model):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='calibrations',
+    )
     isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='calibrations')
 
     calibration_name = models.CharField('Calibration Name', max_length=24, validators=[MinLengthValidator(3)])
@@ -126,7 +135,10 @@ class Calibration(CreationModificationBase, models.Model):
     images = models.FileField('Calibration Images', upload_to=upload_calibration_to, null=False)
 
     class Meta:
-        unique_together = ('user', 'calibration_name',)
+        unique_together = (
+            'user',
+            'calibration_name',
+        )
 
     def __str__(self):
         return self.calibration_name
@@ -202,7 +214,7 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
             'injected_activity': self.injected_activity,
             'analysis_name': self.analysis_name,
             'administration_datetime': self.administration_datetime.strftime(FORMAT_DATE),
-            'report': ''
+            'report': '',
         }
 
         if self.report.name:
@@ -239,19 +251,26 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
     # user = models.ForeignKey('core.CustomUser',
     #                          on_delete=models.CASCADE,
     #                          related_name='clinic_dosimetry_analysis')
-    calibration = models.ForeignKey('Calibration',
-                                    on_delete=models.CASCADE,
-                                    related_name='clinic_dosimetry_analysis')
-    order = models.ForeignKey('Order',
-                              on_delete=models.CASCADE,
-                              related_name='clinic_dosimetry_analysis')
+    calibration = models.ForeignKey(
+        'Calibration',
+        on_delete=models.CASCADE,
+        related_name='clinic_dosimetry_analysis',
+    )
+    order = models.ForeignKey(
+        'Order',
+        on_delete=models.CASCADE,
+        related_name='clinic_dosimetry_analysis',
+    )
     images = models.FileField('Images', upload_to=upload_clinic_dosimetry_to)
 
     class Meta:
         db_table = 'clinic_dosimetry_analysis'
         verbose_name = 'Clinic Dosimetry'
         verbose_name_plural = 'Clinic Dosimetries'
-        unique_together = ('order', 'analysis_name',)
+        unique_together = (
+            'order',
+            'analysis_name',
+        )
 
     def _generate_code(self):
         clinic_id = self.order.user.pk
@@ -271,12 +290,16 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
     # user = models.ForeignKey('core.CustomUser',
     #                          on_delete=models.CASCADE,
     #                          related_name='preclinic_dosimetry_analysis')
-    calibration = models.ForeignKey('Calibration',
-                                    on_delete=models.CASCADE,
-                                    related_name='preclinic_dosimetry_analysis')
-    order = models.ForeignKey('Order',
-                              on_delete=models.CASCADE,
-                              related_name='preclinic_dosimetry_analysis')
+    calibration = models.ForeignKey(
+        'Calibration',
+        on_delete=models.CASCADE,
+        related_name='preclinic_dosimetry_analysis',
+    )
+    order = models.ForeignKey(
+        'Order',
+        on_delete=models.CASCADE,
+        related_name='preclinic_dosimetry_analysis',
+    )
 
     images = models.FileField('Images', upload_to=upload_preclinic_dosimetry_to)
 
@@ -284,7 +307,10 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
         db_table = 'preclinic_dosimetry_analysis'
         verbose_name = 'Preclinic Dosimetry'
         verbose_name_plural = 'Preclinic Dosimetries'
-        unique_together = ('order', 'analysis_name',)
+        unique_together = (
+            'order',
+            'analysis_name',
+        )
 
     def _generate_code(self):
         clinic_id = self.order.user.pk

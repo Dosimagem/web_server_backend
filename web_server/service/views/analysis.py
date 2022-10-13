@@ -1,22 +1,20 @@
 from http import HTTPStatus
 
-from django.db import transaction
-from rest_framework.response import Response
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    permission_classes
-)
-from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
-from web_server.service.analysis_svc import AnalisysChoice
-from web_server.service.models import Order, Calibration
-from web_server.service.forms import (PreClinicAndClinicDosimetryAnalysisCreateFormApi,
-                                      PreClinicAndClinicDosimetryAnalysisUpdateFormApi)
+from web_server.core.errors_msg import ERROR_CALIBRATION_ID, MSG_ERROR_RESOURCE, list_errors
 from web_server.core.views.auth import MyTokenAuthentication
-from web_server.core.errors_msg import MSG_ERROR_RESOURCE, ERROR_CALIBRATION_ID, list_errors
+from web_server.service.analysis_svc import AnalisysChoice
+from web_server.service.forms import (
+    PreClinicAndClinicDosimetryAnalysisCreateFormApi,
+    PreClinicAndClinicDosimetryAnalysisUpdateFormApi,
+)
+from web_server.service.models import Calibration, Order
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
@@ -28,7 +26,7 @@ def analysis_read_update_delete(request, user_id, order_id, analysis_id):
     dispatcher = {
         'GET': _read_analysis,
         'DELETE': _delete_analysis,
-        'PUT': _update_analysis
+        'PUT': _update_analysis,
     }
 
     view = dispatcher[request.method]
@@ -42,10 +40,7 @@ def analysis_read_update_delete(request, user_id, order_id, analysis_id):
 @user_from_token_and_user_from_url
 def analysis_list_create(request, user_id, order_id):
 
-    dispatcher = {
-        'GET': _list_analysis,
-        'POST': _create_analysis
-    }
+    dispatcher = {'GET': _list_analysis, 'POST': _create_analysis}
 
     view = dispatcher[request.method]
 
@@ -70,10 +65,7 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
         msg = ['Não foi possivel deletar essa análise.']
         return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
 
-    data = {
-        'id': analysis_id,
-        'message': 'Análise deletada com sucesso!'
-    }
+    data = {'id': analysis_id, 'message': 'Análise deletada com sucesso!'}
 
     return Response(data=data)
 
@@ -100,10 +92,7 @@ def _list_analysis(request, user_id, order_id):
     Model = AnalisysChoice(order=order).model
     list_ = Model.objects.filter(order=order)
 
-    data = {
-        'count': len(list_),
-        'row': [a.to_dict(request) for a in list_]
-    }
+    data = {'count': len(list_), 'row': [a.to_dict(request) for a in list_]}
 
     return Response(data)
 
@@ -124,7 +113,10 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     form = PreClinicAndClinicDosimetryAnalysisUpdateFormApi(data)
 
     if not form.is_valid():
-        return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+        return Response(
+            data={'errors': list_errors(form.errors)},
+            status=HTTPStatus.BAD_REQUEST,
+        )
 
     try:
         calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'], user=user)
@@ -149,7 +141,10 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     form_analysis = AnalysisForm(data, request.FILES, instance=analysis)
 
     if not form_analysis.is_valid():
-        return Response(data={'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
+        return Response(
+            data={'errors': list_errors(form_analysis.errors)},
+            status=HTTPStatus.BAD_REQUEST,
+        )
 
     form_analysis.change_status_and_save()
 
@@ -163,7 +158,10 @@ def _create_analysis(request, user_id, order_id):
     form = PreClinicAndClinicDosimetryAnalysisCreateFormApi(data)
 
     if not form.is_valid():
-        return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+        return Response(
+            data={'errors': list_errors(form.errors)},
+            status=HTTPStatus.BAD_REQUEST,
+        )
 
     user = request.user
 
@@ -173,15 +171,20 @@ def _create_analysis(request, user_id, order_id):
         return Response(status=HTTPStatus.NOT_FOUND)
 
     if not order.is_analysis_available():  # TODO: Regra de negocio no modelo não parece uma boa ideia para mim
-        return Response({'errors': ['Todas as análises para essa pedido já foram usadas.']},
-                        status=HTTPStatus.CONFLICT)
+        return Response(
+            {'errors': ['Todas as análises para essa pedido já foram usadas.']},
+            status=HTTPStatus.CONFLICT,
+        )
 
     if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
 
         try:
             calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'], user__uuid=user_id)
         except ObjectDoesNotExist:
-            return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.BAD_REQUEST)
+            return Response(
+                data={'errors': ERROR_CALIBRATION_ID},
+                status=HTTPStatus.BAD_REQUEST,
+            )
 
         data.update({'order': order, 'calibration': calibration})
 
@@ -189,7 +192,10 @@ def _create_analysis(request, user_id, order_id):
         form_analysis = AnalysisFormClass(data, request.FILES)
 
         if not form_analysis.is_valid():
-            return Response({'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
+            return Response(
+                {'errors': list_errors(form_analysis.errors)},
+                status=HTTPStatus.BAD_REQUEST,
+            )
 
         with transaction.atomic():
             # TODO: Colocar isso em uma camada de serviço

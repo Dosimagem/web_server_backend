@@ -1,10 +1,8 @@
 from pathlib import Path
 
-from django.conf.locale.pt_BR import formats as pt_BR_formats
-
 import dj_database_url
-from decouple import config, Csv
-
+from decouple import Csv, config
+from django.conf.locale.pt_BR import formats as pt_BR_formats
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -108,9 +106,7 @@ if DEBUG:
 
 default_db_url = 'sqlite:///' + str(BASE_DIR / 'db.sqlite3')
 parse_db = dj_database_url.parse
-DATABASES = {
-    'default': config('DATABASE_URL', default=default_db_url, cast=parse_db)
-}
+DATABASES = {'default': config('DATABASE_URL', default=default_db_url, cast=parse_db)}
 
 
 # Password validation
@@ -163,14 +159,16 @@ AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default=None)
 if AWS_ACCESS_KEY_ID:  # pragma: no cover
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400', }
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
     AWS_PRELOAD_METADATA = True
     AWS_AUTO_CREATE_BUCKET = False
     AWS_QUERYSTRING_AUTH = True
     AWS_S3_CUSTOM_DOMAIN = None
     AWS_DEFAULT_ACL = 'private'
 
-    COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
+    COLLECTFAST_STRATEGY = 'collectfast.strategies.boto3.Boto3Strategy'
     COLLECTFAST_ENABLED = True
 
     # Static Assets
@@ -203,12 +201,10 @@ CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default=[], cast=Csv())
 # djangorestframework-camel-case
 
 REST_FRAMEWORK = {
-
     'DEFAULT_RENDERER_CLASSES': (
         'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
         'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
     ),
-
     'DEFAULT_PARSER_CLASSES': (
         'djangorestframework_camel_case.parser.CamelCaseFormParser',
         'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
@@ -225,9 +221,7 @@ if LOGGER_SQL:
     LOGGING = {
         'version': 1,
         'formatters': {
-            'simple': {
-                'format': '\n---\n%(levelname)s %(message)s\n---\n'
-            },
+            'simple': {'format': '\n---\n%(levelname)s %(message)s\n---\n'},
         },
         'filters': {
             'require_debug_true': {
@@ -247,7 +241,7 @@ if LOGGER_SQL:
                 'level': 'DEBUG',
                 'handlers': ['console'],
             }
-        }
+        },
     }
 
 # Configurando o sentry sdk
@@ -262,7 +256,7 @@ if SENTRY_DSN:
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],
         traces_sample_rate=1.0,
-        send_default_pii=True
+        send_default_pii=True,
     )
 
-pt_BR_formats.DATETIME_FORMAT = "d/m/Y H:i:s"
+pt_BR_formats.DATETIME_FORMAT = 'd/m/Y H:i:s'

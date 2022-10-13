@@ -1,8 +1,5 @@
 import pytest
-
-
 from django.forms import ValidationError
-
 
 from web_server.core.validators import validate_phone
 

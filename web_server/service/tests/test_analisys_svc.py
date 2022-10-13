@@ -1,9 +1,11 @@
-from web_server.service.forms import (ClinicDosimetryAnalysisCreateForm,
-                                      ClinicDosimetryAnalysisUpdateForm,
-                                      PreClinicDosimetryAnalysisCreateForm,
-                                      PreClinicDosimetryAnalysisUpdateForm)
-from web_server.service.models import ClinicDosimetryAnalysis, PreClinicDosimetryAnalysis
 from web_server.service.analysis_svc import AnalisysChoice
+from web_server.service.forms import (
+    ClinicDosimetryAnalysisCreateForm,
+    ClinicDosimetryAnalysisUpdateForm,
+    PreClinicDosimetryAnalysisCreateForm,
+    PreClinicDosimetryAnalysisUpdateForm,
+)
+from web_server.service.models import ClinicDosimetryAnalysis, PreClinicDosimetryAnalysis
 
 
 def test_get_forms_update(clinic_order, preclinic_order):

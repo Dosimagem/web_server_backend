@@ -2,13 +2,12 @@ from http import HTTPStatus
 from uuid import uuid4
 
 import pytest
-from django.shortcuts import resolve_url
 from django.contrib.auth import get_user_model
+from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
 
 from web_server.conftest import HTTP_METHODS
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
-
 
 User = get_user_model()
 
@@ -44,7 +43,7 @@ def test_update_user_infos(api_cnpj_successfull, client_api_auth, user):
         'name': 'João Sliva Carvalho',
         'role': 'médico',
         'cnpj': '42438610000111',
-        'clinic': 'Clinica A'
+        'clinic': 'Clinica A',
     }
 
     response = client_api_auth.patch(url, payload, format='json')
@@ -64,7 +63,7 @@ def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
         'name': 'João Sliva Carvalho',
         'role': 'médico',
         'cnpj': '42.438.610/0001-11',
-        'clinic': 'Clinica A'
+        'clinic': 'Clinica A',
     }
 
     response = client_api_auth.patch(url, payload, format='json')
@@ -76,6 +75,7 @@ def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
     expected = ['CNPJ inválido.']
 
     assert body['errors'] == expected
+
 
 # TODO: Should the CNPJ be unique?
 # def test_fail_update_user_infos_cnpj_unique_constrain(client_api_auth, user, second_user):
@@ -144,10 +144,10 @@ def test_read_update_user_wrong_token(client_api, user):
 
 
 def test_read_update_token_id_and_user_id_dont_match(client_api_auth, user, second_user):
-    '''
+    """
     /api/v1/users/<uuid> - GET, PATCH
     The token does not belong to the user
-    '''
+    """
 
     url = resolve_url(END_POINT, user_id=second_user.uuid)
     response = client_api_auth.get(url)
@@ -159,7 +159,7 @@ def test_read_update_token_id_and_user_id_dont_match(client_api_auth, user, seco
     assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
-@pytest.mark.parametrize("method", ['post', 'put', 'delete'])
+@pytest.mark.parametrize('method', ['post', 'put', 'delete'])
 def test_read_update_user_not_allowed_method(method, user):
     http = HTTP_METHODS[method]
 

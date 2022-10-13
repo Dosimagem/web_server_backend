@@ -1,10 +1,10 @@
 import pytest
 from django.contrib.auth import get_user_model
-from django.utils.translation import ngettext, gettext as _
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 
 from web_server.core.forms import MyUserCreationForm
 from web_server.core.models import UserProfile
-
 
 User = get_user_model()
 
@@ -18,11 +18,12 @@ def test_valid_form(register_infos, db):
 
 @pytest.mark.parametrize(
     'field',
-    ['email',
-     'confirmed_email',
-     'password1',
-     'password2',
-     ],
+    [
+        'email',
+        'confirmed_email',
+        'password1',
+        'password2',
+    ],
 )
 def test_field_is_not_optional(register_infos, field, db):
 
@@ -60,20 +61,32 @@ def test_email_did_not_mach(register_infos, db):
 
 
 MSG_PASSWORD = ngettext(
-        "This password is too short. It must contain at least %(min_length)d character.",
-        "This password is too short. It must contain at least %(min_length)d characters.",
-        8) % {'min_length': 8}
+    'This password is too short. It must contain at least %(min_length)d character.',
+    'This password is too short. It must contain at least %(min_length)d characters.',
+    8,
+) % {'min_length': 8}
 
 
 @pytest.mark.parametrize(
-    'password, error_validation', [
-        ('1', [MSG_PASSWORD,
-               _('This password is too common.'),
-               _('This password is entirely numeric.')]),
-        ('12345678', [_('This password is too common.'),
-                      _('This password is entirely numeric.')]),
+    'password, error_validation',
+    [
+        (
+            '1',
+            [
+                MSG_PASSWORD,
+                _('This password is too common.'),
+                _('This password is entirely numeric.'),
+            ],
+        ),
+        (
+            '12345678',
+            [
+                _('This password is too common.'),
+                _('This password is entirely numeric.'),
+            ],
+        ),
         ('45268748', [_('This password is entirely numeric.')]),
-    ]
+    ],
 )
 def test_password_validation(password, error_validation, db):
 

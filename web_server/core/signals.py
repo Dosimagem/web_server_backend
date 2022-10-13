@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
-from web_server.core.models import UserProfile
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from web_server.core.models import UserProfile
 
 User = get_user_model()
 
@@ -19,6 +19,7 @@ def disable_for_loaddata(signal_handler):
         if kwargs.get('raw'):
             return
         signal_handler(*args, **kwargs)
+
     return wrapper
 
 

@@ -3,18 +3,19 @@ from uuid import uuid4
 
 from django.shortcuts import resolve_url
 
-from web_server.service.models import FORMAT_DATE
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE
-
+from web_server.service.models import FORMAT_DATE
 
 # /api/v1/users/<uuid>/calibrations/<uuid> - GET
 
 
 def test_successful(client_api_auth, calibration_with_images):
 
-    url = resolve_url('service:calibration-read-update-delete',
-                      calibration_with_images.user.uuid,
-                      calibration_with_images.uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        calibration_with_images.user.uuid,
+        calibration_with_images.uuid,
+    )
 
     response = client_api_auth.get(url)
 
@@ -38,7 +39,11 @@ def test_successful(client_api_auth, calibration_with_images):
 
 def test_fail_wrong_calibration_id(client_api_auth, first_calibration):
 
-    url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, uuid4())
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        first_calibration.user.uuid,
+        uuid4(),
+    )
 
     response = client_api_auth.get(url)
 
@@ -53,9 +58,11 @@ def test_fail_calibration_the_another_user(client_api_auth, first_calibration, s
 
     second_user_calibration_uuid = second_user_calibrations[0].uuid
 
-    url = resolve_url('service:calibration-read-update-delete',
-                      first_calibration.user.uuid,
-                      second_user_calibration_uuid)
+    url = resolve_url(
+        'service:calibration-read-update-delete',
+        first_calibration.user.uuid,
+        second_user_calibration_uuid,
+    )
     response = client_api_auth.get(url)
 
     assert response.status_code == HTTPStatus.NOT_FOUND

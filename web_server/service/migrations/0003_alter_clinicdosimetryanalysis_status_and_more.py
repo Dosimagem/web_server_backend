@@ -13,11 +13,31 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='clinicdosimetryanalysis',
             name='status',
-            field=models.CharField(choices=[('AI', 'Verificando informações'), ('II', 'Informações inválidas'), ('PR', 'Processando a análise'), ('CO', 'Analise conluída')], default='AI', max_length=3, verbose_name='Status'),
+            field=models.CharField(
+                choices=[
+                    ('AI', 'Verificando informações'),
+                    ('II', 'Informações inválidas'),
+                    ('PR', 'Processando a análise'),
+                    ('CO', 'Analise conluída'),
+                ],
+                default='AI',
+                max_length=3,
+                verbose_name='Status',
+            ),
         ),
         migrations.AlterField(
             model_name='preclinicdosimetryanalysis',
             name='status',
-            field=models.CharField(choices=[('AI', 'Verificando informações'), ('II', 'Informações inválidas'), ('PR', 'Processando a análise'), ('CO', 'Analise conluída')], default='AI', max_length=3, verbose_name='Status'),
+            field=models.CharField(
+                choices=[
+                    ('AI', 'Verificando informações'),
+                    ('II', 'Informações inválidas'),
+                    ('PR', 'Processando a análise'),
+                    ('CO', 'Analise conluída'),
+                ],
+                default='AI',
+                max_length=3,
+                verbose_name='Status',
+            ),
         ),
     ]

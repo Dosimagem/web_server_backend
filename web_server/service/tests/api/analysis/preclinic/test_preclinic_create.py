@@ -6,23 +6,26 @@ from uuid import uuid4
 import pytest
 from django.shortcuts import resolve_url
 
-from web_server.service.models import ClinicDosimetryAnalysis, FORMAT_DATE, Order, PreClinicDosimetryAnalysis
-
+from web_server.service.models import FORMAT_DATE, ClinicDosimetryAnalysis, Order, PreClinicDosimetryAnalysis
 
 # /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
 
 
 def test_successfull(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
-    '''
+    """
     After analyses create order remaining of analyzes must be decreased by one
-    '''
+    """
 
     assert not ClinicDosimetryAnalysis.objects.exists()
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
     assert Order.objects.get(id=preclinic_order.id).remaining_of_analyzes == preclinic_order.remaining_of_analyzes
 
-    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url(
+        'service:analysis-list-create',
+        preclinic_order.user.uuid,
+        preclinic_order.uuid,
+    )
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()
 
@@ -63,7 +66,11 @@ def test_fail_wrong_administration_datetime(client_api_auth, preclinic_order, fo
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url(
+        'service:analysis-list-create',
+        preclinic_order.user.uuid,
+        preclinic_order.uuid,
+    )
 
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()
@@ -75,15 +82,17 @@ def test_fail_wrong_administration_datetime(client_api_auth, preclinic_order, fo
     assert body['errors'] == ['Informe uma data/hora válida.']
 
 
-def test_fail_injected_activity_must_be_positive(client_api_auth,
-                                                 preclinic_order,
-                                                 form_data_preclinic_dosimetry):
+def test_fail_injected_activity_must_be_positive(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
 
     form_data_preclinic_dosimetry['injectedActivity'] = -form_data_preclinic_dosimetry['injectedActivity']
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url(
+        'service:analysis-list-create',
+        preclinic_order.user.uuid,
+        preclinic_order.uuid,
+    )
 
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()
@@ -95,14 +104,16 @@ def test_fail_injected_activity_must_be_positive(client_api_auth,
     assert body['errors'] == ['Certifique-se que atividade injetada seja maior ou igual a 0.0.']
 
 
-def test_fail_analisys_name_must_be_unique_per_order(client_api_auth,
-                                                     user,
-                                                     form_data_preclinic_dosimetry,
-                                                     preclinic_dosimetry_info,
-                                                     preclinic_dosimetry_file):
-    '''
+def test_fail_analisys_name_must_be_unique_per_order(
+    client_api_auth,
+    user,
+    form_data_preclinic_dosimetry,
+    preclinic_dosimetry_info,
+    preclinic_dosimetry_file,
+):
+    """
     The analysis name must be unique in an order
-    '''
+    """
 
     order = preclinic_dosimetry_info['order']
 
@@ -126,18 +137,19 @@ def test_fail_analisys_name_must_be_unique_per_order(client_api_auth,
 
 
 def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_preclinic_dosimetry):
-    '''
+    """
     All requests for quotas have already been used in use
-    '''
+    """
 
-    order = Order.objects.create(user=user,
-                                 quantity_of_analyzes=3,
-                                 remaining_of_analyzes=0,
-                                 price=Decimal('3000.00'),
-                                 service_name=Order.PRECLINIC_DOSIMETRY,
-                                 status_payment=Order.AWAITING_PAYMENT,
-                                 permission=True
-                                 )
+    order = Order.objects.create(
+        user=user,
+        quantity_of_analyzes=3,
+        remaining_of_analyzes=0,
+        price=Decimal('3000.00'),
+        service_name=Order.PRECLINIC_DOSIMETRY,
+        status_payment=Order.AWAITING_PAYMENT,
+        permission=True,
+    )
 
     url = resolve_url('service:analysis-list-create', user.uuid, order.uuid)
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
@@ -156,7 +168,11 @@ def test_fail_wrong_calibration_id(client_api_auth, preclinic_order, form_data_p
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url(
+        'service:analysis-list-create',
+        preclinic_order.user.uuid,
+        preclinic_order.uuid,
+    )
 
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
 
@@ -182,14 +198,16 @@ def test_fail_wrong_(client_api_auth, preclinic_order, form_data_preclinic_dosim
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
 
-def test_fail_with_order_from_another_user(client_api,
-                                           user,
-                                           second_user,
-                                           tree_orders_of_tow_users,
-                                           form_data_preclinic_dosimetry):
-    '''
+def test_fail_with_order_from_another_user(
+    client_api,
+    user,
+    second_user,
+    tree_orders_of_tow_users,
+    form_data_preclinic_dosimetry,
+):
+    """
     User mut be create analysis only in your own orders
-    '''
+    """
 
     order_first_user = Order.objects.filter(user=user).first()
 
@@ -203,18 +221,34 @@ def test_fail_with_order_from_another_user(client_api,
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
 
-@pytest.mark.parametrize('field, error', [
-    ('calibrationId', ['O campo id de calibração é obrigatório.']),
-    ('images', ['O campo imagens é obrigatório.']),
-    ('analysisName', ['O campo nome da análise é obrigatório.']),
-    ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
-    ('administrationDatetime', ['O campo hora e data de adminstração é obrigatório.']),
-    ])
-def test_fail_missing_fields(field, error, client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
+@pytest.mark.parametrize(
+    'field, error',
+    [
+        ('calibrationId', ['O campo id de calibração é obrigatório.']),
+        ('images', ['O campo imagens é obrigatório.']),
+        ('analysisName', ['O campo nome da análise é obrigatório.']),
+        ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
+        (
+            'administrationDatetime',
+            ['O campo hora e data de adminstração é obrigatório.'],
+        ),
+    ],
+)
+def test_fail_missing_fields(
+    field,
+    error,
+    client_api_auth,
+    preclinic_order,
+    form_data_preclinic_dosimetry,
+):
 
     form_data_preclinic_dosimetry.pop(field)
 
-    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url(
+        'service:analysis-list-create',
+        preclinic_order.user.uuid,
+        preclinic_order.uuid,
+    )
 
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
 
@@ -227,16 +261,22 @@ def test_fail_missing_fields(field, error, client_api_auth, preclinic_order, for
     assert body['errors'] == error
 
 
-def test_fail_with_calibration_of_another_user(client_api_auth,
-                                               preclinic_order,
-                                               second_user_calibrations,
-                                               form_data_preclinic_dosimetry):
+def test_fail_with_calibration_of_another_user(
+    client_api_auth,
+    preclinic_order,
+    second_user_calibrations,
+    form_data_preclinic_dosimetry,
+):
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
     form_data_preclinic_dosimetry['calibrationId'] = second_user_calibrations[0].uuid
 
-    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url(
+        'service:analysis-list-create',
+        preclinic_order.user.uuid,
+        preclinic_order.uuid,
+    )
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()
 
@@ -247,18 +287,44 @@ def test_fail_with_calibration_of_another_user(client_api_auth,
     assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
 
 
-@pytest.mark.parametrize('field, value, error', [
-    ('calibrationId', 'not is uuid', ['Insira um UUID válido.']),
-    ('injectedActivity', '-1', ['Certifique-se que atividade injetada seja maior ou igual a 0.0.']),
-    ('injectedActivity', 'not ia a number', ['Informe um número.']),
-    ('administrationDatetime', 'not is a datatime', ['Informe uma data/hora válida.']),
-    ('analysisName', 'ss', ['Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.'])
-    ])
-def test_fail_invalid_fields(field, value, error, client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
+@pytest.mark.parametrize(
+    'field, value, error',
+    [
+        ('calibrationId', 'not is uuid', ['Insira um UUID válido.']),
+        (
+            'injectedActivity',
+            '-1',
+            ['Certifique-se que atividade injetada seja maior ou igual a 0.0.'],
+        ),
+        ('injectedActivity', 'not ia a number', ['Informe um número.']),
+        (
+            'administrationDatetime',
+            'not is a datatime',
+            ['Informe uma data/hora válida.'],
+        ),
+        (
+            'analysisName',
+            'ss',
+            ['Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.'],
+        ),
+    ],
+)
+def test_fail_invalid_fields(
+    field,
+    value,
+    error,
+    client_api_auth,
+    preclinic_order,
+    form_data_preclinic_dosimetry,
+):
 
     form_data_preclinic_dosimetry[field] = value
 
-    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url(
+        'service:analysis-list-create',
+        preclinic_order.user.uuid,
+        preclinic_order.uuid,
+    )
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()
 

@@ -2,8 +2,7 @@ from http import HTTPStatus
 
 from django.shortcuts import resolve_url
 
-from web_server.service.models import ClinicDosimetryAnalysis, FORMAT_DATE
-
+from web_server.service.models import FORMAT_DATE, ClinicDosimetryAnalysis
 
 # /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
 
@@ -40,7 +39,7 @@ def test_successful(client_api_auth, user, clinic_order, tree_clinic_dosimetry_o
         # TODO: Pensar uma forma melhor
         assert analysis_response['imagesUrl'].startswith(
             f'http://testserver/media/{analysis_db.order.user.id}/clinic_dosimetry'
-            )
+        )
 
         assert analysis_response['report'] == ''
 

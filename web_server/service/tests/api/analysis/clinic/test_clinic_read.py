@@ -3,21 +3,25 @@ from uuid import uuid4
 
 from django.shortcuts import resolve_url
 
-from web_server.service.models import ClinicDosimetryAnalysis, FORMAT_DATE, Order
-
+from web_server.service.models import FORMAT_DATE, ClinicDosimetryAnalysis, Order
 
 # /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - GET
 
 
 def test_successfull(client_api_auth, clinic_dosimetry):
-    '''
+    """
     /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - GET
-    '''
+    """
 
     user = clinic_dosimetry.order.user
     order = clinic_dosimetry.order
 
-    url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, clinic_dosimetry.uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user.uuid,
+        order.uuid,
+        clinic_dosimetry.uuid,
+    )
     resp = client_api_auth.get(url)
     analysis_db = ClinicDosimetryAnalysis.objects.get(id=clinic_dosimetry.id)
 
@@ -40,9 +44,7 @@ def test_successfull(client_api_auth, clinic_dosimetry):
     assert body['administrationDatetime'] == analysis_db.administration_datetime.strftime(FORMAT_DATE)
 
     # TODO: Pensar uma forma melhor
-    assert body['imagesUrl'].startswith(
-        f'http://testserver/media/{analysis_db.order.user.id}/clinic_dosimetry'
-        )
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}/clinic_dosimetry')
 
     assert body['report'] == ''
 
@@ -53,7 +55,12 @@ def test_fail_wrong_analysis_id(client_api_auth, clinic_dosimetry):
     order_uuid = clinic_dosimetry.order.uuid
     analysis_uuid = uuid4()
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.get(url)
     body = resp.json()
 
@@ -64,18 +71,24 @@ def test_fail_wrong_analysis_id(client_api_auth, clinic_dosimetry):
 
 def test_fail_using_another_order(client_api_auth, user, clinic_dosimetry, create_order_data):
 
-    order = Order.objects.create(user=user,
-                                 quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
-                                 remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
-                                 price=create_order_data['price'],
-                                 service_name=create_order_data['service_name']
-                                 )
+    order = Order.objects.create(
+        user=user,
+        quantity_of_analyzes=create_order_data['quantity_of_analyzes'],
+        remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
+        price=create_order_data['price'],
+        service_name=create_order_data['service_name'],
+    )
 
     user_uuid = clinic_dosimetry.order.user.uuid
     order_uuid = order.uuid
     analysis_uuid = clinic_dosimetry.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.get(url)
     body = resp.json()
 
@@ -90,7 +103,12 @@ def test_fail_using_another_user(client_api, second_user, clinic_dosimetry):
     order_uuid = clinic_dosimetry.order.uuid
     analysis_uuid = clinic_dosimetry.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + second_user.auth_token.key)
     resp = client_api.get(url)
     body = resp.json()

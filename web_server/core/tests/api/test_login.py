@@ -1,14 +1,13 @@
 from http import HTTPStatus
 
 import pytest
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
-from django.utils.translation import gettext as _
 from django.utils.translation import get_language
-from django.conf import settings
+from django.utils.translation import gettext as _
 
 from web_server.conftest import HTTP_METHODS
-
 
 User = get_user_model()
 
@@ -21,7 +20,7 @@ def test_successfull_login(client_api, user_info, user):
 
     payload = {
         'username': user_info['email'],
-        'password': user_info['password']
+        'password': user_info['password'],
     }
 
     response = client_api.post(URL_LOGIN, data=payload, format='json')
@@ -39,7 +38,7 @@ def test_fail_wrong_username(client_api, user_info, user):
 
     payload = {
         'username': user_info['email'] + '1',
-        'password': user_info['password']
+        'password': user_info['password'],
     }
 
     response = client_api.post(URL_LOGIN, data=payload, format='json')
@@ -55,7 +54,7 @@ def test_fail_wrong_email(client_api, user_info, user):
 
     payload = {
         'username': user_info['email'] + '1',
-        'password': user_info['password']
+        'password': user_info['password'],
     }
 
     response = client_api.post(URL_LOGIN, data=payload, format='json')
@@ -99,7 +98,7 @@ def test_fail_login_missing_username(client_api, user_info):
     assert body == {'errors': expected}
 
 
-@pytest.mark.parametrize("method", ['get', 'put', 'patch', 'delete'])
+@pytest.mark.parametrize('method', ['get', 'put', 'patch', 'delete'])
 def test_login_not_allowed_method(method):
 
     resp = HTTP_METHODS[method](URL_LOGIN, format='json')

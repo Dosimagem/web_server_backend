@@ -1,15 +1,14 @@
+from datetime import datetime
 from decimal import Decimal
 from http import HTTPStatus
 from uuid import uuid4
-from datetime import datetime
 
 import pytest
 from django.core.files.base import ContentFile
 from django.shortcuts import resolve_url
 from django.utils.timezone import make_aware
+
 from web_server.conftest import DATETIME_TIMEZONE
-
-
 from web_server.service.models import ClinicDosimetryAnalysis, Order
 
 
@@ -41,7 +40,12 @@ def test_successfull(client_api_auth, second_calibration, clinic_dosimetry_updat
     order_uuid = clinic_dosimetry_update_delete.order.uuid
     analysis_uuid = clinic_dosimetry_update_delete.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
 
     assert resp.status_code == HTTPStatus.NO_CONTENT
@@ -69,7 +73,12 @@ def test_optional_images_successfull(client_api_auth, second_calibration, clinic
     order_uuid = clinic_dosimetry_update_delete.order.uuid
     analysis_uuid = clinic_dosimetry_update_delete.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
 
     assert resp.status_code == HTTPStatus.NO_CONTENT
@@ -85,9 +94,9 @@ def test_optional_images_successfull(client_api_auth, second_calibration, clinic
 
 
 def test_fail_successfull_invalid_status(client_api_auth, second_calibration, clinic_dosimetry):
-    '''
+    """
     The analysis must have INVALID_INFOS status
-    '''
+    """
 
     update_form_data = {}
 
@@ -100,7 +109,12 @@ def test_fail_successfull_invalid_status(client_api_auth, second_calibration, cl
     order_uuid = clinic_dosimetry.order.uuid
     analysis_uuid = clinic_dosimetry.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
     body = resp.json()
 
@@ -124,7 +138,12 @@ def test_fail_wrong_calibration_id(client_api_auth, clinic_dosimetry_update_dele
     order_uuid = clinic_dosimetry_update_delete.order.uuid
     analysis_uuid = clinic_dosimetry_update_delete.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
     body = resp.json()
 
@@ -147,7 +166,12 @@ def test_fail_wrong_analysis_id(client_api_auth, clinic_dosimetry_update_delete)
     order_uuid = clinic_dosimetry_update_delete.order.uuid
     analysis_uuid = uuid4()
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
     body = resp.json()
 
@@ -159,12 +183,13 @@ def test_fail_wrong_analysis_id(client_api_auth, clinic_dosimetry_update_delete)
 
 def test_fail_wrong_another_order(client_api_auth, user, clinic_dosimetry_update_delete):
 
-    order = Order.objects.create(user=user,
-                                 quantity_of_analyzes=10,
-                                 remaining_of_analyzes=10,
-                                 price=Decimal('1000.00'),
-                                 service_name=Order.CLINIC_DOSIMETRY
-                                 )
+    order = Order.objects.create(
+        user=user,
+        quantity_of_analyzes=10,
+        remaining_of_analyzes=10,
+        price=Decimal('1000.00'),
+        service_name=Order.CLINIC_DOSIMETRY,
+    )
 
     update_form_data = {}
 
@@ -177,7 +202,12 @@ def test_fail_wrong_another_order(client_api_auth, user, clinic_dosimetry_update
     order_uuid = order.uuid
     analysis_uuid = clinic_dosimetry_update_delete.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
     body = resp.json()
 
@@ -187,7 +217,12 @@ def test_fail_wrong_another_order(client_api_auth, user, clinic_dosimetry_update
     _verified_unchanged_information_db(clinic_dosimetry_update_delete)
 
 
-def test_fail_wrong_another_user(client_api, second_user, second_user_calibrations, clinic_dosimetry_update_delete):
+def test_fail_wrong_another_user(
+    client_api,
+    second_user,
+    second_user_calibrations,
+    clinic_dosimetry_update_delete,
+):
 
     update_form_data = {}
 
@@ -200,7 +235,12 @@ def test_fail_wrong_another_user(client_api, second_user, second_user_calibratio
     order_uuid = clinic_dosimetry_update_delete.order.uuid
     analysis_uuid = clinic_dosimetry_update_delete.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
     client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + second_user.auth_token.key)
     resp = client_api.put(url, data=update_form_data, format='multipart')
     body = resp.json()
@@ -211,12 +251,18 @@ def test_fail_wrong_another_user(client_api, second_user, second_user_calibratio
     _verified_unchanged_information_db(clinic_dosimetry_update_delete)
 
 
-@pytest.mark.parametrize('field, error', [
-    ('calibrationId', ['O campo id de calibração é obrigatório.']),
-    ('analysisName', ['O campo nome da análise é obrigatório.']),
-    ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
-    ('administrationDatetime', ['O campo hora e data de adminstração é obrigatório.']),
-    ])
+@pytest.mark.parametrize(
+    'field, error',
+    [
+        ('calibrationId', ['O campo id de calibração é obrigatório.']),
+        ('analysisName', ['O campo nome da análise é obrigatório.']),
+        ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
+        (
+            'administrationDatetime',
+            ['O campo hora e data de adminstração é obrigatório.'],
+        ),
+    ],
+)
 def test_fail_missing_fields(field, error, client_api_auth, clinic_dosimetry_update_delete):
 
     update_form_data = {}
@@ -232,7 +278,12 @@ def test_fail_missing_fields(field, error, client_api_auth, clinic_dosimetry_upd
     order_uuid = clinic_dosimetry_update_delete.order.uuid
     analysis_uuid = clinic_dosimetry_update_delete.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
 
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
 
@@ -245,12 +296,23 @@ def test_fail_missing_fields(field, error, client_api_auth, clinic_dosimetry_upd
     _verified_unchanged_information_db(clinic_dosimetry_update_delete)
 
 
-@pytest.mark.parametrize('field, value, error', [
-    ('calibrationId', 'not is uuid', ['Insira um UUID válido.']),
-    ('injectedActivity', '-1', ['Certifique-se que atividade injetada seja maior ou igual a 0.0.']),
-    ('injectedActivity', 'not ia a number', ['Informe um número.']),
-    ('administrationDatetime', 'not is a datatime', ['Informe uma data/hora válida.']),
-    ])
+@pytest.mark.parametrize(
+    'field, value, error',
+    [
+        ('calibrationId', 'not is uuid', ['Insira um UUID válido.']),
+        (
+            'injectedActivity',
+            '-1',
+            ['Certifique-se que atividade injetada seja maior ou igual a 0.0.'],
+        ),
+        ('injectedActivity', 'not ia a number', ['Informe um número.']),
+        (
+            'administrationDatetime',
+            'not is a datatime',
+            ['Informe uma data/hora válida.'],
+        ),
+    ],
+)
 def test_fail_invalid_fields(field, value, error, client_api_auth, clinic_dosimetry_update_delete):
 
     update_form_data = {}
@@ -266,7 +328,12 @@ def test_fail_invalid_fields(field, value, error, client_api_auth, clinic_dosime
     order_uuid = clinic_dosimetry_update_delete.order.uuid
     analysis_uuid = clinic_dosimetry_update_delete.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
 
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
 
@@ -279,17 +346,21 @@ def test_fail_invalid_fields(field, value, error, client_api_auth, clinic_dosime
     _verified_unchanged_information_db(clinic_dosimetry_update_delete)
 
 
-def test_fail_analysis_name_must_be_unique(client_api_auth,
-                                           first_calibration,
-                                           clinic_order,
-                                           clinic_dosimetry_update_delete):
+def test_fail_analysis_name_must_be_unique(
+    client_api_auth,
+    first_calibration,
+    clinic_order,
+    clinic_dosimetry_update_delete,
+):
 
-    other_analysis = ClinicDosimetryAnalysis.objects.create(calibration=first_calibration,
-                                                            order=clinic_order,
-                                                            analysis_name='Analysis 2',
-                                                            injected_activity=50,
-                                                            administration_datetime=DATETIME_TIMEZONE,
-                                                            images=ContentFile(b'CT e SPET files 1', name='images.zip'))
+    other_analysis = ClinicDosimetryAnalysis.objects.create(
+        calibration=first_calibration,
+        order=clinic_order,
+        analysis_name='Analysis 2',
+        injected_activity=50,
+        administration_datetime=DATETIME_TIMEZONE,
+        images=ContentFile(b'CT e SPET files 1', name='images.zip'),
+    )
 
     update_form_data = {}
 
@@ -302,7 +373,12 @@ def test_fail_analysis_name_must_be_unique(client_api_auth,
     order_uuid = clinic_dosimetry_update_delete.order.uuid
     analysis_uuid = clinic_dosimetry_update_delete.uuid
 
-    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    url = resolve_url(
+        'service:analysis-read-update-delete',
+        user_uuid,
+        order_uuid,
+        analysis_uuid,
+    )
 
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
 

@@ -6,7 +6,6 @@ from django.db.utils import IntegrityError
 
 from web_server.service.models import Order
 
-
 User = get_user_model()
 
 
@@ -54,9 +53,7 @@ def test_orders_one_to_many_relation(user, second_user, tree_orders_of_tow_users
 
 def test_default_values(user):
 
-    order_db = Order.objects.create(
-            user=user,
-            price='1000', service_name=Order.CLINIC_DOSIMETRY)
+    order_db = Order.objects.create(user=user, price='1000', service_name=Order.CLINIC_DOSIMETRY)
 
     assert not order_db.permission
     assert order_db.quantity_of_analyzes == 0

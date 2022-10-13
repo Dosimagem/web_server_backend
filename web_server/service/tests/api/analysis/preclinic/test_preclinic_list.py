@@ -4,13 +4,16 @@ from django.shortcuts import resolve_url
 
 from web_server.service.models import FORMAT_DATE, PreClinicDosimetryAnalysis
 
-
 # /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
 
 
 def test_list_successful(client_api_auth, preclinic_order, tree_preclinic_dosimetry_of_first_user):
 
-    url = resolve_url('service:analysis-list-create',  preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url(
+        'service:analysis-list-create',
+        preclinic_order.user.uuid,
+        preclinic_order.uuid,
+    )
     resp = client_api_auth.get(url)
     body = resp.json()
 
@@ -40,14 +43,18 @@ def test_list_successful(client_api_auth, preclinic_order, tree_preclinic_dosime
         # TODO: Pensar uma forma melhor
         assert analysis_response['imagesUrl'].startswith(
             f'http://testserver/media/{analysis_db.order.user.id}/preclinic_dosimetry'
-            )
+        )
 
         assert analysis_response['report'] == ''
 
 
 def test_list_preclinic_dosimetry_without_analysis(client_api_auth, preclinic_order):
 
-    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url(
+        'service:analysis-list-create',
+        preclinic_order.user.uuid,
+        preclinic_order.uuid,
+    )
     resp = client_api_auth.get(url)
     body = resp.json()
 

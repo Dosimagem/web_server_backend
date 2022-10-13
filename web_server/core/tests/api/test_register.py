@@ -1,12 +1,11 @@
 from http import HTTPStatus
 
 import pytest
-from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
+from django.utils.translation import gettext as _
 
 from web_server.conftest import HTTP_METHODS
-
 
 User = get_user_model()
 
@@ -27,13 +26,17 @@ def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
 
     body = resp.json()
 
-    assert body == {'id': str(user.uuid), 'token': user.auth_token.key, 'isStaff': user.is_staff}
+    assert body == {
+        'id': str(user.uuid),
+        'token': user.auth_token.key,
+        'isStaff': user.is_staff,
+    }
 
 
 def test_fail_user_unique_fields(client_api, user, register_infos):
-    '''
+    """
     Email
-    '''
+    """
 
     resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
 
@@ -48,9 +51,9 @@ def test_fail_user_unique_fields(client_api, user, register_infos):
 
 # TODO: Should the clinic name and CNPJ be unique?
 def test_fail_profile_unique_fields(api_cnpj_successfull, client_api, user, second_register_infos):
-    '''
+    """
     Clinic, CPF and CNPJ.
-    '''
+    """
 
     second_register_infos['cpf'] = user.profile.cpf
     second_register_infos['clinic'] = user.profile.clinic
@@ -120,15 +123,18 @@ def test_fail_profile_invalid_phone(api_cnpj_successfull, client_api, register_i
     assert expected in errors_list
 
 
-@pytest.mark.parametrize('field, error', [
-    ('email', [
-        'O campo email é obrigatório.',
-        'Os campos emails não correspondem.'
-        ]),
-    ('confirmed_email', [
-        ('O campo email de confirmação é obrigatório.')
-        ]),
-    ]
+@pytest.mark.parametrize(
+    'field, error',
+    [
+        (
+            'email',
+            [
+                'O campo email é obrigatório.',
+                'Os campos emails não correspondem.',
+            ],
+        ),
+        ('confirmed_email', [('O campo email de confirmação é obrigatório.')]),
+    ],
 )
 def test_register_missing_fields(client_api, field, error, register_infos):
 
@@ -142,23 +148,15 @@ def test_register_missing_fields(client_api, field, error, register_infos):
     assert body['errors'] == error
 
 
-@pytest.mark.parametrize('field, error', [
-    ('name', [
-        'O campo nome é obrigatório.'
-        ]),
-    ('phone', [
-        'O campo telefone é obrigatório.'
-        ]),
-    ('clinic', [
-         'O campo clínica é obrigatório.'
-        ]),
-    ('role', [
-         'O campo cargo é obrigatório.'
-        ]),
-    ('cpf', [
-         'O campo CPF é obrigatório.'
-        ])
-    ]
+@pytest.mark.parametrize(
+    'field, error',
+    [
+        ('name', ['O campo nome é obrigatório.']),
+        ('phone', ['O campo telefone é obrigatório.']),
+        ('clinic', ['O campo clínica é obrigatório.']),
+        ('role', ['O campo cargo é obrigatório.']),
+        ('cpf', ['O campo CPF é obrigatório.']),
+    ],
 )
 def test_register_missing_profile_fields(api_cnpj_successfull, client_api, field, error, register_infos):
 
@@ -217,7 +215,7 @@ def test_register_email_dont_mach(client_api, register_infos):
     assert body['errors'] == expected
 
 
-@pytest.mark.parametrize("method", ['get', 'put', 'patch', 'delete'])
+@pytest.mark.parametrize('method', ['get', 'put', 'patch', 'delete'])
 def test_register_not_allowed_method(method):
 
     resp = HTTP_METHODS[method](URL_REGISTER, format='json')
