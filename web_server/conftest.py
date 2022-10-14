@@ -8,7 +8,14 @@ from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
 from web_server.core.models import UserProfile
-from web_server.service.models import Calibration, ClinicDosimetryAnalysis, Isotope, Order, PreClinicDosimetryAnalysis
+from web_server.service.models import (
+    Calibration,
+    ClinicDosimetryAnalysis,
+    Isotope,
+    Order,
+    PreClinicDosimetryAnalysis,
+    SegmentationAnalysis,
+)
 
 HTTP_METHODS = {
     'get': APIClient().get,
@@ -166,7 +173,18 @@ def preclinic_order(user):
 
 
 @pytest.fixture
-def tree_orders_of_tow_users(user, second_user):
+def segmentation_order(user):
+    return Order.objects.create(
+        user=user,
+        quantity_of_analyzes=10,
+        remaining_of_analyzes=10,
+        price='1000',
+        service_name=Order.SEGMENTANTION_QUANTIFICATION,
+    )
+
+
+@pytest.fixture
+def tree_orders_of_two_diff_users(user, second_user):
     """
     Order Table:
 
@@ -340,6 +358,12 @@ def preclinic_dosimetry_file():
 
 
 @pytest.fixture
+def segmentation_analysis_file():
+    fp = ContentFile(b'CT files', name='images.zip')
+    return {'images': fp}
+
+
+@pytest.fixture
 def clinic_dosimetry_info(first_calibration, clinic_order):
     return {
         'calibration': first_calibration,
@@ -358,6 +382,14 @@ def preclinic_dosimetry_info(first_calibration, preclinic_order):
         'analysis_name': 'Analysis 1',
         'injected_activity': 20,
         'administration_datetime': DATETIME_TIMEZONE,
+    }
+
+
+@pytest.fixture
+def segmentation_analysis_info(segmentation_order):
+    return {
+        'order': segmentation_order,
+        'analysis_name': 'Analysis 1',
     }
 
 
@@ -400,6 +432,27 @@ def preclinic_dosimetry_update_delete(preclinic_dosimetry):
     preclinic_dosimetry.status = PreClinicDosimetryAnalysis.INVALID_INFOS
     preclinic_dosimetry.save()
     return preclinic_dosimetry
+
+
+@pytest.fixture
+def segmentation_analysis(segmentation_analysis_info, segmentation_analysis_file):
+
+    # TODO: Pensar em uma solução melhor, talvez usar um serviço para isso
+    order_uuid = segmentation_analysis_info['order'].uuid
+    order = Order.objects.get(uuid=order_uuid)
+    order.remaining_of_analyzes -= 1
+    order.save()
+
+    analysis = SegmentationAnalysis.objects.create(**segmentation_analysis_info, **segmentation_analysis_file)
+
+    return analysis
+
+
+@pytest.fixture
+def seg_analysis_update_or_del_is_possible(segmentation_analysis):
+    segmentation_analysis.status = SegmentationAnalysis.INVALID_INFOS
+    segmentation_analysis.save()
+    return segmentation_analysis
 
 
 @pytest.fixture
@@ -446,3 +499,26 @@ def tree_preclinic_dosimetry_of_first_user(preclinic_dosimetry_info):
         images=ContentFile(b'CT e SPET files 3', name='images.zip'),
     )
     return PreClinicDosimetryAnalysis.objects.all()
+
+
+@pytest.fixture
+def tree_segmentation_analysis_of_first_user(segmentation_analysis_info):
+
+    segmentation_analysis_info['analysis_name'] = 'Analysis 1'
+    SegmentationAnalysis.objects.create(
+        **segmentation_analysis_info,
+        images=ContentFile(b'CT files 1', name='images.zip'),
+    )
+
+    segmentation_analysis_info['analysis_name'] = 'Analysis 2'
+    SegmentationAnalysis.objects.create(
+        **segmentation_analysis_info,
+        images=ContentFile(b'CT files 2', name='images.zip'),
+    )
+
+    segmentation_analysis_info['analysis_name'] = 'Analysis 3'
+    SegmentationAnalysis.objects.create(
+        **segmentation_analysis_info,
+        images=ContentFile(b'CT files 3', name='images.zip'),
+    )
+    return SegmentationAnalysis.objects.all()

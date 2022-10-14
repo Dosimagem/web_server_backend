@@ -13,6 +13,8 @@ class OrderInfos:
             queryset_func = self.order.clinic_dosimetry_analysis
         elif self.order.service_name == self.order.PRECLINIC_DOSIMETRY:
             queryset_func = self.order.preclinic_dosimetry_analysis
+        elif self.order.service_name == self.order.SEGMENTANTION_QUANTIFICATION:
+            queryset_func = self.order.segmentation_analysis
 
         return queryset_func
 

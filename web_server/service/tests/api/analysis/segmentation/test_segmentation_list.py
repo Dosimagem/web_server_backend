@@ -2,25 +2,21 @@ from http import HTTPStatus
 
 from django.shortcuts import resolve_url
 
-from web_server.service.models import FORMAT_DATE, PreClinicDosimetryAnalysis
+from web_server.service.models import FORMAT_DATE, ClinicDosimetryAnalysis
 
 # /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
 
 
-def test_list_successful(client_api_auth, preclinic_order, tree_preclinic_dosimetry_of_first_user):
+def test_successful(client_api_auth, segmentation_order, tree_segmentation_analysis_of_first_user):
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        preclinic_order.user.uuid,
-        preclinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', segmentation_order.user.uuid, segmentation_order.uuid)
     resp = client_api_auth.get(url)
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.OK
 
     analysis_list = body['row']
-    analysis_list_db = PreClinicDosimetryAnalysis.objects.all()
+    analysis_list_db = ClinicDosimetryAnalysis.objects.all()
 
     assert body['count']
     assert body['count'] == len(analysis_list)
@@ -29,28 +25,25 @@ def test_list_successful(client_api_auth, preclinic_order, tree_preclinic_dosime
         assert analysis_response['id'] == str(analysis_db.uuid)
         assert analysis_response['userId'] == str(analysis_db.order.user.uuid)
         assert analysis_response['orderId'] == str(analysis_db.order.uuid)
-        assert analysis_response['calibrationId'] == str(analysis_db.calibration.uuid)
         assert analysis_response['status'] == analysis_db.get_status_display()
         assert analysis_response['active'] == analysis_db.active
         assert analysis_response['serviceName'] == analysis_db.order.get_service_name_display()
         assert analysis_response['createdAt'] == analysis_db.created_at.strftime(FORMAT_DATE)
         assert analysis_response['modifiedAt'] == analysis_db.modified_at.strftime(FORMAT_DATE)
 
-        assert analysis_response['injectedActivity'] == analysis_db.injected_activity
         assert analysis_response['analysisName'] == analysis_db.analysis_name
-        assert analysis_response['administrationDatetime'] == analysis_db.administration_datetime.strftime(FORMAT_DATE)
 
         # TODO: Pensar uma forma melhor
         assert analysis_response['imagesUrl'].startswith(
-            f'http://testserver/media/{analysis_db.order.user.id}/preclinic_dosimetry'
+            f'http://testserver/media/{analysis_db.order.user.id}/segmentation_analysis'
         )
 
         assert analysis_response['report'] == ''
 
 
-def test_list_preclinic_dosimetry_without_analysis(client_api_auth, preclinic_order):
+def test_without_analysis(client_api_auth, user, segmentation_order):
 
-    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', segmentation_order.user.uuid, segmentation_order.uuid)
     resp = client_api_auth.get(url)
     body = resp.json()
 

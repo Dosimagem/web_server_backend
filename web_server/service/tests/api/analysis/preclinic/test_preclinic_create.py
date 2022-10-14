@@ -6,7 +6,12 @@ from uuid import uuid4
 import pytest
 from django.shortcuts import resolve_url
 
-from web_server.service.models import FORMAT_DATE, ClinicDosimetryAnalysis, Order, PreClinicDosimetryAnalysis
+from web_server.service.models import (
+    FORMAT_DATE,
+    ClinicDosimetryAnalysis,
+    Order,
+    PreClinicDosimetryAnalysis,
+)
 
 # /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
 
@@ -202,7 +207,7 @@ def test_fail_with_order_from_another_user(
     client_api,
     user,
     second_user,
-    tree_orders_of_tow_users,
+    tree_orders_of_two_diff_users,
     form_data_preclinic_dosimetry,
 ):
     """

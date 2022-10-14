@@ -1,7 +1,10 @@
 from django.urls import path
 
 from .views.analysis import analysis_list_create, analysis_read_update_delete
-from .views.calibrations import calibrations_list_create, calibrations_read_update_delete
+from .views.calibrations import (
+    calibrations_list_create,
+    calibrations_read_update_delete,
+)
 from .views.isotopes import isotope
 from .views.orders import orders_list, orders_read
 

@@ -5,7 +5,10 @@ from web_server.service.forms import (
     PreClinicDosimetryAnalysisCreateForm,
     PreClinicDosimetryAnalysisUpdateForm,
 )
-from web_server.service.models import ClinicDosimetryAnalysis, PreClinicDosimetryAnalysis
+from web_server.service.models import (
+    ClinicDosimetryAnalysis,
+    PreClinicDosimetryAnalysis,
+)
 
 
 def test_get_forms_update(clinic_order, preclinic_order):

@@ -52,3 +52,12 @@ def form_data_preclinic_dosimetry(preclinic_dosimetry_info, preclinic_dosimetry_
         'injectedActivity': preclinic_dosimetry_info['injected_activity'],
         'administrationDatetime': preclinic_dosimetry_info['administration_datetime'],
     }
+
+
+@pytest.fixture
+def form_data_segmentation_analysis(segmentation_analysis_info, segmentation_analysis_file):
+
+    return {
+        'images': segmentation_analysis_file['images'],
+        'analysisName': segmentation_analysis_info['analysis_name'],
+    }

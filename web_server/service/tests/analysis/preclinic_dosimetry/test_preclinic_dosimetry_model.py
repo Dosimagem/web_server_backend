@@ -112,7 +112,7 @@ def test_str(preclinic_dosimetry):
     analysis_id = analysis.pk
     code = analysis.CODE
 
-    assert str(analysis) == f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{analysis_id:04}-{code:02}'
+    assert str(analysis) == f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{analysis_id:04}-{code:02}'
 
 
 def test_status(preclinic_dosimetry_info):
@@ -147,13 +147,13 @@ def test_save_with_conclude_status_must_be_report(preclinic_dosimetry):
         preclinic_dosimetry.full_clean()
 
 
-def test_order_code(clinic_dosimetry):
+def test_order_code(preclinic_dosimetry):
 
-    clinic_id = clinic_dosimetry.order.user.id
-    year = str(clinic_dosimetry.created_at.year)[2:]
-    order_id = clinic_dosimetry.order.id
-    analysis_id = clinic_dosimetry.id
-    isotope = clinic_dosimetry.calibration.isotope
-    expected = f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{analysis_id:04}-01'
+    clinic_id = preclinic_dosimetry.order.user.id
+    year = str(preclinic_dosimetry.created_at.year)[2:]
+    order_id = preclinic_dosimetry.order.id
+    analysis_id = preclinic_dosimetry.id
+    isotope = preclinic_dosimetry.calibration.isotope
+    expected = f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{analysis_id:04}-02'
 
-    assert expected == clinic_dosimetry.code
+    assert expected == preclinic_dosimetry.code
