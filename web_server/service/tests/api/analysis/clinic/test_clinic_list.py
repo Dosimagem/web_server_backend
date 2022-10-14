@@ -7,9 +7,9 @@ from web_server.service.models import FORMAT_DATE, ClinicDosimetryAnalysis
 # /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
 
 
-def test_successful(client_api_auth, user, clinic_order, tree_clinic_dosimetry_of_first_user):
+def test_successful(client_api_auth, clinic_order, tree_clinic_dosimetry_of_first_user):
 
-    url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
     resp = client_api_auth.get(url)
     body = resp.json()
 
@@ -44,9 +44,9 @@ def test_successful(client_api_auth, user, clinic_order, tree_clinic_dosimetry_o
         assert analysis_response['report'] == ''
 
 
-def test_without_analysis(client_api_auth, user, clinic_order):
+def test_without_analysis(client_api_auth, clinic_order):
 
-    url = resolve_url('service:analysis-list-create', user.uuid, clinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
     resp = client_api_auth.get(url)
     body = resp.json()
 

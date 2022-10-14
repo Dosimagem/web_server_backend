@@ -2,7 +2,14 @@ from django import forms
 from django.forms import ValidationError
 from django.utils.translation import gettext as _
 
-from web_server.service.models import Calibration, ClinicDosimetryAnalysis, Isotope, Order, PreClinicDosimetryAnalysis
+from web_server.service.models import (
+    Calibration,
+    ClinicDosimetryAnalysis,
+    Isotope,
+    Order,
+    PreClinicDosimetryAnalysis,
+    SegmentationAnalysis,
+)
 
 
 class CreateOrderForm(forms.ModelForm):
@@ -112,3 +119,16 @@ class PreClinicAndClinicDosimetryAnalysisCreateFormApi(forms.Form):
 
 class PreClinicAndClinicDosimetryAnalysisUpdateFormApi(PreClinicAndClinicDosimetryAnalysisCreateFormApi):
     ...
+
+
+class SegmentationAnalysisCreateForm(forms.ModelForm):
+    class Meta:
+        model = SegmentationAnalysis
+        fields = ('order', 'analysis_name', 'images')
+
+
+class SegmentationAnalysisUpdateForm(SegmentationAnalysisCreateForm):
+    def change_status_and_save(self):
+        self.instance.status = SegmentationAnalysis.ANALYZING_INFOS
+        super().save()
+        return self.instance

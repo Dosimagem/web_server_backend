@@ -2,12 +2,20 @@ from http import HTTPStatus
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
-from web_server.core.errors_msg import ERROR_CALIBRATION_ID, MSG_ERROR_RESOURCE, list_errors
+from web_server.core.errors_msg import (
+    ERROR_CALIBRATION_ID,
+    MSG_ERROR_RESOURCE,
+    list_errors,
+)
 from web_server.core.views.auth import MyTokenAuthentication
 from web_server.service.analysis_svc import AnalisysChoice
 from web_server.service.forms import (
@@ -63,7 +71,7 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
         order.save()
     else:
         msg = ['Não foi possivel deletar essa análise.']
-        return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
+        return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)   # TODO: Tracar para  CONFLIT
 
     data = {'id': analysis_id, 'message': 'Análise deletada com sucesso!'}
 
@@ -108,22 +116,21 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
+    if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
+
+        form = PreClinicAndClinicDosimetryAnalysisUpdateFormApi(data)
+
+        if not form.is_valid():
+            return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+        try:
+            calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'], user=user)
+        except ObjectDoesNotExist:
+            return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.NOT_FOUND)
+
+        data['calibration'] = calibration
+
     data['order'] = order
-
-    form = PreClinicAndClinicDosimetryAnalysisUpdateFormApi(data)
-
-    if not form.is_valid():
-        return Response(
-            data={'errors': list_errors(form.errors)},
-            status=HTTPStatus.BAD_REQUEST,
-        )
-
-    try:
-        calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'], user=user)
-    except ObjectDoesNotExist:
-        return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.NOT_FOUND)
-
-    data['calibration'] = calibration
 
     analisys_choice = AnalisysChoice(order=order)
 
@@ -135,16 +142,13 @@ def _update_analysis(request, user_id, order_id, analysis_id):
 
     if analysis.status != Model.INVALID_INFOS:
         msg = ['Não foi possivel atualizar essa análise.']
-        return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)
+        return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)   # TODO: Tracar para  CONFLIT
 
     AnalysisForm = analisys_choice.update_form
     form_analysis = AnalysisForm(data, request.FILES, instance=analysis)
 
     if not form_analysis.is_valid():
-        return Response(
-            data={'errors': list_errors(form_analysis.errors)},
-            status=HTTPStatus.BAD_REQUEST,
-        )
+        return Response(data={'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
 
     form_analysis.change_status_and_save()
 
@@ -155,14 +159,6 @@ def _create_analysis(request, user_id, order_id):
 
     data = request.data
 
-    form = PreClinicAndClinicDosimetryAnalysisCreateFormApi(data)
-
-    if not form.is_valid():
-        return Response(
-            data={'errors': list_errors(form.errors)},
-            status=HTTPStatus.BAD_REQUEST,
-        )
-
     user = request.user
 
     try:
@@ -171,36 +167,34 @@ def _create_analysis(request, user_id, order_id):
         return Response(status=HTTPStatus.NOT_FOUND)
 
     if not order.is_analysis_available():  # TODO: Regra de negocio no modelo não parece uma boa ideia para mim
-        return Response(
-            {'errors': ['Todas as análises para essa pedido já foram usadas.']},
-            status=HTTPStatus.CONFLICT,
-        )
+        return Response({'errors': ['Todas as análises para essa pedido já foram usadas.']}, status=HTTPStatus.CONFLICT)
 
     if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
+
+        form = PreClinicAndClinicDosimetryAnalysisCreateFormApi(data)
+
+        if not form.is_valid():
+            return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
         try:
             calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'], user__uuid=user_id)
         except ObjectDoesNotExist:
-            return Response(
-                data={'errors': ERROR_CALIBRATION_ID},
-                status=HTTPStatus.BAD_REQUEST,
-            )
+            return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.BAD_REQUEST)
 
-        data.update({'order': order, 'calibration': calibration})
+        data['calibration'] = calibration
 
-        AnalysisFormClass = AnalisysChoice(order=order).create_form
-        form_analysis = AnalysisFormClass(data, request.FILES)
+    data['order'] = order
 
-        if not form_analysis.is_valid():
-            return Response(
-                {'errors': list_errors(form_analysis.errors)},
-                status=HTTPStatus.BAD_REQUEST,
-            )
+    AnalysisFormClass = AnalisysChoice(order=order).create_form
+    form_analysis = AnalysisFormClass(data, request.FILES)
 
-        with transaction.atomic():
-            # TODO: Colocar isso em uma camada de serviço
-            order.remaining_of_analyzes -= 1
-            order.save()
-            new_analysis = form_analysis.save()
+    if not form_analysis.is_valid():
+        return Response({'errors': list_errors(form_analysis.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-        return Response(new_analysis.to_dict(request), status=HTTPStatus.CREATED)
+    with transaction.atomic():
+        # TODO: Colocar isso em uma camada de serviço
+        order.remaining_of_analyzes -= 1
+        order.save()
+        new_analysis = form_analysis.save()
+
+    return Response(new_analysis.to_dict(request), status=HTTPStatus.CREATED)

@@ -2,7 +2,12 @@ import pytest
 from django.core.files.base import ContentFile
 
 from web_server.conftest import DATETIME_TIMEZONE
-from web_server.service.models import ClinicDosimetryAnalysis, Order, PreClinicDosimetryAnalysis
+from web_server.service.models import (
+    ClinicDosimetryAnalysis,
+    Order,
+    PreClinicDosimetryAnalysis,
+    SegmentationAnalysis,
+)
 from web_server.service.order_svc import OrderInfos
 
 
@@ -11,6 +16,7 @@ from web_server.service.order_svc import OrderInfos
     [
         (ClinicDosimetryAnalysis, Order.CLINIC_DOSIMETRY),
         (PreClinicDosimetryAnalysis, Order.PRECLINIC_DOSIMETRY),
+        (SegmentationAnalysis, Order.SEGMENTANTION_QUANTIFICATION),
     ],
 )
 def test_order_analisys_infos(model, service_name, user, first_calibration):
@@ -24,13 +30,19 @@ def test_order_analisys_infos(model, service_name, user, first_calibration):
         status_payment=Order.CONFIRMED,
     )
 
-    data = {
-        'calibration': first_calibration,
-        'order': order,
-        'images': ContentFile(b'CT e SPET files 1', name='images.zip'),
-        'injected_activity': 50,
-        'administration_datetime': DATETIME_TIMEZONE,
-    }
+    if service_name in [Order.CLINIC_DOSIMETRY, Order.PRECLINIC_DOSIMETRY]:
+        data = {
+            'calibration': first_calibration,
+            'order': order,
+            'images': ContentFile(b'CT e SPET files 1', name='images.zip'),
+            'injected_activity': 50,
+            'administration_datetime': DATETIME_TIMEZONE,
+        }
+    elif service_name == Order.SEGMENTANTION_QUANTIFICATION:
+        data = {
+            'order': order,
+            'images': ContentFile(b'CT e SPET files 1', name='images.zip'),
+        }
 
     # Analisando informações
     model.objects.create(**data, analysis_name='Analysis 1', status=model.ANALYZING_INFOS)

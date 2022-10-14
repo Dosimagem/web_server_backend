@@ -10,12 +10,12 @@ from web_server.service.order_svc import OrderInfos
 # List - GET
 
 
-def test_list_orders_of_user(client_api_auth, clinic_order):
+def test_list_orders_of_user(client_api_auth, user, clinic_order, preclinic_order, segmentation_order):
     """
     /api/v1/users/<uuid>/orders/ - GET
     """
 
-    url = resolve_url('service:order-list', clinic_order.user.uuid)
+    url = resolve_url('service:order-list', user.uuid)
 
     response = client_api_auth.get(url)
 
@@ -23,7 +23,7 @@ def test_list_orders_of_user(client_api_auth, clinic_order):
 
     assert response.status_code == HTTPStatus.OK
 
-    order_db_list = list(Order.objects.filter(user=clinic_order.user))
+    order_db_list = list(Order.objects.filter(user=user))
 
     order_response_list = body['row']
 
@@ -105,11 +105,7 @@ def test_read_order_by_id(client_api_auth, clinic_order):
     /api/v1/users/<uuid>/orders/<uuid> - GET
     """
 
-    url = resolve_url(
-        'service:order-read',
-        user_id=clinic_order.user.uuid,
-        order_id=clinic_order.uuid,
-    )
+    url = resolve_url('service:order-read', user_id=clinic_order.user.uuid, order_id=clinic_order.uuid)
 
     response = client_api_auth.get(url)
 
@@ -189,11 +185,7 @@ def test_read_view_token_and_user_id_dont_match(client_api_auth, clinic_order):
 
 def test_read_not_allowed_method(client_api_auth, clinic_order):
 
-    url = resolve_url(
-        'service:order-read',
-        user_id=clinic_order.user.uuid,
-        order_id=clinic_order.uuid,
-    )
+    url = resolve_url('service:order-read', user_id=clinic_order.user.uuid, order_id=clinic_order.uuid)
 
     resp = client_api_auth.post(url, format='json')
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED

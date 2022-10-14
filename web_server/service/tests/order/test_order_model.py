@@ -40,12 +40,12 @@ def test_orders_positive_integer_constraint(user):
         Order.objects.create(user=user, quantity_of_analyzes=-1, remaining_of_analyzes=-1)
 
 
-def test_orders_one_to_many_relation(user, second_user, tree_orders_of_tow_users):
+def test_orders_one_to_many_relation(user, second_user, tree_orders_of_two_diff_users):
 
-    assert tree_orders_of_tow_users[0].user.id == user.id
-    assert tree_orders_of_tow_users[1].user.id == user.id
+    assert tree_orders_of_two_diff_users[0].user.id == user.id
+    assert tree_orders_of_two_diff_users[1].user.id == user.id
 
-    assert tree_orders_of_tow_users[2].user.id == second_user.id
+    assert tree_orders_of_two_diff_users[2].user.id == second_user.id
 
     assert user.orders.count() == 2
     assert second_user.orders.count() == 1

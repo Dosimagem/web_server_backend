@@ -17,12 +17,14 @@ class Order(CreationModificationBase, models.Model):
 
     CLINIC_DOSIMETRY = 'DC'
     PRECLINIC_DOSIMETRY = 'PCD'
+    SEGMENTANTION_QUANTIFICATION = 'SQ'
 
-    SERVICES_CODES = {CLINIC_DOSIMETRY: '01', PRECLINIC_DOSIMETRY: '02'}
+    SERVICES_CODES = {CLINIC_DOSIMETRY: '01', PRECLINIC_DOSIMETRY: '02', SEGMENTANTION_QUANTIFICATION: '03'}
 
     SERVICES_NAMES = (
         (CLINIC_DOSIMETRY, 'Dosimetria Clinica'),
         (PRECLINIC_DOSIMETRY, 'Dosimetria Preclinica'),
+        (SEGMENTANTION_QUANTIFICATION, 'Segmentaçao e Quantificação'),
     )
 
     AWAITING_PAYMENT = 'APG'
@@ -112,6 +114,7 @@ def upload_to(instance, filename, type):
 upload_calibration_to = partial(upload_to, type='calibration')
 upload_clinic_dosimetry_to = partial(upload_to, type='clinic_dosimetry')
 upload_preclinic_dosimetry_to = partial(upload_to, type='preclinic_dosimetry')
+upload_segmentation_analysis_to = partial(upload_to, type='segmentation_analysis')
 upload_report_to = partial(upload_to, type='report')
 
 
@@ -164,7 +167,7 @@ class Calibration(CreationModificationBase, models.Model):
         return dict_
 
 
-class DosimetryAnalysisBase(CreationModificationBase, models.Model):
+class AnalysisBase(CreationModificationBase):
 
     # DATA_SENT = 'DS'
     ANALYZING_INFOS = 'AI'
@@ -189,8 +192,6 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
     report = models.FileField('Report', blank=True, null=True, upload_to=upload_report_to)
     active = models.BooleanField('Active', default=True)
 
-    injected_activity = models.FloatField('Injected Activity', validators=[MinValueValidator(0.0)])
-    administration_datetime = models.DateTimeField('Administration Datetime')
     code = models.CharField('Code', max_length=30)
 
     class Meta:
@@ -198,29 +199,6 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
 
     def __str__(self):
         return self.code
-
-    def to_dict(self, request):
-        dict_ = {
-            'id': self.uuid,
-            'user_id': self.order.user.uuid,
-            'order_id': self.order.uuid,
-            'calibration_id': self.calibration.uuid,
-            'status': self.get_status_display(),
-            'images_url': request.build_absolute_uri(self.images.url),
-            'active': self.active,
-            'service_name': self.order.get_service_name_display(),
-            'created_at': self.created_at.strftime(FORMAT_DATE),
-            'modified_at': self.modified_at.strftime(FORMAT_DATE),
-            'injected_activity': self.injected_activity,
-            'analysis_name': self.analysis_name,
-            'administration_datetime': self.administration_datetime.strftime(FORMAT_DATE),
-            'report': '',
-        }
-
-        if self.report.name:
-            dict_['report'] = request.build_absolute_uri(self.report.url)
-
-        return dict_
 
     def clean(self):
         if hasattr(self, 'order'):
@@ -242,15 +220,63 @@ class DosimetryAnalysisBase(CreationModificationBase, models.Model):
     def _generate_code(self):
         raise NotImplementedError()
 
+    def to_dict(self, request):
+        dict_ = {
+            'id': self.uuid,
+            'user_id': self.order.user.uuid,
+            'order_id': self.order.uuid,
+            'status': self.get_status_display(),
+            'images_url': request.build_absolute_uri(self.images.url),
+            'active': self.active,
+            'service_name': self.order.get_service_name_display(),
+            'created_at': self.created_at.strftime(FORMAT_DATE),
+            'modified_at': self.modified_at.strftime(FORMAT_DATE),
+            'analysis_name': self.analysis_name,
+            'report': '',
+        }
+
+        if self.report.name:
+            dict_['report'] = request.build_absolute_uri(self.report.url)
+
+        return dict_
+
+
+class DosimetryAnalysisBase(AnalysisBase):
+
+    injected_activity = models.FloatField('Injected Activity', validators=[MinValueValidator(0.0)])
+    administration_datetime = models.DateTimeField('Administration Datetime')
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.code
+
+    def to_dict(self, request):
+
+        dict_ = super().to_dict(request)
+
+        dict_['calibration_id'] = self.calibration.uuid
+        dict_['injected_activity'] = self.injected_activity
+        dict_['administration_datetime'] = self.administration_datetime.strftime(FORMAT_DATE)
+
+        return dict_
+
+    def _generate_code(self):
+        clinic_id = self.order.user.pk
+        year = str(self.created_at.year)[2:]
+        isotope = self.calibration.isotope
+        order_id = self.order.pk
+        id = self.pk
+        code = self.CODE
+        return f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{id:04}-{code:02}'
+
 
 class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     SERVICE_NAME_CODE = Order.CLINIC_DOSIMETRY
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
-    # user = models.ForeignKey('core.CustomUser',
-    #                          on_delete=models.CASCADE,
-    #                          related_name='clinic_dosimetry_analysis')
     calibration = models.ForeignKey(
         'Calibration',
         on_delete=models.CASCADE,
@@ -272,24 +298,12 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
             'analysis_name',
         )
 
-    def _generate_code(self):
-        clinic_id = self.order.user.pk
-        year = str(self.created_at.year)[2:]
-        isotope = self.calibration.isotope
-        order_id = self.order.pk
-        id = self.pk
-        code = self.CODE
-        return f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{id:04}-{code:02}'
-
 
 class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     SERVICE_NAME_CODE = Order.PRECLINIC_DOSIMETRY
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
-    # user = models.ForeignKey('core.CustomUser',
-    #                          on_delete=models.CASCADE,
-    #                          related_name='preclinic_dosimetry_analysis')
     calibration = models.ForeignKey(
         'Calibration',
         on_delete=models.CASCADE,
@@ -312,11 +326,40 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
             'analysis_name',
         )
 
+
+class SegmentationAnalysis(AnalysisBase):
+
+    SERVICE_NAME_CODE = Order.SEGMENTANTION_QUANTIFICATION
+    CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
+
+    # TODO: Talvez esse relacionamento pode ficar na classe Abstrata
+    order = models.ForeignKey(
+        'Order',
+        on_delete=models.CASCADE,
+        related_name='segmentation_analysis',
+    )
+
+    images = models.FileField('Images', upload_to=upload_segmentation_analysis_to)
+
+    class Meta:
+        db_table = 'segmentation_analysis'
+        verbose_name = 'Segmentation Analysis'
+        verbose_name_plural = 'Segmentation Analysis'
+        unique_together = (
+            'order',
+            'analysis_name',
+        )
+
     def _generate_code(self):
         clinic_id = self.order.user.pk
         year = str(self.created_at.year)[2:]
-        isotope = self.calibration.isotope
         order_id = self.order.pk
         id = self.pk
         code = self.CODE
-        return f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{id:04}-{code:02}'
+        return f'{clinic_id:04}.{order_id:04}.{year}/{id:04}-{code:02}'
+
+    def to_dict(self, request):
+
+        dict_ = super().to_dict(request)
+
+        return dict_

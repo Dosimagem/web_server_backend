@@ -109,7 +109,7 @@ def test_str(clinic_dosimetry):
     analysis_id = analysis.pk
     code = analysis.CODE
 
-    assert str(analysis) == f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{analysis_id:04}-{code:02}'
+    assert str(analysis) == f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{analysis_id:04}-{code:02}'
 
 
 def test_status(clinic_dosimetry_info):
@@ -151,6 +151,6 @@ def test_order_code(clinic_dosimetry):
     order_id = clinic_dosimetry.order.id
     analysis_id = clinic_dosimetry.id
     isotope = clinic_dosimetry.calibration.isotope
-    expected = f'{clinic_id:04}.{isotope}.{year}.{order_id:04}/{analysis_id:04}-01'
+    expected = f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{analysis_id:04}-01'
 
     assert expected == clinic_dosimetry.code
