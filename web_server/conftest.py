@@ -407,7 +407,7 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
 
 
 @pytest.fixture
-def clinic_dosimetry_update_delete(clinic_dosimetry):
+def clinic_dosi_update_or_del_is_possible(clinic_dosimetry):
     clinic_dosimetry.status = ClinicDosimetryAnalysis.INVALID_INFOS
     clinic_dosimetry.save()
     return clinic_dosimetry
@@ -428,7 +428,7 @@ def preclinic_dosimetry(preclinic_dosimetry_info, preclinic_dosimetry_file):
 
 
 @pytest.fixture
-def preclinic_dosimetry_update_delete(preclinic_dosimetry):
+def preclinic_dosi_update_del_is_possible(preclinic_dosimetry):
     preclinic_dosimetry.status = PreClinicDosimetryAnalysis.INVALID_INFOS
     preclinic_dosimetry.save()
     return preclinic_dosimetry

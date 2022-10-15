@@ -8,11 +8,11 @@ from web_server.service.models import ClinicDosimetryAnalysis, Order
 # /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
 
 
-def test_delete_clinic_dosimetry_successfull(client_api_auth, clinic_dosimetry_update_delete):
+def test_delete_clinic_dosimetry_successfull(client_api_auth, clinic_dosi_update_or_del_is_possible):
 
-    user_uuid = clinic_dosimetry_update_delete.order.user.uuid
-    order_uuid = clinic_dosimetry_update_delete.order.uuid
-    analysis_uuid = clinic_dosimetry_update_delete.uuid
+    user_uuid = clinic_dosi_update_or_del_is_possible.order.user.uuid
+    order_uuid = clinic_dosi_update_or_del_is_possible.order.uuid
+    analysis_uuid = clinic_dosi_update_or_del_is_possible.uuid
 
     order = Order.objects.get(uuid=order_uuid)
 
@@ -68,7 +68,7 @@ def test_fail_delete_clinic_dosimetry_successfull_invalid_status(client_api_auth
 
     body = resp.json()
 
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
+    assert resp.status_code == HTTPStatus.CONFLICT
 
     update_order = Order.objects.get(uuid=order_uuid)
     assert update_order.remaining_of_analyzes == remaining_of_analyzes

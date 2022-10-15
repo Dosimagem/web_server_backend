@@ -71,7 +71,7 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
         order.save()
     else:
         msg = ['Não foi possivel deletar essa análise.']
-        return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)   # TODO: Tracar para  CONFLIT
+        return Response(data={'errors': msg}, status=HTTPStatus.CONFLICT)
 
     data = {'id': analysis_id, 'message': 'Análise deletada com sucesso!'}
 
@@ -142,7 +142,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
 
     if analysis.status != Model.INVALID_INFOS:
         msg = ['Não foi possivel atualizar essa análise.']
-        return Response(data={'errors': msg}, status=HTTPStatus.BAD_REQUEST)   # TODO: Tracar para  CONFLIT
+        return Response(data={'errors': msg}, status=HTTPStatus.CONFLICT)
 
     AnalysisForm = analisys_choice.update_form
     form_analysis = AnalysisForm(data, request.FILES, instance=analysis)
