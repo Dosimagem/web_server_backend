@@ -97,7 +97,7 @@ def test_default_values(user, first_calibration, preclinic_order):
         images=ContentFile(b'CT e SPET files', name='images.zip'),
     )
 
-    assert analysis.status == PreClinicDosimetryAnalysis.ANALYZING_INFOS
+    assert analysis.status == PreClinicDosimetryAnalysis.DATA_SENT
     assert analysis.active
 
 

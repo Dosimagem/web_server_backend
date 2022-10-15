@@ -52,7 +52,7 @@ def test_successfull(client_api_auth, second_calibration, clinic_dosi_update_or_
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.administration_datetime == update_form_data['administrationDatetime']
     assert analysis_db.images.file.read() == b'New File Update'
-    assert analysis_db.status == ClinicDosimetryAnalysis.ANALYZING_INFOS
+    assert analysis_db.status == ClinicDosimetryAnalysis.DATA_SENT
 
 
 def test_optional_images_successfull(client_api_auth, second_calibration, clinic_dosi_update_or_del_is_possible):
@@ -80,7 +80,7 @@ def test_optional_images_successfull(client_api_auth, second_calibration, clinic
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.administration_datetime == update_form_data['administrationDatetime']
     assert analysis_db.images.file.read() == clinic_dosi_update_or_del_is_possible.images.file.read()
-    assert analysis_db.status == ClinicDosimetryAnalysis.ANALYZING_INFOS
+    assert analysis_db.status == ClinicDosimetryAnalysis.DATA_SENT
 
 
 def test_fail_successfull_invalid_status(client_api_auth, second_calibration, clinic_dosimetry):

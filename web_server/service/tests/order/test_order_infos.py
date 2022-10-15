@@ -23,8 +23,8 @@ def test_order_analisys_infos(model, service_name, user, first_calibration):
 
     order = Order.objects.create(
         user=user,
-        quantity_of_analyzes=10,
-        remaining_of_analyzes=4,
+        quantity_of_analyzes=12,
+        remaining_of_analyzes=0,
         price='1000.00',
         service_name=service_name,
         status_payment=Order.CONFIRMED,
@@ -53,12 +53,24 @@ def test_order_analisys_infos(model, service_name, user, first_calibration):
     model.objects.create(**data, analysis_name='Analysis 4', status=model.PROCESSING)
     model.objects.create(**data, analysis_name='Analysis 5', status=model.PROCESSING)
 
+    # Dados enviados
+    model.objects.create(**data, analysis_name='Analysis 6')
+    model.objects.create(**data, analysis_name='Analysis 7')
+
+    # Dados invalidos
+    model.objects.create(**data, analysis_name='Analysis 8', status=model.INVALID_INFOS)
+    model.objects.create(**data, analysis_name='Analysis 9', status=model.INVALID_INFOS)
+    model.objects.create(**data, analysis_name='Analysis 10', status=model.INVALID_INFOS)
+    model.objects.create(**data, analysis_name='Analysis 11', status=model.INVALID_INFOS)
+
     # Concluído
-    model.objects.create(**data, analysis_name='Analysis 6', status=model.CONCLUDED)
+    model.objects.create(**data, analysis_name='Analysis 12', status=model.CONCLUDED)
 
     order_infos = OrderInfos(order)
 
     assert order_infos.analysis_status_count() == {
+        'data_set': 2,
+        'invalid_infos': 4,
         'concluded': 1,
         'processing': 3,
         'analyzing_infos': 2,

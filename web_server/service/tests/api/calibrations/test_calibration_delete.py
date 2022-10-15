@@ -11,11 +11,7 @@ from web_server.service.models import Calibration, DosimetryAnalysisBase
 
 def test_successful(client_api_auth, first_calibration):
 
-    url = resolve_url(
-        'service:calibration-read-update-delete',
-        first_calibration.user.uuid,
-        first_calibration.uuid,
-    )
+    url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, first_calibration.uuid)
 
     response = client_api_auth.delete(url)
 
@@ -30,11 +26,7 @@ def test_successful(client_api_auth, first_calibration):
 
 def test_fail_wrong_calibration_id(client_api_auth, first_calibration):
 
-    url = resolve_url(
-        'service:calibration-read-update-delete',
-        first_calibration.user.uuid,
-        uuid4(),
-    )
+    url = resolve_url('service:calibration-read-update-delete', first_calibration.user.uuid, uuid4())
     response = client_api_auth.delete(url)
 
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -51,9 +43,7 @@ def test_fail_delete_calibration_the_another_user(client_api_auth, first_calibra
     second_user_calibration_uuid = second_user_calibrations[0].uuid
 
     url = resolve_url(
-        'service:calibration-read-update-delete',
-        first_calibration.user.uuid,
-        second_user_calibration_uuid,
+        'service:calibration-read-update-delete', first_calibration.user.uuid, second_user_calibration_uuid
     )
     response = client_api_auth.delete(url)
 
@@ -66,20 +56,16 @@ def test_fail_delete_calibration_the_another_user(client_api_auth, first_calibra
     assert Calibration.objects.count() == 3
 
 
-def test_fail_delete_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry):
+def test_fail_delete_calibration_used_in_a_clinic_analysis(client_api_auth, clinic_dosimetry):
     """
-    Calibrations can be deleted when associated with analyzes with Invalid information status
+    Calibrations can be deleted when associated with INVALID_INFOS or DATA_SENT status
     """
 
     calibration = clinic_dosimetry.calibration
 
     assert clinic_dosimetry.status == DosimetryAnalysisBase.ANALYZING_INFOS
 
-    url = resolve_url(
-        'service:calibration-read-update-delete',
-        calibration.user.uuid,
-        calibration.uuid,
-    )
+    url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
 
     response = client_api_auth.delete(url)
 
@@ -90,8 +76,35 @@ def test_fail_delete_calibration_used_in_a_analysis(client_api_auth, clinic_dosi
     body = response.json()
 
     expected = (
-        'Apenas calibração associadas com análises com o status '
-        "'Informações Inválidas' pode ser atualizada/deletada."
+        'Apenas calibrações associadas com análises com o status '
+        "Informações Inválidas' ou 'Dados Enviados' podem ser atualizadas/deletadas."
+    )
+
+    assert [expected] == body['errors']
+
+
+def test_fail_delete_calibration_used_in_a_preclinic_analysis(client_api_auth, preclinic_dosimetry):
+    """
+    Calibrations can be deleted when associated with INVALID_INFOS or DATA_SENT status
+    """
+
+    calibration = preclinic_dosimetry.calibration
+
+    assert preclinic_dosimetry.status == DosimetryAnalysisBase.ANALYZING_INFOS
+
+    url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
+
+    response = client_api_auth.delete(url)
+
+    assert response.status_code == HTTPStatus.CONFLICT
+
+    assert Calibration.objects.exists()
+
+    body = response.json()
+
+    expected = (
+        'Apenas calibrações associadas com análises com o status '
+        "Informações Inválidas' ou 'Dados Enviados' podem ser atualizadas/deletadas."
     )
 
     assert [expected] == body['errors']
@@ -107,11 +120,7 @@ def test_successful_delete_calibration_used_in_a_analysis(client_api_auth, clini
     clinic_dosimetry.status = DosimetryAnalysisBase.INVALID_INFOS
     clinic_dosimetry.save()
 
-    url = resolve_url(
-        'service:calibration-read-update-delete',
-        calibration.user.uuid,
-        calibration.uuid,
-    )
+    url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
 
     response = client_api_auth.delete(url)
 

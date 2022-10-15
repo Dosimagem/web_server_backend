@@ -1,0 +1,398 @@
+[
+{
+  "model": "service.order",
+  "pk": 1,
+  "fields": {
+    "created_at": "2022-10-16T00:46:26.117Z",
+    "modified_at": "2022-10-16T00:52:52.994Z",
+    "uuid": "faae37bc-7bcf-4650-b989-1f6b6cddb438",
+    "user": 3,
+    "quantity_of_analyzes": 10,
+    "remaining_of_analyzes": 5,
+    "price": "5000.00",
+    "status_payment": "CON",
+    "service_name": "DC",
+    "permission": true,
+    "code": "0003.22/0001-01"
+  }
+},
+{
+  "model": "service.order",
+  "pk": 2,
+  "fields": {
+    "created_at": "2022-10-16T00:46:49.700Z",
+    "modified_at": "2022-10-16T00:46:49.704Z",
+    "uuid": "c4344f24-d373-4ada-899d-53d816403b76",
+    "user": 3,
+    "quantity_of_analyzes": 5,
+    "remaining_of_analyzes": 5,
+    "price": "1500.00",
+    "status_payment": "APG",
+    "service_name": "PCD",
+    "permission": false,
+    "code": "0003.22/0002-02"
+  }
+},
+{
+  "model": "service.order",
+  "pk": 3,
+  "fields": {
+    "created_at": "2022-10-16T00:47:11.724Z",
+    "modified_at": "2022-10-16T01:05:05.243Z",
+    "uuid": "21ad4457-faf3-4bf4-8e4f-bad566443daa",
+    "user": 3,
+    "quantity_of_analyzes": 5,
+    "remaining_of_analyzes": 4,
+    "price": "1000.00",
+    "status_payment": "CON",
+    "service_name": "SQ",
+    "permission": true,
+    "code": "0003.22/0003-03"
+  }
+},
+{
+  "model": "service.order",
+  "pk": 4,
+  "fields": {
+    "created_at": "2022-10-16T00:57:09.107Z",
+    "modified_at": "2022-10-16T00:58:27.059Z",
+    "uuid": "69427761-a602-4868-b7d7-4dede61df4eb",
+    "user": 4,
+    "quantity_of_analyzes": 2,
+    "remaining_of_analyzes": 0,
+    "price": "1111.00",
+    "status_payment": "CON",
+    "service_name": "PCD",
+    "permission": true,
+    "code": "0004.22/0004-02"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 1,
+  "fields": {
+    "created_at": "2022-09-06T03:09:24.809Z",
+    "modified_at": "2022-09-06T03:09:24.809Z",
+    "name": "Lu-177"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 2,
+  "fields": {
+    "created_at": "2022-09-06T04:14:15.730Z",
+    "modified_at": "2022-09-06T04:14:15.730Z",
+    "name": "Cu-64"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 3,
+  "fields": {
+    "created_at": "2022-09-06T04:14:31.799Z",
+    "modified_at": "2022-09-06T04:14:31.799Z",
+    "name": "Cu-67"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 4,
+  "fields": {
+    "created_at": "2022-09-06T04:14:46.881Z",
+    "modified_at": "2022-09-06T04:14:46.881Z",
+    "name": "F-18"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 5,
+  "fields": {
+    "created_at": "2022-09-06T04:14:59.504Z",
+    "modified_at": "2022-09-06T04:14:59.504Z",
+    "name": "Ga-68"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 6,
+  "fields": {
+    "created_at": "2022-09-06T04:15:22.849Z",
+    "modified_at": "2022-09-06T04:15:22.849Z",
+    "name": "Ho-166"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 7,
+  "fields": {
+    "created_at": "2022-09-06T04:15:39.367Z",
+    "modified_at": "2022-09-06T04:15:39.367Z",
+    "name": "I-124"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 8,
+  "fields": {
+    "created_at": "2022-09-06T04:15:53.520Z",
+    "modified_at": "2022-09-06T04:15:53.520Z",
+    "name": "I-131"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 9,
+  "fields": {
+    "created_at": "2022-09-06T04:16:08.671Z",
+    "modified_at": "2022-09-06T04:16:08.671Z",
+    "name": "In-111"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 11,
+  "fields": {
+    "created_at": "2022-09-06T04:16:33.223Z",
+    "modified_at": "2022-09-06T04:16:33.223Z",
+    "name": "Sm-153"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 12,
+  "fields": {
+    "created_at": "2022-09-06T04:16:47.517Z",
+    "modified_at": "2022-09-06T04:16:47.517Z",
+    "name": "Tb-161"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 13,
+  "fields": {
+    "created_at": "2022-09-06T04:16:58.247Z",
+    "modified_at": "2022-09-06T04:16:58.247Z",
+    "name": "Tc-99m"
+  }
+},
+{
+  "model": "service.isotope",
+  "pk": 14,
+  "fields": {
+    "created_at": "2022-09-06T04:17:07.340Z",
+    "modified_at": "2022-09-06T04:17:07.340Z",
+    "name": "Y-90"
+  }
+},
+{
+  "model": "service.calibration",
+  "pk": 1,
+  "fields": {
+    "created_at": "2022-10-16T00:47:59.095Z",
+    "modified_at": "2022-10-16T00:47:59.095Z",
+    "uuid": "dca3ecbc-997b-438a-be9d-282618babfe9",
+    "user": 3,
+    "isotope": 1,
+    "calibration_name": "Calibração A",
+    "syringe_activity": 100.0,
+    "residual_syringe_activity": 0.0,
+    "measurement_datetime": "2022-10-15T21:47:44Z",
+    "phantom_volume": 20.0,
+    "acquisition_time": 1800.0,
+    "images": "3/calibration_1665881279095843.zip"
+  }
+},
+{
+  "model": "service.calibration",
+  "pk": 2,
+  "fields": {
+    "created_at": "2022-10-16T00:48:29.511Z",
+    "modified_at": "2022-10-16T00:48:29.511Z",
+    "uuid": "894f4981-8331-455d-a90c-a2d3ea7cadc5",
+    "user": 3,
+    "isotope": 2,
+    "calibration_name": "Calibração B",
+    "syringe_activity": 150.0,
+    "residual_syringe_activity": 20.0,
+    "measurement_datetime": "2022-10-15T21:48:18Z",
+    "phantom_volume": 100.0,
+    "acquisition_time": 1000.0,
+    "images": "3/calibration_1665881309511654.zip"
+  }
+},
+{
+  "model": "service.calibration",
+  "pk": 3,
+  "fields": {
+    "created_at": "2022-10-16T00:56:42.531Z",
+    "modified_at": "2022-10-16T00:56:42.531Z",
+    "uuid": "68f49207-e67d-4f21-a7c1-72a91842f214",
+    "user": 4,
+    "isotope": 12,
+    "calibration_name": "Calibração A",
+    "syringe_activity": 122.0,
+    "residual_syringe_activity": 500.0,
+    "measurement_datetime": "2022-10-13T21:00:30Z",
+    "phantom_volume": 100.0,
+    "acquisition_time": 8000.0,
+    "images": "4/calibration_1665881802531885.zip"
+  }
+},
+{
+  "model": "service.clinicdosimetryanalysis",
+  "pk": 1,
+  "fields": {
+    "created_at": "2022-10-16T00:49:35.589Z",
+    "modified_at": "2022-10-16T00:50:33.175Z",
+    "uuid": "8e599a12-f687-43f0-a765-17b25d2ef0da",
+    "analysis_name": "Analise A1",
+    "status": "AI",
+    "report": "",
+    "active": true,
+    "code": "0003.0001.Lu-177.22/0001-01",
+    "message_to_user": "",
+    "injected_activity": 200.0,
+    "administration_datetime": "2022-10-15T21:49:27Z",
+    "calibration": 1,
+    "order": 1,
+    "images": "3/clinic_dosimetry_1665881375589516.zip"
+  }
+},
+{
+  "model": "service.clinicdosimetryanalysis",
+  "pk": 2,
+  "fields": {
+    "created_at": "2022-10-16T00:50:13.886Z",
+    "modified_at": "2022-10-16T00:53:38.401Z",
+    "uuid": "52e5edb2-d5c2-4162-a62d-388c1967e59e",
+    "analysis_name": "Analise A2",
+    "status": "CO",
+    "report": "3/report_1665881618401863.pdf",
+    "active": true,
+    "code": "0003.0001.Lu-177.22/0002-01",
+    "message_to_user": "",
+    "injected_activity": 123.0,
+    "administration_datetime": "2022-10-14T21:51:08Z",
+    "calibration": 1,
+    "order": 1,
+    "images": "3/clinic_dosimetry_1665881413886319.zip"
+  }
+},
+{
+  "model": "service.clinicdosimetryanalysis",
+  "pk": 3,
+  "fields": {
+    "created_at": "2022-10-16T00:50:54.133Z",
+    "modified_at": "2022-10-16T00:52:31.612Z",
+    "uuid": "11de124c-67a0-4924-addb-5ab8d27c4918",
+    "analysis_name": "Analise A3",
+    "status": "II",
+    "report": "",
+    "active": true,
+    "code": "0003.0001.Cu-64.22/0003-01",
+    "message_to_user": "Imagem CT faltando.",
+    "injected_activity": 500.0,
+    "administration_datetime": "2022-10-14T21:50:50Z",
+    "calibration": 2,
+    "order": 1,
+    "images": "3/clinic_dosimetry_1665881454133571.zip"
+  }
+},
+{
+  "model": "service.clinicdosimetryanalysis",
+  "pk": 4,
+  "fields": {
+    "created_at": "2022-10-16T00:51:21.592Z",
+    "modified_at": "2022-10-16T00:51:21.600Z",
+    "uuid": "5b930050-0006-4e5b-b6d5-b1d72bcddaef",
+    "analysis_name": "Analise A4",
+    "status": "DS",
+    "report": "",
+    "active": true,
+    "code": "0003.0001.Lu-177.22/0004-01",
+    "message_to_user": "",
+    "injected_activity": 9.0,
+    "administration_datetime": "2022-10-07T21:51:10Z",
+    "calibration": 1,
+    "order": 1,
+    "images": "3/clinic_dosimetry_1665881481592609.zip"
+  }
+},
+{
+  "model": "service.clinicdosimetryanalysis",
+  "pk": 5,
+  "fields": {
+    "created_at": "2022-10-16T00:52:52.997Z",
+    "modified_at": "2022-10-16T00:53:10.932Z",
+    "uuid": "77a817c0-b219-4ea2-bbf9-99f9ad4eb644",
+    "analysis_name": "Analise A5",
+    "status": "PR",
+    "report": "",
+    "active": true,
+    "code": "0003.0001.Cu-64.22/0005-01",
+    "message_to_user": "",
+    "injected_activity": 14.0,
+    "administration_datetime": "2022-10-08T21:54:47Z",
+    "calibration": 2,
+    "order": 1,
+    "images": "3/clinic_dosimetry_1665881572997806.zip"
+  }
+},
+{
+  "model": "service.preclinicdosimetryanalysis",
+  "pk": 1,
+  "fields": {
+    "created_at": "2022-10-16T00:58:09.900Z",
+    "modified_at": "2022-10-16T00:58:09.908Z",
+    "uuid": "8116268d-3a55-44e3-ba54-a7703162c375",
+    "analysis_name": "Analise A1",
+    "status": "DS",
+    "report": "",
+    "active": true,
+    "code": "0004.0004.Tb-161.22/0001-02",
+    "message_to_user": "",
+    "injected_activity": 100.0,
+    "administration_datetime": "2022-10-14T21:01:03Z",
+    "calibration": 3,
+    "order": 4,
+    "images": "4/preclinic_dosimetry_1665881889900184.zip"
+  }
+},
+{
+  "model": "service.preclinicdosimetryanalysis",
+  "pk": 2,
+  "fields": {
+    "created_at": "2022-10-16T00:58:27.062Z",
+    "modified_at": "2022-10-16T00:58:57.104Z",
+    "uuid": "5f14b767-b855-4f88-a749-53e0821e7cad",
+    "analysis_name": "Analise A2",
+    "status": "CO",
+    "report": "4/report_1665881937104326.pdf",
+    "active": true,
+    "code": "0004.0004.Tb-161.22/0002-02",
+    "message_to_user": "",
+    "injected_activity": 444.0,
+    "administration_datetime": "2022-10-07T00:58:21Z",
+    "calibration": 3,
+    "order": 4,
+    "images": "4/preclinic_dosimetry_1665881907062555.zip"
+  }
+},
+{
+  "model": "service.segmentationanalysis",
+  "pk": 1,
+  "fields": {
+    "created_at": "2022-10-16T01:05:05.246Z",
+    "modified_at": "2022-10-16T01:05:05.251Z",
+    "uuid": "0a8fc67e-9e3c-46e2-9396-4a45c12fc281",
+    "analysis_name": "Analise A1",
+    "status": "DS",
+    "report": "",
+    "active": true,
+    "code": "0003.0003.22/0001-03",
+    "message_to_user": "",
+    "order": 3,
+    "images": "3/segmentation_analysis_1665882305246987.zip"
+  }
+}
+]

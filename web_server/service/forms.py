@@ -88,7 +88,7 @@ class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
 
 class ClinicDosimetryAnalysisUpdateForm(ClinicDosimetryAnalysisCreateForm):
     def change_status_and_save(self):
-        self.instance.status = ClinicDosimetryAnalysis.ANALYZING_INFOS
+        self.instance.status = ClinicDosimetryAnalysis.DATA_SENT
         super().save()
         return self.instance
 
@@ -108,7 +108,7 @@ class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
 
 class PreClinicDosimetryAnalysisUpdateForm(PreClinicDosimetryAnalysisCreateForm):
     def change_status_and_save(self):
-        self.instance.status = PreClinicDosimetryAnalysis.ANALYZING_INFOS
+        self.instance.status = PreClinicDosimetryAnalysis.DATA_SENT
         super().save()
         return self.instance
 
@@ -129,6 +129,6 @@ class SegmentationAnalysisCreateForm(forms.ModelForm):
 
 class SegmentationAnalysisUpdateForm(SegmentationAnalysisCreateForm):
     def change_status_and_save(self):
-        self.instance.status = SegmentationAnalysis.ANALYZING_INFOS
+        self.instance.status = SegmentationAnalysis.DATA_SENT
         super().save()
         return self.instance

@@ -98,6 +98,13 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_filter = ('order__user', 'status', 'active', 'order')
 
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     if db_field.name == 'order':
+    #         kwargs["queryset"] = Order.objects.filter(code__endswith=self.model.CODE)
+    #     # if db_field.name == 'calibration':
+    #     #     kwargs["queryset"] = Calibration.objects.filter(user=self.model.order.user)
+    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 @admin.register(PreClinicDosimetryAnalysis)
 class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):

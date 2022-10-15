@@ -91,7 +91,8 @@ python manage.py migrate
 Após fazer o camando `migrate` para popular o banco com alguns de usuario e isotopos basta fazer:
 
 ```console
-python manage.py loaddata contrib/db_initial.json
+python manage.py loaddata contrib/db_core.json
+python manage.py loaddata contrib/db_service.json
 ```
 
 Os usuarios criados serão:
@@ -107,12 +108,6 @@ Os usuarios criados serão:
 * Usuario comum:
   * email: `user2@email.com`
   * senha: `123456!!`
-
-Para apenas popular com as informações do `isotopos` basta fazer:
-
-```console
-python manage.py loaddata contrib/db_isotope.json
-```
 
 ---
 

@@ -45,7 +45,7 @@ def test_successfull(client_api_auth, seg_analysis_update_or_del_is_possible):
 
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.images.file.read() == b'New File Update'
-    assert analysis_db.status == SegmentationAnalysis.ANALYZING_INFOS
+    assert analysis_db.status == SegmentationAnalysis.DATA_SENT
 
 
 def test_optional_images_successfull(client_api_auth, seg_analysis_update_or_del_is_possible):
@@ -65,12 +65,12 @@ def test_optional_images_successfull(client_api_auth, seg_analysis_update_or_del
 
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.images.file.read() == seg_analysis_update_or_del_is_possible.images.file.read()
-    assert analysis_db.status == SegmentationAnalysis.ANALYZING_INFOS
+    assert analysis_db.status == SegmentationAnalysis.DATA_SENT
 
 
 def test_fail_successfull_invalid_status(client_api_auth, segmentation_analysis):
     """
-    The analysis must have INVALID_INFOS status
+    The analysis must have INVALID_INFOS or DATA_SENT status
     """
 
     update_form_data = {'analysisName': 'New analsysis name'}

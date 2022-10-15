@@ -121,11 +121,7 @@ upload_report_to = partial(upload_to, type='report')
 class Calibration(CreationModificationBase, models.Model):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='calibrations',
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
     isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='calibrations')
 
     calibration_name = models.CharField('Calibration Name', max_length=24, validators=[MinLengthValidator(3)])
@@ -138,13 +134,10 @@ class Calibration(CreationModificationBase, models.Model):
     images = models.FileField('Calibration Images', upload_to=upload_calibration_to, null=False)
 
     class Meta:
-        unique_together = (
-            'user',
-            'calibration_name',
-        )
+        unique_together = ('user', 'calibration_name')
 
     def __str__(self):
-        return self.calibration_name
+        return f'{self.calibration_name} - {self.user}'
 
     def to_dict(self, request):
         dict_ = {
@@ -169,15 +162,14 @@ class Calibration(CreationModificationBase, models.Model):
 
 class AnalysisBase(CreationModificationBase):
 
-    # DATA_SENT = 'DS'
+    DATA_SENT = 'DS'
     ANALYZING_INFOS = 'AI'
     INVALID_INFOS = 'II'
     PROCESSING = 'PR'
     CONCLUDED = 'CO'
 
     STATUS = (
-        # Data sent
-        # (DATA_SENT, 'Dados enviados'),
+        (DATA_SENT, 'Dados enviados'),
         (ANALYZING_INFOS, 'Verificando informações'),
         (INVALID_INFOS, 'Informações inválidas'),
         (PROCESSING, 'Processando a análise'),
@@ -188,13 +180,13 @@ class AnalysisBase(CreationModificationBase):
 
     analysis_name = models.CharField('Analysis Name', max_length=24, validators=[MinLengthValidator(3)])
 
-    status = models.CharField('Status', max_length=3, choices=STATUS, default=ANALYZING_INFOS)
+    status = models.CharField('Status', max_length=3, choices=STATUS, default=DATA_SENT)
     report = models.FileField('Report', blank=True, null=True, upload_to=upload_report_to)
     active = models.BooleanField('Active', default=True)
 
     code = models.CharField('Code', max_length=30)
 
-    message_to_user = models.TextField('Message to user', default='')
+    message_to_user = models.TextField('Message to user', default='', blank=True)
 
     class Meta:
         abstract = True
