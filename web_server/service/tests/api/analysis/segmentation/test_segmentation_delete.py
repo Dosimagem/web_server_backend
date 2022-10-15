@@ -58,7 +58,7 @@ def test_fail_successfull_invalid_status(client_api_auth, segmentation_analysis)
 
     body = resp.json()
 
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
+    assert resp.status_code == HTTPStatus.CONFLICT
 
     update_order = Order.objects.get(uuid=order_uuid)
     assert update_order.remaining_of_analyzes == remaining_of_analyzes

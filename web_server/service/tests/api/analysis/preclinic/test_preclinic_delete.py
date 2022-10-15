@@ -8,11 +8,11 @@ from web_server.service.models import Order, PreClinicDosimetryAnalysis
 # /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - DELETE
 
 
-def test_successfull(client_api_auth, preclinic_dosimetry_update_delete):
+def test_successfull(client_api_auth, preclinic_dosi_update_del_is_possible):
 
-    user_uuid = preclinic_dosimetry_update_delete.order.user.uuid
-    order_uuid = preclinic_dosimetry_update_delete.order.uuid
-    analysis_uuid = preclinic_dosimetry_update_delete.uuid
+    user_uuid = preclinic_dosi_update_del_is_possible.order.user.uuid
+    order_uuid = preclinic_dosi_update_del_is_possible.order.uuid
+    analysis_uuid = preclinic_dosi_update_del_is_possible.uuid
 
     order = Order.objects.get(uuid=order_uuid)
 
@@ -58,17 +58,12 @@ def test_fail_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
 
     assert PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
     resp = client_api_auth.delete(url)
 
     body = resp.json()
 
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
+    assert resp.status_code == HTTPStatus.CONFLICT
 
     update_order = Order.objects.get(uuid=order_uuid)
     assert update_order.remaining_of_analyzes == remaining_of_analyzes

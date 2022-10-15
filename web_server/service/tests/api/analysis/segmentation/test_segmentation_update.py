@@ -83,7 +83,7 @@ def test_fail_successfull_invalid_status(client_api_auth, segmentation_analysis)
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
     body = resp.json()
 
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
+    assert resp.status_code == HTTPStatus.CONFLICT
 
     assert body == {'errors': ['Não foi possivel atualizar essa análise.']}
 
