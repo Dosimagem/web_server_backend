@@ -16,12 +16,7 @@ def test_successfull(client_api_auth, clinic_dosimetry):
     user = clinic_dosimetry.order.user
     order = clinic_dosimetry.order
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user.uuid,
-        order.uuid,
-        clinic_dosimetry.uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, clinic_dosimetry.uuid)
     resp = client_api_auth.get(url)
     analysis_db = ClinicDosimetryAnalysis.objects.get(id=clinic_dosimetry.id)
 
@@ -55,12 +50,7 @@ def test_fail_wrong_analysis_id(client_api_auth, clinic_dosimetry):
     order_uuid = clinic_dosimetry.order.uuid
     analysis_uuid = uuid4()
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
     resp = client_api_auth.get(url)
     body = resp.json()
 
@@ -116,3 +106,29 @@ def test_fail_using_another_user(client_api, second_user, clinic_dosimetry):
     assert resp.status_code == HTTPStatus.NOT_FOUND
 
     assert body['errors'] == ['Este usuário não possui este recurso cadastrado.']
+
+
+def test_error_message_only_status_invalid_info(client_api_auth, clinic_dosimetry):
+
+    clinic_dosimetry.message_to_user = 'Arquivos CT faltando.'
+    clinic_dosimetry.save()
+
+    user = clinic_dosimetry.order.user
+    order = clinic_dosimetry.order
+
+    url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, clinic_dosimetry.uuid)
+    resp = client_api_auth.get(url)
+
+    body = resp.json()
+
+    assert body['messageToUser'] == ''
+
+    clinic_dosimetry.status = ClinicDosimetryAnalysis.INVALID_INFOS
+    clinic_dosimetry.save()
+
+    url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, clinic_dosimetry.uuid)
+    resp = client_api_auth.get(url)
+
+    body = resp.json()
+
+    assert body['messageToUser'] == 'Arquivos CT faltando.'

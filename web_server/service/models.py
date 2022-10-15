@@ -194,6 +194,8 @@ class AnalysisBase(CreationModificationBase):
 
     code = models.CharField('Code', max_length=30)
 
+    message_to_user = models.TextField('Message to user', default='')
+
     class Meta:
         abstract = True
 
@@ -233,10 +235,14 @@ class AnalysisBase(CreationModificationBase):
             'modified_at': self.modified_at.strftime(FORMAT_DATE),
             'analysis_name': self.analysis_name,
             'report': '',
+            'message_to_user': '',
         }
 
         if self.report.name:
             dict_['report'] = request.build_absolute_uri(self.report.url)
+
+        if self.status == self.INVALID_INFOS:
+            dict_['message_to_user'] = self.message_to_user
 
         return dict_
 

@@ -86,3 +86,29 @@ def test_fail_read_using_another_user(client_api, second_user, segmentation_anal
     assert resp.status_code == HTTPStatus.NOT_FOUND
 
     assert body['errors'] == ['Este usuário não possui este recurso cadastrado.']
+
+
+def test_error_message_only_status_invalid_info(client_api_auth, segmentation_analysis):
+
+    segmentation_analysis.message_to_user = 'Arquivos CT faltando.'
+    segmentation_analysis.save()
+
+    user = segmentation_analysis.order.user
+    order = segmentation_analysis.order
+
+    url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, segmentation_analysis.uuid)
+    resp = client_api_auth.get(url)
+
+    body = resp.json()
+
+    assert body['messageToUser'] == ''
+
+    segmentation_analysis.status = SegmentationAnalysis.INVALID_INFOS
+    segmentation_analysis.save()
+
+    url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, segmentation_analysis.uuid)
+    resp = client_api_auth.get(url)
+
+    body = resp.json()
+
+    assert body['messageToUser'] == 'Arquivos CT faltando.'

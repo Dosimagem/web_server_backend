@@ -111,3 +111,29 @@ def test_fail_read_preclinic_dosimetry_using_another_user(client_api, second_use
     assert resp.status_code == HTTPStatus.NOT_FOUND
 
     assert body['errors'] == ['Este usuário não possui este recurso cadastrado.']
+
+
+def test_error_message_only_status_invalid_info(client_api_auth, preclinic_dosimetry):
+
+    preclinic_dosimetry.message_to_user = 'Arquivos CT faltando.'
+    preclinic_dosimetry.save()
+
+    user = preclinic_dosimetry.order.user
+    order = preclinic_dosimetry.order
+
+    url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, preclinic_dosimetry.uuid)
+    resp = client_api_auth.get(url)
+
+    body = resp.json()
+
+    assert body['messageToUser'] == ''
+
+    preclinic_dosimetry.status = PreClinicDosimetryAnalysis.INVALID_INFOS
+    preclinic_dosimetry.save()
+
+    url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, preclinic_dosimetry.uuid)
+    resp = client_api_auth.get(url)
+
+    body = resp.json()
+
+    assert body['messageToUser'] == 'Arquivos CT faltando.'
