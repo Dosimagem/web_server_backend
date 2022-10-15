@@ -45,7 +45,7 @@ def test_delete_clinic_dosimetry_successfull(client_api_auth, clinic_dosi_update
 
 def test_fail_delete_clinic_dosimetry_successfull_invalid_status(client_api_auth, clinic_dosimetry):
     """
-    The analysis must have INVALID_INFOS status
+    The analysis must have INVALID_INFOS or DATA_SENT status
     """
 
     user_uuid = clinic_dosimetry.order.user.uuid
@@ -58,12 +58,7 @@ def test_fail_delete_clinic_dosimetry_successfull_invalid_status(client_api_auth
 
     assert ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
     resp = client_api_auth.delete(url)
 
     body = resp.json()

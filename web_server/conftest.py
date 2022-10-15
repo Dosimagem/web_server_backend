@@ -402,7 +402,9 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
     order.remaining_of_analyzes -= 1
     order.save()
 
-    analysis = ClinicDosimetryAnalysis.objects.create(**clinic_dosimetry_info, **clinic_dosimetry_file)
+    analysis = ClinicDosimetryAnalysis.objects.create(
+        **clinic_dosimetry_info, **clinic_dosimetry_file, status=ClinicDosimetryAnalysis.ANALYZING_INFOS
+    )
     return analysis
 
 
@@ -422,14 +424,16 @@ def preclinic_dosimetry(preclinic_dosimetry_info, preclinic_dosimetry_file):
     order.remaining_of_analyzes -= 1
     order.save()
 
-    analysis = PreClinicDosimetryAnalysis.objects.create(**preclinic_dosimetry_info, **preclinic_dosimetry_file)
+    analysis = PreClinicDosimetryAnalysis.objects.create(
+        **preclinic_dosimetry_info, **preclinic_dosimetry_file, status=ClinicDosimetryAnalysis.ANALYZING_INFOS
+    )
 
     return analysis
 
 
 @pytest.fixture
 def preclinic_dosi_update_del_is_possible(preclinic_dosimetry):
-    preclinic_dosimetry.status = PreClinicDosimetryAnalysis.INVALID_INFOS
+    preclinic_dosimetry.status = PreClinicDosimetryAnalysis.DATA_SENT
     preclinic_dosimetry.save()
     return preclinic_dosimetry
 
@@ -443,7 +447,9 @@ def segmentation_analysis(segmentation_analysis_info, segmentation_analysis_file
     order.remaining_of_analyzes -= 1
     order.save()
 
-    analysis = SegmentationAnalysis.objects.create(**segmentation_analysis_info, **segmentation_analysis_file)
+    analysis = SegmentationAnalysis.objects.create(
+        **segmentation_analysis_info, **segmentation_analysis_file, status=ClinicDosimetryAnalysis.ANALYZING_INFOS
+    )
 
     return analysis
 

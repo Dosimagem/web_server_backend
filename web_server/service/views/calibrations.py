@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
@@ -67,12 +68,14 @@ def _update_calibration(request, user_id, calibration_id):
         cali = Calibration.objects.get(user__uuid=user_id, uuid=calibration_id)
 
         # TODO: Colocar isso em uma camada de serviço (Regra de Negocio)
-        if cali.clinic_dosimetry_analysis.exclude(status=DosimetryAnalysisBase.INVALID_INFOS).exists():
+
+        q = Q(status=DosimetryAnalysisBase.INVALID_INFOS) | Q(status=DosimetryAnalysisBase.DATA_SENT)
+        if cali.clinic_dosimetry_analysis.exclude(q).exists() or cali.preclinic_dosimetry_analysis.exclude(q).exists():
             data = {
                 'errors': [
                     (
-                        'Apenas calibração associadas com análises com o status '
-                        "'Informações Inválidas' pode ser atualizada/deletada."
+                        'Apenas calibrações associadas com análises com o status '
+                        "Informações Inválidas' ou 'Dados Enviados' podem ser atualizadas/deletadas."
                     )
                 ]
             }
@@ -116,12 +119,13 @@ def _delete_calibration(request, user_id, calibration_id):
         cali = Calibration.objects.get(user__uuid=user_id, uuid=calibration_id)
 
         # TODO: Colocar isso em uma camada de serviço (Regra de Negocio)
-        if cali.clinic_dosimetry_analysis.exclude(status=DosimetryAnalysisBase.INVALID_INFOS).exists():
+        q = Q(status=DosimetryAnalysisBase.INVALID_INFOS) | Q(status=DosimetryAnalysisBase.DATA_SENT)
+        if cali.clinic_dosimetry_analysis.exclude(q).exists() or cali.preclinic_dosimetry_analysis.exclude(q).exists():
             data = {
                 'errors': [
                     (
-                        'Apenas calibração associadas com análises com o status '
-                        "'Informações Inválidas' pode ser atualizada/deletada."
+                        'Apenas calibrações associadas com análises com o status '
+                        "Informações Inválidas' ou 'Dados Enviados' podem ser atualizadas/deletadas."
                     )
                 ]
             }

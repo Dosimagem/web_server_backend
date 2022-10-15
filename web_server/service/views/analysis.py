@@ -65,7 +65,8 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
     # TODO: Colocar isso em uma camada de serviço
-    if analysis.status == Model.INVALID_INFOS:
+    # if analysis.status in [Model.INVALID_INFOS, Model.DATA_SENT]:
+    if analysis.status == Model.INVALID_INFOS or analysis.status == Model.DATA_SENT:
         analysis.delete()
         order.remaining_of_analyzes += 1
         order.save()
@@ -140,7 +141,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
-    if analysis.status != Model.INVALID_INFOS:
+    if analysis.status not in (Model.INVALID_INFOS, Model.DATA_SENT):
         msg = ['Não foi possivel atualizar essa análise.']
         return Response(data={'errors': msg}, status=HTTPStatus.CONFLICT)
 

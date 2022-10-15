@@ -1,4 +1,7 @@
+from collections import defaultdict
 from typing import Dict
+
+from django.db.models import Count
 
 from web_server.service.models import DosimetryAnalysisBase as analysis
 
@@ -30,12 +33,40 @@ class OrderInfos:
     def analysis_analyzing_infos(self) -> int:
         return self.queryset_func.filter(status=analysis.ANALYZING_INFOS).count()
 
-    def analysis_status_count(self) -> Dict:
-        # TODO: add INVALID_INFOS
+    @property
+    def analysis_data_sent(self) -> int:
+        return self.queryset_func.filter(status=analysis.DATA_SENT).count()
+
+    @property
+    def analysis_invalid_infos(self) -> int:
+        return self.queryset_func.filter(status=analysis.INVALID_INFOS).count()
+
+    def _analysis_status_count(self) -> Dict:
+        """
+        Slow version: Multiple queries on db
+        """
         return dict(
+            data_set=self.analysis_data_sent,
+            invalid_infos=self.analysis_invalid_infos,
             concluded=self.analysis_concluded,
             processing=self.analysis_processing,
             analyzing_infos=self.analysis_analyzing_infos,
+        )
+
+    def analysis_status_count(self) -> Dict:
+
+        sum_by_status = self.queryset_func.values('status').annotate(count=Count('status'))
+
+        counts = defaultdict(int)
+        for item in sum_by_status:
+            counts[item['status']] = item['count']
+
+        return dict(
+            data_set=counts['DS'],
+            invalid_infos=counts['II'],
+            concluded=counts['CO'],
+            processing=counts['PR'],
+            analyzing_infos=counts['AI'],
         )
 
 

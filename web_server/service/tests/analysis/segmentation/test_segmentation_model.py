@@ -67,7 +67,7 @@ def test_default_values(segmentation_order):
         order=segmentation_order, analysis_name='Analysis 1', images=ContentFile(b'CT files', name='images.zip')
     )
 
-    assert analysis.status == SegmentationAnalysis.ANALYZING_INFOS
+    assert analysis.status == SegmentationAnalysis.DATA_SENT
     assert analysis.active
 
 

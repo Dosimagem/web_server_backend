@@ -19,9 +19,7 @@ def test_calibration_modified_at(first_calibration):
     assert isinstance(first_calibration.modified_at, datetime)
 
 
-def test_delete_calibration_must_not_delete_user_and_isotope(
-    first_calibration,
-):
+def test_delete_calibration_must_not_delete_user_and_isotope(first_calibration):
 
     first_calibration.delete()
 
@@ -48,4 +46,6 @@ def test_delete_user_must_be_delete_calibration(first_calibration, user):
 
 def test_str_(first_calibration):
 
-    assert str(first_calibration) == first_calibration.calibration_name
+    expected = f'{first_calibration.calibration_name} - {first_calibration.user}'
+
+    assert expected == str(first_calibration)
