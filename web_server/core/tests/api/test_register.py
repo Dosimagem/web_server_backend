@@ -123,6 +123,36 @@ def test_fail_profile_invalid_phone(api_cnpj_successfull, client_api, register_i
     assert expected in errors_list
 
 
+def test_fail_profile_name_can_not_have_numbers(api_cnpj_successfull, client_api, register_infos):
+
+    register_infos['name'] = 'Casas 2'
+
+    resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
+
+    errors_list = resp.json()['errors']
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    expected = ['O nome não pode ter números.']
+
+    assert expected == errors_list
+
+
+def test_fail_profile_name_must_be_at_least_3_char(api_cnpj_successfull, client_api, register_infos):
+
+    register_infos['name'] = 'ii'
+
+    resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
+
+    errors_list = resp.json()['errors']
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    expected = ['Certifique-se de que o nome tenha no mínimo 3 caracteres.']
+
+    assert expected == errors_list
+
+
 @pytest.mark.parametrize(
     'field, error',
     [

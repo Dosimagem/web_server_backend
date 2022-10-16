@@ -98,4 +98,4 @@ def test_invalid_calibration_name_length_must_least_3(calibration_infos, calibra
 
     expected = ['Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 2).']
 
-    assert form.errors == {'calibration_name': expected}
+    assert {'calibration_name': expected} == form.errors

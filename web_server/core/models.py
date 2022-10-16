@@ -4,12 +4,18 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from validate_docbr import CNPJ, CPF
 
-from web_server.core.validators import validate_cnpj, validate_cpf, validate_phone
+from web_server.core.validators import (
+    validate_cnpj,
+    validate_cpf,
+    validate_name_is_alpha,
+    validate_phone,
+)
 
 
 class CreationModificationBase(models.Model):
@@ -126,7 +132,7 @@ class UserProfile(CreationModificationBase, models.Model):
 
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
 
-    name = models.CharField(_('Name'), max_length=150)
+    name = models.CharField(_('Name'), max_length=150, validators=[validate_name_is_alpha, MinLengthValidator(3)])
     phone = models.CharField(_('Phone'), max_length=30, validators=[validate_phone])
 
     clinic = models.CharField(_('Clinic'), max_length=30)
