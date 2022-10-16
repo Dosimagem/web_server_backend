@@ -87,6 +87,8 @@ def list_errors(errors):
                     msg = 'Certifique-se de que o nome da calibração tenha no mínimo 3 caracteres.'
                 elif field_name == 'analysis_name':
                     msg = 'Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.'
+                elif field_name == 'name':
+                    msg = 'Certifique-se de que o nome tenha no mínimo 3 caracteres.'
 
             elif 'Faça uma escolha válida' in error:
                 if field_name == 'radionuclide':

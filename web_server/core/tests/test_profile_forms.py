@@ -180,7 +180,7 @@ def test_create_save(api_cnpj_successfull, profile_infos):
 def test_update_profile_form_succesuful(api_cnpj_successfull, user):
 
     payload = {
-        'name': 'João Sliva Carvalho',
+        'name': 'João Silva Carvalho',
         'role': 'médico',
         'cnpj': '42438610000111',
         'clinic': 'Clinica A',
@@ -196,7 +196,46 @@ def test_update_profile_form_succesuful(api_cnpj_successfull, user):
 
     user_db = User.objects.first()
 
-    assert user_db.profile.name == 'João Sliva Carvalho'
+    assert user_db.profile.name == 'João Silva Carvalho'
+
+
+def test_fail_name_must_have_not_numbers(api_cnpj_successfull, profile_infos):
+
+    profile_infos['name'] = 'User 1'
+
+    form = ProfileCreateForm(data=profile_infos, instance=profile_infos['user'].profile)
+
+    assert not form.is_valid()
+
+    expected = {'name': ['O nome não pode ter números.']}
+
+    assert expected == form.errors
+
+
+def test_fail_name_can_not_have_numbers(api_cnpj_successfull, profile_infos):
+
+    profile_infos['name'] = 'User 1'
+
+    form = ProfileCreateForm(data=profile_infos, instance=profile_infos['user'].profile)
+
+    assert not form.is_valid()
+
+    expected = {'name': ['O nome não pode ter números.']}
+
+    assert expected == form.errors
+
+
+def test_fail_name_length_must_least_3(api_cnpj_successfull, profile_infos):
+
+    profile_infos['name'] = 'ii'
+
+    form = ProfileCreateForm(data=profile_infos, instance=profile_infos['user'].profile)
+
+    assert not form.is_valid()
+
+    expected = ['Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 2).']
+
+    assert {'name': expected} == form.errors
 
 
 # def test_fail_update_profile_form_clinic_unique_constraint(api_cnpj_successfull, user, second_user):

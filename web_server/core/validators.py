@@ -40,3 +40,8 @@ def validate_phone(value):
             'Número de telefone inválido. O formato deve ser xx(xx)xxxx-xxxx ou xx(xx)xxxxx-xxxx.',
             'phone_invalid',
         )
+
+
+def validate_name_is_alpha(value):
+    if not value.replace(' ', '').isalpha():
+        raise ValidationError('O nome não pode ter números.', code='invalid_char')
