@@ -92,6 +92,7 @@ Após fazer o camando `migrate` para popular o banco com alguns de usuario e iso
 
 ```console
 python manage.py loaddata contrib/db_core.json
+python manage.py loaddata contrib/db_authtoken.json
 python manage.py loaddata contrib/db_service.json
 ```
 

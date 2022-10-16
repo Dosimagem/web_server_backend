@@ -20,7 +20,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 AUTH_USER_MODEL = 'core.CustomUser'
 
-# TODO: This may be not make sense in SPA conext
+# TODO: This may be not make sense in SPA context
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/profile'
