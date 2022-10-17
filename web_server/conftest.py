@@ -139,18 +139,6 @@ def second_user(user, django_user_model, second_user_login_info, second_user_pro
 
 
 @pytest.fixture
-def create_order_data(user):
-    return {
-        'user': user,
-        'quantity_of_analyzes': 10,
-        'remaining_of_analyzes': 10,
-        'price': '1000.00',
-        'service_name': Order.CLINIC_DOSIMETRY,
-        'status_payment': Order.AWAITING_PAYMENT,
-    }
-
-
-@pytest.fixture
 def clinic_order(user, create_order_data):
     return Order.objects.create(
         user=user,
@@ -158,6 +146,7 @@ def clinic_order(user, create_order_data):
         remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
         price=create_order_data['price'],
         service_name=create_order_data['service_name'],
+        status_payment=Order.CONFIRMED,
     )
 
 
@@ -169,6 +158,7 @@ def preclinic_order(user):
         remaining_of_analyzes=10,
         price='1000',
         service_name=Order.PRECLINIC_DOSIMETRY,
+        status_payment=Order.CONFIRMED,
     )
 
 
@@ -180,6 +170,7 @@ def segmentation_order(user):
         remaining_of_analyzes=10,
         price='1000',
         service_name=Order.SEGMENTANTION_QUANTIFICATION,
+        status_payment=Order.CONFIRMED,
     )
 
 

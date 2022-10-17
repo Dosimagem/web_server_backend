@@ -33,21 +33,21 @@ def test_scenario_read_orders_of_users(client_api, tree_orders_of_two_diff_users
 
     # order 1 do usuario 1
     q1 = user_list_quotes[0]
-    assert q1['serviceName'] == 'Dosimetria Clinica'
-    assert q1['quantityOfAnalyzes'] == 10
-    assert q1['remainingOfAnalyzes'] == 10
-    assert q1['price'] == 10000.00
-    assert q1['statusPayment'] == 'Confirmado'
-    assert q1['permission']
+    assert q1['serviceName'] == 'Dosimetria Preclinica'
+    assert q1['quantityOfAnalyzes'] == 5
+    assert q1['remainingOfAnalyzes'] == 5
+    assert q1['price'] == 5000.00
+    assert q1['statusPayment'] == 'Aguardando pagamento'
+    assert not q1['permission']
 
     # order 2 do usuario 1
     q2 = user_list_quotes[1]
-    assert q2['serviceName'] == 'Dosimetria Preclinica'
-    assert q2['quantityOfAnalyzes'] == 5
-    assert q2['remainingOfAnalyzes'] == 5
-    assert q2['price'] == 5000.00
-    assert q2['statusPayment'] == 'Aguardando pagamento'
-    assert not q2['permission']
+    assert q2['serviceName'] == 'Dosimetria Clinica'
+    assert q2['quantityOfAnalyzes'] == 10
+    assert q2['remainingOfAnalyzes'] == 10
+    assert q2['price'] == 10000.00
+    assert q2['statusPayment'] == 'Confirmado'
+    assert q2['permission']
 
     # User 2
 

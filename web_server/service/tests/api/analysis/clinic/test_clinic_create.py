@@ -61,17 +61,32 @@ def test_successful(client_api_auth, clinic_order, form_data_clinic_dosimetry):
     assert body['imagesUrl'].startswith(f'http://testserver/media/{clinic_dosi_db.order.user.id}/clinic_dosimetry')
 
 
+def test_fail_order_must_have_payment_confirmed(client_api_auth, clinic_order, form_data_clinic_dosimetry):
+
+    clinic_order.status_payment = Order.AWAITING_PAYMENT
+    clinic_order.save()
+
+    assert not ClinicDosimetryAnalysis.objects.exists()
+
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
+
+    resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.CONFLICT
+
+    assert not ClinicDosimetryAnalysis.objects.exists()
+
+    assert ['O pagamento desse pedido não foi confirmado.'] == body['errors']
+
+
 def test_fail_wrong_administration_datetime(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     form_data_clinic_dosimetry['administrationDatetime'] = 'w'
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        clinic_order.user.uuid,
-        clinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()

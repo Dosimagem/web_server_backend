@@ -23,6 +23,7 @@ from web_server.service.forms import (
     PreClinicAndClinicDosimetryAnalysisUpdateFormApi,
 )
 from web_server.service.models import Calibration, Order
+from web_server.service.order_svc import OrderInfos
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
@@ -167,8 +168,13 @@ def _create_analysis(request, user_id, order_id):
     except ObjectDoesNotExist:
         return Response(status=HTTPStatus.NOT_FOUND)
 
-    if not order.is_analysis_available():  # TODO: Regra de negocio no modelo não parece uma boa ideia para mim
+    order_infos = OrderInfos(order)
+
+    if not order_infos.are_analyzes_available():
         return Response({'errors': ['Todas as análises para essa pedido já foram usadas.']}, status=HTTPStatus.CONFLICT)
+
+    if not order_infos.has_payment_confirmed():
+        return Response({'errors': ['O pagamento desse pedido não foi confirmado.']}, status=HTTPStatus.CONFLICT)
 
     if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
 

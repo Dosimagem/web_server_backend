@@ -57,11 +57,27 @@ def test_successful(client_api_auth, segmentation_order, form_data_segmentation_
     assert body['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}/segmentation_analysis')
 
 
+def test_fail_order_must_have_payment_confirmed(client_api_auth, segmentation_order, form_data_segmentation_analysis):
+
+    segmentation_order.status_payment = Order.AWAITING_PAYMENT
+    segmentation_order.save()
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    url = resolve_url('service:analysis-list-create', segmentation_order.user.uuid, segmentation_order.uuid)
+
+    resp = client_api_auth.post(url, data=form_data_segmentation_analysis, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.CONFLICT
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    assert ['O pagamento desse pedido não foi confirmado.'] == body['errors']
+
+
 def test_fail_analisys_name_must_be_unique_per_order(
-    client_api_auth,
-    form_data_segmentation_analysis,
-    segmentation_analysis_info,
-    segmentation_analysis_file,
+    client_api_auth, form_data_segmentation_analysis, segmentation_analysis_info, segmentation_analysis_file
 ):
     """
     The analysis name must be unique in an order

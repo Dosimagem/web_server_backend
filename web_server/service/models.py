@@ -13,7 +13,7 @@ from web_server.core.models import CreationModificationBase
 FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
 
-class Order(CreationModificationBase, models.Model):
+class Order(CreationModificationBase):
 
     CLINIC_DOSIMETRY = 'DC'
     PRECLINIC_DOSIMETRY = 'PCD'
@@ -36,20 +36,11 @@ class Order(CreationModificationBase, models.Model):
     )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='orders',
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
     quantity_of_analyzes = models.PositiveIntegerField('Amount of analysis', default=0)
     remaining_of_analyzes = models.PositiveIntegerField('Remaning of analysis', default=0)
     price = models.DecimalField('Price', max_digits=14, decimal_places=2)
-    status_payment = models.CharField(
-        'Status payment',
-        max_length=3,
-        choices=STATUS_PAYMENT,
-        default=AWAITING_PAYMENT,
-    )
+    status_payment = models.CharField('Status payment', max_length=3, choices=STATUS_PAYMENT, default=AWAITING_PAYMENT)
     service_name = models.CharField('Service name', max_length=3, choices=SERVICES_NAMES)
     permission = models.BooleanField('Permission', default=False)
     code = models.CharField('Code', max_length=20)
@@ -60,9 +51,7 @@ class Order(CreationModificationBase, models.Model):
     class Meta:
         verbose_name = 'Order'
         verbose_name_plural = 'Orders'
-
-    def is_analysis_available(self):
-        return self.remaining_of_analyzes > 0
+        ordering = ['-created_at']
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -82,7 +71,7 @@ class Order(CreationModificationBase, models.Model):
         return self.SERVICES_CODES[self.service_name]
 
 
-class Isotope(CreationModificationBase, models.Model):
+class Isotope(CreationModificationBase):
 
     name = models.CharField(max_length=6, unique=True)
 
@@ -118,7 +107,7 @@ upload_segmentation_analysis_to = partial(upload_to, type='segmentation_analysis
 upload_report_to = partial(upload_to, type='report')
 
 
-class Calibration(CreationModificationBase, models.Model):
+class Calibration(CreationModificationBase):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
@@ -135,6 +124,7 @@ class Calibration(CreationModificationBase, models.Model):
 
     class Meta:
         unique_together = ('user', 'calibration_name')
+        ordering = ['-created_at']
 
     def __str__(self):
         return f'{self.calibration_name} - {self.user}'
@@ -295,6 +285,7 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
             'order',
             'analysis_name',
         )
+        ordering = ['-created_at']
 
 
 class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
@@ -323,6 +314,7 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
             'order',
             'analysis_name',
         )
+        ordering = ['-created_at']
 
 
 class SegmentationAnalysis(AnalysisBase):
@@ -347,6 +339,7 @@ class SegmentationAnalysis(AnalysisBase):
             'order',
             'analysis_name',
         )
+        ordering = ['-created_at']
 
     def _generate_code(self):
         clinic_id = self.order.user.pk
