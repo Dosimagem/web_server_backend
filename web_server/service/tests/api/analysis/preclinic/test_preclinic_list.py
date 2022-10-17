@@ -37,9 +37,7 @@ def test_list_successful(client_api_auth, preclinic_order, tree_preclinic_dosime
         assert analysis_response['administrationDatetime'] == analysis_db.administration_datetime.strftime(FORMAT_DATE)
 
         # TODO: Pensar uma forma melhor
-        assert analysis_response['imagesUrl'].startswith(
-            f'http://testserver/media/{analysis_db.order.user.id}/preclinic_dosimetry'
-        )
+        assert analysis_response['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}')
 
         assert analysis_response['report'] == ''
 

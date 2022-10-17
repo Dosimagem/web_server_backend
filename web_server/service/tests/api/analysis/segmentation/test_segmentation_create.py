@@ -54,7 +54,7 @@ def test_successful(client_api_auth, segmentation_order, form_data_segmentation_
     assert body['modifiedAt'] == analysis_db.modified_at.strftime(FORMAT_DATE)
 
     # TODO: Pensar uma forma melhor
-    assert body['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}/segmentation_analysis')
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}')
 
 
 def test_fail_order_must_have_payment_confirmed(client_api_auth, segmentation_order, form_data_segmentation_analysis):

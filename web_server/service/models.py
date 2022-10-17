@@ -2,6 +2,7 @@ import os
 from functools import partial
 from uuid import uuid4
 
+from django.utils.text import slugify
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MinValueValidator
@@ -80,7 +81,8 @@ class Isotope(CreationModificationBase):
 
 
 def _timestamp(datetime):
-    return str(datetime.timestamp()).replace('.', '')
+
+    return datetime.strftime('%d%m%y%H%M%S')
 
 
 def upload_to(instance, filename, type):
@@ -92,12 +94,16 @@ def upload_to(instance, filename, type):
 
     if type == 'calibration':
         id = instance.user.id
+        prefix = f'{id}'
     else:
         id = instance.order.user.id
+        order_code = slugify(instance.order.code)
+        number = instance.order.quantity_of_analyzes - instance.order.remaining_of_analyzes + 1
+        prefix = f'{id}/{order_code}/{number}'
 
     filename = f'{type}_{time}{extension}'
 
-    return f'{id}/{filename}'
+    return f'{prefix}/{filename}'
 
 
 upload_calibration_to = partial(upload_to, type='calibration')

@@ -58,7 +58,7 @@ def test_successful(client_api_auth, clinic_order, form_data_clinic_dosimetry):
     assert body['administrationDatetime'] == clinic_dosi_db.administration_datetime.strftime(FORMAT_DATE)
 
     # TODO: Pensar uma forma melhor
-    assert body['imagesUrl'].startswith(f'http://testserver/media/{clinic_dosi_db.order.user.id}/clinic_dosimetry')
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{clinic_dosi_db.order.user.id}')
 
 
 def test_fail_order_must_have_payment_confirmed(client_api_auth, clinic_order, form_data_clinic_dosimetry):

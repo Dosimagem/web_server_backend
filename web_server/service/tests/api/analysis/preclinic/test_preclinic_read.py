@@ -13,12 +13,7 @@ def test_successfull(client_api_auth, preclinic_dosimetry):
     user = preclinic_dosimetry.order.user
     order = preclinic_dosimetry.order
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user.uuid,
-        order.uuid,
-        preclinic_dosimetry.uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, preclinic_dosimetry.uuid)
     resp = client_api_auth.get(url)
     analysis_db = PreClinicDosimetryAnalysis.objects.get(id=preclinic_dosimetry.id)
 
@@ -41,7 +36,7 @@ def test_successfull(client_api_auth, preclinic_dosimetry):
     assert body['administrationDatetime'] == analysis_db.administration_datetime.strftime(FORMAT_DATE)
 
     # TODO: Pensar uma forma melhor
-    assert body['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}/preclinic_dosimetry')
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}')
 
 
 def test_fail_wrong_analysis_id(client_api_auth, preclinic_dosimetry):

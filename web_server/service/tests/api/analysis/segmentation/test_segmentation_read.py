@@ -31,7 +31,7 @@ def test_successfull(client_api_auth, segmentation_analysis):
     assert body['modifiedAt'] == analysis_db.modified_at.strftime(FORMAT_DATE)
 
     # TODO: Pensar uma forma melhor
-    assert body['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}/segmentation_analysis')
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}')
 
 
 def test_fail_wrong_analysis_id(client_api_auth, segmentation_analysis):

@@ -58,9 +58,7 @@ def test_successfull(client_api_auth, preclinic_order, form_data_preclinic_dosim
     assert body['administrationDatetime'] == preclinic_dosi_db.administration_datetime.strftime(FORMAT_DATE)
 
     # TODO: gerar a url completa
-    assert body['imagesUrl'].startswith(
-        f'http://testserver/media/{preclinic_dosi_db.order.user.id}/preclinic_dosimetry'
-    )
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{preclinic_dosi_db.order.user.id}')
 
     assert body['report'] == ''
 

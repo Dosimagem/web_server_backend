@@ -2,6 +2,8 @@ from datetime import datetime, timezone
 
 import pytest
 
+from django.utils.text import slugify
+
 from web_server.service.models import (
     _timestamp,
     upload_calibration_to,
@@ -12,25 +14,27 @@ from web_server.service.models import (
 )
 
 
+DATE_STR = '011222020342'
+
+
 @pytest.fixture
 def datetime_now():
-    return datetime(year=2022, month=1, day=1, tzinfo=timezone.utc)
+    return datetime(year=2022, month=12, day=1, hour=2, minute=3, second=42, tzinfo=timezone.utc)
 
 
 def test_timestamp(datetime_now):
-    assert _timestamp(datetime_now) == '16409952000'
+    assert DATE_STR == _timestamp(datetime_now)
 
 
 def test_upload_name_images_calibration(mocker, first_calibration, datetime_now):
 
     t = datetime_now
-    time_stamp_str = str(t.timestamp()).replace('.', '')
 
     mocker.patch('web_server.service.models.now', return_value=t)
 
     id = first_calibration.user.id
 
-    expected = f'{id}/calibration_{time_stamp_str}.zip'
+    expected = f'{id}/calibration_{DATE_STR}.zip'
 
     assert upload_calibration_to(first_calibration, filename='filename.zip') == expected
 
@@ -38,13 +42,14 @@ def test_upload_name_images_calibration(mocker, first_calibration, datetime_now)
 def test_upload_name_images_clinic_dosinetry_analysis(mocker, clinic_dosimetry, datetime_now):
 
     t = datetime_now
-    time_stamp_str = str(t.timestamp()).replace('.', '')
 
     mocker.patch('web_server.service.models.now', return_value=t)
 
     id = clinic_dosimetry.order.user.id
+    order_code = slugify(clinic_dosimetry.order.code)
+    number = clinic_dosimetry.order.quantity_of_analyzes - clinic_dosimetry.order.remaining_of_analyzes + 1
 
-    expected = f'{id}/clinic_dosimetry_{time_stamp_str}.zip'
+    expected = f'{id}/{order_code}/{number}/clinic_dosimetry_{DATE_STR}.zip'
 
     assert upload_clinic_dosimetry_to(clinic_dosimetry, filename='filename.zip') == expected
 
@@ -52,13 +57,14 @@ def test_upload_name_images_clinic_dosinetry_analysis(mocker, clinic_dosimetry, 
 def test_upload_name_images_preclinic_dosinetry_analysis(mocker, preclinic_dosimetry, datetime_now):
 
     t = datetime_now
-    time_stamp_str = str(t.timestamp()).replace('.', '')
 
     mocker.patch('web_server.service.models.now', return_value=t)
 
     id = preclinic_dosimetry.order.user.id
+    order_code = slugify(preclinic_dosimetry.order.code)
+    number = preclinic_dosimetry.order.quantity_of_analyzes - preclinic_dosimetry.order.remaining_of_analyzes + 1
 
-    expected = f'{id}/preclinic_dosimetry_{time_stamp_str}.zip'
+    expected = f'{id}/{order_code}/{number}/preclinic_dosimetry_{DATE_STR}.zip'
 
     assert upload_preclinic_dosimetry_to(preclinic_dosimetry, filename='filename.zip') == expected
 
@@ -66,13 +72,14 @@ def test_upload_name_images_preclinic_dosinetry_analysis(mocker, preclinic_dosim
 def test_upload_name_images_segmentation_analysis(mocker, segmentation_analysis, datetime_now):
 
     t = datetime_now
-    time_stamp_str = str(t.timestamp()).replace('.', '')
 
     mocker.patch('web_server.service.models.now', return_value=t)
 
     id = segmentation_analysis.order.user.id
+    order_code = slugify(segmentation_analysis.order.code)
+    number = segmentation_analysis.order.quantity_of_analyzes - segmentation_analysis.order.remaining_of_analyzes + 1
 
-    expected = f'{id}/segmentation_analysis_{time_stamp_str}.zip'
+    expected = f'{id}/{order_code}/{number}/segmentation_analysis_{DATE_STR}.zip'
 
     assert upload_segmentation_analysis_to(segmentation_analysis, filename='filename.zip') == expected
 
@@ -80,12 +87,13 @@ def test_upload_name_images_segmentation_analysis(mocker, segmentation_analysis,
 def test_report_name(mocker, clinic_dosimetry, datetime_now):
 
     t = datetime_now
-    time_stamp_str = str(t.timestamp()).replace('.', '')
 
     mocker.patch('web_server.service.models.now', return_value=t)
 
     id = clinic_dosimetry.order.user.id
+    order_code = slugify(clinic_dosimetry.order.code)
+    number = clinic_dosimetry.order.quantity_of_analyzes - clinic_dosimetry.order.remaining_of_analyzes + 1
 
-    expected = f'{id}/report_{time_stamp_str}.zip'
+    expected = f'{id}/{order_code}/{number}/report_{DATE_STR}.zip'
 
     assert upload_report_to(clinic_dosimetry, filename='filename.zip') == expected
