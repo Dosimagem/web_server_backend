@@ -69,6 +69,12 @@ class OrderInfos:
             analyzing_infos=counts['AI'],
         )
 
+    def are_analyzes_available(self):
+        return self.order.remaining_of_analyzes > 0
+
+    def has_payment_confirmed(self):
+        return self.order.status_payment == self.order.CONFIRMED
+
 
 def order_to_dict(order):
 

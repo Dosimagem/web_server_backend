@@ -1,5 +1,7 @@
 import pytest
 
+from web_server.service.models import Order
+
 
 @pytest.fixture
 def form_data(calibration_infos, calibration_file):  # TODO change name for first_http_data_calibration
@@ -60,4 +62,16 @@ def form_data_segmentation_analysis(segmentation_analysis_info, segmentation_ana
     return {
         'images': segmentation_analysis_file['images'],
         'analysisName': segmentation_analysis_info['analysis_name'],
+    }
+
+
+@pytest.fixture
+def create_order_data(user):
+    return {
+        'user': user,
+        'quantity_of_analyzes': 10,
+        'remaining_of_analyzes': 10,
+        'price': '1000.00',
+        'service_name': Order.CLINIC_DOSIMETRY,
+        'status_payment': Order.CONFIRMED,
     }

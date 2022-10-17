@@ -19,7 +19,7 @@ from web_server.service.order_svc import OrderInfos
         (SegmentationAnalysis, Order.SEGMENTANTION_QUANTIFICATION),
     ],
 )
-def test_order_analisys_infos(model, service_name, user, first_calibration):
+def test_order_analisys_counts(model, service_name, user, first_calibration):
 
     order = Order.objects.create(
         user=user,
@@ -75,3 +75,29 @@ def test_order_analisys_infos(model, service_name, user, first_calibration):
         'processing': 3,
         'analyzing_infos': 2,
     }
+
+
+def test_order_payment(clinic_order):
+
+    clinic_order.status_payment = Order.PRECLINIC_DOSIMETRY
+
+    order_infos = OrderInfos(clinic_order)
+
+    assert not order_infos.has_payment_confirmed()
+
+    clinic_order.status_payment = Order.CONFIRMED
+
+    assert order_infos.has_payment_confirmed()
+
+
+def test_order_analisys_available(clinic_order):
+
+    clinic_order.remaining_of_analyzes = 0
+
+    order_infos = OrderInfos(clinic_order)
+
+    assert not order_infos.are_analyzes_available()
+
+    clinic_order.remaining_of_analyzes = 1
+
+    assert order_infos.are_analyzes_available()

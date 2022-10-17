@@ -9,11 +9,7 @@ from web_server.service.models import FORMAT_DATE, PreClinicDosimetryAnalysis
 
 def test_list_successful(client_api_auth, preclinic_order, tree_preclinic_dosimetry_of_first_user):
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        preclinic_order.user.uuid,
-        preclinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
     resp = client_api_auth.get(url)
     body = resp.json()
 

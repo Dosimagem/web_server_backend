@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from django.shortcuts import resolve_url
 
-from web_server.service.models import FORMAT_DATE, ClinicDosimetryAnalysis
+from web_server.service.models import FORMAT_DATE, SegmentationAnalysis
 
 # /api/v1/users/<uuid>/order/<uuid>/analysis/ - GET
 
@@ -16,7 +16,7 @@ def test_successful(client_api_auth, segmentation_order, tree_segmentation_analy
     assert resp.status_code == HTTPStatus.OK
 
     analysis_list = body['row']
-    analysis_list_db = ClinicDosimetryAnalysis.objects.all()
+    analysis_list_db = SegmentationAnalysis.objects.all()
 
     assert body['count']
     assert body['count'] == len(analysis_list)

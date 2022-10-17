@@ -65,6 +65,25 @@ def test_successfull(client_api_auth, preclinic_order, form_data_preclinic_dosim
     assert body['report'] == ''
 
 
+def test_fail_order_must_have_payment_confirmed(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
+
+    preclinic_order.status_payment = Order.AWAITING_PAYMENT
+    preclinic_order.save()
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
+
+    resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.CONFLICT
+
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+
+    assert ['O pagamento desse pedido não foi confirmado.'] == body['errors']
+
+
 def test_fail_wrong_administration_datetime(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
 
     form_data_preclinic_dosimetry['administration_datetime'] = 'w'
