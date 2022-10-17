@@ -34,9 +34,7 @@ def test_successful(client_api_auth, segmentation_order, tree_segmentation_analy
         assert analysis_response['analysisName'] == analysis_db.analysis_name
 
         # TODO: Pensar uma forma melhor
-        assert analysis_response['imagesUrl'].startswith(
-            f'http://testserver/media/{analysis_db.order.user.id}/segmentation_analysis'
-        )
+        assert analysis_response['imagesUrl'].startswith(f'http://testserver/media/{analysis_db.order.user.id}')
 
         assert analysis_response['report'] == ''
 
