@@ -7,6 +7,7 @@ from web_server.service.models import (
     Isotope,
     Order,
     PreClinicDosimetryAnalysis,
+    RadiosynoAnalysis,
     SegmentationAnalysis,
 )
 
@@ -29,9 +30,15 @@ class UserOrderModelAdmin(admin.ModelAdmin):
         'code',
         'user',
     )
-    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at', 'code')
+    readonly_fields = (
+        'id',
+        'uuid',
+        'created_at',
+        'modified_at',
+        'code',
+    )
     search_fields = ('user__profile__clinic',)
-    list_filter = ('user',)
+    list_filter = ('user', 'service_name', 'status_payment')
     list_per_page = 20
 
     form = CreateOrderForm
@@ -145,6 +152,35 @@ class SegmentationAnalysisAdmin(admin.ModelAdmin):
         'analysis_name',
         'order',
         'status',
+        'images',
+        'report',
+        'active',
+    )
+    list_display_links = (
+        'code',
+        'analysis_name',
+    )
+    readonly_fields = (
+        'code',
+        'id',
+        'uuid',
+        'created_at',
+        'modified_at',
+    )
+    search_fields = ('analysis_name',)
+    list_per_page = 20
+    list_filter = ('order__user', 'status', 'active', 'order')
+
+
+@admin.register(RadiosynoAnalysis)
+class RadiosynoviorthesisAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'code',
+        'analysis_name',
+        'order',
+        'status',
+        'isotope',
         'images',
         'report',
         'active',

@@ -8,6 +8,7 @@ from web_server.service.models import (
     Isotope,
     Order,
     PreClinicDosimetryAnalysis,
+    RadiosynoAnalysis,
     SegmentationAnalysis,
 )
 
@@ -121,6 +122,14 @@ class PreClinicAndClinicDosimetryAnalysisUpdateFormApi(PreClinicAndClinicDosimet
     ...
 
 
+class RadiosynoAnalysisCreateFormApi(IsotopeForm):
+    ...
+
+
+class RadiosynoAnalysisUpdateFormApi(RadiosynoAnalysisCreateFormApi):
+    ...
+
+
 class SegmentationAnalysisCreateForm(forms.ModelForm):
     class Meta:
         model = SegmentationAnalysis
@@ -130,5 +139,18 @@ class SegmentationAnalysisCreateForm(forms.ModelForm):
 class SegmentationAnalysisUpdateForm(SegmentationAnalysisCreateForm):
     def change_status_and_save(self):
         self.instance.status = SegmentationAnalysis.DATA_SENT
+        super().save()
+        return self.instance
+
+
+class RadiosynoAnalysisCreateForm(forms.ModelForm):
+    class Meta:
+        model = RadiosynoAnalysis
+        fields = ('order', 'analysis_name', 'images', 'isotope')
+
+
+class RadiosynoAnalysisUpdateForm(RadiosynoAnalysisCreateForm):
+    def change_status_and_save(self):
+        self.instance.status = RadiosynoAnalysis.DATA_SENT
         super().save()
         return self.instance

@@ -21,8 +21,9 @@ from web_server.service.analysis_svc import AnalisysChoice
 from web_server.service.forms import (
     PreClinicAndClinicDosimetryAnalysisCreateFormApi,
     PreClinicAndClinicDosimetryAnalysisUpdateFormApi,
+    RadiosynoAnalysisCreateFormApi,
 )
-from web_server.service.models import Calibration, Order
+from web_server.service.models import Calibration, Isotope, Order
 from web_server.service.order_svc import OrderInfos
 
 
@@ -118,6 +119,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
+    # TODO: Codigo repetido com o update
     if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
 
         form = PreClinicAndClinicDosimetryAnalysisUpdateFormApi(data)
@@ -131,6 +133,17 @@ def _update_analysis(request, user_id, order_id, analysis_id):
             return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.NOT_FOUND)
 
         data['calibration'] = calibration
+
+    elif order.service_name == Order.RADIOSYNOVIORTHESIS:
+
+        form = RadiosynoAnalysisCreateFormApi(data)
+
+        if not form.is_valid():
+            return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+        isotope = Isotope.objects.get(name=form.cleaned_data['isotope'])
+
+        data['isotope'] = isotope
 
     data['order'] = order
 
@@ -176,6 +189,7 @@ def _create_analysis(request, user_id, order_id):
     if not order_infos.has_payment_confirmed():
         return Response({'errors': ['O pagamento desse pedido não foi confirmado.']}, status=HTTPStatus.CONFLICT)
 
+    # TODO: Codigo repetido com o update
     if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
 
         form = PreClinicAndClinicDosimetryAnalysisCreateFormApi(data)
@@ -189,6 +203,17 @@ def _create_analysis(request, user_id, order_id):
             return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.BAD_REQUEST)
 
         data['calibration'] = calibration
+
+    elif order.service_name == Order.RADIOSYNOVIORTHESIS:
+
+        form = RadiosynoAnalysisCreateFormApi(data)
+
+        if not form.is_valid():
+            return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+        isotope = Isotope.objects.get(name=form.cleaned_data['isotope'])
+
+        data['isotope'] = isotope
 
     data['order'] = order
 

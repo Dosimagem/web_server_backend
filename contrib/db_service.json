@@ -68,6 +68,23 @@
   }
 },
 {
+  "model": "service.order",
+  "pk": 5,
+  "fields": {
+    "created_at": "2022-10-20T15:54:25.934Z",
+    "modified_at": "2022-10-20T16:12:04.052Z",
+    "uuid": "0430bde5-8c1b-428e-befc-2329ebbba4df",
+    "user": 3,
+    "quantity_of_analyzes": 2,
+    "remaining_of_analyzes": 1,
+    "price": "1000.00",
+    "status_payment": "CON",
+    "service_name": "RA",
+    "permission": true,
+    "code": "0003.22/0005-04"
+  }
+},
+{
   "model": "service.isotope",
   "pk": 1,
   "fields": {
@@ -393,6 +410,24 @@
     "message_to_user": "",
     "order": 3,
     "images": "3/segmentation_analysis_1665882305246987.zip"
+  }
+},
+{
+  "model": "service.radiosynoanalysis",
+  "pk": 3,
+  "fields": {
+    "created_at": "2022-10-20T16:07:18.381Z",
+    "modified_at": "2022-10-20T16:10:14.402Z",
+    "uuid": "593eafeb-1528-453b-820c-30bfc63e3ab1",
+    "analysis_name": "Analise A4",
+    "status": "CO",
+    "report": "3/0003220005-04/3/report_201022161014.zip",
+    "active": true,
+    "code": "0003.0005.Lu-177.22/0003-04",
+    "message_to_user": "",
+    "isotope": 2,
+    "order": 5,
+    "images": "3/0003220005-04/3/radiosyno_analysis_201022160829.zip"
   }
 }
 ]

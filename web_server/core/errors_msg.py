@@ -55,6 +55,7 @@ def list_errors(errors):
                 error == 'Preclinic Dosimetry com este Order e Analysis Name já existe.'
                 or error == 'Clinic Dosimetry com este Order e Analysis Name já existe.'
                 or error == 'Segmentation Analysis com este Order e Analysis Name já existe.'
+                or error == 'Radiosynoviorthesis Analysis com este Order e Analysis Name já existe.'
             ):
                 msg = 'Análises com esse nome já existe para esse pedido.'
 

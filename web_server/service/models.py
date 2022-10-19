@@ -2,11 +2,11 @@ import os
 from functools import partial
 from uuid import uuid4
 
-from django.utils.text import slugify
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
+from django.utils.text import slugify
 from django.utils.timezone import now
 
 from web_server.core.models import CreationModificationBase
@@ -19,13 +19,20 @@ class Order(CreationModificationBase):
     CLINIC_DOSIMETRY = 'DC'
     PRECLINIC_DOSIMETRY = 'PCD'
     SEGMENTANTION_QUANTIFICATION = 'SQ'
+    RADIOSYNOVIORTHESIS = 'RA'
 
-    SERVICES_CODES = {CLINIC_DOSIMETRY: '01', PRECLINIC_DOSIMETRY: '02', SEGMENTANTION_QUANTIFICATION: '03'}
+    SERVICES_CODES = {
+        CLINIC_DOSIMETRY: '01',
+        PRECLINIC_DOSIMETRY: '02',
+        SEGMENTANTION_QUANTIFICATION: '03',
+        RADIOSYNOVIORTHESIS: '04',
+    }
 
     SERVICES_NAMES = (
         (CLINIC_DOSIMETRY, 'Dosimetria Clinica'),
         (PRECLINIC_DOSIMETRY, 'Dosimetria Preclinica'),
         (SEGMENTANTION_QUANTIFICATION, 'Segmentaçao e Quantificação'),
+        (RADIOSYNOVIORTHESIS, 'Radiosinoviortese'),
     )
 
     AWAITING_PAYMENT = 'APG'
@@ -110,6 +117,7 @@ upload_calibration_to = partial(upload_to, type='calibration')
 upload_clinic_dosimetry_to = partial(upload_to, type='clinic_dosimetry')
 upload_preclinic_dosimetry_to = partial(upload_to, type='preclinic_dosimetry')
 upload_segmentation_analysis_to = partial(upload_to, type='segmentation_analysis')
+upload_radiosyno_analysis_to = partial(upload_to, type='radiosyno_analysis')
 upload_report_to = partial(upload_to, type='report')
 
 
@@ -243,9 +251,6 @@ class DosimetryAnalysisBase(AnalysisBase):
     class Meta:
         abstract = True
 
-    def __str__(self):
-        return self.code
-
     def to_dict(self, request):
 
         dict_ = super().to_dict(request)
@@ -304,6 +309,7 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
         on_delete=models.CASCADE,
         related_name='preclinic_dosimetry_analysis',
     )
+
     order = models.ForeignKey(
         'Order',
         on_delete=models.CASCADE,
@@ -329,18 +335,14 @@ class SegmentationAnalysis(AnalysisBase):
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
     # TODO: Talvez esse relacionamento pode ficar na classe Abstrata
-    order = models.ForeignKey(
-        'Order',
-        on_delete=models.CASCADE,
-        related_name='segmentation_analysis',
-    )
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='segmentation_analysis')
 
     images = models.FileField('Images', upload_to=upload_segmentation_analysis_to)
 
     class Meta:
         db_table = 'segmentation_analysis'
         verbose_name = 'Segmentation Analysis'
-        verbose_name_plural = 'Segmentation Analysis'
+        verbose_name_plural = 'Segmentation Analyzes'
         unique_together = (
             'order',
             'analysis_name',
@@ -360,3 +362,44 @@ class SegmentationAnalysis(AnalysisBase):
         dict_ = super().to_dict(request)
 
         return dict_
+
+
+class RadiosynoAnalysis(AnalysisBase):
+
+    SERVICE_NAME_CODE = Order.RADIOSYNOVIORTHESIS
+    CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
+
+    isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='radiosyno_analysis')
+    order = models.ForeignKey(
+        'Order',
+        on_delete=models.CASCADE,
+        related_name='radiosyno_analysis',
+    )
+    images = models.FileField('Images', upload_to=upload_radiosyno_analysis_to)
+
+    class Meta:
+        db_table = 'radiosyno_analysis'
+        verbose_name = 'Radiosynoviorthesis Analysis'
+        verbose_name_plural = 'Radiosynoviorthesis Analyzes'
+        unique_together = (
+            'order',
+            'analysis_name',
+        )
+        ordering = ['-created_at']
+
+    def to_dict(self, request):
+
+        dict_ = super().to_dict(request)
+
+        dict_['isotope'] = self.isotope.name
+
+        return dict_
+
+    def _generate_code(self):
+        clinic_id = self.order.user.pk
+        year = str(self.created_at.year)[2:]
+        isotope = self.isotope
+        order_id = self.order.pk
+        id = self.pk
+        code = self.CODE
+        return f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{id:04}-{code:02}'

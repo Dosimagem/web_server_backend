@@ -87,10 +87,7 @@ def _update_calibration(request, user_id, calibration_id):
         form_isopote = IsotopeForm(data)
 
         if not form_isopote.is_valid():
-            return Response(
-                data={'errors': list_errors(form_isopote.errors)},
-                status=HTTPStatus.BAD_REQUEST,
-            )
+            return Response(data={'errors': list_errors(form_isopote.errors)}, status=HTTPStatus.BAD_REQUEST)
 
         isotope = Isotope.objects.get(name=form_isopote.cleaned_data['isotope'])
 
