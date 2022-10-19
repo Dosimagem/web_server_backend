@@ -11,6 +11,8 @@ from web_server.service.models import (
     ClinicDosimetryAnalysis,
     Order,
     PreClinicDosimetryAnalysis,
+    RadiosynoAnalysis,
+    SegmentationAnalysis,
 )
 
 # /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
@@ -23,6 +25,8 @@ def test_successfull(client_api_auth, preclinic_order, form_data_preclinic_dosim
 
     assert not ClinicDosimetryAnalysis.objects.exists()
     assert not PreClinicDosimetryAnalysis.objects.exists()
+    assert not SegmentationAnalysis.objects.exists()
+    assert not RadiosynoAnalysis.objects.exists()
 
     assert Order.objects.get(id=preclinic_order.id).remaining_of_analyzes == preclinic_order.remaining_of_analyzes
 
@@ -36,8 +40,10 @@ def test_successfull(client_api_auth, preclinic_order, form_data_preclinic_dosim
 
     assert resp.status_code == HTTPStatus.CREATED
 
-    assert PreClinicDosimetryAnalysis.objects.exists()
     assert not ClinicDosimetryAnalysis.objects.exists()
+    assert PreClinicDosimetryAnalysis.objects.exists()
+    assert not SegmentationAnalysis.objects.exists()
+    assert not RadiosynoAnalysis.objects.exists()
 
     preclinic_dosi_db = PreClinicDosimetryAnalysis.objects.first()
 
@@ -207,7 +213,7 @@ def test_fail_wrong_calibration_id(client_api_auth, preclinic_order, form_data_p
     assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
 
 
-def test_fail_wrong_(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
+def test_fail_wrong__order_id(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 

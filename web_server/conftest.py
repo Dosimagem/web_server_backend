@@ -14,6 +14,7 @@ from web_server.service.models import (
     Isotope,
     Order,
     PreClinicDosimetryAnalysis,
+    RadiosynoAnalysis,
     SegmentationAnalysis,
 )
 
@@ -170,6 +171,18 @@ def segmentation_order(user):
         remaining_of_analyzes=10,
         price='1000',
         service_name=Order.SEGMENTANTION_QUANTIFICATION,
+        status_payment=Order.CONFIRMED,
+    )
+
+
+@pytest.fixture
+def radiosyno_order(user):
+    return Order.objects.create(
+        user=user,
+        quantity_of_analyzes=10,
+        remaining_of_analyzes=10,
+        price='1000',
+        service_name=Order.RADIOSYNOVIORTHESIS,
         status_payment=Order.CONFIRMED,
     )
 
@@ -355,6 +368,12 @@ def segmentation_analysis_file():
 
 
 @pytest.fixture
+def radiosyno_analysis_file():
+    fp = ContentFile(b'CT e SPET files', name='images.zip')
+    return {'images': fp}
+
+
+@pytest.fixture
 def clinic_dosimetry_info(first_calibration, clinic_order):
     return {
         'calibration': first_calibration,
@@ -382,6 +401,11 @@ def segmentation_analysis_info(segmentation_order):
         'order': segmentation_order,
         'analysis_name': 'Analysis 1',
     }
+
+
+@pytest.fixture
+def radiosyno_analysis_info(radiosyno_order, lu_177):
+    return {'order': radiosyno_order, 'analysis_name': 'Analysis 1', 'isotope': lu_177}
 
 
 @pytest.fixture
@@ -427,6 +451,28 @@ def preclinic_dosi_update_del_is_possible(preclinic_dosimetry):
     preclinic_dosimetry.status = PreClinicDosimetryAnalysis.DATA_SENT
     preclinic_dosimetry.save()
     return preclinic_dosimetry
+
+
+@pytest.fixture
+def radiosyno_analysis(radiosyno_analysis_info, radiosyno_analysis_file):
+
+    # TODO: Pensar em uma solução melhor, talvez usar um serviço para isso
+    order_uuid = radiosyno_analysis_info['order'].uuid
+    order = Order.objects.get(uuid=order_uuid)
+    order.remaining_of_analyzes -= 1
+    order.save()
+
+    analysis = RadiosynoAnalysis.objects.create(
+        **radiosyno_analysis_info, **radiosyno_analysis_file, status=RadiosynoAnalysis.ANALYZING_INFOS
+    )
+    return analysis
+
+
+@pytest.fixture
+def radiosyno_analysis_update_or_del_is_possible(radiosyno_analysis):
+    radiosyno_analysis.status = RadiosynoAnalysis.INVALID_INFOS
+    radiosyno_analysis.save()
+    return radiosyno_analysis
 
 
 @pytest.fixture
@@ -519,3 +565,27 @@ def tree_segmentation_analysis_of_first_user(segmentation_analysis_info):
         images=ContentFile(b'CT files 3', name='images.zip'),
     )
     return SegmentationAnalysis.objects.all()
+
+
+@pytest.fixture
+def tree_radiosyno_analysis_of_first_user(radiosyno_analysis_info):
+
+    radiosyno_analysis_info['analysis_name'] = 'Analysis 1'
+    RadiosynoAnalysis.objects.create(
+        **radiosyno_analysis_info,
+        images=ContentFile(b'CT files 1', name='images.zip'),
+    )
+
+    radiosyno_analysis_info['analysis_name'] = 'Analysis 2'
+    RadiosynoAnalysis.objects.create(
+        **radiosyno_analysis_info,
+        images=ContentFile(b'CT files 2', name='images.zip'),
+    )
+
+    radiosyno_analysis_info['analysis_name'] = 'Analysis 3'
+    RadiosynoAnalysis.objects.create(
+        **radiosyno_analysis_info,
+        images=ContentFile(b'CT files 3', name='images.zip'),
+    )
+
+    return RadiosynoAnalysis.objects.all()

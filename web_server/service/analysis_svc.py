@@ -3,6 +3,8 @@ from web_server.service.forms import (
     ClinicDosimetryAnalysisUpdateForm,
     PreClinicDosimetryAnalysisCreateForm,
     PreClinicDosimetryAnalysisUpdateForm,
+    RadiosynoAnalysisCreateForm,
+    RadiosynoAnalysisUpdateForm,
     SegmentationAnalysisCreateForm,
     SegmentationAnalysisUpdateForm,
 )
@@ -10,6 +12,7 @@ from web_server.service.models import (
     ClinicDosimetryAnalysis,
     Order,
     PreClinicDosimetryAnalysis,
+    RadiosynoAnalysis,
     SegmentationAnalysis,
 )
 
@@ -20,18 +23,21 @@ class AnalisysChoice:
         Order.PRECLINIC_DOSIMETRY: PreClinicDosimetryAnalysisUpdateForm,
         Order.CLINIC_DOSIMETRY: ClinicDosimetryAnalysisUpdateForm,
         Order.SEGMENTANTION_QUANTIFICATION: SegmentationAnalysisUpdateForm,
+        Order.RADIOSYNOVIORTHESIS: RadiosynoAnalysisUpdateForm,
     }
 
     _create_forms = {
         Order.PRECLINIC_DOSIMETRY: PreClinicDosimetryAnalysisCreateForm,
         Order.CLINIC_DOSIMETRY: ClinicDosimetryAnalysisCreateForm,
         Order.SEGMENTANTION_QUANTIFICATION: SegmentationAnalysisCreateForm,
+        Order.RADIOSYNOVIORTHESIS: RadiosynoAnalysisCreateForm,
     }
 
     _models = {
         Order.PRECLINIC_DOSIMETRY: PreClinicDosimetryAnalysis,
         Order.CLINIC_DOSIMETRY: ClinicDosimetryAnalysis,
         Order.SEGMENTANTION_QUANTIFICATION: SegmentationAnalysis,
+        Order.RADIOSYNOVIORTHESIS: RadiosynoAnalysis,
     }
 
     def __init__(self, order):

@@ -66,6 +66,16 @@ def form_data_segmentation_analysis(segmentation_analysis_info, segmentation_ana
 
 
 @pytest.fixture
+def form_data_radiosyno_analysis(radiosyno_analysis_info, radiosyno_analysis_file, lu_177):
+
+    return {
+        'images': radiosyno_analysis_file['images'],
+        'analysisName': radiosyno_analysis_info['analysis_name'],
+        'isotope': lu_177,
+    }
+
+
+@pytest.fixture
 def create_order_data(user):
     return {
         'user': user,

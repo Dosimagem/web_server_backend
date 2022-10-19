@@ -11,6 +11,8 @@ from web_server.service.models import (
     ClinicDosimetryAnalysis,
     Order,
     PreClinicDosimetryAnalysis,
+    RadiosynoAnalysis,
+    SegmentationAnalysis,
 )
 
 # /api/v1/users/<uuid>/order/<uuid>/analysis/ - POST
@@ -23,21 +25,21 @@ def test_successful(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     assert not ClinicDosimetryAnalysis.objects.exists()
     assert not PreClinicDosimetryAnalysis.objects.exists()
+    assert not SegmentationAnalysis.objects.exists()
+    assert not RadiosynoAnalysis.objects.exists()
 
     assert Order.objects.get(id=clinic_order.id).remaining_of_analyzes == clinic_order.remaining_of_analyzes
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        clinic_order.user.uuid,
-        clinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.CREATED
 
-    assert not PreClinicDosimetryAnalysis.objects.exists()
     assert ClinicDosimetryAnalysis.objects.exists()
+    assert not PreClinicDosimetryAnalysis.objects.exists()
+    assert not SegmentationAnalysis.objects.exists()
+    assert not RadiosynoAnalysis.objects.exists()
 
     clinic_dosi_db = ClinicDosimetryAnalysis.objects.first()
 

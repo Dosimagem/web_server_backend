@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 
 import pytest
-
 from django.utils.text import slugify
 
 from web_server.service.models import (
@@ -12,7 +11,6 @@ from web_server.service.models import (
     upload_report_to,
     upload_segmentation_analysis_to,
 )
-
 
 DATE_STR = '011222020342'
 
