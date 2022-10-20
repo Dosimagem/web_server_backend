@@ -112,7 +112,7 @@ def test_str(preclinic_dosimetry):
     analysis_id = analysis.pk
     code = analysis.CODE
 
-    assert str(analysis) == f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{analysis_id:04}-{code:02}'
+    assert str(analysis) == f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{analysis_id:04}-{code}'
 
 
 def test_status(preclinic_dosimetry_info):

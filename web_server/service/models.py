@@ -73,7 +73,7 @@ class Order(CreationModificationBase):
         year = str(self.created_at.year)[2:]
         id = self.id
         code = self._code_service()
-        return f'{clinic_id:04}.{year}/{id:04}-{code:02}'
+        return f'{clinic_id:04}.{year}/{id:04}-{code}'
 
     def _code_service(self):
         return self.SERVICES_CODES[self.service_name]
@@ -268,7 +268,7 @@ class DosimetryAnalysisBase(AnalysisBase):
         order_id = self.order.pk
         id = self.pk
         code = self.CODE
-        return f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{id:04}-{code:02}'
+        return f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{id:04}-{code}'
 
 
 class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
@@ -355,7 +355,7 @@ class SegmentationAnalysis(AnalysisBase):
         order_id = self.order.pk
         id = self.pk
         code = self.CODE
-        return f'{clinic_id:04}.{order_id:04}.{year}/{id:04}-{code:02}'
+        return f'{clinic_id:04}.{order_id:04}.{year}/{id:04}-{code}'
 
     def to_dict(self, request):
 
@@ -402,4 +402,4 @@ class RadiosynoAnalysis(AnalysisBase):
         order_id = self.order.pk
         id = self.pk
         code = self.CODE
-        return f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{id:04}-{code:02}'
+        return f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{id:04}-{code}'
