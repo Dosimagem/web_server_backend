@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from django.shortcuts import resolve_url
 
-from web_server.benefits.views import LIST_BENEFITS
+from web_server.benefits.views import signature
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 END_POINT = 'benefits:benefit-read'
@@ -14,30 +14,27 @@ END_POINT = 'benefits:benefit-read'
 
 def test_successfull(client_api_auth, user):
 
-    benefit_uuid = LIST_BENEFITS[0]['id']
-
-    url = resolve_url(END_POINT, user.uuid, benefit_uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api_auth.get(url)
     body = resp.json()
 
-    benefit_db = LIST_BENEFITS[0]
+    signature_db = signature
 
     assert resp.status_code == HTTPStatus.OK
 
-    assert str(benefit_db['id']) == body['id']
-    assert benefit_db['name'] == body['name']
-    assert benefit_db['hired_period'] == body['hiredPeriod']
-    assert benefit_db['test_period'] == body['testPeriod']
-    assert benefit_db['price'] == body['price']
+    assert str(signature_db.id) == body['id']
+    assert signature_db.benefits == body['benefits']
+    assert signature_db.hired_period == body['hiredPeriod']
+    assert signature_db.test_period == body['testPeriod']
+    assert signature_db.price == body['price']
+    assert signature_db.activated == body['activated']
     # TODO: colocar a data de criação e update
 
 
 def test_list_not_allowed_method(client_api_auth, user):
 
-    benefit_uuid = LIST_BENEFITS[0]['id']
-
-    url = resolve_url(END_POINT, user.uuid, benefit_uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api_auth.post(url)
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
@@ -54,9 +51,7 @@ def test_list_not_allowed_method(client_api_auth, user):
 
 def test_allowed_method(client_api_auth, user):
 
-    benefit_uuid = LIST_BENEFITS[0]['id']
-
-    url = resolve_url(END_POINT, user.uuid, benefit_uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api_auth.options(url)
 
@@ -70,9 +65,7 @@ def test_allowed_method(client_api_auth, user):
 
 def test_token_id_and_user_id_dont_match(client_api_auth, user):
 
-    benefit_uuid = LIST_BENEFITS[0]['id']
-
-    url = resolve_url(END_POINT, uuid4(), benefit_uuid)
+    url = resolve_url(END_POINT, uuid4())
     resp = client_api_auth.get(url)
 
     assert resp.status_code == HTTPStatus.UNAUTHORIZED
@@ -84,9 +77,7 @@ def test_token_id_and_user_id_dont_match(client_api_auth, user):
 
 def test_fail_must_be_auth(client_api, user):
 
-    benefit_uuid = LIST_BENEFITS[0]['id']
-
-    url = resolve_url(END_POINT, user.uuid, benefit_uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api.get(url)
     body = resp.json()
