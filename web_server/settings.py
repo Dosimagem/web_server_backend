@@ -215,6 +215,8 @@ REST_FRAMEWORK = {
     },
 }
 
+
+# TODO: Esse aconfiguração per informações importantes da requesições
 LOGGER_SQL = config('LOGGER_SQL', default=False, cast=bool)
 
 if LOGGER_SQL:
