@@ -19,11 +19,11 @@ from web_server.core.views.auth import MyTokenAuthentication
 class Benefits:
     id = field(converter=str)
     name: str = field()
+    link: str = field()
 
 
-benefit1 = Benefits(id=uuid4(), name='Beneficio A')
-benefit2 = Benefits(id=uuid4(), name='Beneficio B')
-benefit3 = Benefits(id=uuid4(), name='Beneficio C')
+benefit1 = Benefits(id=uuid4(), name='RSV', link='/dashboard/my-signatures/benefits/calculator')
+benefit2 = Benefits(id=uuid4(), name='Beneficio B', link='/dashboard/my-signatures/benefits/beneficiob')
 
 
 @define
@@ -38,7 +38,10 @@ class Signatures:
 
 signature = Signatures(
     uuid4(),
-    [asdict(benefit1), asdict(benefit2)],
+    [
+        asdict(benefit1),
+        asdict(benefit2),
+    ],
     Decimal('1000.00'),
     {
         'initial': datetime(2022, 10, 11).strftime('%Y-%m-%d'),
@@ -117,5 +120,4 @@ signature = Signatures(
 @permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
 def benefit_read(request, user_id):
-
     return Response(data=asdict(signature))
