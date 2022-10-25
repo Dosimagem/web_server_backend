@@ -1,9 +1,9 @@
 from django.urls import path
 
-from .views import benefit_read
+from .views import signature_list, signature_read
 
-app_name = 'benefits'
+app_name = 'signatures'
 urlpatterns = [
-    # path('users/<uuid:user_id>/benefits/', benefit_list, name='benefit-list'),
-    path('users/<uuid:user_id>/signatures/', benefit_read, name='benefit-read'),
+    path('users/<uuid:user_id>/signatures/', signature_list, name='signature-list'),
+    path('users/<uuid:user_id>/signatures/<uuid:signature_id>', signature_read, name='signature-read'),
 ]
