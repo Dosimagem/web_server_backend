@@ -17,7 +17,7 @@ urlpatterns = [
     path('api/v1/', include('web_server.core.urls')),
     path('api/v1/', include('web_server.service.urls')),
     path('api/v1/', include('web_server.radiosynoviorthesis.urls')),
-    path('api/v1/', include('web_server.benefits.urls')),
+    path('api/v1/', include('web_server.signature.urls')),
     #
     path('sentry-debug/', trigger_error),
 ]

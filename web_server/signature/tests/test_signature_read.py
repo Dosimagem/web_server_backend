@@ -1,44 +1,43 @@
 from http import HTTPStatus
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from django.shortcuts import resolve_url
 
-from web_server.benefits.views import LIST_SIGNATURES
+from web_server.signature.views import signature1
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
-END_POINT = 'signatures:signature-list'
+END_POINT = 'signatures:signature-read'
 
 
-# /api/v1/users/<uuid>/signature/ - GET
+# /api/v1/users/<uuid>/signatures/<uuid> - GET
 
 
 def test_successfull(client_api_auth, user):
 
-    url = resolve_url(END_POINT, user.uuid)
+    signature_id = UUID(signature1.id)
+
+    url = resolve_url(END_POINT, user.uuid, signature_id)
 
     resp = client_api_auth.get(url)
     body = resp.json()
 
-    signature_db = LIST_SIGNATURES
+    signature_db = signature1
 
     assert resp.status_code == HTTPStatus.OK
 
-    assert 3 == body['count']
-
-    for expected, body_response in zip(signature_db, body['row']):
-        assert str(expected.id) == body_response['id']
-        assert expected.name == body_response['name']
-        assert expected.benefits == body_response['benefits']
-        assert expected.hired_period == body_response['hiredPeriod']
-        assert expected.test_period == body_response['testPeriod']
-        assert expected.price == body_response['price']
-        assert expected.activated == body_response['activated']
-        # TODO: colocar a data de criação e update
+    assert str(signature_db.id) == body['id']
+    assert signature_db.name == body['name']
+    assert signature_db.benefits == body['benefits']
+    assert signature_db.hired_period == body['hiredPeriod']
+    assert signature_db.test_period == body['testPeriod']
+    assert signature_db.price == body['price']
+    assert signature_db.activated == body['activated']
+    # TODO: colocar a data de criação e update
 
 
 def test_list_not_allowed_method(client_api_auth, user):
 
-    url = resolve_url(END_POINT, user.uuid)
+    url = resolve_url(END_POINT, user.uuid, UUID(signature1.id))
 
     resp = client_api_auth.post(url)
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
@@ -55,7 +54,7 @@ def test_list_not_allowed_method(client_api_auth, user):
 
 def test_allowed_method(client_api_auth, user):
 
-    url = resolve_url(END_POINT, user.uuid)
+    url = resolve_url(END_POINT, user.uuid, UUID(signature1.id))
 
     resp = client_api_auth.options(url)
 
@@ -69,19 +68,19 @@ def test_allowed_method(client_api_auth, user):
 
 def test_token_id_and_user_id_dont_match(client_api_auth, user):
 
-    url = resolve_url(END_POINT, uuid4())
-    response = client_api_auth.get(url)
+    url = resolve_url(END_POINT, uuid4(), UUID(signature1.id))
+    resp = client_api_auth.get(url)
 
-    assert response.status_code == HTTPStatus.UNAUTHORIZED
+    assert resp.status_code == HTTPStatus.UNAUTHORIZED
 
-    body = response.json()
+    body = resp.json()
 
     assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
 def test_fail_must_be_auth(client_api, user):
 
-    url = resolve_url(END_POINT, user.uuid)
+    url = resolve_url(END_POINT, user.uuid, UUID(signature1.id))
 
     resp = client_api.get(url)
     body = resp.json()
