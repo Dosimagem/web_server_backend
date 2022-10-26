@@ -3,16 +3,10 @@ from decimal import Decimal
 from uuid import uuid4
 
 from attrs import asdict, define, field
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    permission_classes,
-)
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
-from web_server.core.views.auth import MyTokenAuthentication
 
 
 @define
@@ -92,8 +86,6 @@ signatures_fake_db = SignatureModel(LIST_SIGNATURES)
 
 
 @api_view(['GET'])
-@authentication_classes([MyTokenAuthentication])
-@permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
 def signature_list(request, user_id):
 
@@ -105,8 +97,6 @@ def signature_list(request, user_id):
 
 
 @api_view(['GET'])
-@authentication_classes([MyTokenAuthentication])
-@permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
 def signature_read(request, user_id, signature_id):
 

@@ -2,12 +2,7 @@ from http import HTTPStatus
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    permission_classes,
-)
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
@@ -16,7 +11,6 @@ from web_server.core.errors_msg import (
     MSG_ERROR_RESOURCE,
     list_errors,
 )
-from web_server.core.views.auth import MyTokenAuthentication
 from web_server.service.analysis_svc import AnalisysChoice
 from web_server.service.forms import (
     PreClinicAndClinicDosimetryAnalysisCreateFormApi,
@@ -28,8 +22,6 @@ from web_server.service.order_svc import OrderInfos
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
-@authentication_classes([MyTokenAuthentication])
-@permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
 def analysis_read_update_delete(request, user_id, order_id, analysis_id):
 
@@ -45,8 +37,6 @@ def analysis_read_update_delete(request, user_id, order_id, analysis_id):
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([MyTokenAuthentication])
-@permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
 def analysis_list_create(request, user_id, order_id):
 

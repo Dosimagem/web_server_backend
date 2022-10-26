@@ -3,8 +3,8 @@ from uuid import UUID, uuid4
 
 from django.shortcuts import resolve_url
 
-from web_server.signature.views import signature1
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
+from web_server.signature.views import signature1
 
 END_POINT = 'signatures:signature-read'
 

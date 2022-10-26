@@ -5,7 +5,11 @@ from django.db import transaction
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.decorators import api_view
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework.response import Response
 
 from web_server.core.errors_msg import list_errors
@@ -45,6 +49,8 @@ def _register_user_profile_token(form_user, data):
 
 
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def register(request):
 
     data = request.data
