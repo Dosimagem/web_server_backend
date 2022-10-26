@@ -36,55 +36,42 @@ class Signatures:
     hired_period: dict = field()
     test_period: dict = field()
     activated: bool = field()
+    bill_file: str = field()
 
 
 signature1 = Signatures(
     'e3b6a8d7-3bb3-4d2e-9f44-5c1780c214cf',
-    'Assinatura 1',
+    'RSH mensal',
     [
         asdict(benefit1),
-        asdict(benefit2),
     ],
-    Decimal('1000.00'),
+    Decimal('60.00'),
+    None,
     {
         'initial': datetime(2022, 10, 11).strftime('%Y-%m-%d'),
         'end': datetime(2022, 11, 11).strftime('%Y-%m-%d'),
     },
-    None,
     True,
+    bill_file='',
 )
 
 signature2 = Signatures(
     '9e00ee87-2223-4807-9885-11161b88bac1',
-    'Assinatura 2',
+    'RSV Anual',
     [
         asdict(benefit1),
-        asdict(benefit3),
     ],
-    Decimal('4000.00'),
-    None,
+    Decimal('600.00'),
     {
         'initial': datetime(2022, 10, 11).strftime('%Y-%m-%d'),
-        'end': datetime(2022, 11, 11).strftime('%Y-%m-%d'),
+        'end': datetime(2023, 10, 11).strftime('%Y-%m-%d'),
     },
+    None,
     True,
+    bill_file='',
 )
 
-signature3 = Signatures(
-    '89a88a2c-b2ee-49d8-b2c0-5f4373b5446f',
-    'Assinatura 3',
-    [
-        asdict(benefit1),
-        asdict(benefit3),
-    ],
-    Decimal('2000.00'),
-    None,
-    None,
-    False,
-)
-
-
-LIST_SIGNATURES = [signature1, signature2, signature3]
+LIST_SIGNATURES = [signature1, signature2]
 
 
 class SignatureModel:
