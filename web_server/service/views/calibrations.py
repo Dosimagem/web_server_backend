@@ -3,17 +3,11 @@ from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    permission_classes,
-)
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE, list_errors
-from web_server.core.views.auth import MyTokenAuthentication
 from web_server.service.forms import (
     CreateCalibrationForm,
     IsotopeForm,
@@ -25,8 +19,6 @@ User = get_user_model()
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([MyTokenAuthentication])
-@permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
 def calibrations_list_create(request, user_id):
 
@@ -38,8 +30,6 @@ def calibrations_list_create(request, user_id):
 
 
 @api_view(['DELETE', 'GET', 'PUT'])
-@authentication_classes([MyTokenAuthentication])
-@permission_classes([IsAuthenticated])
 @user_from_token_and_user_from_url
 def calibrations_read_update_delete(request, user_id, calibration_id):
 

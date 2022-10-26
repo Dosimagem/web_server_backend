@@ -213,6 +213,12 @@ REST_FRAMEWORK = {
     'JSON_UNDERSCOREIZE': {
         'no_underscore_before_number': True,
     },
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'web_server.core.auth.MyTokenAuthentication',
+    ],
 }
 
 
