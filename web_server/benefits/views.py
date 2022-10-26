@@ -19,12 +19,12 @@ from web_server.core.views.auth import MyTokenAuthentication
 class Benefits:
     id = field(converter=str)
     name: str = field()
-    link: str = field()
+    uri: str = field()
 
 
-benefit1 = Benefits(id=uuid4(), name='RSV', link='/dashboard/my-signatures/benefits/calculator')
-benefit2 = Benefits(id=uuid4(), name='Beneficio B', link='/dashboard/my-signatures/benefits/beneficiob')
-benefit3 = Benefits(id=uuid4(), name='Beneficio C', link='/dashboard/my-signatures/benefits/beneficioc')
+benefit1 = Benefits(id=uuid4(), name='RSV', uri='/dashboard/my-signatures/benefits/calculator')
+benefit2 = Benefits(id=uuid4(), name='Beneficio B', uri='/dashboard/my-signatures/benefits/beneficiob')
+benefit3 = Benefits(id=uuid4(), name='Beneficio C', uri='/dashboard/my-signatures/benefits/beneficioc')
 
 
 @define
@@ -71,7 +71,7 @@ signature2 = Signatures(
 )
 
 signature3 = Signatures(
-    '9e00ee87-2223-4807-9885-11161b88bac1',
+    '89a88a2c-b2ee-49d8-b2c0-5f4373b5446f',
     'Assinatura 3',
     [
         asdict(benefit1),
