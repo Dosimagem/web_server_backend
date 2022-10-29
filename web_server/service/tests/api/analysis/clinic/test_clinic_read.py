@@ -123,7 +123,7 @@ def test_error_message_only_status_invalid_info(client_api_auth, clinic_dosimetr
 
     assert body['messageToUser'] == ''
 
-    clinic_dosimetry.status = ClinicDosimetryAnalysis.INVALID_INFOS
+    clinic_dosimetry.status = ClinicDosimetryAnalysis.Status.INVALID_INFOS
     clinic_dosimetry.save()
 
     url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, clinic_dosimetry.uuid)

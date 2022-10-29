@@ -97,7 +97,7 @@ def test_default_values(user, first_calibration, preclinic_order):
         images=ContentFile(b'CT e SPET files', name='images.zip'),
     )
 
-    assert analysis.status == PreClinicDosimetryAnalysis.DATA_SENT
+    assert analysis.status == PreClinicDosimetryAnalysis.Status.DATA_SENT
     assert analysis.active
 
 
@@ -127,13 +127,6 @@ def test_status(preclinic_dosimetry_info):
         analysis.full_clean()
 
 
-def test_status_options():
-
-    status = PreClinicDosimetryAnalysis.STATUS
-
-    assert PreClinicDosimetryAnalysis.STATUS == status
-
-
 def test_model_code_and_service_name():
 
     assert PreClinicDosimetryAnalysis.CODE == '02'
@@ -143,7 +136,7 @@ def test_model_code_and_service_name():
 def test_save_with_conclude_status_must_be_report(preclinic_dosimetry):
 
     with pytest.raises(ValidationError):
-        preclinic_dosimetry.status = PreClinicDosimetryAnalysis.CONCLUDED
+        preclinic_dosimetry.status = PreClinicDosimetryAnalysis.Status.CONCLUDED
         preclinic_dosimetry.full_clean()
 
 

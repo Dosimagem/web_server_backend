@@ -94,7 +94,7 @@ def test_default_values(user, first_calibration, clinic_order):
         images=ContentFile(b'CT e SPET files', name='images.zip'),
     )
 
-    assert analyis.status == ClinicDosimetryAnalysis.DATA_SENT
+    assert analyis.status == ClinicDosimetryAnalysis.Status.DATA_SENT
     assert analyis.active
 
 
@@ -124,13 +124,6 @@ def test_status(clinic_dosimetry_info):
         analysis.full_clean()
 
 
-def test_status_options():
-
-    status = ClinicDosimetryAnalysis.STATUS
-
-    assert ClinicDosimetryAnalysis.STATUS == status
-
-
 def test_model_code_and_service_name():
 
     assert ClinicDosimetryAnalysis.CODE == '01'
@@ -140,7 +133,7 @@ def test_model_code_and_service_name():
 def test_save_with_conclude_status_must_be_report(clinic_dosimetry):
 
     with pytest.raises(ValidationError):
-        clinic_dosimetry.status = ClinicDosimetryAnalysis.CONCLUDED
+        clinic_dosimetry.status = ClinicDosimetryAnalysis.Status.CONCLUDED
         clinic_dosimetry.full_clean()
 
 

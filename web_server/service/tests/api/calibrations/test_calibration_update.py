@@ -181,7 +181,7 @@ def test_success_calibration_used_in_a_clinic_analysis(client_api_auth, clinic_d
     """
 
     calibration = clinic_dosimetry.calibration
-    clinic_dosimetry.status = DosimetryAnalysisBase.INVALID_INFOS
+    clinic_dosimetry.status = DosimetryAnalysisBase.Status.INVALID_INFOS
     clinic_dosimetry.save()
 
     url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
@@ -217,7 +217,7 @@ def test_success_calibration_used_in_a_preclinic_analysis(
     """
 
     calibration = preclinic_dosimetry.calibration
-    preclinic_dosimetry.status = DosimetryAnalysisBase.INVALID_INFOS
+    preclinic_dosimetry.status = DosimetryAnalysisBase.Status.INVALID_INFOS
     preclinic_dosimetry.save()
 
     url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)

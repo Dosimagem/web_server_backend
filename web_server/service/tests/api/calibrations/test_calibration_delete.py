@@ -63,7 +63,7 @@ def test_fail_delete_calibration_used_in_a_clinic_analysis(client_api_auth, clin
 
     calibration = clinic_dosimetry.calibration
 
-    assert clinic_dosimetry.status == DosimetryAnalysisBase.ANALYZING_INFOS
+    assert clinic_dosimetry.status == DosimetryAnalysisBase.Status.ANALYZING_INFOS
 
     url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
 
@@ -90,7 +90,7 @@ def test_fail_delete_calibration_used_in_a_preclinic_analysis(client_api_auth, p
 
     calibration = preclinic_dosimetry.calibration
 
-    assert preclinic_dosimetry.status == DosimetryAnalysisBase.ANALYZING_INFOS
+    assert preclinic_dosimetry.status == DosimetryAnalysisBase.Status.ANALYZING_INFOS
 
     url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)
 
@@ -117,7 +117,7 @@ def test_successful_delete_calibration_used_in_a_analysis(client_api_auth, clini
 
     calibration = clinic_dosimetry.calibration
 
-    clinic_dosimetry.status = DosimetryAnalysisBase.INVALID_INFOS
+    clinic_dosimetry.status = DosimetryAnalysisBase.Status.INVALID_INFOS
     clinic_dosimetry.save()
 
     url = resolve_url('service:calibration-read-update-delete', calibration.user.uuid, calibration.uuid)

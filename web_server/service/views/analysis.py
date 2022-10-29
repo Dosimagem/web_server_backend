@@ -58,7 +58,7 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
 
     # TODO: Colocar isso em uma camada de serviço
     # if analysis.status in [Model.INVALID_INFOS, Model.DATA_SENT]:
-    if analysis.status == Model.INVALID_INFOS or analysis.status == Model.DATA_SENT:
+    if analysis.status == Model.Status.INVALID_INFOS or analysis.status == Model.Status.DATA_SENT:
         analysis.delete()
         order.remaining_of_analyzes += 1
         order.save()
@@ -110,7 +110,10 @@ def _update_analysis(request, user_id, order_id, analysis_id):
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
     # TODO: Codigo repetido com o update
-    if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
+    if (
+        order.service_name == Order.ServicesName.PRECLINIC_DOSIMETRY.value
+        or order.service_name == Order.ServicesName.CLINIC_DOSIMETRY.value
+    ):
 
         form = PreClinicAndClinicDosimetryAnalysisUpdateFormApi(data)
 
@@ -124,7 +127,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
 
         data['calibration'] = calibration
 
-    elif order.service_name == Order.RADIOSYNOVIORTHESIS:
+    elif order.service_name == Order.ServicesName.RADIOSYNOVIORTHESIS.value:
 
         form = RadiosynoAnalysisCreateFormApi(data)
 
@@ -145,7 +148,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     except ObjectDoesNotExist:
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
-    if analysis.status not in (Model.INVALID_INFOS, Model.DATA_SENT):
+    if analysis.status not in (Model.Status.INVALID_INFOS, Model.Status.DATA_SENT):
         msg = ['Não foi possivel atualizar essa análise.']
         return Response(data={'errors': msg}, status=HTTPStatus.CONFLICT)
 
@@ -180,7 +183,10 @@ def _create_analysis(request, user_id, order_id):
         return Response({'errors': ['O pagamento desse pedido não foi confirmado.']}, status=HTTPStatus.CONFLICT)
 
     # TODO: Codigo repetido com o update
-    if order.service_name == Order.PRECLINIC_DOSIMETRY or order.service_name == Order.CLINIC_DOSIMETRY:
+    if (
+        order.service_name == Order.ServicesName.PRECLINIC_DOSIMETRY.value
+        or order.service_name == Order.ServicesName.CLINIC_DOSIMETRY.value
+    ):
 
         form = PreClinicAndClinicDosimetryAnalysisCreateFormApi(data)
 
@@ -194,7 +200,7 @@ def _create_analysis(request, user_id, order_id):
 
         data['calibration'] = calibration
 
-    elif order.service_name == Order.RADIOSYNOVIORTHESIS:
+    elif order.service_name == Order.ServicesName.RADIOSYNOVIORTHESIS.value:
 
         form = RadiosynoAnalysisCreateFormApi(data)
 

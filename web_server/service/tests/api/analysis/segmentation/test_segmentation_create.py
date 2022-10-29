@@ -59,7 +59,7 @@ def test_successful(client_api_auth, segmentation_order, form_data_segmentation_
 
 def test_fail_order_must_have_payment_confirmed(client_api_auth, segmentation_order, form_data_segmentation_analysis):
 
-    segmentation_order.status_payment = Order.AWAITING_PAYMENT
+    segmentation_order.status_payment = Order.PaymentStatus.AWAITING_PAYMENT
     segmentation_order.save()
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
@@ -114,8 +114,8 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_se
         quantity_of_analyzes=3,
         remaining_of_analyzes=0,
         price=Decimal('3000.00'),
-        service_name=Order.SEGMENTANTION_QUANTIFICATION,
-        status_payment=Order.AWAITING_PAYMENT,
+        service_name=Order.ServicesName.SEGMENTANTION_QUANTIFICATION.value,
+        status_payment=Order.PaymentStatus.AWAITING_PAYMENT,
         permission=True,
     )
 

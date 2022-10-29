@@ -103,7 +103,7 @@ def test_error_message_only_status_invalid_info(client_api_auth, segmentation_an
 
     assert body['messageToUser'] == ''
 
-    segmentation_analysis.status = SegmentationAnalysis.INVALID_INFOS
+    segmentation_analysis.status = SegmentationAnalysis.Status.INVALID_INFOS
     segmentation_analysis.save()
 
     url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, segmentation_analysis.uuid)

@@ -147,7 +147,7 @@ def clinic_order(user, create_order_data):
         remaining_of_analyzes=create_order_data['remaining_of_analyzes'],
         price=create_order_data['price'],
         service_name=create_order_data['service_name'],
-        status_payment=Order.CONFIRMED,
+        status_payment=Order.PaymentStatus.CONFIRMED,
     )
 
 
@@ -158,8 +158,8 @@ def preclinic_order(user):
         quantity_of_analyzes=10,
         remaining_of_analyzes=10,
         price='1000',
-        service_name=Order.PRECLINIC_DOSIMETRY,
-        status_payment=Order.CONFIRMED,
+        service_name=Order.ServicesName.PRECLINIC_DOSIMETRY.value,
+        status_payment=Order.PaymentStatus.CONFIRMED,
     )
 
 
@@ -170,8 +170,8 @@ def segmentation_order(user):
         quantity_of_analyzes=10,
         remaining_of_analyzes=10,
         price='1000',
-        service_name=Order.SEGMENTANTION_QUANTIFICATION,
-        status_payment=Order.CONFIRMED,
+        service_name=Order.ServicesName.SEGMENTANTION_QUANTIFICATION.value,
+        status_payment=Order.PaymentStatus.CONFIRMED,
     )
 
 
@@ -182,8 +182,8 @@ def radiosyno_order(user):
         quantity_of_analyzes=10,
         remaining_of_analyzes=10,
         price='1000',
-        service_name=Order.RADIOSYNOVIORTHESIS,
-        status_payment=Order.CONFIRMED,
+        service_name=Order.ServicesName.RADIOSYNOVIORTHESIS.value,
+        status_payment=Order.PaymentStatus.CONFIRMED,
     )
 
 
@@ -203,8 +203,8 @@ def tree_orders_of_two_diff_users(user, second_user):
         quantity_of_analyzes=10,
         remaining_of_analyzes=10,
         price=Decimal('10000.00'),
-        service_name=Order.CLINIC_DOSIMETRY,
-        status_payment=Order.CONFIRMED,
+        service_name=Order.ServicesName.CLINIC_DOSIMETRY.value,
+        status_payment=Order.PaymentStatus.CONFIRMED,
         permission=True,
     )
 
@@ -213,8 +213,8 @@ def tree_orders_of_two_diff_users(user, second_user):
         quantity_of_analyzes=5,
         remaining_of_analyzes=5,
         price=Decimal('5000.00'),
-        service_name=Order.PRECLINIC_DOSIMETRY,
-        status_payment=Order.AWAITING_PAYMENT,
+        service_name=Order.ServicesName.PRECLINIC_DOSIMETRY.value,
+        status_payment=Order.PaymentStatus.AWAITING_PAYMENT,
         permission=False,
     )
 
@@ -223,8 +223,8 @@ def tree_orders_of_two_diff_users(user, second_user):
         quantity_of_analyzes=3,
         remaining_of_analyzes=3,
         price=Decimal('3000.00'),
-        service_name=Order.CLINIC_DOSIMETRY,
-        status_payment=Order.AWAITING_PAYMENT,
+        service_name=Order.ServicesName.CLINIC_DOSIMETRY.value,
+        status_payment=Order.PaymentStatus.AWAITING_PAYMENT,
         permission=False,
     )
 
@@ -418,14 +418,14 @@ def clinic_dosimetry(clinic_dosimetry_info, clinic_dosimetry_file):
     order.save()
 
     analysis = ClinicDosimetryAnalysis.objects.create(
-        **clinic_dosimetry_info, **clinic_dosimetry_file, status=ClinicDosimetryAnalysis.ANALYZING_INFOS
+        **clinic_dosimetry_info, **clinic_dosimetry_file, status=ClinicDosimetryAnalysis.Status.ANALYZING_INFOS
     )
     return analysis
 
 
 @pytest.fixture
 def clinic_dosi_update_or_del_is_possible(clinic_dosimetry):
-    clinic_dosimetry.status = ClinicDosimetryAnalysis.INVALID_INFOS
+    clinic_dosimetry.status = ClinicDosimetryAnalysis.Status.INVALID_INFOS
     clinic_dosimetry.save()
     return clinic_dosimetry
 
@@ -440,7 +440,7 @@ def preclinic_dosimetry(preclinic_dosimetry_info, preclinic_dosimetry_file):
     order.save()
 
     analysis = PreClinicDosimetryAnalysis.objects.create(
-        **preclinic_dosimetry_info, **preclinic_dosimetry_file, status=ClinicDosimetryAnalysis.ANALYZING_INFOS
+        **preclinic_dosimetry_info, **preclinic_dosimetry_file, status=ClinicDosimetryAnalysis.Status.ANALYZING_INFOS
     )
 
     return analysis
@@ -448,7 +448,7 @@ def preclinic_dosimetry(preclinic_dosimetry_info, preclinic_dosimetry_file):
 
 @pytest.fixture
 def preclinic_dosi_update_del_is_possible(preclinic_dosimetry):
-    preclinic_dosimetry.status = PreClinicDosimetryAnalysis.DATA_SENT
+    preclinic_dosimetry.status = PreClinicDosimetryAnalysis.Status.DATA_SENT
     preclinic_dosimetry.save()
     return preclinic_dosimetry
 
@@ -463,14 +463,14 @@ def radiosyno_analysis(radiosyno_analysis_info, radiosyno_analysis_file):
     order.save()
 
     analysis = RadiosynoAnalysis.objects.create(
-        **radiosyno_analysis_info, **radiosyno_analysis_file, status=RadiosynoAnalysis.ANALYZING_INFOS
+        **radiosyno_analysis_info, **radiosyno_analysis_file, status=RadiosynoAnalysis.Status.ANALYZING_INFOS
     )
     return analysis
 
 
 @pytest.fixture
 def radiosyno_analysis_update_or_del_is_possible(radiosyno_analysis):
-    radiosyno_analysis.status = RadiosynoAnalysis.INVALID_INFOS
+    radiosyno_analysis.status = RadiosynoAnalysis.Status.INVALID_INFOS
     radiosyno_analysis.save()
     return radiosyno_analysis
 
@@ -485,7 +485,9 @@ def segmentation_analysis(segmentation_analysis_info, segmentation_analysis_file
     order.save()
 
     analysis = SegmentationAnalysis.objects.create(
-        **segmentation_analysis_info, **segmentation_analysis_file, status=ClinicDosimetryAnalysis.ANALYZING_INFOS
+        **segmentation_analysis_info,
+        **segmentation_analysis_file,
+        status=ClinicDosimetryAnalysis.Status.ANALYZING_INFOS,
     )
 
     return analysis
@@ -493,7 +495,7 @@ def segmentation_analysis(segmentation_analysis_info, segmentation_analysis_file
 
 @pytest.fixture
 def seg_analysis_update_or_del_is_possible(segmentation_analysis):
-    segmentation_analysis.status = SegmentationAnalysis.INVALID_INFOS
+    segmentation_analysis.status = SegmentationAnalysis.Status.INVALID_INFOS
     segmentation_analysis.save()
     return segmentation_analysis
 

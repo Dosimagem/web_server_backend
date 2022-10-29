@@ -12,36 +12,36 @@ class OrderInfos:
         self.queryset_func = self._one_to_many_function()
 
     def _one_to_many_function(self):
-        if self.order.service_name == self.order.CLINIC_DOSIMETRY:
+        if self.order.service_name == self.order.ServicesName.CLINIC_DOSIMETRY.value:
             queryset_func = self.order.clinic_dosimetry_analysis
-        elif self.order.service_name == self.order.PRECLINIC_DOSIMETRY:
+        elif self.order.service_name == self.order.ServicesName.PRECLINIC_DOSIMETRY.value:
             queryset_func = self.order.preclinic_dosimetry_analysis
-        elif self.order.service_name == self.order.SEGMENTANTION_QUANTIFICATION:
+        elif self.order.service_name == self.order.ServicesName.SEGMENTANTION_QUANTIFICATION.value:
             queryset_func = self.order.segmentation_analysis
-        elif self.order.service_name == self.order.RADIOSYNOVIORTHESIS:
+        elif self.order.service_name == self.order.ServicesName.RADIOSYNOVIORTHESIS.value:
             queryset_func = self.order.radiosyno_analysis
 
         return queryset_func
 
     @property
     def analysis_concluded(self) -> int:
-        return self.queryset_func.filter(status=analysis.CONCLUDED).count()
+        return self.queryset_func.filter(status=analysis.Status.CONCLUDED).count()
 
     @property
     def analysis_processing(self) -> int:
-        return self.queryset_func.filter(status=analysis.PROCESSING).count()
+        return self.queryset_func.filter(status=analysis.Status.PROCESSING).count()
 
     @property
     def analysis_analyzing_infos(self) -> int:
-        return self.queryset_func.filter(status=analysis.ANALYZING_INFOS).count()
+        return self.queryset_func.filter(status=analysis.Status.ANALYZING_INFOS).count()
 
     @property
     def analysis_data_sent(self) -> int:
-        return self.queryset_func.filter(status=analysis.DATA_SENT).count()
+        return self.queryset_func.filter(status=analysis.Status.DATA_SENT).count()
 
     @property
     def analysis_invalid_infos(self) -> int:
-        return self.queryset_func.filter(status=analysis.INVALID_INFOS).count()
+        return self.queryset_func.filter(status=analysis.Status.INVALID_INFOS).count()
 
     def _analysis_status_count(self) -> Dict:
         """
@@ -75,7 +75,7 @@ class OrderInfos:
         return self.order.remaining_of_analyzes > 0
 
     def has_payment_confirmed(self):
-        return self.order.status_payment == self.order.CONFIRMED
+        return self.order.status_payment == self.order.PaymentStatus.CONFIRMED
 
 
 def order_to_dict(order):

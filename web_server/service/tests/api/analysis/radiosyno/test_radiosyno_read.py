@@ -117,7 +117,7 @@ def test_error_message_only_status_invalid_info(client_api_auth, radiosyno_analy
 
     assert body['messageToUser'] == ''
 
-    radiosyno_analysis.status = RadiosynoAnalysis.INVALID_INFOS
+    radiosyno_analysis.status = RadiosynoAnalysis.Status.INVALID_INFOS
     radiosyno_analysis.save()
 
     url = resolve_url('service:analysis-read-update-delete', user.uuid, order.uuid, radiosyno_analysis.uuid)

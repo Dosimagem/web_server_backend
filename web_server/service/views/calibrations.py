@@ -59,7 +59,7 @@ def _update_calibration(request, user_id, calibration_id):
 
         # TODO: Colocar isso em uma camada de serviço (Regra de Negocio)
 
-        q = Q(status=DosimetryAnalysisBase.INVALID_INFOS) | Q(status=DosimetryAnalysisBase.DATA_SENT)
+        q = Q(status=DosimetryAnalysisBase.Status.INVALID_INFOS) | Q(status=DosimetryAnalysisBase.Status.DATA_SENT)
         if cali.clinic_dosimetry_analysis.exclude(q).exists() or cali.preclinic_dosimetry_analysis.exclude(q).exists():
             data = {
                 'errors': [
@@ -106,7 +106,7 @@ def _delete_calibration(request, user_id, calibration_id):
         cali = Calibration.objects.get(user__uuid=user_id, uuid=calibration_id)
 
         # TODO: Colocar isso em uma camada de serviço (Regra de Negocio)
-        q = Q(status=DosimetryAnalysisBase.INVALID_INFOS) | Q(status=DosimetryAnalysisBase.DATA_SENT)
+        q = Q(status=DosimetryAnalysisBase.Status.INVALID_INFOS) | Q(status=DosimetryAnalysisBase.Status.DATA_SENT)
         if cali.clinic_dosimetry_analysis.exclude(q).exists() or cali.preclinic_dosimetry_analysis.exclude(q).exists():
             data = {
                 'errors': [

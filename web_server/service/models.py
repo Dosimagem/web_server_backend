@@ -15,41 +15,50 @@ FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
 
 class Order(CreationModificationBase):
+    class ServicesName(models.TextChoices):
+        CLINIC_DOSIMETRY = (
+            'DC',
+            'Dosimetria Clinica',
+        )
+        PRECLINIC_DOSIMETRY = (
+            'PCD',
+            'Dosimetria Preclinica',
+        )
+        SEGMENTANTION_QUANTIFICATION = (
+            'SQ',
+            'Segmentaçao e Quantificação',
+        )
+        RADIOSYNOVIORTHESIS = (
+            'RA',
+            'Radiosinoviortese',
+        )
 
-    CLINIC_DOSIMETRY = 'DC'
-    PRECLINIC_DOSIMETRY = 'PCD'
-    SEGMENTANTION_QUANTIFICATION = 'SQ'
-    RADIOSYNOVIORTHESIS = 'RA'
+    class PaymentStatus(models.TextChoices):
+        AWAITING_PAYMENT = (
+            'APG',
+            'Aguardando pagamento',
+        )
+        CONFIRMED = (
+            'CON',
+            'Confirmado',
+        )
 
     SERVICES_CODES = {
-        CLINIC_DOSIMETRY: '01',
-        PRECLINIC_DOSIMETRY: '02',
-        SEGMENTANTION_QUANTIFICATION: '03',
-        RADIOSYNOVIORTHESIS: '04',
+        ServicesName.CLINIC_DOSIMETRY.value: '01',
+        ServicesName.PRECLINIC_DOSIMETRY.value: '02',
+        ServicesName.SEGMENTANTION_QUANTIFICATION.value: '03',
+        ServicesName.RADIOSYNOVIORTHESIS.value: '04',
     }
-
-    SERVICES_NAMES = (
-        (CLINIC_DOSIMETRY, 'Dosimetria Clinica'),
-        (PRECLINIC_DOSIMETRY, 'Dosimetria Preclinica'),
-        (SEGMENTANTION_QUANTIFICATION, 'Segmentaçao e Quantificação'),
-        (RADIOSYNOVIORTHESIS, 'Radiosinoviortese'),
-    )
-
-    AWAITING_PAYMENT = 'APG'
-    CONFIRMED = 'CON'
-
-    STATUS_PAYMENT = (
-        (AWAITING_PAYMENT, 'Aguardando pagamento'),
-        (CONFIRMED, 'Confirmado'),
-    )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
     quantity_of_analyzes = models.PositiveIntegerField('Amount of analysis', default=0)
     remaining_of_analyzes = models.PositiveIntegerField('Remaning of analysis', default=0)
     price = models.DecimalField('Price', max_digits=14, decimal_places=2)
-    status_payment = models.CharField('Status payment', max_length=3, choices=STATUS_PAYMENT, default=AWAITING_PAYMENT)
-    service_name = models.CharField('Service name', max_length=3, choices=SERVICES_NAMES)
+    status_payment = models.CharField(
+        'Status payment', max_length=3, choices=PaymentStatus.choices, default=PaymentStatus.AWAITING_PAYMENT
+    )
+    service_name = models.CharField('Service name', max_length=3, choices=ServicesName.choices)
     permission = models.BooleanField('Permission', default=False)
     code = models.CharField('Code', max_length=20)
 
@@ -165,26 +174,33 @@ class Calibration(CreationModificationBase):
 
 
 class AnalysisBase(CreationModificationBase):
-
-    DATA_SENT = 'DS'
-    ANALYZING_INFOS = 'AI'
-    INVALID_INFOS = 'II'
-    PROCESSING = 'PR'
-    CONCLUDED = 'CO'
-
-    STATUS = (
-        (DATA_SENT, 'Dados enviados'),
-        (ANALYZING_INFOS, 'Verificando informações'),
-        (INVALID_INFOS, 'Informações inválidas'),
-        (PROCESSING, 'Processando a análise'),
-        (CONCLUDED, 'Análise concluída'),
-    )
+    class Status(models.TextChoices):
+        DATA_SENT = (
+            'DS',
+            'Dados enviados',
+        )
+        ANALYZING_INFOS = (
+            'AI',
+            'Verificando informações',
+        )
+        INVALID_INFOS = (
+            'II',
+            'Informações inválidas',
+        )
+        PROCESSING = (
+            'PR',
+            'Processando a análise',
+        )
+        CONCLUDED = (
+            'CO',
+            'Análise concluída',
+        )
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
     analysis_name = models.CharField('Analysis Name', max_length=24, validators=[MinLengthValidator(3)])
 
-    status = models.CharField('Status', max_length=3, choices=STATUS, default=DATA_SENT)
+    status = models.CharField('Status', max_length=3, choices=Status.choices, default=Status.DATA_SENT)
     report = models.FileField('Report', blank=True, null=True, upload_to=upload_report_to)
     active = models.BooleanField('Active', default=True)
 
@@ -204,7 +220,7 @@ class AnalysisBase(CreationModificationBase):
             if order.service_name != self.SERVICE_NAME_CODE:
                 raise ValidationError('Este serviço não foi contratado nesse pedido.')
 
-        if self.status == self.CONCLUDED:
+        if self.status == self.Status.CONCLUDED:
             if self.report.name is None or self.report.name == '':
                 raise ValidationError('É necessario anexar o relatório.')
 
@@ -237,7 +253,7 @@ class AnalysisBase(CreationModificationBase):
         if self.report.name:
             dict_['report'] = request.build_absolute_uri(self.report.url)
 
-        if self.status == self.INVALID_INFOS:
+        if self.status == self.Status.INVALID_INFOS:
             dict_['message_to_user'] = self.message_to_user
 
         return dict_
@@ -273,7 +289,7 @@ class DosimetryAnalysisBase(AnalysisBase):
 
 class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
-    SERVICE_NAME_CODE = Order.CLINIC_DOSIMETRY
+    SERVICE_NAME_CODE = Order.ServicesName.CLINIC_DOSIMETRY.value
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
     calibration = models.ForeignKey(
@@ -301,7 +317,7 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
 class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
-    SERVICE_NAME_CODE = Order.PRECLINIC_DOSIMETRY
+    SERVICE_NAME_CODE = Order.ServicesName.PRECLINIC_DOSIMETRY.value
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
     calibration = models.ForeignKey(
@@ -331,7 +347,7 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
 class SegmentationAnalysis(AnalysisBase):
 
-    SERVICE_NAME_CODE = Order.SEGMENTANTION_QUANTIFICATION
+    SERVICE_NAME_CODE = Order.ServicesName.SEGMENTANTION_QUANTIFICATION.value
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
     # TODO: Talvez esse relacionamento pode ficar na classe Abstrata
@@ -366,15 +382,11 @@ class SegmentationAnalysis(AnalysisBase):
 
 class RadiosynoAnalysis(AnalysisBase):
 
-    SERVICE_NAME_CODE = Order.RADIOSYNOVIORTHESIS
+    SERVICE_NAME_CODE = Order.ServicesName.RADIOSYNOVIORTHESIS.value
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
     isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='radiosyno_analysis')
-    order = models.ForeignKey(
-        'Order',
-        on_delete=models.CASCADE,
-        related_name='radiosyno_analysis',
-    )
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='radiosyno_analysis')
     images = models.FileField('Images', upload_to=upload_radiosyno_analysis_to)
 
     class Meta:

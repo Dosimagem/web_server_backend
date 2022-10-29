@@ -64,7 +64,7 @@ def test_successfull(client_api_auth, radiosyno_order, form_data_radiosyno_analy
 
 def test_fail_order_must_have_payment_confirmed(client_api_auth, radiosyno_order, form_data_radiosyno_analysis):
 
-    radiosyno_order.status_payment = Order.AWAITING_PAYMENT
+    radiosyno_order.status_payment = Order.PaymentStatus.AWAITING_PAYMENT
     radiosyno_order.save()
 
     assert not RadiosynoAnalysis.objects.exists()
@@ -123,8 +123,8 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_ra
         quantity_of_analyzes=3,
         remaining_of_analyzes=0,
         price=Decimal('3000.00'),
-        service_name=Order.RADIOSYNOVIORTHESIS,
-        status_payment=Order.CONFIRMED,
+        service_name=Order.ServicesName.RADIOSYNOVIORTHESIS.value,
+        status_payment=Order.PaymentStatus.CONFIRMED,
         permission=True,
     )
 

@@ -53,7 +53,7 @@ def test_orders_one_to_many_relation(user, second_user, tree_orders_of_two_diff_
 
 def test_default_values(user):
 
-    order_db = Order.objects.create(user=user, price='1000', service_name=Order.CLINIC_DOSIMETRY)
+    order_db = Order.objects.create(user=user, price='1000', service_name=Order.ServicesName.CLINIC_DOSIMETRY.value)
 
     assert not order_db.permission
     assert order_db.quantity_of_analyzes == 0
