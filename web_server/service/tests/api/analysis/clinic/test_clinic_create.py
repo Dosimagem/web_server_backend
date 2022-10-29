@@ -65,7 +65,7 @@ def test_successful(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
 def test_fail_order_must_have_payment_confirmed(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
-    clinic_order.status_payment = Order.AWAITING_PAYMENT
+    clinic_order.status_payment = Order.PaymentStatus.AWAITING_PAYMENT
     clinic_order.save()
 
     assert not ClinicDosimetryAnalysis.objects.exists()
@@ -163,8 +163,8 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_cl
         quantity_of_analyzes=3,
         remaining_of_analyzes=0,
         price=Decimal('3000.00'),
-        service_name=Order.CLINIC_DOSIMETRY,
-        status_payment=Order.AWAITING_PAYMENT,
+        service_name=Order.ServicesName.CLINIC_DOSIMETRY.value,
+        status_payment=Order.PaymentStatus.AWAITING_PAYMENT,
         permission=True,
     )
 
@@ -185,11 +185,7 @@ def test_fail_missing_calibration_id(client_api_auth, clinic_order, form_data_cl
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        clinic_order.user.uuid,
-        clinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
 
@@ -208,11 +204,7 @@ def test_fail_wrong_calibration_id(client_api_auth, clinic_order, form_data_clin
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        clinic_order.user.uuid,
-        clinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
 
@@ -271,11 +263,7 @@ def test_fail_whith_calibration_of_another_user(
 
     form_data_clinic_dosimetry['calibrationId'] = second_user_calibrations[0].uuid
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        clinic_order.user.uuid,
-        clinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()
 
@@ -303,11 +291,7 @@ def test_fail_missing_fields(field, error, client_api_auth, clinic_order, form_d
 
     form_data_clinic_dosimetry.pop(field)
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        clinic_order.user.uuid,
-        clinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', clinic_order.user.uuid, clinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
 

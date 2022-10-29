@@ -45,7 +45,7 @@ def test_successfull(client_api_auth, seg_analysis_update_or_del_is_possible):
 
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.images.file.read() == b'New File Update'
-    assert analysis_db.status == SegmentationAnalysis.DATA_SENT
+    assert analysis_db.status == SegmentationAnalysis.Status.DATA_SENT
 
 
 def test_optional_images_successfull(client_api_auth, seg_analysis_update_or_del_is_possible):
@@ -65,7 +65,7 @@ def test_optional_images_successfull(client_api_auth, seg_analysis_update_or_del
 
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.images.file.read() == seg_analysis_update_or_del_is_possible.images.file.read()
-    assert analysis_db.status == SegmentationAnalysis.DATA_SENT
+    assert analysis_db.status == SegmentationAnalysis.Status.DATA_SENT
 
 
 def test_fail_successfull_invalid_status(client_api_auth, segmentation_analysis):
@@ -115,7 +115,7 @@ def test_fail_wrong_another_order(client_api_auth, user, seg_analysis_update_or_
         quantity_of_analyzes=10,
         remaining_of_analyzes=10,
         price=Decimal('1000.00'),
-        service_name=Order.SEGMENTANTION_QUANTIFICATION,
+        service_name=Order.ServicesName.SEGMENTANTION_QUANTIFICATION.value,
     )
 
     update_form_data = {}

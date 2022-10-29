@@ -52,7 +52,7 @@ def test_successfull(client_api_auth, second_calibration, clinic_dosi_update_or_
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.administration_datetime == update_form_data['administrationDatetime']
     assert analysis_db.images.file.read() == b'New File Update'
-    assert analysis_db.status == ClinicDosimetryAnalysis.DATA_SENT
+    assert analysis_db.status == ClinicDosimetryAnalysis.Status.DATA_SENT
 
 
 def test_optional_images_successfull(client_api_auth, second_calibration, clinic_dosi_update_or_del_is_possible):
@@ -80,7 +80,7 @@ def test_optional_images_successfull(client_api_auth, second_calibration, clinic
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.administration_datetime == update_form_data['administrationDatetime']
     assert analysis_db.images.file.read() == clinic_dosi_update_or_del_is_possible.images.file.read()
-    assert analysis_db.status == ClinicDosimetryAnalysis.DATA_SENT
+    assert analysis_db.status == ClinicDosimetryAnalysis.Status.DATA_SENT
 
 
 def test_fail_successfull_invalid_status(client_api_auth, second_calibration, clinic_dosimetry):
@@ -163,7 +163,7 @@ def test_fail_wrong_another_order(client_api_auth, user, clinic_dosi_update_or_d
         quantity_of_analyzes=10,
         remaining_of_analyzes=10,
         price=Decimal('1000.00'),
-        service_name=Order.CLINIC_DOSIMETRY,
+        service_name=Order.ServicesName.CLINIC_DOSIMETRY.value,
     )
 
     update_form_data = {}

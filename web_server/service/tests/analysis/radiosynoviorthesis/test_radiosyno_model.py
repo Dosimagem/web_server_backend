@@ -72,7 +72,7 @@ def test_default_values(user, radiosyno_order, lu_177):
         images=ContentFile(b'CT e SPET files', name='images.zip'),
     )
 
-    assert analyis.status == RadiosynoAnalysis.DATA_SENT
+    assert analyis.status == RadiosynoAnalysis.Status.DATA_SENT
     assert analyis.active
 
 
@@ -111,7 +111,7 @@ def test_model_code_and_service_name():
 def test_save_with_conclude_status_must_be_report(clinic_dosimetry):
 
     with pytest.raises(ValidationError):
-        clinic_dosimetry.status = RadiosynoAnalysis.CONCLUDED
+        clinic_dosimetry.status = RadiosynoAnalysis.Status.CONCLUDED
         clinic_dosimetry.full_clean()
 
 

@@ -67,7 +67,7 @@ def test_default_values(segmentation_order):
         order=segmentation_order, analysis_name='Analysis 1', images=ContentFile(b'CT files', name='images.zip')
     )
 
-    assert analysis.status == SegmentationAnalysis.DATA_SENT
+    assert analysis.status == SegmentationAnalysis.Status.DATA_SENT
     assert analysis.active
 
 
@@ -96,13 +96,6 @@ def test_status(segmentation_analysis_info):
         analysis.full_clean()
 
 
-def test_status_options():
-
-    status = SegmentationAnalysis.STATUS
-
-    assert SegmentationAnalysis.STATUS == status
-
-
 def test_model_code_and_service_name():
 
     assert SegmentationAnalysis.CODE == '03'
@@ -112,7 +105,7 @@ def test_model_code_and_service_name():
 def test_save_with_conclude_status_must_be_report(segmentation_analysis):
 
     with pytest.raises(ValidationError):
-        segmentation_analysis.status = SegmentationAnalysis.CONCLUDED
+        segmentation_analysis.status = SegmentationAnalysis.Status.CONCLUDED
         segmentation_analysis.full_clean()
 
 

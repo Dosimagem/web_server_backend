@@ -82,6 +82,6 @@ def create_order_data(user):
         'quantity_of_analyzes': 10,
         'remaining_of_analyzes': 10,
         'price': '1000.00',
-        'service_name': Order.CLINIC_DOSIMETRY,
-        'status_payment': Order.CONFIRMED,
+        'service_name': Order.ServicesName.CLINIC_DOSIMETRY.value,
+        'status_payment': Order.PaymentStatus.CONFIRMED,
     }

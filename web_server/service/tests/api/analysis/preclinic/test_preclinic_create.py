@@ -71,7 +71,7 @@ def test_successfull(client_api_auth, preclinic_order, form_data_preclinic_dosim
 
 def test_fail_order_must_have_payment_confirmed(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
 
-    preclinic_order.status_payment = Order.AWAITING_PAYMENT
+    preclinic_order.status_payment = Order.PaymentStatus.AWAITING_PAYMENT
     preclinic_order.save()
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
@@ -174,8 +174,8 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_pr
         quantity_of_analyzes=3,
         remaining_of_analyzes=0,
         price=Decimal('3000.00'),
-        service_name=Order.PRECLINIC_DOSIMETRY,
-        status_payment=Order.AWAITING_PAYMENT,
+        service_name=Order.ServicesName.PRECLINIC_DOSIMETRY.value,
+        status_payment=Order.PaymentStatus.AWAITING_PAYMENT,
         permission=True,
     )
 

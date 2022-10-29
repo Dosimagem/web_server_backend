@@ -44,7 +44,7 @@ def test_successfull(client_api_auth, radiosyno_analysis_update_or_del_is_possib
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.isotope.name == update_form_data['isotope']
     assert analysis_db.images.file.read() == b'New File Update'
-    assert analysis_db.status == RadiosynoAnalysis.DATA_SENT
+    assert analysis_db.status == RadiosynoAnalysis.Status.DATA_SENT
 
 
 def test_optional_images_successfull(client_api_auth, radiosyno_analysis_update_or_del_is_possible, update_form_data):
@@ -63,7 +63,7 @@ def test_optional_images_successfull(client_api_auth, radiosyno_analysis_update_
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.isotope.name == update_form_data['isotope']
     assert analysis_db.images.file.read() == radiosyno_analysis_update_or_del_is_possible.images.file.read()
-    assert analysis_db.status == RadiosynoAnalysis.DATA_SENT
+    assert analysis_db.status == RadiosynoAnalysis.Status.DATA_SENT
 
 
 def test_fail_successfull_invalid_status(client_api_auth, radiosyno_analysis, update_form_data):
@@ -111,7 +111,7 @@ def test_fail_wrong_another_order(
         quantity_of_analyzes=10,
         remaining_of_analyzes=10,
         price=Decimal('1000.00'),
-        service_name=Order.RADIOSYNOVIORTHESIS,
+        service_name=Order.ServicesName.RADIOSYNOVIORTHESIS.value,
     )
 
     user_uuid = radiosyno_analysis_update_or_del_is_possible.order.user.uuid

@@ -20,24 +20,24 @@ from web_server.service.models import (
 class AnalisysChoice:
 
     _update_forms = {
-        Order.PRECLINIC_DOSIMETRY: PreClinicDosimetryAnalysisUpdateForm,
-        Order.CLINIC_DOSIMETRY: ClinicDosimetryAnalysisUpdateForm,
-        Order.SEGMENTANTION_QUANTIFICATION: SegmentationAnalysisUpdateForm,
-        Order.RADIOSYNOVIORTHESIS: RadiosynoAnalysisUpdateForm,
+        Order.ServicesName.PRECLINIC_DOSIMETRY.value: PreClinicDosimetryAnalysisUpdateForm,
+        Order.ServicesName.CLINIC_DOSIMETRY.value: ClinicDosimetryAnalysisUpdateForm,
+        Order.ServicesName.SEGMENTANTION_QUANTIFICATION.value: SegmentationAnalysisUpdateForm,
+        Order.ServicesName.RADIOSYNOVIORTHESIS.value: RadiosynoAnalysisUpdateForm,
     }
 
     _create_forms = {
-        Order.PRECLINIC_DOSIMETRY: PreClinicDosimetryAnalysisCreateForm,
-        Order.CLINIC_DOSIMETRY: ClinicDosimetryAnalysisCreateForm,
-        Order.SEGMENTANTION_QUANTIFICATION: SegmentationAnalysisCreateForm,
-        Order.RADIOSYNOVIORTHESIS: RadiosynoAnalysisCreateForm,
+        Order.ServicesName.PRECLINIC_DOSIMETRY.value: PreClinicDosimetryAnalysisCreateForm,
+        Order.ServicesName.CLINIC_DOSIMETRY.value: ClinicDosimetryAnalysisCreateForm,
+        Order.ServicesName.SEGMENTANTION_QUANTIFICATION.value: SegmentationAnalysisCreateForm,
+        Order.ServicesName.RADIOSYNOVIORTHESIS.value: RadiosynoAnalysisCreateForm,
     }
 
     _models = {
-        Order.PRECLINIC_DOSIMETRY: PreClinicDosimetryAnalysis,
-        Order.CLINIC_DOSIMETRY: ClinicDosimetryAnalysis,
-        Order.SEGMENTANTION_QUANTIFICATION: SegmentationAnalysis,
-        Order.RADIOSYNOVIORTHESIS: RadiosynoAnalysis,
+        Order.ServicesName.PRECLINIC_DOSIMETRY.value: PreClinicDosimetryAnalysis,
+        Order.ServicesName.CLINIC_DOSIMETRY.value: ClinicDosimetryAnalysis,
+        Order.ServicesName.SEGMENTANTION_QUANTIFICATION.value: SegmentationAnalysis,
+        Order.ServicesName.RADIOSYNOVIORTHESIS.value: RadiosynoAnalysis,
     }
 
     def __init__(self, order):
