@@ -5,8 +5,8 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 
-from web_server.conftest import DATETIME_TIMEZONE
 from web_server.service.models import Calibration, ClinicDosimetryAnalysis, Order
+from web_server.service.tests.conftest import DATETIME_TIMEZONE
 
 User = get_user_model()
 

@@ -8,8 +8,8 @@ from django.core.files.base import ContentFile
 from django.shortcuts import resolve_url
 from django.utils.timezone import make_aware
 
-from web_server.conftest import DATETIME_TIMEZONE
 from web_server.service.models import Order, PreClinicDosimetryAnalysis
+from web_server.service.tests.conftest import DATETIME_TIMEZONE
 
 
 def _verified_unchanged_information_db(preclinic_dosimetry):
