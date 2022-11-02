@@ -1,7 +1,6 @@
 import pytest
 from django.core.files.base import ContentFile
 
-from web_server.conftest import DATETIME_TIMEZONE
 from web_server.service.models import (
     ClinicDosimetryAnalysis,
     Order,
@@ -9,6 +8,7 @@ from web_server.service.models import (
     SegmentationAnalysis,
 )
 from web_server.service.order_svc import OrderInfos
+from web_server.service.tests.conftest import DATETIME_TIMEZONE
 
 
 @pytest.mark.parametrize(
