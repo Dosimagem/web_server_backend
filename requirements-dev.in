@@ -10,3 +10,4 @@ pytest-responses
 pytest-mock
 blue
 isort
+faker
