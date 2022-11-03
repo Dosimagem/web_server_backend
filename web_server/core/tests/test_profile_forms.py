@@ -186,8 +186,6 @@ def test_update_profile_form_succesuful(api_cnpj_successfull, user):
         'clinic': 'Clinica A',
     }
 
-    assert user.profile.name == 'João Silva'
-
     form = ProfileUpdateForm(data=payload, instance=user.profile)
 
     assert form.is_valid()

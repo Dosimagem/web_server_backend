@@ -1,8 +1,12 @@
 import pytest
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
+from faker import Faker
 
 from web_server.core.models import UserProfile
+
+
+fake = Faker()
 
 HTTP_METHODS = {
     'get': APIClient().get,
@@ -36,19 +40,21 @@ def client_api_auth(client_api, user):
 
 @pytest.fixture
 def register_infos():
+    email = fake.email()
+    password = fake.password()
     return dict(
         # User
-        email='test1@email.com',
-        confirmed_email='test1@email.com',
-        password1='123456!!',
-        password2='123456!!',
+        email=email,
+        confirmed_email=email,
+        password1=password,
+        password2=password,
         # Profile
-        clinic='Clinica A',
-        name='João Silva',
+        clinic=fake.company()[:30],
+        name=fake.name(),
         cnpj='42438610000111',  # 42.438.610/0001-11
         cpf='93743851121',  # 937.438.511-21
         phone='55(33)1111-1111',
-        role='Médico',
+        role=fake.job()[:30],
     )
 
 
@@ -71,19 +77,21 @@ def user_profile_info(register_infos):
 
 @pytest.fixture
 def second_register_infos():
+    email = fake.email()
+    password = fake.password()
     return dict(
         # User
-        email='test2@email.com',
-        confirmed_email='test2@email.com',
-        password1='123456!!',
-        password2='123456!!',
+        email=email,
+        confirmed_email=email,
+        password1=password,
+        password2=password,
         # Profile
-        clinic='Clinica B',
-        name='Maria Silva',
+        clinic=fake.company()[:30],
+        name=fake.name(),
         cnpj='83398534000145',  # 83.398.534/0001-45
         cpf='52450318097',  # 524.503.180-97
         phone='55(41)22222-2222',
-        role='Fisica médica',
+        role=fake.job()[:30],
     )
 
 
