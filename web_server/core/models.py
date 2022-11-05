@@ -127,6 +127,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    def email_not_verified(self):
+        return not self.email_verified
+
 
 class UserProfile(CreationModificationBase, models.Model):
 

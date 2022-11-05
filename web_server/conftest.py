@@ -1,12 +1,12 @@
 import pytest
+from faker import Faker
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
-from faker import Faker
 
 from web_server.core.models import UserProfile
 
-
 fake = Faker()
+fake.seed_instance(4321)
 
 HTTP_METHODS = {
     'get': APIClient().get,
@@ -30,12 +30,6 @@ def mediafiles(settings, tmp_path):
 @pytest.fixture
 def client_api():
     return APIClient()
-
-
-@pytest.fixture
-def client_api_auth(client_api, user):
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
-    return client_api
 
 
 @pytest.fixture
@@ -131,3 +125,9 @@ def second_user(user, django_user_model, second_user_login_info, second_user_pro
     UserProfile.objects.filter(user=new_user).update(**second_user_profile_info)
     Token.objects.create(user=new_user)
     return django_user_model.objects.get(id=new_user.id)
+
+
+@pytest.fixture
+def client_api_auth(client_api, user):
+    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
+    return client_api

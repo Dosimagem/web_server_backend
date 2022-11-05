@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'web_server.service',
     'web_server.radiosynoviorthesis',
     'web_server.signature',
+    'web_server.budget',
     #
     'rest_framework',
     'rest_framework.authtoken',
@@ -69,7 +70,7 @@ ROOT_URLCONF = 'web_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': '',
+        'DIRS': [BASE_DIR / 'web_server/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,13 +84,13 @@ TEMPLATES = [
 ]
 
 # Configuracao de envia de Email
-EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 WSGI_APPLICATION = 'web_server.wsgi.application'
 

@@ -20,8 +20,6 @@ def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
 
     resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
 
-    assert resp.status_code == HTTPStatus.CREATED
-
     user = User.objects.first()
 
     body = resp.json()
@@ -31,6 +29,8 @@ def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
         'token': user.auth_token.key,
         'isStaff': user.is_staff,
     }
+
+    assert resp.status_code == HTTPStatus.CREATED
 
 
 def test_fail_user_unique_fields(client_api, user, register_infos):

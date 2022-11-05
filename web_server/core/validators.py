@@ -43,5 +43,5 @@ def validate_phone(value):
 
 
 def validate_name_is_alpha(value):
-    if not value.replace(' ', '').isalpha():
+    if not value.replace(' ', '').replace('.', '').isalpha():
         raise ValidationError('O nome não pode ter números.', code='invalid_char')
