@@ -5,29 +5,29 @@ import pytest
 from django.core import mail
 from django.shortcuts import resolve_url
 
-
-from web_server.conftest import fake
 from web_server.budget.views import DOSIMAGEM_EMAIL
+from web_server.conftest import fake
+from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 # /api/v1/users/<uuid>/budget - POST
 
 
+END_POINT = 'budget:comp-modelling-budget'
+
+
 @pytest.fixture
 def payload():
-    comments = fake.paragraph(nb_sentences=5)
 
     return {
-        'service': 'Dosimetria',
-        'treatment_type': 'Tratamento do tipo 1',
-        'number_of_samples': '5',
-        'frequency': '10',
-        'comments': comments,
+        'service': 'Modelagem Computacional',
+        'researchLine': 'Linha de pequisa 1',
+        'projectDescription': fake.paragraph(nb_sentences=10),
     }
 
 
 def test_send_sucessfull(client_api_auth, user, payload):
 
-    url = resolve_url('budget:send_email', user.uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api_auth.post(url, data=payload)
 
@@ -47,27 +47,23 @@ def test_send_sucessfull(client_api_auth, user, payload):
     assert user.profile.cpf in email.body
 
     assert payload['service'] in email.body
-    assert payload['treatment_type'] in email.body
-    assert payload['number_of_samples'] in email.body
-    assert payload['frequency'] in email.body
-    assert payload['comments'] in email.body
+    assert payload['researchLine'] in email.body
+    assert payload['projectDescription'] in email.body
 
 
 @pytest.mark.parametrize(
     'field, error',
     [
         ('service', {'service': ['Este campo é obrigatório.']}),
-        ('treatment_type', {'treatmentType': ['Este campo é obrigatório.']}),
-        ('number_of_samples', {'numberOfSamples': ['Este campo é obrigatório.']}),
-        ('frequency', {'frequency': ['Este campo é obrigatório.']}),
-        ('comments', {'comments': ['Este campo é obrigatório.']}),
+        ('researchLine', {'researchLine': ['Este campo é obrigatório.']}),
+        ('projectDescription', {'projectDescription': ['Este campo é obrigatório.']}),
     ],
 )
 def test_missing_fields(field, error, client_api_auth, user, payload):
 
     payload.pop(field)
 
-    url = resolve_url('budget:send_email', user.uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     resp = client_api_auth.post(url, data=payload)
     body = resp.json()
@@ -81,7 +77,7 @@ def test_missing_fields(field, error, client_api_auth, user, payload):
 
 def test_list_create_not_allowed_method(client_api_auth):
 
-    url = resolve_url('budget:send_email', uuid4())
+    url = resolve_url(END_POINT, uuid4())
 
     resp = client_api_auth.put(url)
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
@@ -98,7 +94,7 @@ def test_list_create_not_allowed_method(client_api_auth):
 
 def test_auth(client_api):
 
-    url = resolve_url('budget:send_email', uuid4())
+    url = resolve_url(END_POINT, uuid4())
 
     resp = client_api.post(url)
     body = resp.json()
@@ -110,7 +106,7 @@ def test_auth(client_api):
 
 def test_user_not_have_email_verified(client_api_auth, user, payload):
 
-    url = resolve_url('budget:send_email', user.uuid)
+    url = resolve_url(END_POINT, user.uuid)
 
     user.email_verified = False
     user.save()
@@ -123,22 +119,13 @@ def test_user_not_have_email_verified(client_api_auth, user, payload):
     assert 'O usuario não teve o email verificado ainda.' == body['error']
 
 
-@pytest.mark.parametrize(
-    'field, value, error',
-    [
-        ('number_of_samples', -1, {'numberOfSamples': ['Certifque-se de que este valor seja maior ou igual a 0.']}),
-        ('frequency', -1, {'frequency': ['Certifque-se de que este valor seja maior ou igual a 0.']}),
-    ],
-)
-def test_invalid(field, value, error, client_api_auth, user, payload):
+def test_token_id_and_user_id_dont_match(client_api_auth, user):
 
-    payload[field] = value
+    url = resolve_url(END_POINT, uuid4())
+    response = client_api_auth.post(url)
 
-    url = resolve_url('budget:send_email', user.uuid)
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
 
-    resp = client_api_auth.post(url, data=payload)
-    body = resp.json()
+    body = response.json()
 
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
-
-    assert error == body['error']
+    assert MSG_ERROR_TOKEN_USER == body['errors']
