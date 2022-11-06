@@ -1,5 +1,8 @@
 from http import HTTPStatus
+from datetime import datetime, timezone, timedelta
 
+
+import jwt
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
@@ -11,11 +14,23 @@ from rest_framework.decorators import (
     permission_classes,
 )
 from rest_framework.response import Response
+from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 from web_server.core.errors_msg import list_errors
 from web_server.core.forms import MyUserCreationForm, ProfileCreateForm
 
 User = get_user_model()
+
+
+DOSIMAGEM_EMAIL = settings.DEFAULT_FROM_EMAIL
+FRONT_DOMAIN = settings.FRONT_DOMAIN
+
+
+def _jwt_verification_email_secret(user):
+    jwt_payload = {'id': str(user.uuid), 'exp': datetime.now(tz=timezone.utc) + timedelta(seconds=24*60*60)}
+    return jwt.encode(jwt_payload, settings.SECRET_KEY)
 
 
 class ProfileValidationError(Exception):
@@ -39,11 +54,7 @@ def _register_user_profile_token(form_user, data):
         form_profile.save()
         Token.objects.create(user=user)
 
-        data = {
-            'id': user.uuid,
-            'token': user.auth_token.key,
-            'is_staff': user.is_staff,
-        }
+        data = {'id': user.uuid, 'token': user.auth_token.key,'is_staff': user.is_staff,}
 
         return Response(data, status=HTTPStatus.CREATED)
 
@@ -60,19 +71,29 @@ def register(request):
     form_user = MyUserCreationForm(data)
 
     if not form_user.is_valid():
-        return Response(
-            {'errors': list_errors(form_user.errors)},
-            status=HTTPStatus.BAD_REQUEST,
-        )
+        return Response({'errors': list_errors(form_user.errors)}, status=HTTPStatus.BAD_REQUEST)
 
     try:
-        return _register_user_profile_token(form_user, data)
+        response = _register_user_profile_token(form_user, data)
 
     except ProfileValidationError as e:
-        return Response(
-            {'errors': list_errors(e.form_error)},
-            status=HTTPStatus.BAD_REQUEST,
-        )
+        return Response({'errors': list_errors(e.form_error)}, status=HTTPStatus.BAD_REQUEST)
+
+    # TODO: needs treatment if email fails
+
+    user = form_user.instance
+
+    token = _jwt_verification_email_secret(user)
+    email = form_user.cleaned_data['email']
+    context={'link': f'{FRONT_DOMAIN}/email-confirm/?token={token}'}
+    body = render_to_string('core/email_verify.txt', context)
+    send_mail('Verifificação de email da sua conta Dosimagem', body, DOSIMAGEM_EMAIL, [email])
+
+    user.verification_email_secret = token
+    user.sent_verification_email = True
+    user.save()
+
+    return response
 
 
 class MyObtainAuthToken(ObtainAuthToken):

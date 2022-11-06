@@ -4,8 +4,11 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
+from django.core import mail
 
 from web_server.conftest import HTTP_METHODS
+from web_server.core.views.register import DOSIMAGEM_EMAIL
+
 
 User = get_user_model()
 
@@ -20,23 +23,28 @@ def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
 
     resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
 
-    user = User.objects.first()
+    user = User.objects.get(email=register_infos['email'])
 
     body = resp.json()
 
-    assert body == {
-        'id': str(user.uuid),
-        'token': user.auth_token.key,
-        'isStaff': user.is_staff,
-    }
+    assert body == { 'id': str(user.uuid), 'token': user.auth_token.key, 'isStaff': user.is_staff,}
 
     assert resp.status_code == HTTPStatus.CREATED
 
+    email = mail.outbox[0]
+
+    assert 'Verifificação de email da sua conta Dosimagem' == email.subject
+    assert DOSIMAGEM_EMAIL == email.from_email
+    assert [user.email] == email.to
+
+    assert f'/email-confirm/?token={user.verification_email_secret}&id={user.uuid}' in email.body
+    assert user.sent_verification_email
+
 
 def test_fail_user_unique_fields(client_api, user, register_infos):
-    """
+    '''
     Email
-    """
+    '''
 
     resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
 
@@ -51,9 +59,9 @@ def test_fail_user_unique_fields(client_api, user, register_infos):
 
 # TODO: Should the clinic name and CNPJ be unique?
 def test_fail_profile_unique_fields(api_cnpj_successfull, client_api, user, second_register_infos):
-    """
+    '''
     Clinic, CPF and CNPJ.
-    """
+    '''
 
     second_register_infos['cpf'] = user.profile.cpf
     second_register_infos['clinic'] = user.profile.clinic

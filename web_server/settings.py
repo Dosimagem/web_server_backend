@@ -199,6 +199,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default=[], cast=Csv())
 
+# FRONT DOMAIN
+
+FRONT_DOMAIN = config('FRONT_DOMAIN')
+
+
 # djangorestframework-camel-case
 
 REST_FRAMEWORK = {
