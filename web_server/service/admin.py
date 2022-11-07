@@ -56,11 +56,6 @@ class CalibrationModelAdmin(admin.ModelAdmin):
         'calibration_name',
         'user',
         'isotope',
-        'syringe_activity',
-        'residual_syringe_activity',
-        'measurement_datetime',
-        'phantom_volume',
-        'acquisition_time',
         'images',
     )
     list_display_links = ('calibration_name',)
@@ -84,8 +79,6 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
         'order',
         'calibration',
         'status',
-        'injected_activity',
-        'administration_datetime',
         'images',
         'report',
         'active',
@@ -122,8 +115,6 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
         'order',
         'calibration',
         'status',
-        'injected_activity',
-        'administration_datetime',
         'images',
         'report',
         'active',
@@ -185,10 +176,7 @@ class RadiosynoviorthesisAdmin(admin.ModelAdmin):
         'report',
         'active',
     )
-    list_display_links = (
-        'code',
-        'analysis_name',
-    )
+    list_display_links = ('code', 'analysis_name')
     readonly_fields = (
         'code',
         'id',

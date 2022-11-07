@@ -73,7 +73,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     is_active = models.BooleanField(
         _('active'),
-        default=False,
+        default=True,
         help_text=_(
             'Designates whether this user should be treated as active. ' 'Unselect this instead of deleting accounts.'
         ),
@@ -84,7 +84,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     verification_email_secret = models.TextField(default=None, null=True)
 
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-
 
     objects = UserManager()
 
