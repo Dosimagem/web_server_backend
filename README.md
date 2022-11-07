@@ -20,6 +20,7 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
     - [4.2) Backup do banco](#42-backup-do-banco)
   - [5) Python decouple](#5-python-decouple)
   - [6) Docker](#6-docker)
+  - [7) Verificação de Email]()
 
 # 1) Status
 
@@ -242,3 +243,23 @@ docker exec -it dosimagem_api ./manage.py loaddata contrib/db_initial.json
 ```
 
 ---
+
+### 7) Verificação de email
+
+Quando um usuario é cadastrado um `email` será enviado para o novo usuário. Neste é email teremos um link para o `front-end` na forma:
+
+> http://front_end_dominio/users/<uuid_user>/email-confirm/?token=<token_jwt>
+
+Para validar o `email` o frontend precisa mandar uma solicitaão para a rota do `backend`:
+
+> localhost:8000/api/v1/users/9591876e-bf1e-4802-a57d-fe80edb0c864/email/verify/
+
+Com o payload:
+
+```json
+{
+  "token": "token_jwt"
+}
+```
+
+Se tudo ocorrer como esperado o email será verificado. O `Token JWT` tem uma validade de `24 horas` e só pode ser usado uma `unica vez`.

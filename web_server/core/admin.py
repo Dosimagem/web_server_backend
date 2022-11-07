@@ -34,7 +34,7 @@ class UserAdmin(admin.ModelAdmin):
     add_form_template = 'admin/auth/user/add_form.html'
     change_user_password_template = None
     fieldsets = (
-        ('Dados Principais', {'fields': ('email', 'password', 'email_verified')}),
+        ('Dados Principais', {'fields': ('email', 'password', 'email_verified', 'sent_verification_email')}),
         (
             _('Permissions'),
             {

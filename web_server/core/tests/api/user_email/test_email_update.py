@@ -22,6 +22,8 @@ def test_update(client_api_auth, user):
     assert user.email == new_email
 
     assert not user.email_verified
+    assert not user.sent_verification_email
+    assert not user.verification_email_secret
 
 
 def test_fail_update_invalid_email(client_api_auth, user):

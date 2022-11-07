@@ -80,6 +80,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
 
     email_verified = models.BooleanField('email_verified', default=False)
+    sent_verification_email = models.BooleanField(default=False)
+    verification_email_secret = models.TextField(default=None, null=True)
 
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 

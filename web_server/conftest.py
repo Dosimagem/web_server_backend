@@ -113,6 +113,7 @@ def second_user_profile_info(second_register_infos):
 def user(django_user_model, user_info, user_profile_info):
     user = django_user_model.objects.create_user(**user_info)
     user.email_verified = True
+    user.is_active = True
     user.save()
     UserProfile.objects.filter(user=user).update(**user_profile_info)
     Token.objects.create(user=user)
@@ -122,6 +123,9 @@ def user(django_user_model, user_info, user_profile_info):
 @pytest.fixture
 def second_user(user, django_user_model, second_user_login_info, second_user_profile_info):
     new_user = django_user_model.objects.create_user(**second_user_login_info)
+    new_user.email_verified = True
+    new_user.is_active = True
+    new_user.save()
     UserProfile.objects.filter(user=new_user).update(**second_user_profile_info)
     Token.objects.create(user=new_user)
     return django_user_model.objects.get(id=new_user.id)

@@ -12,13 +12,13 @@ attrs==22.1.0 \
     --hash=sha256:29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6 \
     --hash=sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c
     # via -r requirements.in
-boto3==1.26.1 \
-    --hash=sha256:3b0fa19390895e664045713f2e47e63ad29c9f98b7bee6836dec7124953e48b8 \
-    --hash=sha256:9feb98e045736f943c2099d955415cfe44133e03d8e2d7581d2e5dc74d0ed064
+boto3==1.26.3 \
+    --hash=sha256:7e871c481f88e5b2fc6ac16eb190c95de21efb43ab2d959beacf8b7b096b11d2 \
+    --hash=sha256:b81e4aa16891eac7532ce6cc9eb690a8d2e0ceea3bcf44b5c5a1309c2500d35f
     # via django-s3-folder-storage
-botocore==1.29.1 \
-    --hash=sha256:75c65130ffab527d0a3d948c6d87eb8eac210e079e1ff2768c66484be57bb77c \
-    --hash=sha256:e38b7cdce927cefabe45608dde61660b76458fba6624240dcdb6c4b8453d17f7
+botocore==1.29.3 \
+    --hash=sha256:100534532b2745f6fa019b79199a8941f04b8168f9d557d0847191455f1f1eed \
+    --hash=sha256:ac7986fefe1b9c6323d381c4fdee3845c67fa53eb6c9cf586a8e8a07270dbcfe
     # via
     #   boto3
     #   s3transfer
@@ -168,6 +168,10 @@ psycopg2-binary==2.9.5 \
     --hash=sha256:e67b3c26e9b6d37b370c83aa790bbc121775c57bfb096c2e77eacca25fd0233b \
     --hash=sha256:e72c91bda9880f097c8aa3601a2c0de6c708763ba8128006151f496ca9065935 \
     --hash=sha256:f95b8aca2703d6a30249f83f4fe6a9abf2e627aa892a5caaab2267d56be7ab69
+    # via -r requirements.in
+pyjwt==2.6.0 \
+    --hash=sha256:69285c7e31fc44f68a1feb309e948e0df53259d579295e6cfe2b1792329f05fd \
+    --hash=sha256:d83c3d892a77bbb74d3e1a2cfa90afaadb60945205d1095d9221f04466f64c14
     # via -r requirements.in
 python-dateutil==2.8.2 \
     --hash=sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86 \

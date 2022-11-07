@@ -1,0 +1,12 @@
+Olá,
+
+Obrigado por se inscrever na Dosimagem. Clique no link abaixo para verificar seu e-mail:
+
+{{link}}
+
+Este link expira em 24 horas. Se você não se inscreveu para uma conta Render,
+você pode ignorar este e-mail com segurança.
+
+Att,
+
+A equipe da Dosimagem

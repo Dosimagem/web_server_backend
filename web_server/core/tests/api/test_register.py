@@ -2,10 +2,12 @@ from http import HTTPStatus
 
 import pytest
 from django.contrib.auth import get_user_model
+from django.core import mail
 from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
 
 from web_server.conftest import HTTP_METHODS
+from web_server.core.views.register import DOSIMAGEM_EMAIL
 
 User = get_user_model()
 
@@ -20,7 +22,7 @@ def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
 
     resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
 
-    user = User.objects.first()
+    user = User.objects.get(email=register_infos['email'])
 
     body = resp.json()
 
@@ -31,6 +33,17 @@ def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
     }
 
     assert resp.status_code == HTTPStatus.CREATED
+
+    email = mail.outbox[0]
+
+    assert 'Verifificação de email da sua conta Dosimagem' == email.subject
+    assert DOSIMAGEM_EMAIL == email.from_email
+    assert [user.email] == email.to
+
+    assert f'/users/{user.uuid}/email-confirm/?token={user.verification_email_secret}' in email.body
+    assert user.sent_verification_email
+    assert user.is_active
+    assert not user.email_verified
 
 
 def test_fail_user_unique_fields(client_api, user, register_infos):
