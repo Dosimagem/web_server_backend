@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from smtplib import SMTPException
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -17,6 +18,7 @@ from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.core.errors_msg import list_errors
 from web_server.core.forms import ProfileUpdateForm, UpdateEmailForm
 from web_server.core.serializers import VerifyEmailSerializer
+from web_server.core.email import send_email_verification
 
 User = get_user_model()
 
@@ -34,10 +36,7 @@ def users_read_update(request, user_id):
         form = ProfileUpdateForm(data=request.data, instance=user.profile)
 
         if not form.is_valid():
-            return Response(
-                {'errors': list_errors(form.errors)},
-                status=HTTPStatus.BAD_REQUEST,
-            )
+            return Response({'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
         form.save()
 
@@ -69,6 +68,13 @@ def _update_email(request):
 
     form.instance.email_verified = False
     form.save()
+
+    user = form.instance
+
+    try:
+        send_email_verification(user)
+    except SMTPException:
+        return Response({'warning': 'Email de verificação não foi enviado.'})
 
     return Response(status=HTTPStatus.NO_CONTENT)
 

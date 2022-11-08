@@ -7,7 +7,7 @@ from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
 
 from web_server.conftest import HTTP_METHODS
-from web_server.core.views.register import DOSIMAGEM_EMAIL
+from web_server.core.email import DOSIMAGEM_EMAIL
 
 User = get_user_model()
 
