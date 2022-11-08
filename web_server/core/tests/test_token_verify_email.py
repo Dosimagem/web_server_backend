@@ -6,7 +6,7 @@ from freezegun import freeze_time
 from jwt import decode
 from jwt.exceptions import ExpiredSignatureError
 
-from web_server.core.views.register import _jwt_verification_email_secret
+from web_server.core.email import _jwt_verification_email_secret
 
 
 def test_token_verify_email_expiration_time(user):

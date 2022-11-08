@@ -5,7 +5,7 @@ from uuid import uuid4
 from django.shortcuts import resolve_url
 from freezegun import freeze_time
 
-from web_server.core.views.register import _jwt_verification_email_secret
+from web_server.core.email import _jwt_verification_email_secret
 
 END_POINT = 'core:email-verify'
 
@@ -66,6 +66,28 @@ def test_fail_email_already_verified(client_api, user):
     body = resp.json()
 
     assert {'error': ['Email já foi verificado.']} == body
+
+
+def test_fail_token_used_twice(client_api, user):
+
+    url = resolve_url(END_POINT, user.uuid)
+
+    user.verification_email_secret = _jwt_verification_email_secret(user)
+    user.email_verified = False
+    user.sent_verification_email = True
+    user.save()
+
+    resp = client_api.post(url, data={'token': user.verification_email_secret})
+
+    assert HTTPStatus.OK == resp.status_code
+
+    resp = client_api.post(url, data={'token': user.verification_email_secret})
+
+    assert HTTPStatus.BAD_REQUEST == resp.status_code
+
+    body = resp.json()
+
+    assert {'error': ['Token de verificação inválido ou expirado.']} == body
 
 
 def test_fail_token_invalid(client_api, user):
