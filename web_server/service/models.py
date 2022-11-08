@@ -16,22 +16,10 @@ FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
 class Order(CreationModificationBase):
     class ServicesName(models.TextChoices):
-        CLINIC_DOSIMETRY = (
-            'DC',
-            'Dosimetria Clinica',
-        )
-        PRECLINIC_DOSIMETRY = (
-            'PCD',
-            'Dosimetria Preclinica',
-        )
-        SEGMENTANTION_QUANTIFICATION = (
-            'SQ',
-            'Segmentaçao e Quantificação',
-        )
-        RADIOSYNOVIORTHESIS = (
-            'RA',
-            'Radiosinoviortese',
-        )
+        CLINIC_DOSIMETRY = ('DC', 'Dosimetria Clinica')
+        PRECLINIC_DOSIMETRY = ('PCD', 'Dosimetria Preclinica')
+        SEGMENTANTION_QUANTIFICATION = ('SQ', 'Segmentaçao e Quantificação')
+        RADIOSYNOVIORTHESIS = ('RA', 'Radiosinoviortese')
 
     class PaymentStatus(models.TextChoices):
         AWAITING_PAYMENT = (

@@ -13,7 +13,36 @@ from web_server.service.models import (
 
 
 @admin.register(Order)
-class UserOrderModelAdmin(admin.ModelAdmin):
+class OrderModelAdmin(admin.ModelAdmin):
+
+    fieldsets = (
+        (
+            'Order data',
+            {
+                'fields': (
+                    'service_name',
+                    'quantity_of_analyzes',
+                    'remaining_of_analyzes',
+                    'price',
+                    'status_payment',
+                    'user',
+                )
+            },
+        ),
+        (
+            'Other data',
+            {
+                'fields': (
+                    'id',
+                    'uuid',
+                    'permission',
+                    'created_at',
+                    'modified_at',
+                )
+            },
+        ),
+    )
+
     list_display = (
         'id',
         'code',
@@ -51,6 +80,35 @@ class IstopeModelAdmin(admin.ModelAdmin):
 
 @admin.register(Calibration)
 class CalibrationModelAdmin(admin.ModelAdmin):
+
+    fieldsets = (
+        (
+            'Calibration data',
+            {
+                'fields': (
+                    'calibration_name',
+                    'isotope',
+                    'syringe_activity',
+                    'residual_syringe_activity',
+                    'measurement_datetime',
+                    'phantom_volume',
+                    'acquisition_time',
+                )
+            },
+        ),
+        ('Files', {'fields': ('images',)}),
+        (
+            'Other data',
+            {
+                'fields': (
+                    'id',
+                    'uuid',
+                    'user',
+                )
+            },
+        ),
+    )
+
     list_display = (
         'id',
         'calibration_name',
@@ -72,6 +130,40 @@ class CalibrationModelAdmin(admin.ModelAdmin):
 
 @admin.register(ClinicDosimetryAnalysis)
 class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
+
+    fieldsets = (
+        (
+            'Analysis data',
+            {
+                'fields': (
+                    'analysis_name',
+                    'injected_activity',
+                    'administration_datetime',
+                )
+            },
+        ),
+        ('Feedback', {'fields': ('message_to_user',)}),
+        (
+            'Files',
+            {
+                'fields': (
+                    'report',
+                    'images',
+                )
+            },
+        ),
+        (
+            'Order & Calibraion',
+            {
+                'fields': (
+                    'order',
+                    'calibration',
+                )
+            },
+        ),
+        ('Other data', {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
+    )
+
     list_display = (
         'id',
         'code',
@@ -108,6 +200,40 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
 
 @admin.register(PreClinicDosimetryAnalysis)
 class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
+
+    fieldsets = (
+        (
+            'Analysis data',
+            {
+                'fields': (
+                    'analysis_name',
+                    'injected_activity',
+                    'administration_datetime',
+                )
+            },
+        ),
+        ('Feedback', {'fields': ('message_to_user',)}),
+        (
+            'Files',
+            {
+                'fields': (
+                    'report',
+                    'images',
+                )
+            },
+        ),
+        (
+            'Order & Calibraion',
+            {
+                'fields': (
+                    'order',
+                    'calibration',
+                )
+            },
+        ),
+        ('Other data', {'fields': ('uuid', 'active', 'created_at', 'modified_at')}),
+    )
+
     list_display = (
         'id',
         'code',
@@ -137,6 +263,22 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
 
 @admin.register(SegmentationAnalysis)
 class SegmentationAnalysisAdmin(admin.ModelAdmin):
+
+    fieldsets = (
+        ('Analysis data', {'fields': ('analysis_name',)}),
+        ('Extra information', {'fields': ('message_to_user',)}),
+        (
+            'Files',
+            {
+                'fields': (
+                    'report',
+                    'images',
+                )
+            },
+        ),
+        ('Other data', {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
+    )
+
     list_display = (
         'id',
         'code',
@@ -165,6 +307,31 @@ class SegmentationAnalysisAdmin(admin.ModelAdmin):
 
 @admin.register(RadiosynoAnalysis)
 class RadiosynoviorthesisAdmin(admin.ModelAdmin):
+
+    fieldsets = (
+        (
+            'Analysis data',
+            {
+                'fields': (
+                    'analysis_name',
+                    'isotope',
+                )
+            },
+        ),
+        ('Extra information', {'fields': ('message_to_user',)}),
+        (
+            'Files',
+            {
+                'fields': (
+                    'report',
+                    'images',
+                )
+            },
+        ),
+        ('Order', {'fields': ('order',)}),
+        ('Other data', {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
+    )
+
     list_display = (
         'id',
         'code',
