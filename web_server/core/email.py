@@ -28,4 +28,5 @@ def send_email_verification(user):
 
     user.verification_email_secret = token
     user.sent_verification_email = True
+    user.email_verified = False
     user.save()

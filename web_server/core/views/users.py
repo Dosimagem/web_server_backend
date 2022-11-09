@@ -121,3 +121,17 @@ def email_verify(request, user_id):
     user.save()
 
     return Response(data={'message': 'Email verificado.'})
+
+
+@api_view(['POST'])
+@user_from_token_and_user_from_url
+def email_resend(request, user_id):
+
+    user = request.user
+
+    try:
+        send_email_verification(user)
+    except SMTPException:
+        return Response({'Error': ['Email de verificação não foi enviado.']})
+
+    return Response(status=HTTPStatus.NO_CONTENT)

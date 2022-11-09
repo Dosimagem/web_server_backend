@@ -32,7 +32,6 @@ def test_update(client_api_auth, user):
 
     assert f'/users/{user.uuid}/email-confirm/?token={user.verification_email_secret}' in email.body
     assert user.sent_verification_email
-    assert user.is_active
     assert not user.email_verified
 
 
