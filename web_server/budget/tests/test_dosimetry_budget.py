@@ -9,20 +9,23 @@ from web_server.conftest import fake
 
 # /api/v1/users/<uuid>/budget - POST
 
-
 END_POINT = 'budget:general-budget'
 
 
 @pytest.fixture
 def payload():
+    comments = fake.paragraph(nb_sentences=5)
+
     return {
-        'service': 'Modelagem Computacional',
-        'researchLine': 'Linha de pequisa 1',
-        'projectDescription': fake.paragraph(nb_sentences=10),
+        'service': 'Dosimetria Clínica',
+        'treatmentType': 'Tratamento do tipo 1',
+        'numberOfSamples': '5',
+        'frequency': '10',
+        'comments': comments,
     }
 
 
-def test_send_sucessfull(client_api_auth, user, payload):
+def test_sucessfull(client_api_auth, user, payload):
 
     url = resolve_url(END_POINT, user.uuid)
 
@@ -44,16 +47,20 @@ def test_send_sucessfull(client_api_auth, user, payload):
     assert user.profile.cpf in email.body
 
     assert payload['service'] in email.body
-    assert payload['researchLine'] in email.body
-    assert payload['projectDescription'] in email.body
+    assert payload['treatmentType'] in email.body
+    assert payload['numberOfSamples'] in email.body
+    assert payload['frequency'] in email.body
+    assert payload['comments'] in email.body
 
 
 @pytest.mark.parametrize(
     'field, error',
     [
         ('service', {'service': ['Este campo é obrigatório.']}),
-        ('researchLine', {'researchLine': ['Este campo é obrigatório.']}),
-        ('projectDescription', {'projectDescription': ['Este campo é obrigatório.']}),
+        ('treatmentType', {'treatmentType': ['Este campo é obrigatório.']}),
+        ('numberOfSamples', {'numberOfSamples': ['Este campo é obrigatório.']}),
+        ('frequency', {'frequency': ['Este campo é obrigatório.']}),
+        ('comments', {'comments': ['Este campo é obrigatório.']}),
     ],
 )
 def test_missing_fields(field, error, client_api_auth, user, payload):
@@ -70,3 +77,24 @@ def test_missing_fields(field, error, client_api_auth, user, payload):
     assert error == body['error']
 
     assert not len(mail.outbox)
+
+
+@pytest.mark.parametrize(
+    'field, value, error',
+    [
+        ('numberOfSamples', -1, {'numberOfSamples': ['Certifque-se de que este valor seja maior ou igual a 0.']}),
+        ('frequency', -1, {'frequency': ['Certifque-se de que este valor seja maior ou igual a 0.']}),
+    ],
+)
+def test_invalid(field, value, error, client_api_auth, user, payload):
+
+    payload[field] = value
+
+    url = resolve_url(END_POINT, user.uuid)
+
+    resp = client_api_auth.post(url, data=payload)
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    assert error == body['error']

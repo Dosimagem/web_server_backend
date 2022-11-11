@@ -1,0 +1,21 @@
+Soliciatação de orçamento
+
+Dados o usuario:
+
+Clinica: {{user.profile.clinic}}
+Nome: {{user.profile.name}}
+Email: {{user.email}}
+Telefone: {{user.profile.phone}}
+CNPJ: {{user.profile.cnpj}}
+CPF: {{user.profile.cpf}}
+
+Dados do orçamento:
+
+Serviço: {{service}}
+Linha de Pesquisa: {{research_line}}
+Número de modelos: {{number_of_samples}}
+Ferquência: {{frequency}}
+
+Comentário:
+
+{{comments}}

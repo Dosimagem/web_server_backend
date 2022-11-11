@@ -16,26 +16,22 @@ FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
 class Order(CreationModificationBase):
     class ServicesName(models.TextChoices):
-        CLINIC_DOSIMETRY = ('DC', 'Dosimetria Clinica')
-        PRECLINIC_DOSIMETRY = ('PCD', 'Dosimetria Preclinica')
-        SEGMENTANTION_QUANTIFICATION = ('SQ', 'Segmentaçao e Quantificação')
+        CLINIC_DOSIMETRY = ('DC', 'Dosimetria Clínica')
+        PRECLINIC_DOSIMETRY = ('PCD', 'Dosimetria Pré-Clínica')
+        SEGMENTANTION_QUANTIFICATION = ('SQ', 'Segmentação e Quantificação')
         RADIOSYNOVIORTHESIS = ('RA', 'Radiosinoviortese')
+        COMPUTATIONAL_MODELLING = ('MC', 'Modelagem Computacional')
 
     class PaymentStatus(models.TextChoices):
-        AWAITING_PAYMENT = (
-            'APG',
-            'Aguardando pagamento',
-        )
-        CONFIRMED = (
-            'CON',
-            'Confirmado',
-        )
+        AWAITING_PAYMENT = ('APG', 'Aguardando pagamento')
+        CONFIRMED = ('CON', 'Confirmado')
 
     SERVICES_CODES = {
-        ServicesName.CLINIC_DOSIMETRY.value: '01',
-        ServicesName.PRECLINIC_DOSIMETRY.value: '02',
-        ServicesName.SEGMENTANTION_QUANTIFICATION.value: '03',
-        ServicesName.RADIOSYNOVIORTHESIS.value: '04',
+        ServicesName.CLINIC_DOSIMETRY: '01',
+        ServicesName.PRECLINIC_DOSIMETRY: '02',
+        ServicesName.SEGMENTANTION_QUANTIFICATION: '03',
+        ServicesName.RADIOSYNOVIORTHESIS: '04',
+        ServicesName.COMPUTATIONAL_MODELLING: '05',
     }
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)

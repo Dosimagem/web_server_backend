@@ -1,7 +1,12 @@
 from django.urls import path
 
 from .views.register import MyObtainAuthToken, register
-from .views.users import email_verify, read_update_email, users_read_update, email_resend
+from .views.users import (
+    email_resend,
+    email_verify,
+    read_update_email,
+    users_read_update,
+)
 
 app_name = 'core'
 urlpatterns = [
