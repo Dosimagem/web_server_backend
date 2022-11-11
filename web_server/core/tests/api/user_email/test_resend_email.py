@@ -1,12 +1,11 @@
-from uuid import uuid4
 from http import HTTPStatus
+from uuid import uuid4
 
-from django.shortcuts import resolve_url
 from django.core import mail
+from django.shortcuts import resolve_url
 
 from web_server.core.email import DOSIMAGEM_EMAIL
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
-
 
 END_POINT = 'core:email-resend'
 

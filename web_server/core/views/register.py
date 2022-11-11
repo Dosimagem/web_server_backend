@@ -13,10 +13,9 @@ from rest_framework.decorators import (
 )
 from rest_framework.response import Response
 
+from web_server.core.email import send_email_verification
 from web_server.core.errors_msg import list_errors
 from web_server.core.forms import MyUserCreationForm, ProfileCreateForm
-from web_server.core.email import send_email_verification
-
 
 User = get_user_model()
 
