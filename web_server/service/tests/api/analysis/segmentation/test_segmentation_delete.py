@@ -65,7 +65,12 @@ def test_fail_successfull_invalid_status(client_api_auth, segmentation_analysis)
 
     assert SegmentationAnalysis.objects.exists()
 
-    assert body == {'errors': ['Não foi possivel deletar essa análise.']}
+    expected = [
+        'Não foi possivel deletar/atualizar essa análise.'
+        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+    ]
+
+    assert expected == body['errors']
 
 
 def test_fail_wrong_analysis_id(client_api_auth, segmentation_analysis):

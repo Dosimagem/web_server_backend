@@ -20,12 +20,7 @@ def test_delete_clinic_dosimetry_successfull(client_api_auth, clinic_dosi_update
 
     assert ClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
     resp = client_api_auth.delete(url)
 
     body = resp.json()
@@ -70,7 +65,12 @@ def test_fail_delete_clinic_dosimetry_successfull_invalid_status(client_api_auth
 
     assert ClinicDosimetryAnalysis.objects.exists()
 
-    assert body == {'errors': ['Não foi possivel deletar essa análise.']}
+    expected = [
+        'Não foi possivel deletar/atualizar essa análise.'
+        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+    ]
+
+    assert expected == body['errors']
 
 
 def test_fail_delete_clinic_dosimetry_wrong_analysis_id(client_api_auth, clinic_dosimetry):

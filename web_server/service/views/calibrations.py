@@ -61,11 +61,15 @@ def _update_calibration(request, user_id, calibration_id):
 
         q = Q(status=DosimetryAnalysisBase.Status.INVALID_INFOS) | Q(status=DosimetryAnalysisBase.Status.DATA_SENT)
         if cali.clinic_dosimetry_analysis.exclude(q).exists() or cali.preclinic_dosimetry_analysis.exclude(q).exists():
+            invalid_infos, data_sent = (
+                DosimetryAnalysisBase.Status.INVALID_INFOS.label,
+                DosimetryAnalysisBase.Status.DATA_SENT.label,
+            )
             data = {
                 'errors': [
                     (
-                        'Apenas calibrações associadas com análises com o status '
-                        "Informações Inválidas' ou 'Dados Enviados' podem ser atualizadas/deletadas."
+                        'Apenas calibrações associadas com análises com o '
+                        f'status {invalid_infos} ou {data_sent} podem ser atualizadas/deletadas.'
                     )
                 ]
             }
@@ -160,10 +164,7 @@ def _create_calibrations(request, user_id):
     form = CreateCalibrationForm(data=data, files=request.FILES)
 
     if not form.is_valid():
-        return Response(
-            data={'errors': list_errors(form.errors)},
-            status=HTTPStatus.BAD_REQUEST,
-        )
+        return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
     new_calibration = form.save()
 

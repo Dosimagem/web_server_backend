@@ -31,12 +31,7 @@ def test_successfull(client_api_auth, seg_analysis_update_or_del_is_possible):
     order_uuid = seg_analysis_update_or_del_is_possible.order.uuid
     analysis_uuid = seg_analysis_update_or_del_is_possible.uuid
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
     resp = client_api_auth.put(url, data=update_form_data, format='multipart')
 
     assert resp.status_code == HTTPStatus.NO_CONTENT
@@ -85,7 +80,12 @@ def test_fail_successfull_invalid_status(client_api_auth, segmentation_analysis)
 
     assert resp.status_code == HTTPStatus.CONFLICT
 
-    assert body == {'errors': ['Não foi possivel atualizar essa análise.']}
+    expected = [
+        'Não foi possivel deletar/atualizar essa análise.'
+        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+    ]
+
+    assert expected == body['errors']
 
     _verified_unchanged_information_db(segmentation_analysis)
 

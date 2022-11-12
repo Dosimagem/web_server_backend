@@ -169,7 +169,7 @@ def test_fail_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry, 
 
     expected = (
         'Apenas calibrações associadas com análises com o status '
-        "Informações Inválidas' ou 'Dados Enviados' podem ser atualizadas/deletadas."
+        'Informações inválidas ou Dados enviados podem ser atualizadas/deletadas.'
     )
 
     assert [expected] == body['errors']
