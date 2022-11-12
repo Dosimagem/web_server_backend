@@ -63,7 +63,11 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
         order.remaining_of_analyzes += 1
         order.save()
     else:
-        msg = ['Não foi possivel deletar essa análise.']
+        invalid_infos, data_sent = Model.Status.INVALID_INFOS.label, Model.Status.DATA_SENT.label
+        msg = [
+            'Não foi possivel deletar/atualizar essa análise.'
+            f' Apenas análises com os status {invalid_infos} ou {data_sent} podem ser deletadas'
+        ]
         return Response(data={'errors': msg}, status=HTTPStatus.CONFLICT)
 
     data = {'id': analysis_id, 'message': 'Análise deletada com sucesso!'}
@@ -149,7 +153,11 @@ def _update_analysis(request, user_id, order_id, analysis_id):
         return Response(data={'errors': MSG_ERROR_RESOURCE}, status=HTTPStatus.NOT_FOUND)
 
     if analysis.status not in (Model.Status.INVALID_INFOS, Model.Status.DATA_SENT):
-        msg = ['Não foi possivel atualizar essa análise.']
+        invalid_infos, data_sent = Model.Status.INVALID_INFOS.label, Model.Status.DATA_SENT.label
+        msg = [
+            'Não foi possivel deletar/atualizar essa análise.'
+            f' Apenas análises com os status {invalid_infos} ou {data_sent} podem ser deletadas'
+        ]
         return Response(data={'errors': msg}, status=HTTPStatus.CONFLICT)
 
     AnalysisForm = analisys_choice.update_form

@@ -37,15 +37,12 @@ def test_successfull(client_api_auth, preclinic_dosi_update_del_is_possible):
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body == {
-        'id': str(analysis_uuid),
-        'message': 'Análise deletada com sucesso!',
-    }
+    assert body == {'id': str(analysis_uuid), 'message': 'Análise deletada com sucesso!'}
 
 
 def test_fail_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
     """
-    The analysis must have INVALID_INFOS status
+    The analysis must have INVALID_INFOS or DATA_SENT status
     """
 
     user_uuid = preclinic_dosimetry.order.user.uuid
@@ -70,7 +67,12 @@ def test_fail_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
 
     assert PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body == {'errors': ['Não foi possivel deletar essa análise.']}
+    expected = [
+        'Não foi possivel deletar/atualizar essa análise.'
+        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+    ]
+
+    assert expected == body['errors']
 
 
 def test_fail_wrong_analysis_id(client_api_auth, preclinic_dosimetry):
@@ -81,12 +83,7 @@ def test_fail_wrong_analysis_id(client_api_auth, preclinic_dosimetry):
 
     assert PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
     resp = client_api_auth.delete(url)
     body = resp.json()
 

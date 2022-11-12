@@ -81,7 +81,12 @@ def test_fail_successfull_invalid_status(client_api_auth, radiosyno_analysis, up
 
     assert resp.status_code == HTTPStatus.CONFLICT
 
-    assert body == {'errors': ['Não foi possivel atualizar essa análise.']}
+    expected = [
+        'Não foi possivel deletar/atualizar essa análise.'
+        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+    ]
+
+    assert expected == body['errors']
 
     _verified_unchanged_information_db(radiosyno_analysis)
 

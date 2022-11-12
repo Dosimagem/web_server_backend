@@ -85,7 +85,7 @@ def test_optional_images_successfull(client_api_auth, second_calibration, clinic
 
 def test_fail_successfull_invalid_status(client_api_auth, second_calibration, clinic_dosimetry):
     """
-    The analysis must have INVALID_INFOS status
+    The analysis must have INVALID_INFOS or DATA_SENT status
     """
 
     update_form_data = {}
@@ -105,7 +105,12 @@ def test_fail_successfull_invalid_status(client_api_auth, second_calibration, cl
 
     assert resp.status_code == HTTPStatus.CONFLICT
 
-    assert body == {'errors': ['Não foi possivel atualizar essa análise.']}
+    expected = [
+        'Não foi possivel deletar/atualizar essa análise.'
+        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+    ]
+
+    assert expected == body['errors']
 
     _verified_unchanged_information_db(clinic_dosimetry)
 

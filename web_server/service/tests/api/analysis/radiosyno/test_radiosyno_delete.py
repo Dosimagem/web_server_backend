@@ -32,10 +32,7 @@ def test_successfull(client_api_auth, radiosyno_analysis_update_or_del_is_possib
 
     assert not RadiosynoAnalysis.objects.exists()
 
-    assert body == {
-        'id': str(analysis_uuid),
-        'message': 'Análise deletada com sucesso!',
-    }
+    assert body == {'id': str(analysis_uuid), 'message': 'Análise deletada com sucesso!'}
 
 
 def test_fail_successfull_invalid_status(client_api_auth, radiosyno_analysis):
@@ -65,7 +62,12 @@ def test_fail_successfull_invalid_status(client_api_auth, radiosyno_analysis):
 
     assert RadiosynoAnalysis.objects.exists()
 
-    assert body == {'errors': ['Não foi possivel deletar essa análise.']}
+    expected = [
+        'Não foi possivel deletar/atualizar essa análise.'
+        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+    ]
+
+    assert expected == body['errors']
 
 
 def test_fail_wrong_analysis_id(client_api_auth, radiosyno_analysis):
