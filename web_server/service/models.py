@@ -6,6 +6,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.timezone import now
 
@@ -156,29 +157,18 @@ class Calibration(CreationModificationBase):
 
         return dict_
 
+    def get_absolute_url(self):
+        ids = {'user_id': self.user.uuid, 'calibration_id': self.uuid}
+        return reverse('service:calibration-read-update-delete', kwargs=ids)
+
 
 class AnalysisBase(CreationModificationBase):
     class Status(models.TextChoices):
-        DATA_SENT = (
-            'DS',
-            'Dados enviados',
-        )
-        ANALYZING_INFOS = (
-            'AI',
-            'Verificando informações',
-        )
-        INVALID_INFOS = (
-            'II',
-            'Informações inválidas',
-        )
-        PROCESSING = (
-            'PR',
-            'Processando a análise',
-        )
-        CONCLUDED = (
-            'CO',
-            'Análise concluída',
-        )
+        DATA_SENT = ('DS', 'Dados enviados')
+        ANALYZING_INFOS = ('AI', 'Verificando informações')
+        INVALID_INFOS = ('II', 'Informações inválidas')
+        PROCESSING = ('PR', 'Processando a análise')
+        CONCLUDED = ('CO', 'Análise concluída')
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
@@ -242,6 +232,10 @@ class AnalysisBase(CreationModificationBase):
 
         return dict_
 
+    def get_absolute_url(self):
+        ids = {'user_id': self.order.user.uuid, 'order_id': self.order.uuid, 'analysis_id': self.uuid}
+        return reverse('service:analysis-read-update-delete', kwargs=ids)
+
 
 class DosimetryAnalysisBase(AnalysisBase):
 
@@ -276,16 +270,8 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
     SERVICE_NAME_CODE = Order.ServicesName.CLINIC_DOSIMETRY.value
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
-    calibration = models.ForeignKey(
-        'Calibration',
-        on_delete=models.CASCADE,
-        related_name='clinic_dosimetry_analysis',
-    )
-    order = models.ForeignKey(
-        'Order',
-        on_delete=models.CASCADE,
-        related_name='clinic_dosimetry_analysis',
-    )
+    calibration = models.ForeignKey('Calibration', on_delete=models.CASCADE, related_name='clinic_dosimetry_analysis')
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='clinic_dosimetry_analysis')
     images = models.FileField('Images', upload_to=upload_clinic_dosimetry_to)
 
     class Meta:
@@ -305,16 +291,10 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
     calibration = models.ForeignKey(
-        'Calibration',
-        on_delete=models.CASCADE,
-        related_name='preclinic_dosimetry_analysis',
+        'Calibration', on_delete=models.CASCADE, related_name='preclinic_dosimetry_analysis'
     )
 
-    order = models.ForeignKey(
-        'Order',
-        on_delete=models.CASCADE,
-        related_name='preclinic_dosimetry_analysis',
-    )
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='preclinic_dosimetry_analysis')
 
     images = models.FileField('Images', upload_to=upload_preclinic_dosimetry_to)
 

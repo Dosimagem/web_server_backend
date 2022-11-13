@@ -233,4 +233,6 @@ def _create_analysis(request, user_id, order_id):
         order.save()
         new_analysis = form_analysis.save()
 
-    return Response(new_analysis.to_dict(request), status=HTTPStatus.CREATED)
+    headers = {'Location': new_analysis.get_absolute_url()}
+
+    return Response(new_analysis.to_dict(request), status=HTTPStatus.CREATED, headers=headers)

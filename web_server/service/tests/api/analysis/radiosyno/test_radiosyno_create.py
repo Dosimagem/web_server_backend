@@ -43,6 +43,12 @@ def test_successfull(client_api_auth, radiosyno_order, form_data_radiosyno_analy
 
     radiosyno_db = RadiosynoAnalysis.objects.first()
 
+    expected = (
+        f'/api/v1/users/{radiosyno_db.order.user.uuid}/orders/{radiosyno_db.order.uuid}/analysis/{radiosyno_db.uuid}'
+    )
+
+    assert expected == resp.headers['Location']
+
     assert Order.objects.get(id=radiosyno_order.id).remaining_of_analyzes == radiosyno_order.remaining_of_analyzes - 1
 
     assert body['id'] == str(radiosyno_db.uuid)

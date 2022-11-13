@@ -42,6 +42,12 @@ def test_successful(client_api_auth, segmentation_order, form_data_segmentation_
 
     analysis_db = SegmentationAnalysis.objects.first()
 
+    expected = (
+        f'/api/v1/users/{analysis_db.order.user.uuid}/orders/{analysis_db.order.uuid}/analysis/{analysis_db.uuid}'
+    )
+
+    assert expected == resp.headers['Location']
+
     assert Order.objects.get(id=order.id).remaining_of_analyzes == order.remaining_of_analyzes - 1
 
     assert body['id'] == str(analysis_db.uuid)

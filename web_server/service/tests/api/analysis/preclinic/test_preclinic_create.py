@@ -45,26 +45,33 @@ def test_successfull(client_api_auth, preclinic_order, form_data_preclinic_dosim
     assert not SegmentationAnalysis.objects.exists()
     assert not RadiosynoAnalysis.objects.exists()
 
-    preclinic_dosi_db = PreClinicDosimetryAnalysis.objects.first()
+    preclinic_db = PreClinicDosimetryAnalysis.objects.first()
+
+    user_id = preclinic_db.order.user.uuid
+    order_id = preclinic_db.order.uuid
+
+    expected = f'/api/v1/users/{user_id}/orders/{order_id}/analysis/{preclinic_db.uuid}'
+
+    assert expected == resp.headers['Location']
 
     assert Order.objects.get(id=preclinic_order.id).remaining_of_analyzes == preclinic_order.remaining_of_analyzes - 1
 
-    assert body['id'] == str(preclinic_dosi_db.uuid)
-    assert body['userId'] == str(preclinic_dosi_db.order.user.uuid)
-    assert body['orderId'] == str(preclinic_dosi_db.order.uuid)
-    assert body['calibrationId'] == str(preclinic_dosi_db.calibration.uuid)
-    assert body['status'] == preclinic_dosi_db.get_status_display()
-    assert body['active'] == preclinic_dosi_db.active
-    assert body['serviceName'] == preclinic_dosi_db.order.get_service_name_display()
-    assert body['createdAt'] == preclinic_dosi_db.created_at.strftime(FORMAT_DATE)
-    assert body['modifiedAt'] == preclinic_dosi_db.modified_at.strftime(FORMAT_DATE)
+    assert body['id'] == str(preclinic_db.uuid)
+    assert body['userId'] == str(preclinic_db.order.user.uuid)
+    assert body['orderId'] == str(preclinic_db.order.uuid)
+    assert body['calibrationId'] == str(preclinic_db.calibration.uuid)
+    assert body['status'] == preclinic_db.get_status_display()
+    assert body['active'] == preclinic_db.active
+    assert body['serviceName'] == preclinic_db.order.get_service_name_display()
+    assert body['createdAt'] == preclinic_db.created_at.strftime(FORMAT_DATE)
+    assert body['modifiedAt'] == preclinic_db.modified_at.strftime(FORMAT_DATE)
 
-    assert body['injectedActivity'] == preclinic_dosi_db.injected_activity
-    assert body['analysisName'] == preclinic_dosi_db.analysis_name
-    assert body['administrationDatetime'] == preclinic_dosi_db.administration_datetime.strftime(FORMAT_DATE)
+    assert body['injectedActivity'] == preclinic_db.injected_activity
+    assert body['analysisName'] == preclinic_db.analysis_name
+    assert body['administrationDatetime'] == preclinic_db.administration_datetime.strftime(FORMAT_DATE)
 
     # TODO: gerar a url completa
-    assert body['imagesUrl'].startswith(f'http://testserver/media/{preclinic_dosi_db.order.user.id}')
+    assert body['imagesUrl'].startswith(f'http://testserver/media/{preclinic_db.order.user.id}')
 
     assert body['report'] == ''
 

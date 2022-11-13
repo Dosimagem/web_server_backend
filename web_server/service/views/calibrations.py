@@ -168,4 +168,6 @@ def _create_calibrations(request, user_id):
 
     new_calibration = form.save()
 
-    return Response(data=new_calibration.to_dict(request), status=HTTPStatus.CREATED)
+    headers = {'Location': new_calibration.get_absolute_url()}
+
+    return Response(data=new_calibration.to_dict(request), status=HTTPStatus.CREATED, headers=headers)

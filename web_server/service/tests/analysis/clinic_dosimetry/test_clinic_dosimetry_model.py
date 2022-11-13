@@ -147,3 +147,13 @@ def test_order_code(clinic_dosimetry):
     expected = f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{analysis_id:04}-01'
 
     assert expected == clinic_dosimetry.code
+
+
+def test_get_absolute_url(clinic_dosimetry):
+
+    user_id = clinic_dosimetry.order.user.uuid
+    order_id = clinic_dosimetry.order.uuid
+
+    expected = f'/api/v1/users/{user_id}/orders/{order_id}/analysis/{clinic_dosimetry.uuid}'
+
+    assert expected == clinic_dosimetry.get_absolute_url()

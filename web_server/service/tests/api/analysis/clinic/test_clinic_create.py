@@ -34,7 +34,7 @@ def test_successful(client_api_auth, clinic_order, form_data_clinic_dosimetry):
     resp = client_api_auth.post(url, data=form_data_clinic_dosimetry, format='multipart')
     body = resp.json()
 
-    assert resp.status_code == HTTPStatus.CREATED
+    assert HTTPStatus.CREATED == resp.status_code
 
     assert ClinicDosimetryAnalysis.objects.exists()
     assert not PreClinicDosimetryAnalysis.objects.exists()
@@ -42,6 +42,10 @@ def test_successful(client_api_auth, clinic_order, form_data_clinic_dosimetry):
     assert not RadiosynoAnalysis.objects.exists()
 
     clinic_dosi_db = ClinicDosimetryAnalysis.objects.first()
+
+    expected = f'/api/v1/users/{clinic_order.user.uuid}/orders/{clinic_order.uuid}/analysis/{clinic_dosi_db.uuid}'
+
+    assert expected == resp.headers['Location']
 
     assert Order.objects.get(id=clinic_order.id).remaining_of_analyzes == clinic_order.remaining_of_analyzes - 1
 
