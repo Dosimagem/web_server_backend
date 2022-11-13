@@ -125,3 +125,13 @@ def test_order_code(radiosyno_analysis):
     expected = f'{clinic_id:04}.{order_id:04}.{isotope}.{year}/{analysis_id:04}-04'
 
     assert expected == radiosyno_analysis.code
+
+
+def test_get_absolute_url(radiosyno_analysis):
+
+    user_id = radiosyno_analysis.order.user.uuid
+    order_id = radiosyno_analysis.order.uuid
+
+    expected = f'/api/v1/users/{user_id}/orders/{order_id}/analysis/{radiosyno_analysis.uuid}'
+
+    assert expected == radiosyno_analysis.get_absolute_url()
