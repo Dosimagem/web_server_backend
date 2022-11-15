@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'web_server.radiosynoviorthesis',
     'web_server.signature',
     'web_server.budget',
+    'web_server.notification',
     #
     'rest_framework',
     'rest_framework.authtoken',
