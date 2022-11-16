@@ -222,7 +222,7 @@ class AnalysisBase(CreationModificationBase):
 
         if self.status == self.Status.CONCLUDED:
             if self.report.name is None or self.report.name == '':
-                raise ValidationError('É necessario anexar orelatório.')
+                raise ValidationError('É necessario anexar o relatório.')
 
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)

@@ -48,3 +48,10 @@ def test_toogle(user):
     notification.toogle()
 
     assert notification.checked
+
+
+def test_one_to_many_relation(user, list_notifications):
+
+    assert list_notifications[0].user.id == user.id
+
+    assert len(list_notifications) == user.notifications.count()

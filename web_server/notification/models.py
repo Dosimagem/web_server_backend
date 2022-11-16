@@ -14,7 +14,7 @@ class Notification(CreationModificationBase):
         ERROR = ('ER', 'error')
         SUCCESS = ('SU', 'success')
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     checked = models.BooleanField(default=False)
@@ -29,7 +29,7 @@ class Notification(CreationModificationBase):
             'id': self.uuid,
             'message': self.message,
             'checked': self.checked,
-            'kind': self.kind.get_display_name(),
+            'kind': self.get_kind_display(),
             'created_at': self.created_at,
         }
 

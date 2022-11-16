@@ -26,7 +26,7 @@ def test_list(client_api_auth, user, list_notifications):
         assert str(from_db.uuid) == from_response['id']
         assert from_db.checked == from_response['checked']
         assert from_db.message == from_response['message']
-        assert from_db.kind.get_display_name() == from_response['kind']
+        assert from_db.get_kind_display() == from_response['kind']
 
 
 def test_list_not_allowed_method(client_api_auth, user):

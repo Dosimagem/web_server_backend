@@ -97,32 +97,12 @@ class CalibrationModelAdmin(admin.ModelAdmin):
             },
         ),
         ('Files', {'fields': ('images',)}),
-        (
-            'Other data',
-            {
-                'fields': (
-                    'id',
-                    'uuid',
-                    'user',
-                )
-            },
-        ),
+        ('Other data', {'fields': ('id', 'uuid', 'user')}),
     )
 
-    list_display = (
-        'id',
-        'calibration_name',
-        'user',
-        'isotope',
-        'images',
-    )
+    list_display = ('id', 'calibration_name', 'user', 'isotope', 'images')
     list_display_links = ('calibration_name',)
-    readonly_fields = (
-        'id',
-        'uuid',
-        'created_at',
-        'modified_at',
-    )
+    readonly_fields = ('id', 'uuid', 'created_at', 'modified_at')
     search_fields = ('calibration_name',)
     list_filter = ('user',)
     list_per_page = 20
@@ -139,28 +119,13 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                     'analysis_name',
                     'injected_activity',
                     'administration_datetime',
+                    'status',
                 )
             },
         ),
         ('Feedback', {'fields': ('message_to_user',)}),
-        (
-            'Files',
-            {
-                'fields': (
-                    'report',
-                    'images',
-                )
-            },
-        ),
-        (
-            'Order & Calibraion',
-            {
-                'fields': (
-                    'order',
-                    'calibration',
-                )
-            },
-        ),
+        ('Files', {'fields': ('report', 'images')}),
+        ('Order & Calibration', {'fields': ('order', 'calibration')}),
         ('Other data', {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
     )
 
@@ -175,17 +140,8 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
         'report',
         'active',
     )
-    list_display_links = (
-        'code',
-        'analysis_name',
-    )
-    readonly_fields = (
-        'code',
-        'id',
-        'uuid',
-        'created_at',
-        'modified_at',
-    )
+    list_display_links = ('code', 'analysis_name')
+    readonly_fields = ('code', 'id', 'uuid', 'order', 'calibration', 'created_at', 'modified_at')
     search_fields = ('analysis_name',)
     list_per_page = 20
     list_filter = ('order__user', 'status', 'active', 'order')
@@ -209,28 +165,13 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                     'analysis_name',
                     'injected_activity',
                     'administration_datetime',
+                    'status',
                 )
             },
         ),
         ('Feedback', {'fields': ('message_to_user',)}),
-        (
-            'Files',
-            {
-                'fields': (
-                    'report',
-                    'images',
-                )
-            },
-        ),
-        (
-            'Order & Calibraion',
-            {
-                'fields': (
-                    'order',
-                    'calibration',
-                )
-            },
-        ),
+        ('Files', {'fields': ('report', 'images')}),
+        ('Order & Calibration', {'fields': ('order', 'calibration')}),
         ('Other data', {'fields': ('uuid', 'active', 'created_at', 'modified_at')}),
     )
 
@@ -245,17 +186,8 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
         'report',
         'active',
     )
-    list_display_links = (
-        'code',
-        'analysis_name',
-    )
-    readonly_fields = (
-        'code',
-        'id',
-        'uuid',
-        'created_at',
-        'modified_at',
-    )
+    list_display_links = ('code', 'analysis_name')
+    readonly_fields = ('code', 'id', 'uuid', 'order', 'calibration', 'created_at', 'modified_at')
     search_fields = ('analysis_name',)
     list_per_page = 20
     list_filter = ('order__user', 'status', 'active', 'order')
@@ -265,17 +197,10 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
 class SegmentationAnalysisAdmin(admin.ModelAdmin):
 
     fieldsets = (
-        ('Analysis data', {'fields': ('analysis_name',)}),
+        ('Analysis data', {'fields': ('analysis_name', 'status')}),
         ('Extra information', {'fields': ('message_to_user',)}),
-        (
-            'Files',
-            {
-                'fields': (
-                    'report',
-                    'images',
-                )
-            },
-        ),
+        ('Files', {'fields': ('report', 'images')}),
+        ('Order', {'fields': ('order',)}),
         ('Other data', {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
     )
 
@@ -289,14 +214,12 @@ class SegmentationAnalysisAdmin(admin.ModelAdmin):
         'report',
         'active',
     )
-    list_display_links = (
-        'code',
-        'analysis_name',
-    )
+    list_display_links = ('code', 'analysis_name')
     readonly_fields = (
         'code',
         'id',
         'uuid',
+        'order',
         'created_at',
         'modified_at',
     )
@@ -309,25 +232,9 @@ class SegmentationAnalysisAdmin(admin.ModelAdmin):
 class RadiosynoviorthesisAdmin(admin.ModelAdmin):
 
     fieldsets = (
-        (
-            'Analysis data',
-            {
-                'fields': (
-                    'analysis_name',
-                    'isotope',
-                )
-            },
-        ),
+        ('Analysis data', {'fields': ('analysis_name', 'isotope', 'status')}),
         ('Extra information', {'fields': ('message_to_user',)}),
-        (
-            'Files',
-            {
-                'fields': (
-                    'report',
-                    'images',
-                )
-            },
-        ),
+        ('Files', {'fields': ('report', 'images')}),
         ('Order', {'fields': ('order',)}),
         ('Other data', {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
     )
@@ -344,13 +251,7 @@ class RadiosynoviorthesisAdmin(admin.ModelAdmin):
         'active',
     )
     list_display_links = ('code', 'analysis_name')
-    readonly_fields = (
-        'code',
-        'id',
-        'uuid',
-        'created_at',
-        'modified_at',
-    )
+    readonly_fields = ('code', 'id', 'order', 'uuid', 'created_at', 'modified_at')
     search_fields = ('analysis_name',)
     list_per_page = 20
     list_filter = ('order__user', 'status', 'active', 'order')
