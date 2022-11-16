@@ -11,6 +11,7 @@ from django.utils.text import slugify
 from django.utils.timezone import now
 
 from web_server.core.models import CreationModificationBase
+from web_server.notification.models import Notification
 
 FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
@@ -56,11 +57,18 @@ class Order(CreationModificationBase):
         ordering = ['-created_at']
 
     def save(self, *args, **kwargs):
+
+        if self.pk is not None:
+            msg = f'Pedido {self.code} atualizado.'
+            Notification.objects.create(user=self.user, message=msg, kind=Notification.Kind.SUCCESS)
+
         super().save(*args, **kwargs)
 
         if not self.code:
             self.code = self._generate_code()
-            self.save()
+            super().save(force_update=True)
+            msg = f'Pedido {self.code} criado.'
+            Notification.objects.create(user=self.user, message=msg, kind=Notification.Kind.SUCCESS)
 
     def _generate_code(self):
         clinic_id = self.user.id
@@ -161,6 +169,24 @@ class Calibration(CreationModificationBase):
         ids = {'user_id': self.user.uuid, 'calibration_id': self.uuid}
         return reverse('service:calibration-read-update-delete', kwargs=ids)
 
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+
+        msg = f'{self.calibration_name} deletada com sucesso.'
+
+        Notification.objects.create(user=self.user, message=msg, kind=Notification.Kind.SUCCESS)
+
+    def save(self, *args, **kwargs):
+
+        if self.pk is not None:
+            msg = f'{self.calibration_name} atualizada com sucesso.'
+            Notification.objects.create(user=self.user, message=msg, kind=Notification.Kind.SUCCESS)
+        else:
+            msg = f'{self.calibration_name} criada com sucesso.'
+            Notification.objects.create(user=self.user, message=msg, kind=Notification.Kind.SUCCESS)
+
+        super().save(*args, **kwargs)
+
 
 class AnalysisBase(CreationModificationBase):
     class Status(models.TextChoices):
@@ -198,12 +224,28 @@ class AnalysisBase(CreationModificationBase):
             if self.report.name is None or self.report.name == '':
                 raise ValidationError('É necessario anexar o relatório.')
 
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+
+        msg = f'Analise {self.code} deletada.'
+
+        Notification.objects.create(user=self.order.user, message=msg, kind=Notification.Kind.SUCCESS)
+
     def save(self, *args, **kwargs):
+
+        if self.pk is not None:
+            msg = f'Analise {self.code} atualizada.'
+            Notification.objects.create(user=self.order.user, message=msg, kind=Notification.Kind.SUCCESS)
+
         super().save(*args, **kwargs)
 
         if not self.code:
             self.code = self._generate_code()
-            self.save()
+            super().save(force_update=True)
+
+            msg = f'Analise {self.code} criada.'
+
+            Notification.objects.create(user=self.order.user, message=msg, kind=Notification.Kind.SUCCESS)
 
     def _generate_code(self):
         raise NotImplementedError()

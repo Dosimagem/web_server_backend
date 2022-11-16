@@ -19,6 +19,7 @@ urlpatterns = [
     path('api/v1/', include('web_server.radiosynoviorthesis.urls')),
     path('api/v1/', include('web_server.signature.urls')),
     path('api/v1/', include('web_server.budget.urls')),
+    path('api/v1/', include('web_server.notification.urls')),
     # For teste sentry
     path('sentry-debug/', trigger_error),
 ]
