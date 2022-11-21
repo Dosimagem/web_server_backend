@@ -93,28 +93,28 @@ def email_verify(request, user_id):
     serializer = VerifyEmailSerializer(data=request.data)
 
     if not serializer.is_valid():
-        return Response(data={'error': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
+        return Response(data={'errors': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
 
     token = serializer.data['token']
 
     try:
         user = User.objects.get(verification_email_secret=token)
     except ObjectDoesNotExist:
-        return Response(data={'error': ['Token de verificação inválido ou expirado.']}, status=HTTPStatus.BAD_REQUEST)
+        return Response(data={'errors': ['Token de verificação inválido ou expirado.']}, status=HTTPStatus.BAD_REQUEST)
 
     if not user.sent_verification_email:
-        return Response(data={'error': ['Email de verificação ainda não foi enviado.']}, status=HTTPStatus.CONFLICT)
+        return Response(data={'errors': ['Email de verificação ainda não foi enviado.']}, status=HTTPStatus.CONFLICT)
 
     if user.email_verified:
-        return Response(data={'error': ['Email já foi verificado.']}, status=HTTPStatus.CONFLICT)
+        return Response(data={'errors': ['Email já foi verificado.']}, status=HTTPStatus.CONFLICT)
 
     try:
         payload = decode(token, settings.SECRET_KEY, algorithms=['HS256'])
     except ExpiredSignatureError:
-        return Response(data={'error': ['Token de verificação inválido ou expirado.']}, status=HTTPStatus.CONFLICT)
+        return Response(data={'errors': ['Token de verificação inválido ou expirado.']}, status=HTTPStatus.CONFLICT)
 
     if not constant_time_compare(user_id, payload['id']):
-        return Response(data={'error': ['Conflito no id do usuario.']}, status=HTTPStatus.CONFLICT)
+        return Response(data={'errors': ['Conflito no id do usuario.']}, status=HTTPStatus.CONFLICT)
 
     user.verification_email_secret = None
     user.email_verified = True
@@ -132,6 +132,6 @@ def email_resend(request, user_id):
     try:
         send_email_verification(user)
     except SMTPException:
-        return Response({'Error': ['Email de verificação não foi enviado.']})
+        return Response({'errors': ['Email de verificação não foi enviado.']})
 
     return Response(status=HTTPStatus.NO_CONTENT)

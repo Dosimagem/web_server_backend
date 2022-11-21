@@ -47,7 +47,7 @@ def test_fail_verify_email_not_sent_yet(client_api, user):
 
     body = resp.json()
 
-    assert {'error': ['Email de verificação ainda não foi enviado.']} == body
+    assert {'errors': ['Email de verificação ainda não foi enviado.']} == body
 
 
 def test_fail_email_already_verified(client_api, user):
@@ -65,7 +65,7 @@ def test_fail_email_already_verified(client_api, user):
 
     body = resp.json()
 
-    assert {'error': ['Email já foi verificado.']} == body
+    assert {'errors': ['Email já foi verificado.']} == body
 
 
 def test_fail_token_used_twice(client_api, user):
@@ -87,7 +87,7 @@ def test_fail_token_used_twice(client_api, user):
 
     body = resp.json()
 
-    assert {'error': ['Token de verificação inválido ou expirado.']} == body
+    assert {'errors': ['Token de verificação inválido ou expirado.']} == body
 
 
 def test_fail_token_invalid(client_api, user):
@@ -104,7 +104,7 @@ def test_fail_token_invalid(client_api, user):
 
     body = resp.json()
 
-    assert {'error': ['Token de verificação inválido ou expirado.']} == body
+    assert {'errors': ['Token de verificação inválido ou expirado.']} == body
 
 
 def test_missing_token(client_api, user):
@@ -121,7 +121,7 @@ def test_missing_token(client_api, user):
 
     body = resp.json()
 
-    assert {'error': ['O campo token é obrigatório.']} == body
+    assert {'errors': ['O campo token é obrigatório.']} == body
 
 
 def test_fail_token_expired(client_api, user):
@@ -145,7 +145,7 @@ def test_fail_token_expired(client_api, user):
 
         body = resp.json()
 
-        assert {'error': ['Token de verificação inválido ou expirado.']} == body
+        assert {'errors': ['Token de verificação inválido ou expirado.']} == body
 
 
 def test_allowed_method(client_api, user):
@@ -176,4 +176,4 @@ def test_user_in_url_is_different_to_user_in_jwt(client_api, user):
 
     body = resp.json()
 
-    assert {'error': ['Conflito no id do usuario.']} == body
+    assert {'errors': ['Conflito no id do usuario.']} == body
