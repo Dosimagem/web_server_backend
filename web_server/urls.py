@@ -32,4 +32,4 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-admin.site.site_header = 'Dosimagem adminstrator'
+admin.site.site_header = 'Dosimagem administrator'
