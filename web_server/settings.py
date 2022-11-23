@@ -95,7 +95,7 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 WSGI_APPLICATION = 'web_server.wsgi.application'
 
-INTERNAL_IPS = config('INTERNAL_IPS', cast=Csv(), default=None)
+INTERNAL_IPS = config('INTERNAL_IPS', cast=Csv(), default=[])
 
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
