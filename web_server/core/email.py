@@ -24,7 +24,7 @@ def send_email_verification(user):
     email = user.email
     context = {'link': f'{FRONT_DOMAIN}/users/{user.uuid}/email-confirm/?token={token}'}
     body = render_to_string('core/email_verify.txt', context)
-    send_mail('Verifificação de email da sua conta Dosimagem', body, DOSIMAGEM_EMAIL, [email])
+    send_mail('Verificação de email da sua conta Dosimagem', body, DOSIMAGEM_EMAIL, [email])
 
     user.verification_email_secret = token
     user.sent_verification_email = True

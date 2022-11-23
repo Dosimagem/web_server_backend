@@ -24,7 +24,7 @@ def test_resend(client_api_auth, user):
 
     email = mail.outbox[0]
 
-    assert 'Verifificação de email da sua conta Dosimagem' == email.subject
+    assert 'Verificação de email da sua conta Dosimagem' == email.subject
     assert DOSIMAGEM_EMAIL == email.from_email
     assert [user.email] == email.to
 
