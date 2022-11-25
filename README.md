@@ -37,10 +37,10 @@ Desenvolvimento das funcionalidades
 [Documentação da API](https://documenter.getpostman.com/view/18852890/2s83Kad2KE)
 
 
-## 3) Desenvolvimento
+# 3) Desenvolvimento
 
 
-### 3.1) Setup inicial
+## 3.1) Setup inicial
 ---
 
 O setup incicial necessário fazer apenas `uma vez`.
@@ -113,7 +113,7 @@ Os usuarios criados serão:
 
 ---
 
-### 3.2) Rodando o servidor de desenvolvimento
+## 3.2) Rodando o servidor de desenvolvimento
 
 ---
 
@@ -125,7 +125,7 @@ python manage.py runserver
 
 ---
 
-### 3.3) Rodando os teste
+## 3.3) Rodando os teste
 ___
 
 Rodando os testes com o `pytest`
@@ -141,7 +141,7 @@ pytest --cov=web_server --cov-report html
 ```
 ___
 
-### 3.4) Área adminstrativa
+## 3.4) Área adminstrativa
 
 Para acessar usar o `admin` é preciso criar um super usuário, para tal basta usar o comando:
 
@@ -153,18 +153,18 @@ A rota para acessar é `/dosimagem/admin/`
 
 ---
 
-## 4) Banco de dados
+# 4) Banco de dados
 
 ---
 
-### 4.1) Usando o postgres via docker
+## 4.1) Usando o postgres via docker
 
 ---
 
 Subir o container
 
 ```console
-docker-compose -f docker/compose/docker-compose-db.yml up -d
+docker-compose docker-compose-db.yml database -d
 ```
 
 Configurar `DATABASE_URL` no arquivo `.env` para
@@ -172,9 +172,10 @@ Configurar `DATABASE_URL` no arquivo `.env` para
 ```
 postgres://dosimagem:dosimagem@localhost:5434/dosimagem_db
 ```
+
 ---
 
-### 4.2) Backup do banco:
+## 4.2) Backup do banco:
 
 
 Todo o banco
@@ -190,7 +191,7 @@ Apenas dos `Isotopos` cadastrados
 ```
 
 
-### 5) Python decouple
+# 5) Python decouple
 
 ---
 
@@ -219,27 +220,40 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000,127.0.0.1:3000
 
 ---
 
-### 6) Docker
+# 6) Docker
 
 ---
 
-Docker com ambiente de desenvolvimento.
+
+Para subir a `api` completa simulando o ambiente de produção com `nginx`, `gunicorn` e `postgres` basta fazer.
+
 
 ```console
-docker-compose -f docker/compose/docker-compose-api-db.yml build
+docker-compose build
 ```
 
-Subindo o servidor e o banco de dados
+Seguido de
+
 
 ```console
-docker-compose -f docker/compose/docker-compose-api-db.yml up
+docker-compose up
 ```
 
-O `DATABASE_URL` esta definido dentro do docker compose. Para fazer a migração e a carga inicial basta
+O primeiro compando precisa ser excutado apenas na primeira vez para criar a imagem `dosimagem_api`.
 
+
+A `api` estará dispnivel em `localhost`.
+
+Para fazer as migrações:
+
+```console
+docker exec dosimagem_api ./manage.py migrate
 ```
-docker exec -it dosimagem_api python manage.py migrate
-docker exec -it dosimagem_api ./manage.py loaddata contrib/db_initial.json
+
+Para criar o usuário root bastas fazer:
+
+```console
+docker exec -it dosimagem_api ./manage.py createsuperuser
 ```
 
 ---

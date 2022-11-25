@@ -1,0 +1,53 @@
+services:
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: dosimagem_api
+    image: dosimagem/api:v1
+    restart: 'no'
+    command: >
+      sh -c "python manage.py migrate
+      && python manage.py collectstatic --noinput
+      && gunicorn -b localhost:9000 --workers=1 --threads=3 web_server.wsgi --access-logfile '-'"
+    env_file:
+      - .env
+    network_mode: "host"
+    depends_on:
+      - database
+    volumes:
+      - ./staticfiles:/user/app/staticfiles
+      - ./mediafiles:/user/app/mediafiles
+
+
+  database:
+    container_name: dosimagem_db
+    image: postgres:14.5-alpine
+    restart: 'no'
+    volumes:
+      - ./db/pgdata:/var/lib/postgresql/data
+    environment:
+      - LC_ALL=C.UTF-8
+      - POSTGRES_PASSWORD=dosimagem
+      - POSTGRES_USER=dosimagem
+      - POSTGRES_DB=dosimagem_db
+    networks:
+      - dosimagem_nw
+    ports:
+      - 5434:5432
+
+
+
+  nginx:
+    container_name: dosimagem_nginx
+    image: nginx:1.23.2-alpine
+    network_mode: "host"
+    volumes:
+      - ./docker/nginx/:/etc/nginx/conf.d/
+      - ./staticfiles:/var/www/site/staticfiles
+
+
+networks:
+  dosimagem_nw:
+    driver: bridge
