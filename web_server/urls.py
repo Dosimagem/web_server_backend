@@ -4,6 +4,9 @@ from django.contrib import admin
 from django.urls import include, path
 
 from web_server.core.views.index import index
+from django.views.generic.base import RedirectView
+
+favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 
 def trigger_error(request):
@@ -11,6 +14,8 @@ def trigger_error(request):
 
 
 urlpatterns = [
+    path('favicon.ico', favicon_view),
+    #
     path('dosimagem/admin/', admin.site.urls),
     path('', index),
     # API
