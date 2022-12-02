@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from django.http import HttpResponse
+from django.http import JsonResponse
 
 
 class HealthCheckMiddleware:
@@ -9,5 +9,5 @@ class HealthCheckMiddleware:
 
     def __call__(self, request):
         if request.path == '/api/v1/health/':
-            return HttpResponse(status=HTTPStatus.NO_CONTENT)
+            return JsonResponse({'status': 'ok'}, status=HTTPStatus.OK)
         return self.get_response(request)

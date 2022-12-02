@@ -11,6 +11,7 @@ def trigger_error(request):
 
 
 urlpatterns = [
+    #
     path('dosimagem/admin/', admin.site.urls),
     path('', index),
     # API
