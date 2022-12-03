@@ -2,6 +2,7 @@ from http import HTTPStatus
 from uuid import uuid4
 
 from django.shortcuts import resolve_url
+from dj_rest_auth.utils import jwt_encode
 
 from web_server.service.models import FORMAT_DATE, Order, RadiosynoAnalysis
 
@@ -87,13 +88,9 @@ def test_fail_read_radiosyno_analysis_using_another_user(client_api, second_user
     order_uuid = radiosyno_analysis.order.uuid
     analysis_uuid = radiosyno_analysis.uuid
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + second_user.auth_token.key)
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+    access_token, _ = jwt_encode(second_user)
+    client_api.cookies.load({'jwt-access-token': access_token})
     resp = client_api.get(url)
     body = resp.json()
 

@@ -5,6 +5,7 @@ from uuid import uuid4
 import pytest
 from django.core.files.base import ContentFile
 from django.shortcuts import resolve_url
+from dj_rest_auth.utils import jwt_encode
 
 from web_server.service.models import Order, RadiosynoAnalysis
 
@@ -145,7 +146,10 @@ def test_fail_wrong_another_user(
     analysis_uuid = radiosyno_analysis_update_or_del_is_possible.uuid
 
     url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + second_user.auth_token.key)
+
+    access_token, _ = jwt_encode(second_user)
+    client_api.cookies.load({'jwt-access-token': access_token})
+
     resp = client_api.put(url, data=update_form_data, format='multipart')
     body = resp.json()
 

@@ -2,6 +2,7 @@ from http import HTTPStatus
 from uuid import uuid4
 
 from django.shortcuts import resolve_url
+from dj_rest_auth.utils import jwt_encode
 
 from web_server.service.models import FORMAT_DATE, Order, SegmentationAnalysis
 
@@ -79,7 +80,8 @@ def test_fail_read_using_another_user(client_api, second_user, segmentation_anal
     analysis_uuid = segmentation_analysis.uuid
 
     url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + second_user.auth_token.key)
+    access_token, _ = jwt_encode(second_user)
+    client_api.cookies.load({'jwt-access-token': access_token})
     resp = client_api.get(url)
     body = resp.json()
 

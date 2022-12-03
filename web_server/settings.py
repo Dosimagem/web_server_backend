@@ -1,4 +1,6 @@
 from pathlib import Path
+from datetime import timedelta
+
 
 import dj_database_url
 from decouple import Csv, config
@@ -50,7 +52,6 @@ INSTALLED_APPS = [
     'web_server.notification',
     #
     'rest_framework',
-    'rest_framework.authtoken',
     #
     'django_cleanup.apps.CleanupConfig',
 ]
@@ -225,9 +226,46 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'web_server.core.auth.MyTokenAuthentication',
+        'web_server.core.auth.MyJWTCookieAuthentication',
     ],
 }
+
+
+# simpleJWT
+
+SIGNING_KEY = 'django-insecure-c%=%+r%hp+wjfbp1+!xlc9)m(4tkgpu=6d$@ik(&_-5+q$ci38'
+
+ACCESS_TOKEN_LIFETIME = config('ACCESS_TOKEN_LIFETIME', cast=int, default=15)
+REFRESH_TOKEN_LIFETIME = config('REFRESH_TOKEN_LIFETIME', cast=int, default=180)
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=ACCESS_TOKEN_LIFETIME),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=REFRESH_TOKEN_LIFETIME),
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SIGNING_KEY,
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'USER_ID_FIELD': 'uuid',
+    'USER_ID_CLAIM': 'id',
+}
+
+# dj-rest-auth
+REST_AUTH_TOKEN_MODEL = None
+JWT_AUTH_COOKIE_USE_CSRF = False
+REST_SESSION_LOGIN = False
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'jwt-access-token'
+JWT_AUTH_REFRESH_COOKIE = 'jwt-refresh-token'
+JWT_AUTH_SECURE = False
+JWT_AUTH_HTTPONLY = True
+JWT_AUTH_SAMESITE = 'Lax'
+JWT_AUTH_REFRESH_COOKIE_PATH = '/api/v1/auth/token/'
+
+JWT_AUTH_IN_BODY = False
+
+
+# Avoid conflict between Admin and React front
+SESSION_COOKIE_PATH = '/dosimagem/admin/'
 
 
 # TODO: Esse aconfiguração per informações importantes da requesições

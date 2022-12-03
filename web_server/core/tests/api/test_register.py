@@ -5,9 +5,13 @@ from django.contrib.auth import get_user_model
 from django.core import mail
 from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
+from freezegun import freeze_time
+
 
 from web_server.conftest import HTTP_METHODS
 from web_server.core.email import DOSIMAGEM_EMAIL
+from web_server.core.tests.conftest import asserts_cookie_tokens
+
 
 User = get_user_model()
 
@@ -18,6 +22,7 @@ pytestmark = pytest.mark.django_db
 URL_REGISTER = resolve_url('core:register')
 
 
+@freeze_time('2022-01-01 00:00:00')
 def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
 
     resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
@@ -28,7 +33,6 @@ def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
 
     assert body == {
         'id': str(user.uuid),
-        'token': user.auth_token.key,
         'isStaff': user.is_staff,
     }
 
@@ -44,6 +48,8 @@ def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
     assert user.sent_verification_email
     assert user.is_active
     assert not user.email_verified
+
+    asserts_cookie_tokens(resp)
 
 
 def test_fail_user_unique_fields(client_api, user, register_infos):

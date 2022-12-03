@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from django.shortcuts import resolve_url
+from dj_rest_auth.utils import jwt_encode
 
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
@@ -21,15 +22,13 @@ def test_not_allowed_method(client_api_auth, user, clinic_order):
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
 
 
-def test_token_id_and_user_id_dont_match(client_api, user, second_user, clinic_order):
+def test_token_id_and_user_id_dont_match(client_api_auth, user, second_user, clinic_order):
     """
     The token does not belong to the user
     """
 
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
-
     url = resolve_url('service:analysis-list-create', second_user.uuid, clinic_order.uuid)
-    response = client_api.get(url)
+    response = client_api_auth.get(url)
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
 
@@ -83,14 +82,11 @@ def test_read_update_delete_view_token_and_user_id_dont_match(client_api, second
     order_uuid = clinic_dosimetry.order.uuid
     analysis_uuid = clinic_dosimetry.uuid
 
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + second_user.auth_token.key)
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
+    access_token, _ = jwt_encode(second_user)
+    client_api.cookies.load({'jwt-access-token': access_token})
+
     response = client_api.get(url)
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED

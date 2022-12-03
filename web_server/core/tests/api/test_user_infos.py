@@ -1,12 +1,10 @@
 from http import HTTPStatus
 from uuid import uuid4
 
-import pytest
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
 from django.utils.translation import gettext as _
 
-from web_server.conftest import HTTP_METHODS
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 User = get_user_model()
@@ -15,12 +13,11 @@ User = get_user_model()
 END_POINT = 'core:users-read-update'
 
 
-def test_read_user_info_by_id(client_api, user):
+def test_read_user_info_by_id(client_api_auth, user):
 
     url = resolve_url(END_POINT, user_id=user.uuid)
 
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
-    response = client_api.get(url)
+    response = client_api_auth.get(url)
 
     assert response.status_code == HTTPStatus.OK
 
@@ -132,15 +129,22 @@ def test_read_update_user_without_token(client_api):
     assert response.json() == {'detail': _('Authentication credentials were not provided.')}
 
 
-def test_read_update_user_wrong_token(client_api, user):
+def test_read_update_user_wrong_token(client_api, user, second_user):
 
     url = resolve_url(END_POINT, user_id=user.uuid)
 
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + 'token')
+    client_api.cookies.load({'jwt-access-token': 'token'})
     response = client_api.get(url)
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
-    assert response.json() == {'detail': _('Invalid token.')}
+
+    expected = {
+        'code': 'token_not_valid',
+        'detail': 'Given token not valid for any token type',
+        'messages': [{'message': 'Token is invalid or expired', 'tokenClass': 'AccessToken', 'tokenType': 'access'}],
+    }
+
+    assert response.json() == expected
 
 
 def test_read_update_token_id_and_user_id_dont_match(client_api_auth, user, second_user):
@@ -158,10 +162,15 @@ def test_read_update_token_id_and_user_id_dont_match(client_api_auth, user, seco
     assert body['errors'] == MSG_ERROR_TOKEN_USER
 
 
-@pytest.mark.parametrize('method', ['post', 'put', 'delete'])
-def test_read_update_user_not_allowed_method(method, user):
-    http = HTTP_METHODS[method]
+def test_read_update_user_not_allowed_method(client_api_auth, user):
 
-    header = {'HTTP_AUTHORIZATION': f'Bearer {user.auth_token.key}'}
-    resp = http(resolve_url(END_POINT, user_id=user.uuid), **header)
+    url = resolve_url(END_POINT, user_id=user.uuid)
+
+    resp = client_api_auth.post(url, format='json')
+    assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
+
+    resp = client_api_auth.put(url, format='json')
+    assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
+
+    resp = client_api_auth.delete(url, format='json')
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED

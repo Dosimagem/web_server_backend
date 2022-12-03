@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views.register import MyObtainAuthToken, register
+from .views.register import register
+from .views.auth import MyLoginView
 from .views.users import (
     email_resend,
     email_verify,
@@ -11,7 +12,7 @@ from .views.users import (
 app_name = 'core'
 urlpatterns = [
     path('users/register/', register, name='register'),
-    path('users/login/', MyObtainAuthToken.as_view(), name='login'),
+    path('users/login/', MyLoginView.as_view(), name='login'),
     #
     path('users/<uuid:user_id>', users_read_update, name='users-read-update'),
     path('users/<uuid:user_id>/email/', read_update_email, name='read-update-email'),
