@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
-from django.shortcuts import resolve_url
 from dj_rest_auth.utils import jwt_encode
+from django.shortcuts import resolve_url
 
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 

@@ -28,8 +28,10 @@ def asserts_cookie_tokens(resp):
     assert access_token['httponly']
     assert 'Lax' == access_token['samesite']
     assert 'Sat, 01 Jan 2022 00:15:01 GMT' == access_token['expires']   # 15 minutes
+    assert access_token['secure']
 
-    assert '/api/v1/auth/token/' == refresh_token['path']
+    assert '/api/v1/users/auth/token/' == refresh_token['path']
     assert refresh_token['httponly']
     assert 'Lax' == refresh_token['samesite']
-    assert 'Sat, 01 Jan 2022 01:00:01 GMT' == refresh_token['expires']   # 60 minutes
+    assert 'Mon, 03 Jan 2022 00:00:01 GMT' == refresh_token['expires']   # 3 dias
+    assert refresh_token['secure']

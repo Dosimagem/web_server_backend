@@ -8,10 +8,8 @@ from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 from freezegun import freeze_time
 
-
 from web_server.conftest import HTTP_METHODS
 from web_server.core.tests.conftest import asserts_cookie_tokens
-
 
 User = get_user_model()
 

@@ -1,14 +1,14 @@
 import pytest
+from dj_rest_auth.utils import jwt_encode
 from faker import Faker
 from rest_framework.test import APIClient
-from dj_rest_auth.utils import jwt_encode
-
 
 from web_server.core.models import UserProfile
 
 fake = Faker()
 fake.seed_instance(4321)
 
+# TODO: Retirar isso
 HTTP_METHODS = {
     'get': APIClient().get,
     'post': APIClient().post,
@@ -134,4 +134,12 @@ def second_user(user, django_user_model, second_user_login_info, second_user_pro
 def client_api_auth(client_api, user):
     access_token, _ = jwt_encode(user)
     client_api.cookies.load({'jwt-access-token': access_token})
+    return client_api
+
+
+@pytest.fixture
+def client_api_auth_access_refresh(client_api, user):
+    access_token, refresh_token = jwt_encode(user)
+    client_api.cookies.load({'jwt-access-token': access_token})
+    client_api.cookies.load({'jwt-refresh-token': refresh_token})
     return client_api

@@ -4,10 +4,10 @@ from http import HTTPStatus
 from uuid import uuid4
 
 import pytest
+from dj_rest_auth.utils import jwt_encode
 from django.core.files.base import ContentFile
 from django.shortcuts import resolve_url
 from django.utils.timezone import make_aware
-from dj_rest_auth.utils import jwt_encode
 
 from web_server.service.models import ClinicDosimetryAnalysis, Order
 from web_server.service.tests.conftest import DATETIME_TIMEZONE

@@ -1,6 +1,8 @@
 from http import HTTPStatus
 from smtplib import SMTPException
 
+from dj_rest_auth.jwt_auth import set_jwt_cookies
+from dj_rest_auth.utils import jwt_encode
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework.decorators import (
@@ -9,9 +11,6 @@ from rest_framework.decorators import (
     permission_classes,
 )
 from rest_framework.response import Response
-from dj_rest_auth.jwt_auth import set_jwt_cookies
-from dj_rest_auth.utils import jwt_encode
-
 
 from web_server.core.email import send_email_verification
 from web_server.core.errors_msg import list_errors
@@ -78,25 +77,3 @@ def register(request):
     set_jwt_cookies(response, access_token, refresh_token)
 
     return response
-
-
-# class MyObtainAuthToken(ObtainAuthToken):
-#     """
-#     Error response example
-#     {
-#     "errors": ["Username field is required.", "Password field is required."]
-#     }
-#     """
-
-#     renderer_classes = (CamelCaseJSONRenderer,)
-
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         if not serializer.is_valid(raise_exception=False):
-#             return Response(
-#                 {'errors': list_errors(serializer.errors)},
-#                 status=HTTPStatus.BAD_REQUEST,
-#             )
-#         user = serializer.validated_data['user']
-#         token, created = Token.objects.get_or_create(user=user)
-#         return Response({'id': user.uuid, 'token': token.key, 'is_staff': user.is_staff})

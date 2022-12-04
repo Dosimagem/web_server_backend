@@ -3,9 +3,9 @@ from http import HTTPStatus
 from uuid import uuid4
 
 import pytest
+from dj_rest_auth.utils import jwt_encode
 from django.core.files.base import ContentFile
 from django.shortcuts import resolve_url
-from dj_rest_auth.utils import jwt_encode
 
 from web_server.service.models import Order, RadiosynoAnalysis
 

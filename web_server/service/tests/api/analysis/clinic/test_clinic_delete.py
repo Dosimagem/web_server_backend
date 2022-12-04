@@ -1,8 +1,8 @@
 from http import HTTPStatus
 from uuid import uuid4
 
-from django.shortcuts import resolve_url
 from dj_rest_auth.utils import jwt_encode
+from django.shortcuts import resolve_url
 
 from web_server.service.models import ClinicDosimetryAnalysis, Order
 
