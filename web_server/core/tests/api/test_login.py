@@ -6,8 +6,10 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
+from freezegun import freeze_time
 
 from web_server.conftest import HTTP_METHODS
+from web_server.core.tests.conftest import asserts_cookie_tokens
 
 User = get_user_model()
 
@@ -16,6 +18,7 @@ URL_LOGIN = resolve_url('core:login')
 pytestmark = pytest.mark.django_db
 
 
+@freeze_time('2022-01-01 00:00:00')
 def test_successfull_login(client_api, user_info, user):
 
     payload = {
@@ -23,15 +26,16 @@ def test_successfull_login(client_api, user_info, user):
         'password': user_info['password'],
     }
 
-    response = client_api.post(URL_LOGIN, data=payload, format='json')
+    resp = client_api.post(URL_LOGIN, data=payload, format='json')
 
-    body = response.json()
+    body = resp.json()
 
-    assert response.status_code == HTTPStatus.OK
+    assert resp.status_code == HTTPStatus.OK
 
     assert body['id'] == str(user.uuid)
-    assert body['token'] == user.auth_token.key
     assert body['isStaff'] == user.is_staff
+
+    asserts_cookie_tokens(resp)
 
 
 def test_fail_wrong_username(client_api, user_info, user):
@@ -41,11 +45,11 @@ def test_fail_wrong_username(client_api, user_info, user):
         'password': user_info['password'],
     }
 
-    response = client_api.post(URL_LOGIN, data=payload, format='json')
+    resp = client_api.post(URL_LOGIN, data=payload, format='json')
 
-    body = response.json()
+    body = resp.json()
 
-    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
 
     assert body == {'errors': [_('Unable to log in with provided credentials.')]}
 
@@ -57,11 +61,11 @@ def test_fail_wrong_email(client_api, user_info, user):
         'password': user_info['password'],
     }
 
-    response = client_api.post(URL_LOGIN, data=payload, format='json')
+    resp = client_api.post(URL_LOGIN, data=payload, format='json')
 
-    body = response.json()
+    body = resp.json()
 
-    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
 
     assert body == {'errors': [_('Unable to log in with provided credentials.')]}
 
@@ -78,22 +82,6 @@ def test_fail_login_missing_password(client_api, user_info):
         expected = ['O campo senha é obrigatório.']
     else:
         expected = ['Password field is required.']
-
-    assert body == {'errors': expected}
-
-
-def test_fail_login_missing_username(client_api, user_info):
-
-    wrong_login = {'password': user_info['password']}
-    resp = client_api.post(URL_LOGIN, data=wrong_login, format='json')
-    body = resp.json()
-
-    assert resp.status_code == HTTPStatus.BAD_REQUEST
-
-    if get_language() == 'pt-br' and settings.USE_I18N:
-        expected = ['O campo username é obrigatório.']
-    else:
-        expected = ['Username field is required.']
 
     assert body == {'errors': expected}
 

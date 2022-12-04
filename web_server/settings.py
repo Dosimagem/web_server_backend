@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 import dj_database_url
@@ -50,7 +51,6 @@ INSTALLED_APPS = [
     'web_server.notification',
     #
     'rest_framework',
-    'rest_framework.authtoken',
     #
     'django_cleanup.apps.CleanupConfig',
 ]
@@ -198,7 +198,7 @@ if AWS_ACCESS_KEY_ID:  # pragma: no cover
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS config
-
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default=[], cast=Csv())
 
 # FRONT DOMAIN
@@ -225,9 +225,45 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'web_server.core.auth.MyTokenAuthentication',
+        'web_server.core.auth.MyJWTCookieAuthentication',
     ],
 }
+
+
+# simpleJWT
+
+SIGNING_KEY = config('SIGNING_KEY')
+
+ACCESS_TOKEN_LIFETIME = config('ACCESS_TOKEN_LIFETIME', cast=int, default=15)
+REFRESH_TOKEN_LIFETIME = config('REFRESH_TOKEN_LIFETIME', cast=int, default=48 * 60)
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=ACCESS_TOKEN_LIFETIME),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=REFRESH_TOKEN_LIFETIME),
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SIGNING_KEY,
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'USER_ID_FIELD': 'uuid',
+    'USER_ID_CLAIM': 'id',
+}
+
+# dj-rest-auth
+REST_AUTH_TOKEN_MODEL = None
+JWT_AUTH_COOKIE_USE_CSRF = False
+REST_SESSION_LOGIN = False
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'jwt-access-token'
+JWT_AUTH_REFRESH_COOKIE = 'jwt-refresh-token'
+JWT_AUTH_SECURE = config('JWT_AUTH_SECURE', cast=bool, default=True)
+JWT_AUTH_HTTPONLY = True
+JWT_AUTH_SAMESITE = 'Lax'
+JWT_AUTH_REFRESH_COOKIE_PATH = '/api/v1/users/auth/token/'
+JWT_AUTH_IN_BODY = False
+
+
+# Avoid conflict between Admin and React front
+SESSION_COOKIE_PATH = '/dosimagem/admin/'
 
 
 # TODO: Esse aconfiguração per informações importantes da requesições

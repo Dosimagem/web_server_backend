@@ -14,5 +14,7 @@ django-debug-toolbar
 validate-docbr
 requests
 sentry-sdk
-attrs
 pyjwt
+djangorestframework-simplejwt
+dj-rest-auth
+freezegun

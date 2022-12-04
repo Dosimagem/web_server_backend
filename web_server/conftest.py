@@ -1,6 +1,6 @@
 import pytest
+from dj_rest_auth.utils import jwt_encode
 from faker import Faker
-from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
 from web_server.core.models import UserProfile
@@ -8,6 +8,7 @@ from web_server.core.models import UserProfile
 fake = Faker()
 fake.seed_instance(4321)
 
+# TODO: Retirar isso
 HTTP_METHODS = {
     'get': APIClient().get,
     'post': APIClient().post,
@@ -116,7 +117,6 @@ def user(django_user_model, user_info, user_profile_info):
     user.is_active = True
     user.save()
     UserProfile.objects.filter(user=user).update(**user_profile_info)
-    Token.objects.create(user=user)
     return django_user_model.objects.get(id=user.id)
 
 
@@ -127,11 +127,19 @@ def second_user(user, django_user_model, second_user_login_info, second_user_pro
     new_user.is_active = True
     new_user.save()
     UserProfile.objects.filter(user=new_user).update(**second_user_profile_info)
-    Token.objects.create(user=new_user)
     return django_user_model.objects.get(id=new_user.id)
 
 
 @pytest.fixture
 def client_api_auth(client_api, user):
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + user.auth_token.key)
+    access_token, _ = jwt_encode(user)
+    client_api.cookies.load({'jwt-access-token': access_token})
+    return client_api
+
+
+@pytest.fixture
+def client_api_auth_access_refresh(client_api, user):
+    access_token, refresh_token = jwt_encode(user)
+    client_api.cookies.load({'jwt-access-token': access_token})
+    client_api.cookies.load({'jwt-refresh-token': refresh_token})
     return client_api
