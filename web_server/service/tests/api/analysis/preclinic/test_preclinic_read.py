@@ -1,6 +1,7 @@
 from http import HTTPStatus
 from uuid import uuid4
 
+from dj_rest_auth.utils import jwt_encode
 from django.shortcuts import resolve_url
 
 from web_server.service.models import FORMAT_DATE, Order, PreClinicDosimetryAnalysis
@@ -93,13 +94,11 @@ def test_fail_read_preclinic_dosimetry_using_another_user(client_api, second_use
     order_uuid = preclinic_dosimetry.order.uuid
     analysis_uuid = preclinic_dosimetry.uuid
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + second_user.auth_token.key)
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
+
+    access_token, _ = jwt_encode(second_user)
+    client_api.cookies.load({'jwt-access-token': access_token})
+
     resp = client_api.get(url)
     body = resp.json()
 

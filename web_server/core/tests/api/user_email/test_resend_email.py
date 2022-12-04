@@ -61,8 +61,14 @@ def test_wrong_token(client_api, user):
 
     url = resolve_url(END_POINT, user_id=user.uuid)
 
-    client_api.credentials(HTTP_AUTHORIZATION='Bearer ' + 'token')
+    client_api.cookies.load({'jwt-access-token': 'token'})
     response = client_api.post(url)
 
+    expected = {
+        'code': 'token_not_valid',
+        'detail': 'Given token not valid for any token type',
+        'messages': [{'message': 'Token is invalid or expired', 'tokenClass': 'AccessToken', 'tokenType': 'access'}],
+    }
+
     assert response.status_code == HTTPStatus.UNAUTHORIZED
-    assert response.json() == {'detail': 'Token inválido.'}
+    assert response.json() == expected
