@@ -260,7 +260,7 @@ JWT_AUTH_HTTPONLY = True
 JWT_AUTH_SAMESITE = 'Lax'
 JWT_AUTH_REFRESH_COOKIE_PATH = '/api/v1/users/auth/token/'
 JWT_AUTH_IN_BODY = False
-
+ACCOUNT_LOGOUT_ON_GET = True
 
 # Avoid conflict between Admin and React front
 SESSION_COOKIE_PATH = '/dosimagem/admin/'
