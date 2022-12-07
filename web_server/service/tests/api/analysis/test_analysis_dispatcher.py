@@ -61,12 +61,7 @@ def test_read_update_delete_analysis_not_allowed_method(client_api_auth, clinic_
     order_uuid = clinic_dosimetry.order.uuid
     analysis_uuid = clinic_dosimetry.uuid
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
 
     resp = client_api_auth.post(url)
     assert resp.status_code == HTTPStatus.METHOD_NOT_ALLOWED
@@ -105,12 +100,7 @@ def test_read_update_delete_analysis_auth(client_api, second_user, clinic_dosime
     order_uuid = clinic_dosimetry.order.uuid
     analysis_uuid = clinic_dosimetry.uuid
 
-    url = resolve_url(
-        'service:analysis-read-update-delete',
-        user_uuid,
-        order_uuid,
-        analysis_uuid,
-    )
+    url = resolve_url('service:analysis-read-update-delete', user_uuid, order_uuid, analysis_uuid)
 
     resp = client_api.get(url)
 

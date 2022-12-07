@@ -14,6 +14,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 from web_server.core.errors_msg import list_errors
 
@@ -62,6 +63,16 @@ class MyRefreshViewWithCookieSupport(TokenRefreshView):
             response.data['refrash_token_expiration'] = timezone.now() + jwt_settings.REFRESH_TOKEN_LIFETIME
 
         return super().finalize_response(request, response, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
+
+        return Response(serializer.validated_data, status=HTTPStatus.OK)
 
 
 @api_view(['GET'])
