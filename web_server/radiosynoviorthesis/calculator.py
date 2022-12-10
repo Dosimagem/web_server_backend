@@ -26,3 +26,7 @@ def radiosysnoviorthesis(radionuclide: str, thickness: str, surface: float) -> D
     mCi = MBq / 37
 
     return {'MBq': round(MBq, 2), 'mCi': round(mCi, 2)}
+
+
+def list_isotopes():
+    return PARAM_M.keys()
