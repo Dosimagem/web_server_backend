@@ -18,3 +18,4 @@ pyjwt
 djangorestframework-simplejwt
 dj-rest-auth
 freezegun
+attrs
