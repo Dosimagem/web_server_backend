@@ -1,4 +1,4 @@
-FROM python:3.10.7-alpine3.16
+FROM python:3.8.16-alpine3.17
 
 ARG USER_DIR=/user/app
 
@@ -8,6 +8,9 @@ WORKDIR $USER_DIR
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+
+#
+RUN apk add build-base
 
 # copy project
 COPY web_server/ web_server

@@ -208,11 +208,13 @@ FRONT_DOMAIN = config('FRONT_DOMAIN')
 
 # djangorestframework-camel-case
 
+DEFAULT_RENDERER_CLASSES = ['djangorestframework_camel_case.render.CamelCaseJSONRenderer']
+
+if DEBUG:
+    DEFAULT_RENDERER_CLASSES.append('djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer')
+
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
-        'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
-    ),
+    'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES,
     'DEFAULT_PARSER_CLASSES': (
         'djangorestframework_camel_case.parser.CamelCaseFormParser',
         'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
