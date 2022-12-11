@@ -20,7 +20,6 @@ services:
       - ./staticfiles:/user/app/staticfiles
       - ./mediafiles:/user/app/mediafiles
 
-
   database:
     container_name: dosimagem_db
     image: postgres:14.5-alpine
@@ -37,8 +36,6 @@ services:
     ports:
       - 5434:5432
 
-
-
   nginx:
     container_name: dosimagem_nginx
     image: nginx:1.23.2-alpine
@@ -46,7 +43,6 @@ services:
     volumes:
       - ./docker/nginx/:/etc/nginx/conf.d/
       - ./staticfiles:/var/www/site/staticfiles
-
 
 networks:
   dosimagem_nw:

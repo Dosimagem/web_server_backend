@@ -239,7 +239,7 @@ Seguido de
 docker-compose up
 ```
 
-O primeiro compando precisa ser excutado apenas na primeira vez para criar a imagem `dosimagem_api`.
+O primeiro comando precisa ser excutado apenas na primeira vez para criar a imagem `dosimagem_api`.
 
 
 A `api` estará dispnivel em `localhost`.
