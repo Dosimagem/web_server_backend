@@ -47,6 +47,8 @@ distlib==0.3.6
     # via virtualenv
 exceptiongroup==1.0.1
     # via pytest
+execnet==1.9.0
+    # via pytest-xdist
 executing==1.2.0
     # via stack-data
 faker==15.3.1
@@ -141,6 +143,7 @@ pytest==7.2.0
     #   pytest-django
     #   pytest-mock
     #   pytest-responses
+    #   pytest-xdist
 pytest-codecov==0.5.0
     # via -r requirements-dev.in
 pytest-cov==4.0.0
@@ -150,6 +153,8 @@ pytest-django==4.5.2
 pytest-mock==3.10.0
     # via -r requirements-dev.in
 pytest-responses==0.5.1
+    # via -r requirements-dev.in
+pytest-xdist==3.1.0
     # via -r requirements-dev.in
 python-dateutil==2.8.2
     # via

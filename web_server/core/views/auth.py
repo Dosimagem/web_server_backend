@@ -16,7 +16,10 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.views import TokenRefreshView
 
+
+from web_server.core.serializers import ChangePasswordSerializer
 from web_server.core.errors_msg import list_errors
+from web_server.core.decorators import user_from_token_and_user_from_url
 
 
 class MyLoginView(LoginView):
@@ -78,3 +81,22 @@ class MyRefreshViewWithCookieSupport(TokenRefreshView):
 @api_view(['GET'])
 def am_i_auth(request):
     return Response({'message': f'{request.user.profile.name} is authenticated.'})
+
+
+@api_view(['POST'])
+@user_from_token_and_user_from_url
+def change_password(request, user_id):
+
+    user = request.user
+    data = request.data
+
+    serializer = ChangePasswordSerializer(data=data, instance=user)
+
+    if not serializer.is_valid():
+        return Response(data={'errors': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+    password = serializer.validated_data['new_password1']
+    user.set_password(password)
+    user.save()
+
+    return Response(data={'message': 'Senha atualizada.'})
