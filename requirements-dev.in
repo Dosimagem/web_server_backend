@@ -4,6 +4,7 @@ ipython
 pytest-django
 codecov
 pytest-codecov
+pytest-xdist
 pre_commit
 pip-audit
 pytest-responses

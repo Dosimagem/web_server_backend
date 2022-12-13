@@ -5,6 +5,7 @@ from .views.auth import (
     MyLogoutView,
     MyRefreshViewWithCookieSupport,
     am_i_auth,
+    change_password,
 )
 from .views.register import register
 from .views.users import (
@@ -22,6 +23,7 @@ urlpatterns = [
     path('users/login/', MyLoginView.as_view(), name='login'),
     path('users/auth/token/logout/', MyLogoutView.as_view(), name='logout'),
     path('users/auth/token/refresh/', MyRefreshViewWithCookieSupport.as_view(), name='refresh_token'),
+    path('users/<uuid:user_id>/change_password/', change_password, name='change_password'),
     # user info
     path('users/<uuid:user_id>', users_read_update, name='users-read-update'),
     path('users/<uuid:user_id>/email/', read_update_email, name='read-update-email'),
