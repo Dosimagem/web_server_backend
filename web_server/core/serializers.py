@@ -36,3 +36,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         if not user.check_password(value):
             raise serializers.ValidationError('Password antigo não está correto.')
         return value
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()

@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from smtplib import SMTPException
 
 from dj_rest_auth.jwt_auth import (
     CookieTokenRefreshSerializer,
@@ -10,16 +11,23 @@ from dj_rest_auth.jwt_auth import (
 from dj_rest_auth.views import LoginView, LogoutView
 from django.conf import settings
 from django.utils import timezone
-from rest_framework.decorators import api_view
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.views import TokenRefreshView
 
 
-from web_server.core.serializers import ChangePasswordSerializer
+
+from web_server.core.serializers import ChangePasswordSerializer, ResetPasswordSerializer
 from web_server.core.errors_msg import list_errors
 from web_server.core.decorators import user_from_token_and_user_from_url
+from web_server.core.email import send_reset_password
+
+
+User = get_user_model()
 
 
 class MyLoginView(LoginView):
@@ -100,3 +108,26 @@ def change_password(request, user_id):
     user.save()
 
     return Response(data={'message': 'Senha atualizada.'})
+
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
+def reset_password(request):
+
+    serializer = ResetPasswordSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response({'errors': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+    try:
+        user = User.objects.get(email=serializer.validated_data['email'])
+    except ObjectDoesNotExist:
+        return Response({'errors': ['Este email não esta cadastrado.']}, status=HTTPStatus.BAD_REQUEST)
+
+    try:
+        send_reset_password(user)
+    except SMTPException:
+        return Response({'errors': ['Email de verificação não foi enviado.']}, status=HTTPStatus.FAILED_DEPENDENCY)
+
+    return Response({'message': 'Email enviado.'})

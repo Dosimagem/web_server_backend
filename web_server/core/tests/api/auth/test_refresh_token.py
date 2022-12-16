@@ -6,7 +6,7 @@ from freezegun import freeze_time
 
 from web_server.core.tests.conftest import asserts_cookie_tokens
 
-END_POINT = 'core:refresh_token'
+END_POINT = 'core:refresh-token'
 
 
 @freeze_time('2022-01-01 00:00:00')

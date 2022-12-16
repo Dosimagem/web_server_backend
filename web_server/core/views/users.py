@@ -132,6 +132,6 @@ def email_resend(request, user_id):
     try:
         send_email_verification(user)
     except SMTPException:
-        return Response({'errors': ['Email de verificação não foi enviado.']})
+        return Response({'errors': ['Email de verificação não foi enviado.']}, status=HTTPStatus.FAILED_DEPENDENCY)
 
     return Response(status=HTTPStatus.NO_CONTENT)

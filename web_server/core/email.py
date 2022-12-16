@@ -30,3 +30,16 @@ def send_email_verification(user):
     user.sent_verification_email = True
     user.email_verified = False
     user.save()
+
+
+def send_reset_password(user):
+
+    token = _jwt_verification_email_secret(user)
+    email = user.email
+    context = {'link': f'{FRONT_DOMAIN}/users/{user.uuid}/reset-password/?token={token}'}
+    body = render_to_string('core/reset_password.txt', context)
+    send_mail('Dosimagem - Resetando a senha', body, DOSIMAGEM_EMAIL, [email])
+
+    user.reset_password_secret = token
+    user.sent_reset_password_email = True
+    user.save()

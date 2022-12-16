@@ -83,6 +83,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     sent_verification_email = models.BooleanField(default=False)
     verification_email_secret = models.TextField(default=None, null=True)
 
+    reset_password_secret = models.TextField(default=None, null=True)
+    sent_reset_password_email = models.BooleanField(default=False)
+
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     objects = UserManager()
