@@ -100,7 +100,10 @@ def email_verify(request, user_id):
     try:
         user = User.objects.get(verification_email_secret=token)
     except ObjectDoesNotExist:
-        return Response(data={'errors': ['Token de verificação inválido ou expirado.']}, status=HTTPStatus.BAD_REQUEST)
+        return Response(
+            data={'errors': ['Token de verificação inválido ou expirado para esse usuário.']},
+            status=HTTPStatus.BAD_REQUEST,
+        )
 
     if not user.sent_verification_email:
         return Response(data={'errors': ['Email de verificação ainda não foi enviado.']}, status=HTTPStatus.CONFLICT)
@@ -109,9 +112,12 @@ def email_verify(request, user_id):
         return Response(data={'errors': ['Email já foi verificado.']}, status=HTTPStatus.CONFLICT)
 
     try:
-        payload = decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        payload = decode(token, settings.SIGNING_KEY, algorithms=['HS256'])
     except ExpiredSignatureError:
-        return Response(data={'errors': ['Token de verificação inválido ou expirado.']}, status=HTTPStatus.CONFLICT)
+        return Response(
+            data={'errors': ['Token de verificação inválido ou expirado para esse usuário.']},
+            status=HTTPStatus.CONFLICT,
+        )
 
     if not constant_time_compare(user_id, payload['id']):
         return Response(data={'errors': ['Conflito no id do usuario.']}, status=HTTPStatus.CONFLICT)

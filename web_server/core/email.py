@@ -15,7 +15,7 @@ FRONT_DOMAIN = settings.FRONT_DOMAIN
 
 def _jwt_verification_email_secret(user):
     jwt_payload = {'id': str(user.uuid), 'exp': datetime.now(tz=timezone.utc) + timedelta(seconds=24 * 60 * 60)}
-    return jwt.encode(jwt_payload, settings.SECRET_KEY)
+    return jwt.encode(jwt_payload, settings.SIGNING_KEY)
 
 
 def send_email_verification(user):

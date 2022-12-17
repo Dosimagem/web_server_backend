@@ -10,22 +10,30 @@ from dj_rest_auth.jwt_auth import (
 )
 from dj_rest_auth.views import LoginView, LogoutView
 from django.conf import settings
-from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from django.utils import timezone
+from django.utils.crypto import constant_time_compare
+from jwt import decode
+from jwt.exceptions import ExpiredSignatureError
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.views import TokenRefreshView
 
-
-
-from web_server.core.serializers import ChangePasswordSerializer, ResetPasswordSerializer
-from web_server.core.errors_msg import list_errors
 from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.core.email import send_reset_password
-
+from web_server.core.errors_msg import list_errors
+from web_server.core.serializers import (
+    ChangePasswordSerializer,
+    ResetPasswordConfirmSerializer,
+    ResetPasswordSerializer,
+)
 
 User = get_user_model()
 
@@ -131,3 +139,46 @@ def reset_password(request):
         return Response({'errors': ['Email de verificação não foi enviado.']}, status=HTTPStatus.FAILED_DEPENDENCY)
 
     return Response({'message': 'Email enviado.'})
+
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
+def reset_password_confirm(request, user_id):
+
+    serializer = ResetPasswordConfirmSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response({'errors': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+    new_password = serializer.validated_data['new_password1']
+    token = serializer.validated_data['token']
+
+    try:
+        user = User.objects.get(uuid=user_id, reset_password_secret=token)
+    except ObjectDoesNotExist:
+        return Response(
+            data={'errors': ['Token de verificação inválido ou expirado para esse usuário.']},
+            status=HTTPStatus.BAD_REQUEST,
+        )
+
+    if not user.sent_reset_password_email:
+        return Response(data={'errors': ['Email ainda não foi enviado.']}, status=HTTPStatus.CONFLICT)
+
+    try:
+        payload = decode(token, settings.SIGNING_KEY, algorithms=['HS256'])
+    except ExpiredSignatureError:
+        return Response(
+            data={'errors': ['Token de verificação inválido ou expirado para esse usuário.']},
+            status=HTTPStatus.CONFLICT,
+        )
+
+    if not constant_time_compare(user_id, payload['id']):
+        return Response(data={'errors': ['Conflito no id do usuario.']}, status=HTTPStatus.CONFLICT)
+
+    user.set_password(new_password)
+    user.reset_password_secret = None
+    user.sent_reset_password_email = False
+    user.save()
+
+    return Response(status=HTTPStatus.NO_CONTENT)

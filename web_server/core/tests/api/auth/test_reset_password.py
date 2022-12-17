@@ -1,10 +1,9 @@
 from http import HTTPStatus
 
-from django.shortcuts import resolve_url
 from django.core import mail
+from django.shortcuts import resolve_url
 
 from web_server.core.email import DOSIMAGEM_EMAIL
-
 
 END_POINT = 'core:reset-password'
 
@@ -13,7 +12,7 @@ def test_send_reset_password(client_api, user):
 
     url = resolve_url(END_POINT)
 
-    data = {"email": user.email}
+    data = {'email': user.email}
 
     resp = client_api.post(url, data=data, format='json')
 
@@ -55,12 +54,11 @@ def test_reset_password_missing_email(client_api, user):
     assert not user.sent_reset_password_email
 
 
-
 def test_reset_password_invalid_email(client_api, user):
 
     url = resolve_url(END_POINT)
 
-    data = {"email": user.email.replace('@', '*')}
+    data = {'email': user.email.replace('@', '*')}
 
     resp = client_api.post(url, data=data, format='json')
 
@@ -78,7 +76,7 @@ def test_rest_password_email_not_register(client_api, db):
 
     url = resolve_url(END_POINT)
 
-    data = {"email": 'new_email@email.com'}
+    data = {'email': 'new_email@email.com'}
 
     resp = client_api.post(url, data=data, format='json')
 
