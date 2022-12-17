@@ -15,7 +15,7 @@ FRONT_DOMAIN = settings.FRONT_DOMAIN
 
 def _jwt_verification_email_secret(user):
     jwt_payload = {'id': str(user.uuid), 'exp': datetime.now(tz=timezone.utc) + timedelta(seconds=24 * 60 * 60)}
-    return jwt.encode(jwt_payload, settings.SECRET_KEY)
+    return jwt.encode(jwt_payload, settings.SIGNING_KEY)
 
 
 def send_email_verification(user):
@@ -29,4 +29,17 @@ def send_email_verification(user):
     user.verification_email_secret = token
     user.sent_verification_email = True
     user.email_verified = False
+    user.save()
+
+
+def send_reset_password(user):
+
+    token = _jwt_verification_email_secret(user)
+    email = user.email
+    context = {'link': f'{FRONT_DOMAIN}/users/{user.uuid}/reset-password/?token={token}'}
+    body = render_to_string('core/reset_password.txt', context)
+    send_mail('Dosimagem - Resetando a senha', body, DOSIMAGEM_EMAIL, [email])
+
+    user.reset_password_secret = token
+    user.sent_reset_password_email = True
     user.save()

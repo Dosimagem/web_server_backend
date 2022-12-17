@@ -233,7 +233,6 @@ REST_FRAMEWORK = {
 
 
 # simpleJWT
-
 SIGNING_KEY = config('SIGNING_KEY')
 
 ACCESS_TOKEN_LIFETIME = config('ACCESS_TOKEN_LIFETIME', cast=int, default=15)

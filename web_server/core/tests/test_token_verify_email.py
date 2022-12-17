@@ -17,11 +17,11 @@ def test_token_verify_email_expiration_time(user):
 
         token = _jwt_verification_email_secret(user)
 
-        payload = decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        payload = decode(token, settings.SIGNING_KEY, algorithms=['HS256'])
 
         assert str(user.uuid) == payload['id']
 
         frozen_datetime.move_to('2000-1-2')
 
         with pytest.raises(ExpiredSignatureError):
-            decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            decode(token, settings.SIGNING_KEY, algorithms=['HS256'])

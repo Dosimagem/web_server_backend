@@ -87,7 +87,7 @@ def test_fail_token_used_twice(client_api, user):
 
     body = resp.json()
 
-    assert {'errors': ['Token de verificação inválido ou expirado.']} == body
+    assert {'errors': ['Token de verificação inválido ou expirado para esse usuário.']} == body
 
 
 def test_fail_token_invalid(client_api, user):
@@ -104,7 +104,9 @@ def test_fail_token_invalid(client_api, user):
 
     body = resp.json()
 
-    assert {'errors': ['Token de verificação inválido ou expirado.']} == body
+    expected = {'errors': ['Token de verificação inválido ou expirado para esse usuário.']}
+
+    assert expected == body
 
 
 def test_missing_token(client_api, user):
@@ -145,7 +147,9 @@ def test_fail_token_expired(client_api, user):
 
         body = resp.json()
 
-        assert {'errors': ['Token de verificação inválido ou expirado.']} == body
+        expected = {'errors': ['Token de verificação inválido ou expirado para esse usuário.']}
+
+        assert expected == body
 
 
 def test_allowed_method(client_api, user):
