@@ -127,6 +127,9 @@ def test_missing_token(client_api, user):
 
 
 def test_fail_token_expired(client_api, user):
+    """
+    Token must expire afte 24 h
+    """
 
     initial_datetime = datetime(year=2000, month=1, day=1)
 
