@@ -35,9 +35,11 @@ class Signatures:
 
 signature1 = Signatures(
     'e3b6a8d7-3bb3-4d2e-9f44-5c1780c214cf',
-    'RSH mensal',
+    'Pacote Dosimagem mensal',
     [
         asdict(benefit1),
+        asdict(benefit2),
+        asdict(benefit3),
     ],
     Decimal('60.00'),
     None,
@@ -51,9 +53,11 @@ signature1 = Signatures(
 
 signature2 = Signatures(
     '9e00ee87-2223-4807-9885-11161b88bac1',
-    'RSV Anual',
+    'Pacote Dosimagem Anual',
     [
         asdict(benefit1),
+        asdict(benefit2),
+        asdict(benefit3),
     ],
     Decimal('600.00'),
     {
@@ -66,6 +70,7 @@ signature2 = Signatures(
 )
 
 LIST_SIGNATURES = [signature1, signature2]
+# LIST_SIGNATURES = [signature1]
 
 
 class SignatureModel:
