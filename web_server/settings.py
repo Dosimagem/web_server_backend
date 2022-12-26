@@ -85,15 +85,6 @@ TEMPLATES = [
     },
 ]
 
-# Configuracao de envia de Email
-EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
-
 WSGI_APPLICATION = 'web_server.wsgi.application'
 
 INTERNAL_IPS = config('INTERNAL_IPS', cast=Csv(), default=[])
@@ -202,7 +193,6 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default=[], cast=Csv())
 
 # FRONT DOMAIN
-
 FRONT_DOMAIN = config('FRONT_DOMAIN')
 
 
@@ -313,3 +303,14 @@ if SENTRY_DSN:
     )
 
 pt_BR_formats.DATETIME_FORMAT = 'd/m/Y H:i:s'
+
+# Email configs
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+
+EMAIL_TOKEN_LIFETIME = config('EMAIL_TOKEN_LIFETIME', default=24 * 60 * 60)

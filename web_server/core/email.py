@@ -11,10 +11,11 @@ User = get_user_model()
 
 DOSIMAGEM_EMAIL = settings.DEFAULT_FROM_EMAIL
 FRONT_DOMAIN = settings.FRONT_DOMAIN
+EMAIL_TOKEN_LIFETIME = settings.EMAIL_TOKEN_LIFETIME
 
 
 def _jwt_verification_email_secret(user):
-    jwt_payload = {'id': str(user.uuid), 'exp': datetime.now(tz=timezone.utc) + timedelta(seconds=24 * 60 * 60)}
+    jwt_payload = {'id': str(user.uuid), 'exp': datetime.now(tz=timezone.utc) + timedelta(seconds=EMAIL_TOKEN_LIFETIME)}
     return jwt.encode(jwt_payload, settings.SIGNING_KEY)
 
 

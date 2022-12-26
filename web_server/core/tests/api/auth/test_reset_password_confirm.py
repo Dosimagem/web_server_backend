@@ -92,6 +92,9 @@ def test_wrong_user(client_api, reset_email):
 
 
 def test_fail_token_expired(client_api, user):
+    """
+    The Token must exipere after 24 h
+    """
 
     initial_datetime = datetime(year=2000, month=1, day=1)
 
