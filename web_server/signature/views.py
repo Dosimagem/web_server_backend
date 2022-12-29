@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
+from http import HTTPStatus
 from uuid import uuid4
 
 from attrs import asdict, define, field
@@ -7,25 +8,27 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
+from web_server.signature.models import Signature
+from web_server.signature.serializers import SignatureByUserSerializer
 
 
 @define
-class Benefits:
+class Benefit:
     id = field(converter=str)
     name: str = field()
     uri: str = field()
 
 
-benefit1 = Benefits(id=uuid4(), name='RSV', uri='/dashboard/my-signatures/benefits/calculator')
-benefit2 = Benefits(id=uuid4(), name='Beneficio B', uri='/dashboard/my-signatures/benefits/beneficiob')
-benefit3 = Benefits(id=uuid4(), name='Beneficio C', uri='/dashboard/my-signatures/benefits/beneficioc')
+Benefit1 = Benefit(id=uuid4(), name='RSV', uri='/dashboard/my-signatures/Benefit/calculator')
+Benefit2 = Benefit(id=uuid4(), name='Beneficio B', uri='/dashboard/my-signatures/Benefit/beneficiob')
+Benefit3 = Benefit(id=uuid4(), name='Beneficio C', uri='/dashboard/my-signatures/Benefit/beneficioc')
 
 
 @define
 class Signatures:
     id = field(converter=str)
     name: str = field()
-    benefits: list = field()
+    Benefit: list = field()
     price: Decimal = field()
     hired_period: dict = field()
     test_period: dict = field()
@@ -37,9 +40,9 @@ signature1 = Signatures(
     'e3b6a8d7-3bb3-4d2e-9f44-5c1780c214cf',
     'Pacote Dosimagem mensal',
     [
-        asdict(benefit1),
-        asdict(benefit2),
-        asdict(benefit3),
+        asdict(Benefit1),
+        asdict(Benefit2),
+        asdict(Benefit3),
     ],
     Decimal('60.00'),
     None,
@@ -55,9 +58,9 @@ signature2 = Signatures(
     '9e00ee87-2223-4807-9885-11161b88bac1',
     'Pacote Dosimagem Anual',
     [
-        asdict(benefit1),
-        asdict(benefit2),
-        asdict(benefit3),
+        asdict(Benefit1),
+        asdict(Benefit2),
+        asdict(Benefit3),
     ],
     Decimal('600.00'),
     {
@@ -94,17 +97,28 @@ signatures_fake_db = SignatureModel(LIST_SIGNATURES)
 @user_from_token_and_user_from_url
 def signature_list(request, user_id):
 
-    signature_list = [asdict(s) for s in signatures_fake_db.all()]
+    user = request.user
 
-    data = {'count': len(signature_list), 'row': signature_list}
+    qs = user.signatures.all()
 
-    return Response(data=data)
+    serializer = SignatureByUserSerializer(qs, many=True)
+
+    list_ = serializer.data
+
+    return Response(data={'count': len(list_), 'row': list_})
 
 
 @api_view(['GET'])
 @user_from_token_and_user_from_url
 def signature_read(request, user_id, signature_id):
 
-    signature = signatures_fake_db.find(signature_id)
+    user = request.user
 
-    return Response(data=asdict(signature))
+    try:
+        signature = user.signatures.get(uuid=signature_id)
+    except Signature.DoesNotExist:
+        return Response(data={'errors': 'Assinatura não encontrada para esse usuário'}, status=HTTPStatus.NOT_FOUND)
+
+    serializer = SignatureByUserSerializer(signature)
+
+    return Response(data=serializer.data)

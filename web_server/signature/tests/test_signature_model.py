@@ -1,101 +1,66 @@
 from datetime import datetime
-from decimal import Decimal
 
 import pytest
-from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 
-from web_server.signature.models import Signature, Benefits
+from web_server.signature.models import Signature
+
+pytestmark = pytest.mark.django_db
 
 
-@pytest.fixture
-def benefits_list(db):
-    b1 = Benefits(name='B1', uri='/benefits/B1')
-    b2 = Benefits(name='B2', uri='/benefits/B2')
-    b3 = Benefits(name='B3', uri='/benefits/B3')
-    return Benefits.objects.bulk_create([b1, b2, b3])
-
-@pytest.fixture
-def signature1(user, benefits_list):
-
-    sig = Signature.objects.create(
-        name='Pacote Dosimagem mensal',
-        price='60.00'
-    )
-
-    sig.users.add(user)
-    sig.benefits.add(*benefits_list)
-
-    return sig
-
-
-@pytest.fixture
-def signature2(user, second_user, benefits_list):
-
-    sig = Signature.objects.create(
-        name='Pacote Dosimagem Anual',
-        price='600.00'
-    )
-
-    sig.users.add(user, second_user)
-    sig.benefits.add(benefits_list[0])
-
-    return sig
-
-
-def test_create(signature1):
+def test_create(user_signature):
     assert Signature.objects.exists()
 
 
-def test_create_at_and_modified_at(signature1):
-    assert isinstance(signature1.created_at, datetime)
-    assert isinstance(signature1.modified_at, datetime)
+def test_create_at_and_modified_at(user_signature):
+    assert isinstance(user_signature.created_at, datetime)
+    assert isinstance(user_signature.modified_at, datetime)
 
 
-def test_str(signature1):
-    assert str(signature1) == signature1.name
+def test_str(user_signature):
+    assert str(user_signature) == user_signature.name
 
-def test_signatures_benefits_many_to_many_relation(signature1, signature2, benefits_list):
 
-    assert signature1.benefits.count() == 3
-    assert signature2.benefits.count() == 1
+def test_signatures_Benefit_many_to_many_relation(user_signature, user_other_signature, benefit_list):
 
-    b1, b2, b3 = benefits_list
+    assert user_signature.benefits.count() == 3
+    assert user_other_signature.benefits.count() == 1
+
+    b1, b2, b3 = benefit_list
 
     assert b1.signatures.count() == 2
     assert b2.signatures.count() == 1
     assert b3.signatures.count() == 1
 
-    assert set(b1.signatures.all()) == set([signature2, signature1])
-    assert b2.signatures.first() == signature1
-    assert b3.signatures.first() == signature1
+    assert set(b1.signatures.all()) == set([user_other_signature, user_signature])
+    assert b2.signatures.first() == user_signature
+    assert b3.signatures.first() == user_signature
 
 
-def test_signatures_user_many_to_many_relation(signature1, signature2, user, second_user):
+def test_signatures_user_one_to_many_relation(user_signature, user_other_signature, user):
 
-    assert signature1.users.count() == 1
-    assert signature2.users.count() == 2
+    assert user_signature.user == user
+    assert user_other_signature.user == user
 
     assert user.signatures.count() == 2
-    assert second_user.signatures.count() == 1
 
-    assert set(user.signatures.all()) == set([signature2, signature1])
-    assert second_user.signatures.first() == signature2
+    assert set(user.signatures.all()) == set([user_signature, user_other_signature])
 
 
-def test_detault_values(signature1):
+def test_detault_values(user_signature):
 
-    assert signature1.hired_period_init == None
-    assert signature1.hired_period_end == None
-    assert signature1.test_period_init == None
-    assert signature1.test_period_end == None
-    assert signature1.activated is False
+    assert user_signature.hired_period_init is None
+    assert user_signature.hired_period_end is None
+    assert user_signature.test_period_init is None
+    assert user_signature.test_period_end is None
+    assert user_signature.activated is False
     # assert signature1.bill_file == ''
 
 
-def test_test_hired_range_period(db):
+def test_test_hired_range_period(user):
 
     sig = Signature(
+        user=user,
         name='Pacote Dosimagem Anual',
         price='600.00',
         hired_period_init=datetime(2001, 1, 2),
@@ -106,6 +71,7 @@ def test_test_hired_range_period(db):
     assert sig.hired_period_end == datetime(2002, 1, 2)
 
     sig = Signature(
+        user=user,
         name='Pacote Dosimagem Anual',
         price='600.00',
         test_period_init=datetime(2001, 1, 2),
@@ -116,9 +82,10 @@ def test_test_hired_range_period(db):
     assert sig.test_period_end == datetime(2001, 2, 2)
 
 
-def test_end_must_be_after_init(db):
+def test_end_must_be_after_init(user):
 
     sig = Signature(
+        user=user,
         name='Pacote Dosimagem Anual',
         price='600.00',
         hired_period_init=datetime(2002, 1, 2),
@@ -137,3 +104,43 @@ def test_end_must_be_after_init(db):
 
     with pytest.raises(ValidationError):
         sig.full_clean()
+
+
+def test_hired_period_info(user):
+
+    sig = Signature(
+        user=user,
+        name='Pacote Dosimagem Anual',
+        price='600.00',
+        hired_period_init=datetime(2001, 1, 2),
+        hired_period_end=datetime(2002, 1, 2),
+    )
+
+    assert sig.hired_period == {'init': datetime(2001, 1, 2), 'end': datetime(2002, 1, 2)}
+
+    sig = Signature(
+        name='Pacote Dosimagem Anual',
+        price='600.00',
+    )
+
+    assert sig.hired_period is None
+
+
+def test_test_period_info(user):
+
+    sig = Signature(
+        user=user,
+        name='Pacote Dosimagem Anual',
+        price='600.00',
+        test_period_init=datetime(2001, 1, 2),
+        test_period_end=datetime(2002, 1, 2),
+    )
+
+    assert sig.test_period == {'init': datetime(2001, 1, 2), 'end': datetime(2002, 1, 2)}
+
+    sig = Signature(
+        name='Pacote Dosimagem Anual',
+        price='600.00',
+    )
+
+    assert sig.test_period is None

@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
-from django.http import JsonResponse
 from django.db import connection
+from django.http import JsonResponse
 
 
 class HealthCheckMiddleware:
