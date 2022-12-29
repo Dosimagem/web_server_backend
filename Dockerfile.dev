@@ -1,4 +1,4 @@
-FROM python:3.8.16-alpine3.17
+FROM python:3.8.16-slim-buster
 
 ARG USER_DIR=/user/app
 
@@ -9,24 +9,19 @@ WORKDIR $USER_DIR
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-#
-RUN apk add --no-cache build-base
+# RUN apt-get update && apt-get install -y\
+#     libpq-dev\
+#     gcc\
+#     && rm -rf /var/lib/apt/lists/*
 
 # copy project
 COPY web_server/ web_server
-COPY manage.py ./
-COPY requirements.txt ./
-COPY requirements-dev.txt ./
-COPY tox.ini ./
+COPY manage.py requirements.txt requirements-dev.txt tox.ini ./
 
 # install dependencies
-RUN pip install --upgrade pip
-RUN pip install pip-tools
-RUN pip-sync requirements.txt requirements-dev.txt
-
-RUN pip install no-cache-dir -U pip;\
-    pip install pip-tools;\
-    pip install -r requirements.txt
+RUN pip install -U pip &&\
+    pip install --no-cache-dir -r requirements.txt &&\
+    pip install --no-cache-dir -r requirements-dev.txt
 
 EXPOSE 8000
 

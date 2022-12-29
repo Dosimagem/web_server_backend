@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.dev
       context: .
     container_name: dosimagem_api_dev
-    image: dosimagem/api:v1
+    image: dosimagem-dev/api:v1
     environment:
       - DATABASE_URL=postgres://dosimagem:dosimagem@database/dosimagem_db
       - ALLOWED_HOSTS=*
