@@ -29,9 +29,9 @@ class Signature(CreationModificationBase):
     price = models.DecimalField('Price', max_digits=14, decimal_places=2)
     benefits = models.ManyToManyField(Benefit, related_name='signatures', through='SignatureBenefit')
 
-    hired_period_init = models.DateField(null=True, blank=True)
+    hired_period_initial = models.DateField(null=True, blank=True)
     hired_period_end = models.DateField(null=True, blank=True)
-    test_period_init = models.DateField(null=True, blank=True)
+    test_period_initial = models.DateField(null=True, blank=True)
     test_period_end = models.DateField(null=True, blank=True)
 
     activated = models.BooleanField(default=False)
@@ -41,22 +41,24 @@ class Signature(CreationModificationBase):
 
     def clean(self):
 
-        if (self.hired_period_init and self.hired_period_end) and (self.hired_period_init > self.hired_period_end):
+        if (self.hired_period_initial and self.hired_period_end) and (
+            self.hired_period_initial > self.hired_period_end
+        ):
             raise ValidationError({'hired_period_end': 'The start date must be after the end date.'})
 
-        if (self.test_period_init and self.test_period_end) and (self.test_period_init > self.test_period_end):
+        if (self.test_period_initial and self.test_period_end) and (self.test_period_initial > self.test_period_end):
             raise ValidationError({'test_period_end': 'The start date must be after the end date.'})
 
     @property
     def hired_period(self):
-        if self.hired_period_init and self.hired_period_end:
-            return {'init': self.hired_period_init, 'end': self.hired_period_end}
+        if self.hired_period_initial and self.hired_period_end:
+            return {'initial': self.hired_period_initial, 'end': self.hired_period_end}
         return None
 
     @property
     def test_period(self):
-        if self.test_period_init and self.test_period_end:
-            return {'init': self.test_period_init, 'end': self.test_period_end}
+        if self.test_period_initial and self.test_period_end:
+            return {'initial': self.test_period_initial, 'end': self.test_period_end}
         return None
 
 

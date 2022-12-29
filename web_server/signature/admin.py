@@ -36,8 +36,8 @@ class SignatureModelAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Data', {'fields': ('user', 'name', 'price', 'activated')}),
-        ('Hired Period', {'fields': (('hired_period_init', 'hired_period_end'),)}),
-        ('Test Period', {'fields': (('test_period_init', 'test_period_end'),)}),
+        ('Hired Period', {'fields': (('hired_period_initial', 'hired_period_end'),)}),
+        ('Test Period', {'fields': (('test_period_initial', 'test_period_end'),)}),
         ('Other data', {'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
     )
 
@@ -45,9 +45,9 @@ class SignatureModelAdmin(admin.ModelAdmin):
         'user',
         'name',
         'price',
-        'hired_period_init',
+        'hired_period_initial',
         'hired_period_end',
-        'test_period_init',
+        'test_period_initial',
         'test_period_end',
         'activated',
     )
