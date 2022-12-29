@@ -1,4 +1,4 @@
-FROM python:3.8.16-alpine3.17
+FROM python:3.8.16-slim-buster
 
 ARG USER_DIR=/user/app
 
@@ -6,19 +6,22 @@ ARG USER_DIR=/user/app
 WORKDIR $USER_DIR
 
 # set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 #
-RUN apk add --no-cache build-base
+# RUN apt-get update && apt-get install -y\
+#     libpq-dev\
+#     gcc\
+#     && rm -rf /var/lib/apt/lists/*
 
 # copy project
-COPY web_server/ web_server
-COPY manage.py ./
-COPY requirements.txt ./
+COPY . .
 
 # install dependencies
-RUN pip install no-cache-dir -U pip;\
-    pip install -r requirements.txt
+RUN set -ex && \
+    pip install -U pip &&\
+    pip install --no-cache-dir -r requirements.txt &&\
+    pip cache purge
 
 EXPOSE 8000

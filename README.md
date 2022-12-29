@@ -20,6 +20,8 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
     - [4.2) Backup do banco](#42-backup-do-banco)
   - [5) Python decouple](#5-python-decouple)
   - [6) Docker](#6-docker)
+    - [6.1) Simulando ambiente de produção](#61-simulando-um-ambiente-de-produção)
+    - [6.2) Ambiente de desenvolvimento](#62-docker-em-desenvolvimento)
   - [7) Verificação de Email]()
 
 # 1) Status
@@ -224,25 +226,22 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000,127.0.0.1:3000
 
 ---
 
+## 6.1) Simulando um ambiente de produção
+
 
 Para subir a `api` completa simulando o ambiente de produção com `nginx`, `gunicorn` e `postgres` basta fazer.
 
 
 ```console
 docker-compose build
-```
-
-Seguido de
-
-
-```console
 docker-compose up
 ```
 
-O primeiro comando precisa ser excutado apenas na primeira vez para criar a imagem `dosimagem_api`.
+O primeiro comando precisa ser excutado apenas quando o temos alteração no código para criar a imagem `dosimagem_api` atualizada.
 
+A `api` estará dispnivel em `localhost:80`.
 
-A `api` estará dispnivel em `localhost`.
+O conteiner `django` para `prod` tem apenas as depencias de desenvolvimento.
 
 Para fazer as migrações:
 
@@ -256,11 +255,28 @@ Para criar o usuário root bastas fazer:
 docker exec -it dosimagem_api ./manage.py createsuperuser
 ```
 
+## 6.2) Docker em desenvolvimento
+
+Pode-se também executar a versão de desenvolvimento para tal basta:
+
+```console
+docker-compose -f docker-compose.dev.yml build
+docker-compose -f docker-compose-dev.yml up
+```
+
+Com este comando você irá subir dois os conteiners, o `django` e o `postgres`. O conteiner `django` para `dev` usa o servidor de desenvolvimente e não o `gunicorn` e também possiu as dependencias de desenvolvimento.
+
+Para rodar o teste
+
+```console
+docker-compose -f docker-compose.dev.yml run api pytest
+```
+
 ---
 
 ### 7) Verificação de email
 
-Quando um usuario é cadastrado um `email` será enviado para o novo usuário. Neste é email teremos um link para o `front-end` na forma:
+Quando um usuario é cadastrado um `email` será enviado para o novo usuário. Neste email teremos um link para o `front-end` na forma:
 
 > http://front_end_dominio/users/<uuid_user>/email-confirm/?token=<token_jwt>
 
