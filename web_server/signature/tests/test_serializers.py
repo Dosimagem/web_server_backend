@@ -19,7 +19,7 @@ def test_benefit_serializer(benefit):
 
 def test_signature_serializer_with_test_period(user_signature):
 
-    user_signature.test_period_init = datetime(2001, 1, 2)
+    user_signature.test_period_initial = datetime(2001, 1, 2)
     user_signature.test_period_end = datetime(2002, 1, 2)
 
     serializer = SignatureByUserSerializer(instance=user_signature)
@@ -30,7 +30,7 @@ def test_signature_serializer_with_test_period(user_signature):
     assert data['name'] == user_signature.name
     assert data['price'] == user_signature.price
     assert data['hired_period'] is None
-    assert data['test_period'] == {'init': user_signature.test_period_init, 'end': user_signature.test_period_end}
+    assert data['test_period'] == {'initial': user_signature.test_period_initial, 'end': user_signature.test_period_end}
     assert data['activated'] == user_signature.activated
 
     for ser, db in zip(data['benefits'], user_signature.benefits.all()):
@@ -41,7 +41,7 @@ def test_signature_serializer_with_test_period(user_signature):
 
 def test_signature_serializer_with_hired_period(user_signature):
 
-    user_signature.hired_period_init = datetime(2001, 1, 2)
+    user_signature.hired_period_initial = datetime(2001, 1, 2)
     user_signature.hired_period_end = datetime(2002, 1, 2)
 
     serializer = SignatureByUserSerializer(instance=user_signature)
@@ -51,7 +51,10 @@ def test_signature_serializer_with_hired_period(user_signature):
     assert data['uuid'] == str(user_signature.uuid)
     assert data['name'] == user_signature.name
     assert data['price'] == user_signature.price
-    assert data['hired_period'] == {'init': user_signature.hired_period_init, 'end': user_signature.hired_period_end}
+    assert data['hired_period'] == {
+        'initial': user_signature.hired_period_initial,
+        'end': user_signature.hired_period_end,
+    }
     assert data['test_period'] is None
     assert data['activated'] == user_signature.activated
     for ser, db in zip(data['benefits'], user_signature.benefits.all()):

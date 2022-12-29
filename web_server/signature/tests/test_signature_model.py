@@ -49,9 +49,9 @@ def test_signatures_user_one_to_many_relation(user_signature, user_other_signatu
 
 def test_detault_values(user_signature):
 
-    assert user_signature.hired_period_init is None
+    assert user_signature.hired_period_initial is None
     assert user_signature.hired_period_end is None
-    assert user_signature.test_period_init is None
+    assert user_signature.test_period_initial is None
     assert user_signature.test_period_end is None
     assert user_signature.activated is False
     # assert signature1.bill_file == ''
@@ -63,22 +63,22 @@ def test_test_hired_range_period(user):
         user=user,
         name='Pacote Dosimagem Anual',
         price='600.00',
-        hired_period_init=datetime(2001, 1, 2),
+        hired_period_initial=datetime(2001, 1, 2),
         hired_period_end=datetime(2002, 1, 2),
     )
 
-    assert sig.hired_period_init == datetime(2001, 1, 2)
+    assert sig.hired_period_initial == datetime(2001, 1, 2)
     assert sig.hired_period_end == datetime(2002, 1, 2)
 
     sig = Signature(
         user=user,
         name='Pacote Dosimagem Anual',
         price='600.00',
-        test_period_init=datetime(2001, 1, 2),
+        test_period_initial=datetime(2001, 1, 2),
         test_period_end=datetime(2001, 2, 2),
     )
 
-    assert sig.test_period_init == datetime(2001, 1, 2)
+    assert sig.test_period_initial == datetime(2001, 1, 2)
     assert sig.test_period_end == datetime(2001, 2, 2)
 
 
@@ -88,7 +88,7 @@ def test_end_must_be_after_init(user):
         user=user,
         name='Pacote Dosimagem Anual',
         price='600.00',
-        hired_period_init=datetime(2002, 1, 2),
+        hired_period_initial=datetime(2002, 1, 2),
         hired_period_end=datetime(2001, 1, 2),
     )
 
@@ -98,7 +98,7 @@ def test_end_must_be_after_init(user):
     sig = Signature(
         name='Pacote Dosimagem Anual',
         price='600.00',
-        test_period_init=datetime(2002, 1, 2),
+        test_period_initial=datetime(2002, 1, 2),
         test_period_end=datetime(2001, 1, 2),
     )
 
@@ -112,11 +112,11 @@ def test_hired_period_info(user):
         user=user,
         name='Pacote Dosimagem Anual',
         price='600.00',
-        hired_period_init=datetime(2001, 1, 2),
+        hired_period_initial=datetime(2001, 1, 2),
         hired_period_end=datetime(2002, 1, 2),
     )
 
-    assert sig.hired_period == {'init': datetime(2001, 1, 2), 'end': datetime(2002, 1, 2)}
+    assert sig.hired_period == {'initial': datetime(2001, 1, 2), 'end': datetime(2002, 1, 2)}
 
     sig = Signature(
         name='Pacote Dosimagem Anual',
@@ -132,11 +132,11 @@ def test_test_period_info(user):
         user=user,
         name='Pacote Dosimagem Anual',
         price='600.00',
-        test_period_init=datetime(2001, 1, 2),
+        test_period_initial=datetime(2001, 1, 2),
         test_period_end=datetime(2002, 1, 2),
     )
 
-    assert sig.test_period == {'init': datetime(2001, 1, 2), 'end': datetime(2002, 1, 2)}
+    assert sig.test_period == {'initial': datetime(2001, 1, 2), 'end': datetime(2002, 1, 2)}
 
     sig = Signature(
         name='Pacote Dosimagem Anual',
