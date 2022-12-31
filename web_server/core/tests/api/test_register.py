@@ -135,7 +135,7 @@ def test_fail_profile_invalid_phone(api_cnpj_successfull, client_api, register_i
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    expected = 'Número de telefone inválido. O formato deve ser xx(xx)xxxx-xxxx ou xx(xx)xxxxx-xxxx.'
+    expected = 'Introduza um número de telefone válido (ex. +12125552368).'
 
     assert expected in errors_list
 

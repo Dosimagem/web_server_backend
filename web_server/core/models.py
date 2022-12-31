@@ -8,13 +8,13 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from phonenumber_field.modelfields import PhoneNumberField
 from validate_docbr import CNPJ, CPF
 
 from web_server.core.validators import (
     validate_cnpj,
     validate_cpf,
     validate_name_is_alpha,
-    validate_phone,
 )
 
 
@@ -121,7 +121,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def to_dict(self):
         return dict(
             name=self.profile.name,
-            phone=self.profile.phone,
+            phone=self.profile.phone_str,
             role=self.profile.role,
             clinic=self.profile.clinic,
             email=self.email,
@@ -141,7 +141,8 @@ class UserProfile(CreationModificationBase, models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
 
     name = models.CharField(_('Name'), max_length=150, validators=[validate_name_is_alpha, MinLengthValidator(3)])
-    phone = models.CharField(_('Phone'), max_length=30, validators=[validate_phone])
+    phone = PhoneNumberField()
+    # phone = models.CharField(_('Phone'), max_length=30, validators=[validate_international_phonenumber])
 
     clinic = models.CharField(_('Clinic'), max_length=30)
     role = models.CharField(_('Role'), max_length=30)
@@ -158,3 +159,7 @@ class UserProfile(CreationModificationBase, models.Model):
     def _cpf_mask(self):
         cpf = CPF()
         return cpf.mask(self.cpf)
+
+    @property
+    def phone_str(self):
+        return str(self.phone)

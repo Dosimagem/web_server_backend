@@ -18,4 +18,4 @@ pyjwt
 djangorestframework-simplejwt
 dj-rest-auth
 freezegun
-attrs
+django-phonenumber-field[phonenumberslite]

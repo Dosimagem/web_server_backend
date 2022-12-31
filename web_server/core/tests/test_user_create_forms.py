@@ -118,6 +118,6 @@ def test_save(register_infos, db):
     assert user.profile.name == ''
     assert user.profile.clinic == ''
     assert user.profile.role == ''
-    assert user.profile.phone == ''
+    assert user.profile.phone_str == ''
     assert user.profile.cpf == ''
     assert user.profile.cnpj == ''
