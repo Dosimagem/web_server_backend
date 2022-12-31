@@ -1,8 +1,7 @@
-import re
-
 import requests
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
+from phonenumber_field.validators import validate_international_phonenumber
 from validate_docbr import CNPJ, CPF
 
 
@@ -30,16 +29,7 @@ def validate_cnpj(value):
 
 
 def validate_phone(value):
-
-    pattern = r'(\d{2})\(\d{2}\)(\d{4,5})(-)(\d{4})'
-
-    match = re.search(pattern, value)
-
-    if not match:
-        raise ValidationError(
-            'Número de telefone inválido. O formato deve ser xx(xx)xxxx-xxxx ou xx(xx)xxxxx-xxxx.',
-            'phone_invalid',
-        )
+    validate_international_phonenumber(value)
 
 
 def validate_name_is_alpha(value):

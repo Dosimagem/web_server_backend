@@ -25,7 +25,7 @@ def test_read_user_info_by_id(client_api_auth, user):
 
     assert body['email'] == user.email
     assert body['name'] == user.profile.name
-    assert body['phone'] == user.profile.phone
+    assert body['phone'] == user.profile.phone_str
     assert body['clinic'] == user.profile.clinic
     assert body['role'] == user.profile.role
     assert body['cpf'] == user.profile._cpf_mask()

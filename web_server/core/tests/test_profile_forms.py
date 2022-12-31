@@ -139,11 +139,11 @@ def test_cnpj_invalid(second_register_infos, db):
 
 def test_phone_invalid():
 
-    form = ProfileCreateForm({'phone': '22222-2222'})
+    form = ProfileCreateForm({'phone': '222222222'})
 
     assert not form.is_valid()
 
-    expected = ['Número de telefone inválido. O formato deve ser xx(xx)xxxx-xxxx ou xx(xx)xxxxx-xxxx.']
+    expected = ['Introduza um número de telefone válido (ex. +12125552368).']
 
     assert form.errors['phone'] == expected
 
@@ -172,7 +172,7 @@ def test_create_save(api_cnpj_successfull, profile_infos):
     assert user.profile.name == form.cleaned_data['name']
     assert user.profile.clinic == form.cleaned_data['clinic']
     assert user.profile.role == form.cleaned_data['role']
-    assert user.profile.phone == form.cleaned_data['phone']
+    assert user.profile.phone_str == form.cleaned_data['phone']
     assert user.profile.cpf == form.cleaned_data['cpf']
     assert user.profile.cnpj == form.cleaned_data['cnpj']
 

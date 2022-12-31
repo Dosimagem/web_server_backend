@@ -5,7 +5,7 @@ from rest_framework.test import APIClient
 
 from web_server.core.models import UserProfile
 
-fake = Faker()
+fake = Faker(locale='pt_BR')
 fake.seed_instance(4321)
 
 # TODO: Retirar isso
@@ -48,7 +48,7 @@ def register_infos():
         name=fake.name(),
         cnpj='42438610000111',  # 42.438.610/0001-11
         cpf='93743851121',  # 937.438.511-21
-        phone='55(33)1111-1111',
+        phone='+552123612766',
         role=fake.job()[:30],
     )
 
@@ -85,7 +85,7 @@ def second_register_infos():
         name=fake.name(),
         cnpj='83398534000145',  # 83.398.534/0001-45
         cpf='52450318097',  # 524.503.180-97
-        phone='55(41)22222-2222',
+        phone='+556823821207',
         role=fake.job()[:30],
     )
 

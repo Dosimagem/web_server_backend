@@ -39,7 +39,7 @@ def test_send_sucessfull(client_api_auth, user, payload):
     assert user.email in email.body
     assert user.profile.name in email.body
     assert user.profile.clinic in email.body
-    assert user.profile.phone in email.body
+    assert user.profile.phone_str in email.body
     assert user.profile.cnpj in email.body
     assert user.profile.cpf in email.body
 
