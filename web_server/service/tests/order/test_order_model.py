@@ -55,7 +55,7 @@ def test_default_values(user):
 
     order_db = Order.objects.create(user=user, price='1000', service_name=Order.ServicesName.CLINIC_DOSIMETRY.value)
 
-    assert not order_db.permission
+    assert order_db.active is True
     assert order_db.quantity_of_analyzes == 0
     assert order_db.remaining_of_analyzes == 0
 

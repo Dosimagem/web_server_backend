@@ -45,7 +45,7 @@ class Order(CreationModificationBase):
         'Status payment', max_length=3, choices=PaymentStatus.choices, default=PaymentStatus.AWAITING_PAYMENT
     )
     service_name = models.CharField('Service name', max_length=3, choices=ServicesName.choices)
-    permission = models.BooleanField('Permission', default=False)
+    active = models.BooleanField('Active', default=True)
     code = models.CharField('Code', max_length=20)
 
     def __str__(self):

@@ -122,7 +122,7 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_se
         price=Decimal('3000.00'),
         service_name=Order.ServicesName.SEGMENTANTION_QUANTIFICATION.value,
         status_payment=Order.PaymentStatus.AWAITING_PAYMENT,
-        permission=True,
+        active=True,
     )
 
     url = resolve_url('service:analysis-list-create', user.uuid, order.uuid)

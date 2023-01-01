@@ -23,7 +23,7 @@ class CreateOrderForm(forms.ModelForm):
             'price',
             'service_name',
             'status_payment',
-            'permission',
+            'active',
         )
 
     def clean_remaining_of_analyzes(self):
