@@ -166,7 +166,7 @@ def tree_orders_of_two_diff_users(user, second_user):
         price=Decimal('10000.00'),
         service_name=Order.ServicesName.CLINIC_DOSIMETRY.value,
         status_payment=Order.PaymentStatus.CONFIRMED,
-        permission=True,
+        active=True,
     )
 
     Order.objects.create(
@@ -176,7 +176,7 @@ def tree_orders_of_two_diff_users(user, second_user):
         price=Decimal('5000.00'),
         service_name=Order.ServicesName.PRECLINIC_DOSIMETRY.value,
         status_payment=Order.PaymentStatus.AWAITING_PAYMENT,
-        permission=False,
+        active=False,
     )
 
     Order.objects.create(
@@ -186,7 +186,7 @@ def tree_orders_of_two_diff_users(user, second_user):
         price=Decimal('3000.00'),
         service_name=Order.ServicesName.CLINIC_DOSIMETRY.value,
         status_payment=Order.PaymentStatus.AWAITING_PAYMENT,
-        permission=False,
+        active=False,
     )
 
     return list(Order.objects.all())

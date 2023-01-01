@@ -89,7 +89,7 @@ def order_to_dict(order):
         'price': order.price,
         'service_name': order.get_service_name_display(),
         'status_payment': order.get_status_payment_display(),
-        'permission': order.permission,
+        'active': order.active,
         'created_at': order.created_at.date(),
         'analysis_status': analysis_infos,
         'code': order.code,

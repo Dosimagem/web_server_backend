@@ -26,6 +26,7 @@ class OrderModelAdmin(admin.ModelAdmin):
                     'price',
                     'status_payment',
                     'user',
+                    'active',
                 )
             },
         ),
@@ -35,7 +36,6 @@ class OrderModelAdmin(admin.ModelAdmin):
                 'fields': (
                     'id',
                     'uuid',
-                    'permission',
                     'created_at',
                     'modified_at',
                 )
@@ -52,7 +52,7 @@ class OrderModelAdmin(admin.ModelAdmin):
         'price',
         'status_payment',
         'service_name',
-        'permission',
+        'active',
     )
 
     list_display_links = (
