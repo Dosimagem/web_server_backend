@@ -1,6 +1,6 @@
 Soliciatação de orçamento
 
-Dados o usuario:
+Dados do usuário:
 
 Clinica: {{user.profile.clinic}}
 Nome: {{user.profile.name}}

@@ -32,7 +32,7 @@ def general_budget_mail(request, user_id):
 
     budget = BudgetChoice(service_name=service)
     serializerClass = budget.get_serializer()
-    email_template = budget.get_email_template()
+    email_template_txt, email_template_html = budget.get_email_template()
     serializer = serializerClass(data=request.data)
 
     if not serializer.is_valid():
@@ -42,8 +42,9 @@ def general_budget_mail(request, user_id):
     context['service'] = service
     context['user'] = user
 
-    body = render_to_string(email_template, context)
+    body_txt = render_to_string(email_template_txt, context)
+    body_html = render_to_string(email_template_html, context)
 
-    send_mail('Pedido de Orçamento', body, DOSIMAGEM_EMAIL, [DOSIMAGEM_EMAIL])
+    send_mail('Pedido de Orçamento', body_txt, DOSIMAGEM_EMAIL, [DOSIMAGEM_EMAIL], html_message=body_html)
 
     return Response(status=HTTPStatus.NO_CONTENT)

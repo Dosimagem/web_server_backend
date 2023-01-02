@@ -1,6 +1,6 @@
 Olá,
 
-Obrigado por se inscrever na Dosimagem. Clique no link abaixo para verificar seu e-mail:
+Obrigado por se cadastrar na plataforma Dosimagem. Clique no link abaixo para verificar seu e-mail:
 
 {{link}}
 
