@@ -24,8 +24,9 @@ def send_email_verification(user):
     token = _jwt_verification_email_secret(user)
     email = user.email
     context = {'link': f'{FRONT_DOMAIN}/users/{user.uuid}/email-confirm/?token={token}'}
-    body = render_to_string('core/email_verify.txt', context)
-    send_mail('Verificação de email da sua conta Dosimagem', body, DOSIMAGEM_EMAIL, [email])
+    body_txt = render_to_string('core/email_verify.txt', context)
+    body_html = render_to_string('core/email_verify.html', context)
+    send_mail('Verificação de email da sua conta Dosimagem', body_txt, DOSIMAGEM_EMAIL, [email], html_message=body_html)
 
     user.verification_email_secret = token
     user.sent_verification_email = True
@@ -38,8 +39,9 @@ def send_reset_password(user):
     token = _jwt_verification_email_secret(user)
     email = user.email
     context = {'link': f'{FRONT_DOMAIN}/users/{user.uuid}/reset-password/?token={token}'}
-    body = render_to_string('core/reset_password.txt', context)
-    send_mail('Dosimagem - Resetando a senha', body, DOSIMAGEM_EMAIL, [email])
+    body_txt = render_to_string('core/reset_password.txt', context)
+    body_html = render_to_string('core/reset_password.html', context)
+    send_mail('Dosimagem - Resetando a senha', body_txt, DOSIMAGEM_EMAIL, [email], html_message=body_html)
 
     user.reset_password_secret = token
     user.sent_reset_password_email = True

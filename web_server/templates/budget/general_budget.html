@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soliciatação de orçamento</title>
+</head>
+<body>
+    <h1>Soliciatação de orçamento</h1>
+
+    <div>
+        <h2>Dados do usuário:</h2>
+        <ul>
+            <li>Clinica: {{user.profile.clinic}}</li>
+            <li>Nome: {{user.profile.name}}</li>
+            <li>Email: {{user.email}}</li>
+            <li>Telefone: {{user.profile.phone}}</li>
+            <li>CNPJ: {{user.profile.cnpj}}</li>
+            <li>CPF: {{user.profile.cpf}}</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Dados do orçamento:</h2>
+        <ul>
+            <li>Serviço: {{service}}</li>
+            <li>Tipo de tratamento: {{treatment_type}}</li>
+            <li>Número de paciente: {{number_of_samples}}</li>
+            <li>Ferquência: {{frequency}}</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Comentário:</h2>
+        {{comments}}
+    </div>
+</body>
+</html>

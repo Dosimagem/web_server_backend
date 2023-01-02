@@ -21,15 +21,16 @@ class BudgetChoice:
     }
 
     email_template = {
-        Order.ServicesName.COMPUTATIONAL_MODELLING.label: 'budget/comp_model_budget.txt',
-        Order.ServicesName.PRECLINIC_DOSIMETRY.label: 'budget/preclinic_dosi_budget.txt',
-        Order.ServicesName.CLINIC_DOSIMETRY.label: 'budget/general_budget.txt',
-        Order.ServicesName.SEGMENTANTION_QUANTIFICATION.label: 'budget/general_budget.txt',
-        Order.ServicesName.RADIOSYNOVIORTHESIS.label: 'budget/general_budget.txt',
+        Order.ServicesName.COMPUTATIONAL_MODELLING.label: 'budget/comp_model_budget',
+        Order.ServicesName.PRECLINIC_DOSIMETRY.label: 'budget/preclinic_dosi_budget',
+        Order.ServicesName.CLINIC_DOSIMETRY.label: 'budget/general_budget',
+        Order.ServicesName.SEGMENTANTION_QUANTIFICATION.label: 'budget/general_budget',
+        Order.ServicesName.RADIOSYNOVIORTHESIS.label: 'budget/general_budget',
     }
 
     def get_serializer(self):
         return self.serializer[self.service_name]
 
     def get_email_template(self):
-        return self.email_template[self.service_name]
+        name = self.email_template[self.service_name]
+        return name + '.txt', name + '.html'
