@@ -8,7 +8,7 @@ from web_server.core.email import DOSIMAGEM_EMAIL
 END_POINT = 'core:read-update-email'
 
 
-# /api/v1/users/<uuid>/email - PATCH
+# /api/v1/users/<uuid>/email/ - PATCH
 
 
 def test_update(client_api_auth, user):

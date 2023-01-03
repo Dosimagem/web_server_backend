@@ -18,7 +18,7 @@ from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.core.email import send_email_verification
 from web_server.core.errors_msg import list_errors
 from web_server.core.forms import ProfileUpdateForm, UpdateEmailForm
-from web_server.core.serializers import VerifyEmailSerializer
+from web_server.core.serializers import VerifyEmailSerializer, PhoneSerializer
 
 User = get_user_model()
 
@@ -139,5 +139,35 @@ def email_resend(request, user_id):
         send_email_verification(user)
     except SMTPException:
         return Response({'errors': ['Email de verificação não foi enviado.']}, status=HTTPStatus.FAILED_DEPENDENCY)
+
+    return Response(status=HTTPStatus.NO_CONTENT)
+
+
+@api_view(['GET', 'PATCH'])
+@user_from_token_and_user_from_url
+def read_update_phone(request, user_id):
+
+    dispatcher = {'GET': _read_phone, 'PATCH': _update_phone}
+
+    view = dispatcher[request.method]
+
+    return view(request)
+
+
+def _read_phone(request):
+    return Response(data={'phone': request.user.profile.phone_str})
+
+
+def _update_phone(request):
+
+    serializer = PhoneSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response({'errors': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
+
+    user = request.user
+
+    user.profile.phone = serializer.validated_data['phone']
+    user.save()
 
     return Response(status=HTTPStatus.NO_CONTENT)
