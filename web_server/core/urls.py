@@ -15,6 +15,7 @@ from .views.users import (
     email_verify,
     read_update_email,
     users_read_update,
+    read_update_phone,
 )
 
 app_name = 'core'
@@ -33,4 +34,5 @@ urlpatterns = [
     path('users/<uuid:user_id>/email/', read_update_email, name='read-update-email'),
     path('users/<uuid:user_id>/email/verify/', email_verify, name='email-verify'),
     path('users/<uuid:user_id>/email/resend/', email_resend, name='email-resend'),
+    path('users/<uuid:user_id>/phone/', read_update_phone, name='read-update-phone'),
 ]

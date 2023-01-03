@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model, password_validation
 from django.utils.translation import gettext as _
 from rest_framework import serializers
+from phonenumber_field.serializerfields import PhoneNumberField
+
 
 User = get_user_model()
 
@@ -53,3 +55,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
+
+
+class PhoneSerializer(serializers.Serializer):
+    phone = PhoneNumberField()
