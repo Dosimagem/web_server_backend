@@ -54,10 +54,9 @@ def test_allowed_method(client_api_auth, user):
 
     assert resp.status_code == HTTPStatus.OK
 
-    options = resp.headers['Allow'].split(',')
+    options = map(str.strip, resp.headers['Allow'].split(','))
 
-    for o in options:
-        assert o.strip() in ['OPTIONS', 'GET']
+    assert set(options) == set(['OPTIONS', 'GET'])
 
 
 def test_token_id_and_user_id_dont_match(client_api_auth, user):

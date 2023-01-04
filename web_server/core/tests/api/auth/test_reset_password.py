@@ -112,7 +112,6 @@ def test_allowed_method(client_api):
 
     assert resp.status_code == HTTPStatus.OK
 
-    options = resp.headers['Allow'].split(',')
+    options = map(str.strip, resp.headers['Allow'].split(','))
 
-    for o in options:
-        assert o.strip() in ['OPTIONS', 'POST']
+    assert set(options) == set(['OPTIONS', 'POST'])
