@@ -62,6 +62,9 @@ class Order(CreationModificationBase):
             msg = f'Pedido {self.code} atualizado.'
             Notification.objects.create(user=self.user, message=msg, kind=Notification.Kind.SUCCESS)
 
+        if not self.pk:
+            self.remaining_of_analyzes = self.quantity_of_analyzes
+
         super().save(*args, **kwargs)
 
         if not self.code:

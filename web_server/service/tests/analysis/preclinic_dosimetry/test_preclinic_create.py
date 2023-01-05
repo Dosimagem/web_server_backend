@@ -180,12 +180,14 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_pr
     order = Order.objects.create(
         user=user,
         quantity_of_analyzes=3,
-        remaining_of_analyzes=0,
         price=Decimal('3000.00'),
         service_name=Order.ServicesName.PRECLINIC_DOSIMETRY.value,
         status_payment=Order.PaymentStatus.AWAITING_PAYMENT,
         active=True,
     )
+
+    order.remaining_of_analyzes = 0
+    order.save()
 
     url = resolve_url('service:analysis-list-create', user.uuid, order.uuid)
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')

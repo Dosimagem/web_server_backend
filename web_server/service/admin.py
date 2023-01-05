@@ -22,7 +22,6 @@ class OrderModelAdmin(admin.ModelAdmin):
                 'fields': (
                     'service_name',
                     'quantity_of_analyzes',
-                    'remaining_of_analyzes',
                     'price',
                     'status_payment',
                     'user',
@@ -34,6 +33,7 @@ class OrderModelAdmin(admin.ModelAdmin):
             'Other data',
             {
                 'fields': (
+                    'remaining_of_analyzes',
                     'id',
                     'uuid',
                     'created_at',
@@ -62,6 +62,7 @@ class OrderModelAdmin(admin.ModelAdmin):
     readonly_fields = (
         'id',
         'uuid',
+        'remaining_of_analyzes',
         'created_at',
         'modified_at',
         'code',
