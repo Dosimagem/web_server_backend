@@ -69,7 +69,7 @@ def _update_calibration(request, user_id, calibration_id):
                 'errors': [
                     (
                         'Apenas calibrações associadas com análises com o '
-                        f'status {invalid_infos} ou {data_sent} podem ser atualizadas/deletadas.'
+                        f"status '{invalid_infos}' ou '{data_sent}' podem ser atualizadas/deletadas."
                     )
                 ]
             }
@@ -112,14 +112,19 @@ def _delete_calibration(request, user_id, calibration_id):
         # TODO: Colocar isso em uma camada de serviço (Regra de Negocio)
         q = Q(status=DosimetryAnalysisBase.Status.INVALID_INFOS) | Q(status=DosimetryAnalysisBase.Status.DATA_SENT)
         if cali.clinic_dosimetry_analysis.exclude(q).exists() or cali.preclinic_dosimetry_analysis.exclude(q).exists():
+            invalid_infos, data_sent = (
+                DosimetryAnalysisBase.Status.INVALID_INFOS.label,
+                DosimetryAnalysisBase.Status.DATA_SENT.label,
+            )
             data = {
                 'errors': [
                     (
-                        'Apenas calibrações associadas com análises com o status '
-                        "Informações Inválidas' ou 'Dados Enviados' podem ser atualizadas/deletadas."
+                        'Apenas calibrações associadas com análises com o '
+                        f"status '{invalid_infos}' ou '{data_sent}' podem ser atualizadas/deletadas."
                     )
                 ]
             }
+
             return Response(data=data, status=HTTPStatus.CONFLICT)
 
         cali.delete()

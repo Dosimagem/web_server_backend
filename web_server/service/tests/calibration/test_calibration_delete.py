@@ -77,7 +77,7 @@ def test_fail_delete_calibration_used_in_a_clinic_analysis(client_api_auth, clin
 
     expected = (
         'Apenas calibrações associadas com análises com o status '
-        "Informações Inválidas' ou 'Dados Enviados' podem ser atualizadas/deletadas."
+        "'Informações inválidas' ou 'Dados enviados' podem ser atualizadas/deletadas."
     )
 
     assert [expected] == body['errors']
@@ -104,7 +104,7 @@ def test_fail_delete_calibration_used_in_a_preclinic_analysis(client_api_auth, p
 
     expected = (
         'Apenas calibrações associadas com análises com o status '
-        "Informações Inválidas' ou 'Dados Enviados' podem ser atualizadas/deletadas."
+        "'Informações inválidas' ou 'Dados enviados' podem ser atualizadas/deletadas."
     )
 
     assert [expected] == body['errors']
