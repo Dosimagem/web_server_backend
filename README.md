@@ -51,7 +51,7 @@ O setup incicial necessário fazer apenas `uma vez`.
 python -m venv .venv --upgrade-deps
 source .venv/bin/activate
 pip install pip-tools
-pip-sync requirements.txt requirements-dev.txt
+pip-sync requirements.txt requirements.dev.txt
 precommit install
 cp contrib/env-sample .env
 ```
@@ -91,7 +91,7 @@ Agora pode-se fazer a migração com o `db` selecionado:
 python manage.py migrate
 ```
 
-Após fazer o camando `migrate` para popular o banco com alguns de usuario e isotopos basta fazer:
+Após fazer o camando `migrate` para popular o banco com alguns usuarios e isotopos basta fazer:
 
 ```console
 python manage.py loaddata contrib/db_core.json
