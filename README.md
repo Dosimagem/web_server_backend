@@ -91,27 +91,12 @@ Agora pode-se fazer a migração com o `db` selecionado:
 python manage.py migrate
 ```
 
-Após fazer o camando `migrate` para popular o banco com alguns usuarios e isotopos basta fazer:
+Após fazer o camando `migrate` para popular o banco os isotopos e benefícios basta fazer:
 
 ```console
-python manage.py loaddata contrib/db_core.json
-python manage.py loaddata contrib/db_authtoken.json
-python manage.py loaddata contrib/db_service.json
+python manage.py loaddata benefits
+python manage.py loaddata isotopes
 ```
-
-Os usuarios criados serão:
-
-* Super Usuário:
-  * email: `admin@admin.com`
-  * senha: `admin`
-
-* Usuario comum:
-  * email: `user1@email.com`
-  * senha: `123456!!`
-
-* Usuario comum:
-  * email: `user2@email.com`
-  * senha: `123456!!`
 
 ---
 
@@ -183,13 +168,13 @@ postgres://dosimagem:dosimagem@localhost:5434/dosimagem_db
 Todo o banco
 
 ```console
-./manage.py dumpdata --exclude auth.permission --exclude contenttypes --indent 2 > contrib/db_initial.json
+./manage.py dumpdata --exclude auth.permission --exclude contenttypes --indent 2 > db_initial.json
 ```
 
-Apenas dos `Isotopos` cadastrados
+Apenas dos `Isotopos` cadastrados.
 
 ```console
-./manage.py ./manage.py dumpdata service.Isotope --indent 2 > contrib/db_isotope.json
+./manage.py ./manage.py dumpdata service.Isotope --indent 2 > isotope.json
 ```
 
 
