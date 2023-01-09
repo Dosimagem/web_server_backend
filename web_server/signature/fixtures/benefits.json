@@ -1,0 +1,35 @@
+[
+{
+  "model": "signature.benefit",
+  "pk": 1,
+  "fields": {
+    "created_at": "2022-12-29T04:23:54.568Z",
+    "modified_at": "2022-12-29T04:23:54.568Z",
+    "uuid": "a56ae0d0-9ba5-45ba-846f-f66897b7b424",
+    "name": "RSV",
+    "uri": "/dashboard/my-signatures/benefits/calculator"
+  }
+},
+{
+  "model": "signature.benefit",
+  "pk": 2,
+  "fields": {
+    "created_at": "2023-01-09T19:35:39.772Z",
+    "modified_at": "2023-01-09T19:35:39.772Z",
+    "uuid": "eaea7cb4-7988-4811-906f-859b8b1f57cc",
+    "name": "Beneficio de tese 1",
+    "uri": "/dashboard/my-signatures/benefits/beneficio-1/"
+  }
+},
+{
+  "model": "signature.benefit",
+  "pk": 3,
+  "fields": {
+    "created_at": "2023-01-09T19:35:55.214Z",
+    "modified_at": "2023-01-09T19:35:55.215Z",
+    "uuid": "e6ddf4f2-41de-431f-b681-8e1a580e8ec7",
+    "name": "Beneficio de tese 2",
+    "uri": "/dashboard/my-signatures/benefits/beneficio-2/"
+  }
+}
+]
