@@ -188,7 +188,9 @@ def _create_analysis(request, user_id, order_id):
         return Response({'errors': ['Todas as análises para essa pedido já foram usadas.']}, status=HTTPStatus.CONFLICT)
 
     if not order_infos.has_payment_confirmed():
-        return Response({'errors': ['O pagamento desse pedido não foi confirmado.']}, status=HTTPStatus.CONFLICT)
+        return Response(
+            {'errors': ['O pagamento desse pedido não foi confirmado.']}, status=HTTPStatus.PAYMENT_REQUIRED
+        )
 
     # TODO: Codigo repetido com o update
     if (

@@ -89,7 +89,7 @@ def test_fail_order_must_have_payment_confirmed(client_api_auth, preclinic_order
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()
 
-    assert resp.status_code == HTTPStatus.CONFLICT
+    assert resp.status_code == HTTPStatus.PAYMENT_REQUIRED
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
