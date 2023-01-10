@@ -47,7 +47,7 @@ def test_fail_by_wrong_data(client_api_auth, form_data, first_calibration):
 
     body = response.json()
 
-    expected = ['Certifique-se que atividade da seringa seja maior ou igual a 0.0.']
+    expected = ['syringe_activity: Certifique-se que este valor seja maior ou igual a 0.0.']
 
     assert body['errors'] == expected
 
@@ -77,7 +77,7 @@ def test_fai_isotope_invalid(client_api_auth, first_calibration, form_data):
 
     body = response.json()
 
-    expected = ['Isotopo não registrado.']
+    expected = ['isotope: Isotopo não registrado.']
 
     assert body['errors'] == expected
 
@@ -145,7 +145,7 @@ def test_fail_calibration_name_must_be_unique_per_user(
 
     body = response.json()
 
-    expected = ['Calibração com esse nome ja existe para este usuário.']
+    expected = ['Calibration com este User e Calibration Name já existe.']
 
     assert body['errors'] == expected
 

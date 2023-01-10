@@ -61,7 +61,7 @@ def test_fail_user_unique_fields(client_api, user, register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    expected = 'Usuário com este Endereço de email já existe.'
+    expected = 'email: Usuário com este Endereço de email já existe.'
 
     assert expected in errors_list
 
@@ -82,7 +82,7 @@ def test_fail_profile_unique_fields(api_cnpj_successfull, client_api, user, seco
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert 'CPF já existe.' in errors_list
+    assert 'cpf: CPF already exists' in errors_list
 
     # assert 'Clínica já existe.' in errors_list
     # assert 'CNPJ já existe.' in errors_list
@@ -98,7 +98,7 @@ def test_fail_profile_invalid_cpf(api_cnpj_fail, client_api, second_register_inf
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert 'CPF inválido.' in errors_list
+    assert 'cpf: CPF invalid.' in errors_list
 
 
 def test_fail_profile_invalid_cnpj(client_api, second_register_infos):
@@ -111,7 +111,7 @@ def test_fail_profile_invalid_cnpj(client_api, second_register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert 'CNPJ inválido.' in errors_list
+    assert 'cnpj: CNPJ inválido.' in errors_list
 
 
 def test_fail_profile_invalid_cnpj_api(api_cnpj_fail, client_api, second_register_infos):
@@ -122,7 +122,7 @@ def test_fail_profile_invalid_cnpj_api(api_cnpj_fail, client_api, second_registe
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert 'CNPJ 83.398.534/0001-45 não encontrado.' in errors_list
+    assert 'cnpj: CNPJ 83.398.534/0001-45 não encontrado.' in errors_list
 
 
 def test_fail_profile_invalid_phone(api_cnpj_successfull, client_api, register_infos):
@@ -257,7 +257,7 @@ def test_register_email_dont_mach(client_api, register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    expected = ['Os campos emails não correspondem.']
+    expected = ['confirmed_email: The two email fields didn’t match.']
 
     assert body['errors'] == expected
 

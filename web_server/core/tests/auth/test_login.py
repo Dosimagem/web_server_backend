@@ -78,10 +78,7 @@ def test_fail_login_missing_password(client_api, user_info):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    if get_language() == 'pt-br' and settings.USE_I18N:
-        expected = ['O campo senha é obrigatório.']
-    else:
-        expected = ['Password field is required.']
+    expected = ['password: Este campo é obrigatório.']
 
     assert body == {'errors': expected}
 

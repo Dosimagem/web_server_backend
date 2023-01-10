@@ -115,7 +115,7 @@ def test_fail_wrong_administration_datetime(client_api_auth, preclinic_order, fo
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['Informe uma data/hora válida.']
+    assert body['errors'] == ['administration_datetime: Informe uma data/hora válida.']
 
 
 def test_fail_injected_activity_must_be_positive(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
@@ -124,11 +124,7 @@ def test_fail_injected_activity_must_be_positive(client_api_auth, preclinic_orde
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        preclinic_order.user.uuid,
-        preclinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create',preclinic_order.user.uuid, preclinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()
@@ -137,7 +133,7 @@ def test_fail_injected_activity_must_be_positive(client_api_auth, preclinic_orde
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['Certifique-se que atividade injetada seja maior ou igual a 0.0.']
+    assert body['errors'] == ['injected_activity: Certifique-se que este valor seja maior ou igual a 0.0.']
 
 
 def test_fail_analisys_name_must_be_unique_per_order(
@@ -169,7 +165,7 @@ def test_fail_analisys_name_must_be_unique_per_order(
 
     assert PreClinicDosimetryAnalysis.objects.count() == 1
 
-    assert body['errors'] == ['Análises com esse nome já existe para esse pedido.']
+    assert body['errors'] == ['Preclinic Dosimetry com este Order e Analysis Name já existe.']
 
 
 def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_preclinic_dosimetry):
@@ -264,14 +260,11 @@ def test_fail_with_order_from_another_user(
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('calibrationId', ['O campo id de calibração é obrigatório.']),
-        ('images', ['O campo imagens é obrigatório.']),
-        ('analysisName', ['O campo nome da análise é obrigatório.']),
-        ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
-        (
-            'administrationDatetime',
-            ['O campo hora e data de adminstração é obrigatório.'],
-        ),
+        ('calibrationId', ['calibration_id: Este campo é obrigatório.']),
+        ('images', ['images: Este campo é obrigatório.']),
+        ('analysisName', ['analysis_name: Este campo é obrigatório.']),
+        ('injectedActivity', ['injected_activity: Este campo é obrigatório.']),
+        ('administrationDatetime', ['administration_datetime: Este campo é obrigatório.']),
     ],
 )
 def test_fail_missing_fields(
@@ -284,11 +277,7 @@ def test_fail_missing_fields(
 
     form_data_preclinic_dosimetry.pop(field)
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        preclinic_order.user.uuid,
-        preclinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
 
@@ -330,22 +319,22 @@ def test_fail_with_calibration_of_another_user(
 @pytest.mark.parametrize(
     'field, value, error',
     [
-        ('calibrationId', 'not is uuid', ['Insira um UUID válido.']),
+        ('calibrationId', 'not is uuid', ['calibration_id: Insira um UUID válido.']),
         (
             'injectedActivity',
             '-1',
-            ['Certifique-se que atividade injetada seja maior ou igual a 0.0.'],
+            ['injected_activity: Certifique-se que este valor seja maior ou igual a 0.0.'],
         ),
-        ('injectedActivity', 'not ia a number', ['Informe um número.']),
+        ('injectedActivity', 'not ia a number', ['injected_activity: Informe um número.']),
         (
             'administrationDatetime',
             'not is a datatime',
-            ['Informe uma data/hora válida.'],
+            ['administration_datetime: Informe uma data/hora válida.'],
         ),
         (
             'analysisName',
             'ss',
-            ['Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.'],
+            ['analysis_name: Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 2).'],
         ),
     ],
 )
@@ -360,11 +349,7 @@ def test_fail_invalid_fields(
 
     form_data_preclinic_dosimetry[field] = value
 
-    url = resolve_url(
-        'service:analysis-list-create',
-        preclinic_order.user.uuid,
-        preclinic_order.uuid,
-    )
+    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()
 

@@ -62,10 +62,10 @@ def test_fail_negative_float_numbers(client_api_auth, user, form_data):
     assert not Calibration.objects.exists()
 
     expected = [
-        'Certifique-se que atividade da seringa seja maior ou igual a 0.0.',
-        'Certifique-se que atividade residual na seringa seja maior ou igual a 0.0.',
-        'Certifique-se que volume do fantoma seja maior ou igual a 0.0.',
-        'Certifique-se que tempo de aquisição seja maior ou igual a 0.0.',
+        'syringe_activity: Certifique-se que este valor seja maior ou igual a 0.0.',
+        'residual_syringe_activity: Certifique-se que este valor seja maior ou igual a 0.0.',
+        'phantom_volume: Certifique-se que este valor seja maior ou igual a 0.0.',
+        'acquisition_time: Certifique-se que este valor seja maior ou igual a 0.0.',
     ]
 
     assert body['errors'] == expected
@@ -89,7 +89,7 @@ def test_fail_calibration_name_must_be_unique_per_user(client_api_auth, user, fo
 
     body = response.json()
 
-    expected = ['Calibração com esse nome ja existe para este usuário.']
+    expected = ['Calibration com este User e Calibration Name já existe.']
 
     assert body['errors'] == expected
 
@@ -108,7 +108,7 @@ def test_fail_datetime_invalid(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    assert body['errors'] == ['Informe uma data/hora válida.']
+    assert body['errors'] == ['measurement_datetime: Informe uma data/hora válida.']
 
 
 def test_fail_isotope_invalid(client_api_auth, user, form_data):
@@ -125,7 +125,7 @@ def test_fail_isotope_invalid(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    expected = ['Isotopo não registrado.']
+    expected = ['isotope: Isotopo não registrado.']
 
     assert body['errors'] == expected
 
@@ -144,7 +144,7 @@ def test_fail_isotope_invalid_by_size(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    expected = ['Isotopo inválido.']
+    expected = ['isotope: Certifique-se de que o valor tenha no máximo 6 caracteres (ele possui 11).']
 
     assert body['errors'] == expected
 
@@ -152,20 +152,17 @@ def test_fail_isotope_invalid_by_size(client_api_auth, user, form_data):
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('isotope', ['O campo isotopo é obrigatório.']),
-        ('calibrationName', ['O campo Nome da calibração é obrigatório.']),
-        ('syringeActivity', ['O campo atividade da seringa é obrigatório.']),
+        ('isotope', ['isotope: Este campo é obrigatório.']),
+        ('calibrationName', ['calibration_name: Este campo é obrigatório.']),
+        ('syringeActivity', ['syringe_activity: Este campo é obrigatório.']),
         (
             'residualSyringeActivity',
-            ['O campo atividade residual na seringa é obrigatório.'],
+            ['residual_syringe_activity: Este campo é obrigatório.'],
         ),
-        (
-            'measurementDatetime',
-            ['O campo hora e data da medição é obrigatório.'],
-        ),
-        ('phantomVolume', ['O campo volume do fantoma é obrigatório.']),
-        ('acquisitionTime', ['O campo tempo de aquisição é obrigatório.']),
-        ('images', ['O campo imagens é obrigatório.']),
+        ('measurementDatetime', ['measurement_datetime: Este campo é obrigatório.']),
+        ('phantomVolume', ['phantom_volume: Este campo é obrigatório.']),
+        ('acquisitionTime', ['acquisition_time: Este campo é obrigatório.']),
+        ('images', ['images: Este campo é obrigatório.']),
     ],
 )
 def test_fail_missing_fields(client_api_auth, user, form_data, field, error):
@@ -199,6 +196,6 @@ def test_fail_calibration_name_length_must_least_3(client_api_auth, user, form_d
 
     assert not Calibration.objects.exists()
 
-    expected = ['Certifique-se de que o nome da calibração tenha no mínimo 3 caracteres.']
+    expected = ['calibration_name: Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 2).']
 
     assert body['errors'] == expected

@@ -30,7 +30,7 @@ def test_missing_fields(client_api_auth, user):
 
     body = resp.json()
 
-    assert body['errors'] == ['O campo telefone é obrigatório.']
+    assert body['errors'] == ['phone: Este campo é obrigatório.']
 
 
 def test_fail_update_invalid_phone(client_api_auth, user):
@@ -43,7 +43,7 @@ def test_fail_update_invalid_phone(client_api_auth, user):
 
     body = resp.json()
 
-    assert body['errors'] == ['Informe um número de telefone válido.']
+    assert body['errors'] == ['phone: Informe um número de telefone válido.']
 
 
 def test_fail_update_must_be_auth(client_api, user):
