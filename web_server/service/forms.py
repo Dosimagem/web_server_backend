@@ -69,7 +69,7 @@ class IsotopeForm(forms.Form):
 
         isotope = self.cleaned_data['isotope']
         if isotope not in isotopes_list:
-            raise ValidationError(_('Isotope not registered.'), code='invalid_isotope')
+            raise ValidationError('Isotopo não registrado.', code='invalid_isotope')
 
         return isotope
 

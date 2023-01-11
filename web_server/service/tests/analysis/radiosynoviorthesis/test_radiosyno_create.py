@@ -117,7 +117,7 @@ def test_fail_analisys_name_must_be_unique_per_order(
 
     assert RadiosynoAnalysis.objects.count() == 1
 
-    assert body['errors'] == ['Análises com esse nome já existe para esse pedido.']
+    assert body['errors'] == ['Radiosynoviorthesis Analysis com este Order e Analysis Name já existe.']
 
 
 def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_radiosyno_analysis):
@@ -188,9 +188,9 @@ def test_fail_with_order_from_another_user(
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('images', ['O campo imagens é obrigatório.']),
-        ('analysisName', ['O campo nome da análise é obrigatório.']),
-        ('isotope', ['O campo isotopo é obrigatório.']),
+        ('images', ['images: Este campo é obrigatório.']),
+        ('analysisName', ['analysis_name: Este campo é obrigatório.']),
+        ('isotope', ['isotope: Este campo é obrigatório.']),
     ],
 )
 def test_fail_missing_fields(field, error, client_api_auth, radiosyno_order, form_data_radiosyno_analysis):
@@ -216,12 +216,12 @@ def test_fail_missing_fields(field, error, client_api_auth, radiosyno_order, for
         (
             'analysisName',
             'ss',
-            ['Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.'],
+            ['analysis_name: Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 2).'],
         ),
         (
             'isotope',
             'ss',
-            ['Isotopo não registrado.'],
+            ['isotope: Isotopo não registrado.'],
         ),
     ],
 )

@@ -123,7 +123,7 @@ def test_missing_token(client_api, user):
 
     body = resp.json()
 
-    assert {'errors': ['O campo token é obrigatório.']} == body
+    assert {'errors': ['token: Este campo é obrigatório.']} == body
 
 
 def test_fail_token_expired(client_api, user):

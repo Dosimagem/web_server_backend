@@ -16,7 +16,7 @@ def test_invalid_by_not_registered(lu_177):
 
     assert not form.is_valid()
 
-    assert form.errors == {'isotope': [_('Isotope not registered.')]}
+    assert form.errors == {'isotope': ['Isotopo não registrado.']}
 
 
 def test_invalid_missing_field(lu_177):

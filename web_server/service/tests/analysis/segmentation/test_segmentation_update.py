@@ -162,7 +162,7 @@ def test_fail_wrong_another_user(client_api, second_user, seg_analysis_update_or
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('analysisName', ['O campo nome da análise é obrigatório.']),
+        ('analysisName', ['analysis_name: Este campo é obrigatório.']),
     ],
 )
 def test_fail_missing_fields(field, error, client_api_auth, seg_analysis_update_or_del_is_possible):
@@ -191,7 +191,11 @@ def test_fail_missing_fields(field, error, client_api_auth, seg_analysis_update_
 @pytest.mark.parametrize(
     'field, value, error',
     [
-        ('analysisName', '2', ['Certifique-se de que o nome da análise tenha no mínimo 3 caracteres.']),
+        (
+            'analysisName',
+            '2',
+            ['analysis_name: Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 1).'],
+        ),
     ],
 )
 def test_fail_invalid_fields(field, value, error, client_api_auth, seg_analysis_update_or_del_is_possible):
@@ -241,6 +245,6 @@ def test_fail_analysis_name_must_be_unique(client_api_auth, segmentation_order, 
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body['errors'] == ['Análises com esse nome já existe para esse pedido.']
+    assert body['errors'] == ['Segmentation Analysis com este Order e Analysis Name já existe.']
 
     _verified_unchanged_information_db(seg_analysis_update_or_del_is_possible)

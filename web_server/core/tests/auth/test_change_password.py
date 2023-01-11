@@ -43,18 +43,15 @@ def test_passwords_dont_mach(client_api_auth, user, payload):
 
     body = resp.json()
 
-    assert body['errors'] == ['Os dois campos da palavra-passe não coincidem.']
+    assert body['errors'] == ['new_password2: Os dois campos da palavra-passe não coincidem.']
 
 
 @pytest.mark.parametrize(
     'field, error',
     [
-        (
-            'old_password',
-            ['O campo old_password é obrigatório.'],
-        ),
-        ('new_password1', ['O campo new_password1 é obrigatório.']),
-        ('new_password2', ['O campo new_password2 é obrigatório.']),
+        ('old_password', ['old_password: Este campo é obrigatório.']),
+        ('new_password1', ['new_password1: Este campo é obrigatório.']),
+        ('new_password2', ['new_password2: Este campo é obrigatório.']),
     ],
 )
 def test_missing_fields(client_api_auth, field, error, user, payload):
@@ -84,7 +81,7 @@ def test_wrong_old_password(client_api_auth, user, payload):
 
     body = resp.json()
 
-    assert body['errors'] == ['Password antigo não está correto.']
+    assert body['errors'] == ['old_password: Password antigo não está correto.']
 
 
 def test_token_id_and_user_id_dont_match(client_api_auth, second_user):

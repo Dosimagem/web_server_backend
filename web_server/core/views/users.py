@@ -18,7 +18,7 @@ from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.core.email import send_email_verification
 from web_server.core.errors_msg import list_errors
 from web_server.core.forms import ProfileUpdateForm, UpdateEmailForm
-from web_server.core.serializers import VerifyEmailSerializer, PhoneSerializer
+from web_server.core.serializers import PhoneSerializer, VerifyEmailSerializer
 
 User = get_user_model()
 

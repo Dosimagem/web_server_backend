@@ -45,7 +45,7 @@ def test_fail_update_invalid_email(client_api_auth, user):
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert body['errors'] == ['Insira um endereço de email válido.']
+    assert body['errors'] == ['email: Insira um endereço de email válido.']
 
 
 def test_fail_update_email_must_be_unique(client_api_auth, user, second_user):
@@ -58,7 +58,7 @@ def test_fail_update_email_must_be_unique(client_api_auth, user, second_user):
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
-    assert body['errors'] == ['Usuário com este Endereço de email já existe.']
+    assert body['errors'] == ['email: Usuário com este Endereço de email já existe.']
 
     old_email = user.email
     user.refresh_from_db()

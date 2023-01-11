@@ -5,7 +5,6 @@ from django.shortcuts import resolve_url
 
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
-
 END_POINT = 'core:read-update-phone'
 
 

@@ -162,8 +162,8 @@ def test_fail_wrong_another_user(
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('analysisName', ['O campo nome da análise é obrigatório.']),
-        ('isotope', ['O campo isotopo é obrigatório.']),
+        ('analysisName', ['analysis_name: Este campo é obrigatório.']),
+        ('isotope', ['isotope: Este campo é obrigatório.']),
     ],
 )
 def test_fail_missing_fields(
@@ -192,7 +192,7 @@ def test_fail_missing_fields(
 @pytest.mark.parametrize(
     'field, value, error',
     [
-        ('isotope', 'll-12', ['Isotopo não registrado.']),
+        ('isotope', 'll-12', ['isotope: Isotopo não registrado.']),
     ],
 )
 def test_fail_invalid_fields(
@@ -248,6 +248,6 @@ def test_fail_analysis_name_must_be_unique(
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body['errors'] == ['Análises com esse nome já existe para esse pedido.']
+    assert body['errors'] == ['Radiosynoviorthesis Analysis com este Order e Analysis Name já existe.']
 
     _verified_unchanged_information_db(radiosyno_analysis_update_or_del_is_possible)

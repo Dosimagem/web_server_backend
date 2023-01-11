@@ -1,10 +1,8 @@
 from http import HTTPStatus
 
 import pytest
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
-from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 from freezegun import freeze_time
 
@@ -78,10 +76,7 @@ def test_fail_login_missing_password(client_api, user_info):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    if get_language() == 'pt-br' and settings.USE_I18N:
-        expected = ['O campo senha é obrigatório.']
-    else:
-        expected = ['Password field is required.']
+    expected = ['password: Este campo é obrigatório.']
 
     assert body == {'errors': expected}
 

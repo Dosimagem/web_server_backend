@@ -69,7 +69,7 @@ def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
 
     body = response.json()
 
-    expected = ['CNPJ inválido.']
+    expected = ['cnpj: Certifique-se de que o valor tenha no máximo 14 caracteres (ele possui 18).']
 
     assert body['errors'] == expected
 

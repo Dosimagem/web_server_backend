@@ -48,7 +48,7 @@ def test_reset_password_missing_email(client_api, user):
 
     body = resp.json()
 
-    assert body['errors'] == ['O campo email é obrigatório.']
+    assert body['errors'] == ['email: Este campo é obrigatório.']
 
     assert not user.reset_password_secret
     assert not user.sent_reset_password_email
@@ -66,7 +66,7 @@ def test_reset_password_invalid_email(client_api, user):
 
     body = resp.json()
 
-    assert body['errors'] == ['Insira um endereço de email válido.']
+    assert body['errors'] == ['email: Insira um endereço de email válido.']
 
     assert not user.reset_password_secret
     assert not user.sent_reset_password_email

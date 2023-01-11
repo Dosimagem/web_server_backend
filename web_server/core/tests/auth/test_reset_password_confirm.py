@@ -43,9 +43,9 @@ def test_reset_password_confirm(client_api, user, reset_email):
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('token', ['O campo token é obrigatório.']),
-        ('new_password1', ['O campo new_password1 é obrigatório.']),
-        ('new_password2', ['O campo new_password2 é obrigatório.']),
+        ('token', ['token: Este campo é obrigatório.']),
+        ('new_password1', ['new_password1: Este campo é obrigatório.']),
+        ('new_password2', ['new_password2: Este campo é obrigatório.']),
     ],
 )
 def test_missing_fields(client_api, field, error, user, reset_email):
@@ -75,7 +75,7 @@ def test_passwords_dont_mach(client_api, user, reset_email):
 
     body = resp.json()
 
-    assert body['errors'] == ['Os dois campos da palavra-passe não coincidem.']
+    assert body['errors'] == ['new_password2: Os dois campos da palavra-passe não coincidem.']
 
 
 def test_wrong_user(client_api, reset_email):

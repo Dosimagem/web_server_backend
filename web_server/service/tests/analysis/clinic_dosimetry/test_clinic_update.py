@@ -228,13 +228,10 @@ def test_fail_wrong_another_user(
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('calibrationId', ['O campo id de calibração é obrigatório.']),
-        ('analysisName', ['O campo nome da análise é obrigatório.']),
-        ('injectedActivity', ['O campo atividade injetada é obrigatório.']),
-        (
-            'administrationDatetime',
-            ['O campo hora e data de adminstração é obrigatório.'],
-        ),
+        ('calibrationId', ['calibration_id: Este campo é obrigatório.']),
+        ('analysisName', ['analysis_name: Este campo é obrigatório.']),
+        ('injectedActivity', ['injected_activity: Este campo é obrigatório.']),
+        ('administrationDatetime', ['administration_datetime: Este campo é obrigatório.']),
     ],
 )
 def test_fail_missing_fields(field, error, client_api_auth, clinic_dosi_update_or_del_is_possible):
@@ -268,18 +265,14 @@ def test_fail_missing_fields(field, error, client_api_auth, clinic_dosi_update_o
 @pytest.mark.parametrize(
     'field, value, error',
     [
-        ('calibrationId', 'not is uuid', ['Insira um UUID válido.']),
+        ('calibrationId', 'not is uuid', ['calibration_id: Insira um UUID válido.']),
         (
             'injectedActivity',
             '-1',
-            ['Certifique-se que atividade injetada seja maior ou igual a 0.0.'],
+            ['injected_activity: Certifique-se que este valor seja maior ou igual a 0.0.'],
         ),
-        ('injectedActivity', 'not ia a number', ['Informe um número.']),
-        (
-            'administrationDatetime',
-            'not is a datatime',
-            ['Informe uma data/hora válida.'],
-        ),
+        ('injectedActivity', 'not ia a number', ['injected_activity: Informe um número.']),
+        ('administrationDatetime', 'not is a datatime', ['administration_datetime: Informe uma data/hora válida.']),
     ],
 )
 def test_fail_invalid_fields(field, value, error, client_api_auth, clinic_dosi_update_or_del_is_possible):
@@ -345,6 +338,6 @@ def test_fail_analysis_name_must_be_unique(
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body['errors'] == ['Análises com esse nome já existe para esse pedido.']
+    assert body['errors'] == ['Clinic Dosimetry com este Order e Analysis Name já existe.']
 
     _verified_unchanged_information_db(clinic_dosi_update_or_del_is_possible)
