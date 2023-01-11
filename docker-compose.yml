@@ -2,7 +2,7 @@ services:
 
   api:
     build:
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
       context: .
     container_name: dosimagem_api
     image: dosimagem/api:v1

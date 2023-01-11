@@ -133,7 +133,7 @@ ___
 Para acessar usar o `admin` é preciso criar um super usuário, para tal basta usar o comando:
 
 ```console
-python manage.py createsuperuser
+make create_admin
 ```
 
 A rota para acessar é `/dosimagem/admin/`
@@ -151,7 +151,7 @@ A rota para acessar é `/dosimagem/admin/`
 Subir o container
 
 ```console
-docker-compose docker-compose-db.yml database -d
+mae db_up
 ```
 
 Configurar `DATABASE_URL` no arquivo `.env` para
@@ -218,26 +218,35 @@ Para subir a `api` completa simulando o ambiente de produção com `nginx`, `gun
 
 
 ```console
-docker-compose build
-docker-compose up
+make docker_build_and_up_prod
 ```
 
-O primeiro comando precisa ser excutado apenas quando o temos alteração no código para criar a imagem `dosimagem_api` atualizada.
-
 A `api` estará dispnivel em `localhost:80`.
+
+Para criar apenas uma nova `dosimagem_api` atualizada.
+
+```console
+make docker_build_prod
+```
+
+Caso haja certaza que aa imagem está atualizada base o comando:
+
+```console
+make docker_up_prod
+```
 
 O conteiner `django` para `prod` tem apenas as depencias de desenvolvimento.
 
 Para fazer as migrações:
 
 ```console
-docker exec dosimagem_api ./manage.py migrate
+make docker_migrate
 ```
 
 Para criar o usuário root bastas fazer:
 
 ```console
-docker exec -it dosimagem_api ./manage.py createsuperuser
+make docker_create_admin
 ```
 
 ## 6.2) Docker em desenvolvimento
@@ -245,8 +254,7 @@ docker exec -it dosimagem_api ./manage.py createsuperuser
 Pode-se também executar a versão de desenvolvimento para tal basta:
 
 ```console
-docker-compose -f docker-compose.dev.yml build
-docker-compose -f docker-compose-dev.yml up
+make docker_build_prod
 ```
 
 Com este comando você irá subir dois os conteiners, o `django` e o `postgres`. O conteiner `django` para `dev` usa o servidor de desenvolvimente e não o `gunicorn` e também possiu as dependencias de desenvolvimento.
@@ -254,7 +262,7 @@ Com este comando você irá subir dois os conteiners, o `django` e o `postgres`.
 Para rodar o teste
 
 ```console
-docker-compose -f docker-compose.dev.yml run api pytest
+make docker_pytest
 ```
 
 ---

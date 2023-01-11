@@ -28,9 +28,8 @@ mediafiles
 .pytest_cache
 .python-version
 README.md
-requirements-dev.in
+requirements.dev.in
 requirements.in
-ROTAS.md
 spec
 staticfiles
 .venv
