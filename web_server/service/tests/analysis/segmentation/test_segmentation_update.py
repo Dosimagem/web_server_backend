@@ -191,7 +191,11 @@ def test_fail_missing_fields(field, error, client_api_auth, seg_analysis_update_
 @pytest.mark.parametrize(
     'field, value, error',
     [
-        ('analysisName', '2', ['analysis_name: Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 1).']),
+        (
+            'analysisName',
+            '2',
+            ['analysis_name: Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 1).'],
+        ),
     ],
 )
 def test_fail_invalid_fields(field, value, error, client_api_auth, seg_analysis_update_or_del_is_possible):

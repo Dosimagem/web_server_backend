@@ -56,7 +56,7 @@ def test_email_did_not_mach(register_infos, db):
 
     assert not form.is_valid()
 
-    expected = [_('The two email fields didn’t match.')]
+    expected = ['Os campos emails não correspondem.']
     assert expected == form.errors['confirmed_email']
 
 

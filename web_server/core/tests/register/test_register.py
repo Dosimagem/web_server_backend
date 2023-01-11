@@ -4,7 +4,6 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.shortcuts import resolve_url
-from django.utils.translation import gettext as _
 from freezegun import freeze_time
 
 from web_server.conftest import HTTP_METHODS
@@ -98,7 +97,7 @@ def test_fail_profile_invalid_cpf(api_cnpj_fail, client_api, second_register_inf
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert 'cpf: CPF invalid.' in errors_list
+    assert 'cpf: CPF inválido.' in errors_list
 
 
 def test_fail_profile_invalid_cnpj(client_api, second_register_infos):
@@ -135,7 +134,7 @@ def test_fail_profile_invalid_phone(api_cnpj_successfull, client_api, register_i
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    expected = 'Introduza um número de telefone válido (ex. +12125552368).'
+    expected = 'phone: Introduza um número de telefone válido (ex. +12125552368).'
 
     assert expected in errors_list
 
@@ -150,7 +149,7 @@ def test_fail_profile_name_can_not_have_numbers(api_cnpj_successfull, client_api
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    expected = ['O nome não pode ter números.']
+    expected = ['name: O nome não pode ter números.']
 
     assert expected == errors_list
 
@@ -165,7 +164,7 @@ def test_fail_profile_name_must_be_at_least_3_char(api_cnpj_successfull, client_
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    expected = ['Certifique-se de que o nome tenha no mínimo 3 caracteres.']
+    expected = ['name: Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 2).']
 
     assert expected == errors_list
 
@@ -176,11 +175,11 @@ def test_fail_profile_name_must_be_at_least_3_char(api_cnpj_successfull, client_
         (
             'email',
             [
-                'O campo email é obrigatório.',
-                'Os campos emails não correspondem.',
+                'email: Este campo é obrigatório.',
+                'confirmed_email: Os campos emails não correspondem.',
             ],
         ),
-        ('confirmed_email', [('O campo email de confirmação é obrigatório.')]),
+        ('confirmed_email', [('confirmed_email: Este campo é obrigatório.')]),
     ],
 )
 def test_register_missing_fields(client_api, field, error, register_infos):
@@ -198,11 +197,11 @@ def test_register_missing_fields(client_api, field, error, register_infos):
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('name', ['O campo nome é obrigatório.']),
-        ('phone', ['O campo telefone é obrigatório.']),
-        ('clinic', ['O campo clínica é obrigatório.']),
-        ('role', ['O campo cargo é obrigatório.']),
-        ('cpf', ['O campo CPF é obrigatório.']),
+        ('name', ['name: Este campo é obrigatório.']),
+        ('phone', ['phone: Este campo é obrigatório.']),
+        ('clinic', ['clinic: Este campo é obrigatório.']),
+        ('role', ['role: Este campo é obrigatório.']),
+        ('cpf', ['cpf: Este campo é obrigatório.']),
     ],
 )
 def test_register_missing_profile_fields(api_cnpj_successfull, client_api, field, error, register_infos):
@@ -227,9 +226,9 @@ def test_register_invalid_email(client_api, register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert _('Enter a valid email address.') in errors_list
+    assert 'email: Insira um endereço de email válido.' in errors_list
 
-    expected = 'Os campos emails não correspondem.'
+    expected = 'confirmed_email: Os campos emails não correspondem.'
 
     assert expected in errors_list
 
@@ -243,7 +242,7 @@ def test_register_password_dont_mach(client_api, register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    expected = ['Os dois campos de senha não correspondem.']
+    expected = ['password2: Os dois campos de senha não correspondem.']
 
     assert body['errors'] == expected
 
@@ -257,7 +256,7 @@ def test_register_email_dont_mach(client_api, register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    expected = ['confirmed_email: The two email fields didn’t match.']
+    expected = ['confirmed_email: Os campos emails não correspondem.']
 
     assert body['errors'] == expected
 

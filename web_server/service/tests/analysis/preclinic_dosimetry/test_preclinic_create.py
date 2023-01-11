@@ -124,7 +124,7 @@ def test_fail_injected_activity_must_be_positive(client_api_auth, preclinic_orde
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    url = resolve_url('service:analysis-list-create',preclinic_order.user.uuid, preclinic_order.uuid)
+    url = resolve_url('service:analysis-list-create', preclinic_order.user.uuid, preclinic_order.uuid)
 
     resp = client_api_auth.post(url, data=form_data_preclinic_dosimetry, format='multipart')
     body = resp.json()

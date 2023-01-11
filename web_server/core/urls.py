@@ -14,8 +14,8 @@ from .views.users import (
     email_resend,
     email_verify,
     read_update_email,
-    users_read_update,
     read_update_phone,
+    users_read_update,
 )
 
 app_name = 'core'

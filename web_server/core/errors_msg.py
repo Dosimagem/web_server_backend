@@ -47,7 +47,6 @@ def list_errors(errors):
     return list_
 
 
-
 # def list_errors(errors):
 
 #     list_ = []

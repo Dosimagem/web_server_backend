@@ -325,7 +325,7 @@ def test_fail_missing_fields(field, error, client_api_auth, clinic_order, form_d
         (
             'analysisName',
             'ss',
-            ['analysis_name: Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 2).' ],
+            ['analysis_name: Certifique-se de que o valor tenha no mínimo 3 caracteres (ele possui 2).'],
         ),
     ],
 )

@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model, password_validation
 from django.utils.translation import gettext as _
-from rest_framework import serializers
 from phonenumber_field.serializerfields import PhoneNumberField
-
+from rest_framework import serializers
 
 User = get_user_model()
 

@@ -97,7 +97,9 @@ class MyUserCreationForm(UserCreationForm):
         confimed_email = self.cleaned_data['confirmed_email']
 
         if email != confimed_email:
-            raise forms.ValidationError(['The two email fields didn’t match.'], code='email_match')
+            # TODO: Translation:
+            # raise forms.ValidationError(['The two email fields didn’t match.'], code='email_match')
+            raise forms.ValidationError(['Os campos emails não correspondem.'], code='email_match')
 
 
 # TODO: Testar de forma unitaria o form.

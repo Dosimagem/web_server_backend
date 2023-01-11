@@ -1,10 +1,8 @@
 from http import HTTPStatus
 
 import pytest
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
-from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 from freezegun import freeze_time
 

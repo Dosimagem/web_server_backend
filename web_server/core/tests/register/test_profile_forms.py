@@ -123,7 +123,7 @@ def test_cpf_invalid(api_cnpj_fail, second_register_infos, db):
 
     assert not form.is_valid()
 
-    assert form.errors['cpf'] == ['CPF invalid.']
+    assert form.errors['cpf'] == ['CPF inválido.']
 
 
 def test_cnpj_invalid(second_register_infos, db):
@@ -134,7 +134,7 @@ def test_cnpj_invalid(second_register_infos, db):
 
     assert not form.is_valid()
 
-    assert form.errors['cnpj'] == ['CNPJ invalid.']
+    assert form.errors['cnpj'] == ['CNPJ inválido.']
 
 
 def test_phone_invalid():
