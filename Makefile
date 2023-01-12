@@ -1,10 +1,14 @@
-# init:
-# 	@python -m venv .venv --upgrade-deps
-# 	@source .venv/bin/activate
-# 	@pip install pip-tools
-# 	@pip-sync requirements.txt requirements.dev.txt --pip-args --no-deps
-# 	@precommit install
-# 	@cp contrib/env-sample .env
+SHELL := /bin/bash
+
+PHONNY: init
+init:
+	@python -m venv .venv --upgrade-deps
+	@source .venv/bin/activate
+	@pip install pip-tools
+	@pip-sync requirements.txt requirements.dev.txt --pip-args --no-deps
+	@precommit install
+	@cp contrib/env-sample .env
+
 
 PHONNY: create_admin
 create_admin:
@@ -64,13 +68,11 @@ PHONNY: docker_create_admin
 docker_create_admin:
 	@docker exec -it dosimagem_api ./manage.py createsuperuser
 
-
 # Docker pytest
 
 PHONNY: docker_pytest
 docker_pytest:
 	@docker-compose -f docker-compose.dev.yml run api pytest -n 4
-
 
 #
 PHONNY: linter
@@ -82,6 +84,14 @@ fmt:
 	@.venv/bin/isort web_server
 	@.venv/bin/blue web_server
 
+PHONNY: mkvenv
+mkvenv:
+	@python -m venv .venv --upgrade-deps
+	@source .venv/bin/activate
+
+PHONNY: venv
+venv:
+	@source .venv/bin/activate
 
 clean:
 	@find ./web_server/ -name '*.pyc' -exec rm -f {} \;
