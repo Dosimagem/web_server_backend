@@ -1,7 +1,6 @@
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
-from django.utils.translation import gettext as _
 
 from web_server.service.forms import CreateCalibrationForm
 from web_server.service.models import Calibration
@@ -34,9 +33,7 @@ def test_invalid_create_form_field_must_be_positive(field, calibration_infos, ca
 
     assert not form.is_valid()
 
-    msg = _('Ensure this value is greater than or equal to %(limit_value)s.')
-
-    msg = msg % {'limit_value': 0.0}
+    msg = 'Ensure this value is greater than or equal to 0.0.'
 
     assert form.errors == {field: [msg]}
 
@@ -63,7 +60,7 @@ def test_invalid_missing_fields(field, calibration_infos, calibration_file):
 
     assert not form.is_valid()
 
-    assert form.errors == {field: [_('This field is required.')]}
+    assert form.errors == {field: ['This field is required.']}
 
 
 def test_invalid_isotope(calibration_infos, calibration_file):
@@ -74,7 +71,7 @@ def test_invalid_isotope(calibration_infos, calibration_file):
 
     assert not form.is_valid()
 
-    assert form.errors == {'isotope': [_('Select a valid choice. That choice is not one of the available choices.')]}
+    assert form.errors == {'isotope': ['Select a valid choice. That choice is not one of the available choices.']}
 
 
 def test_valid_create_form_field_save(calibration_infos, calibration_file):

@@ -28,7 +28,7 @@ def test_missing_fields(field, radiosyno_analysis_info, radiosyno_analysis_file)
 
     assert not form.is_valid()
 
-    assert form.errors == {field: [_('This field is required.')]}
+    assert form.errors == {field: ['This field is required.']}
 
 
 def test_invalid_order_of_wrong_service(preclinic_order, radiosyno_analysis_info, radiosyno_analysis_file):

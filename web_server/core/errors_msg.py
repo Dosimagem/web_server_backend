@@ -1,6 +1,8 @@
-MSG_ERROR_TOKEN_USER = ['O token e o ID do usuário não correspondem.']
-MSG_ERROR_RESOURCE = ['Este usuário não possui este recurso cadastrado.']
-ERROR_CALIBRATION_ID = ['Calibração com esse id não existe para esse usuário.']
+from django.utils.translation import gettext as _
+
+MSG_ERROR_TOKEN_USER = [_('Token and user ID do not match.')]
+MSG_ERROR_RESOURCE = [_('This user does not have this resource registered.')]
+ERROR_CALIBRATION_ID = [_('Calibration with this id does not exist for this user.')]
 
 ERRORS_MAP_PT = {
     'syringe_activity': 'atividade da seringa',

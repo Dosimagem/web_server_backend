@@ -1,6 +1,5 @@
 import pytest
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext as _
 from django.utils.translation import ngettext
 
 from web_server.core.forms import MyUserCreationForm
@@ -32,7 +31,7 @@ def test_field_is_not_optional(register_infos, field, db):
 
     assert not form.is_valid()
 
-    expected = [_('This field is required.')]
+    expected = ['Este campo é obrigatório.']
     assert expected == form.errors[field]
 
 
@@ -44,7 +43,7 @@ def test_password_did_not_mach(register_infos, db):
 
     assert not form.is_valid()
 
-    expected = [_('The two password fields didn’t match.')]
+    expected = ['Os dois campos de senha não correspondem.']
     assert expected == form.errors['password2']
 
 
@@ -56,15 +55,8 @@ def test_email_did_not_mach(register_infos, db):
 
     assert not form.is_valid()
 
-    expected = ['Os campos emails não correspondem.']
+    expected = ['Os dois campos de e-mail não correspondem.']
     assert expected == form.errors['confirmed_email']
-
-
-MSG_PASSWORD = ngettext(
-    'This password is too short. It must contain at least %(min_length)d character.',
-    'This password is too short. It must contain at least %(min_length)d characters.',
-    8,
-) % {'min_length': 8}
 
 
 @pytest.mark.parametrize(
@@ -73,19 +65,19 @@ MSG_PASSWORD = ngettext(
         (
             '1',
             [
-                MSG_PASSWORD,
-                _('This password is too common.'),
-                _('This password is entirely numeric.'),
+                'Esta senha é muito curta. Ela precisa conter pelo menos 8 caracteres.',
+                'Esta senha é muito comum.',
+                'Esta senha é inteiramente numérica.',
             ],
         ),
         (
             '12345678',
             [
-                _('This password is too common.'),
-                _('This password is entirely numeric.'),
+                'Esta senha é muito comum.',
+                'Esta senha é inteiramente numérica.',
             ],
         ),
-        ('45268748', [_('This password is entirely numeric.')]),
+        ('45268748', ['Esta senha é inteiramente numérica.']),
     ],
 )
 def test_password_validation(password, error_validation, db):

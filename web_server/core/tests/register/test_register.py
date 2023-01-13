@@ -81,7 +81,7 @@ def test_fail_profile_unique_fields(api_cnpj_successfull, client_api, user, seco
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert 'cpf: CPF already exists' in errors_list
+    assert 'cpf: CPF já existe' in errors_list
 
     # assert 'Clínica já existe.' in errors_list
     # assert 'CNPJ já existe.' in errors_list
@@ -176,7 +176,7 @@ def test_fail_profile_name_must_be_at_least_3_char(api_cnpj_successfull, client_
             'email',
             [
                 'email: Este campo é obrigatório.',
-                'confirmed_email: Os campos emails não correspondem.',
+                'confirmed_email: Os dois campos de e-mail não correspondem.',
             ],
         ),
         ('confirmed_email', [('confirmed_email: Este campo é obrigatório.')]),
@@ -228,7 +228,7 @@ def test_register_invalid_email(client_api, register_infos):
 
     assert 'email: Insira um endereço de email válido.' in errors_list
 
-    expected = 'confirmed_email: Os campos emails não correspondem.'
+    expected = 'confirmed_email: Os dois campos de e-mail não correspondem.'
 
     assert expected in errors_list
 
@@ -256,7 +256,7 @@ def test_register_email_dont_mach(client_api, register_infos):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    expected = ['confirmed_email: Os campos emails não correspondem.']
+    expected = ['confirmed_email: Os dois campos de e-mail não correspondem.']
 
     assert body['errors'] == expected
 

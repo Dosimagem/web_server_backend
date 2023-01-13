@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.utils.translation import gettext as _
 
 from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.signature.models import Signature
@@ -32,7 +33,7 @@ def signature_read(request, user_id, signature_id):
     try:
         signature = user.signatures.get(uuid=signature_id)
     except Signature.DoesNotExist:
-        return Response(data={'errors': 'Assinatura não encontrada para esse usuário'}, status=HTTPStatus.NOT_FOUND)
+        return Response(data={'errors': _('Subscription not found for this user')}, status=HTTPStatus.NOT_FOUND)
 
     serializer = SignatureByUserSerializer(signature)
 

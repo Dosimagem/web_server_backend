@@ -5,6 +5,7 @@ from dj_rest_auth.jwt_auth import set_jwt_cookies
 from dj_rest_auth.utils import jwt_encode
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.utils.translation import gettext as _
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
@@ -71,7 +72,7 @@ def register(request):
     try:
         send_email_verification(user)
     except SMTPException:
-        response.data['warning'] = 'Email de verificação não foi enviado.'
+        response.data['warning'] = _('Verification e-mail was not sent.')
 
     access_token, refresh_token = jwt_encode(user)
     set_jwt_cookies(response, access_token, refresh_token)

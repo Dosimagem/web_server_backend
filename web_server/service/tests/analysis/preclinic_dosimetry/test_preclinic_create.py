@@ -93,7 +93,7 @@ def test_fail_order_must_have_payment_confirmed(client_api_auth, preclinic_order
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert ['O pagamento desse pedido não foi confirmado.'] == body['errors']
+    assert ['O pagamento deste pedido não foi confirmado.'] == body['errors']
 
 
 def test_fail_wrong_administration_datetime(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):

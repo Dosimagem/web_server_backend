@@ -47,7 +47,7 @@ def test_fail_verify_email_not_sent_yet(client_api, user):
 
     body = resp.json()
 
-    assert {'errors': ['Email de verificação ainda não foi enviado.']} == body
+    assert {'errors': ['O e-mail de verificação ainda não foi enviado.']} == body
 
 
 def test_fail_email_already_verified(client_api, user):
@@ -65,7 +65,7 @@ def test_fail_email_already_verified(client_api, user):
 
     body = resp.json()
 
-    assert {'errors': ['Email já foi verificado.']} == body
+    assert {'errors': ['O e-mail já foi verificado.']} == body
 
 
 def test_fail_token_used_twice(client_api, user):
@@ -87,7 +87,7 @@ def test_fail_token_used_twice(client_api, user):
 
     body = resp.json()
 
-    assert {'errors': ['Token de verificação inválido ou expirado para esse usuário.']} == body
+    assert {'errors': ['Token de verificação inválido ou expirado para este usuário.']} == body
 
 
 def test_fail_token_invalid(client_api, user):
@@ -104,7 +104,7 @@ def test_fail_token_invalid(client_api, user):
 
     body = resp.json()
 
-    expected = {'errors': ['Token de verificação inválido ou expirado para esse usuário.']}
+    expected = {'errors': ['Token de verificação inválido ou expirado para este usuário.']}
 
     assert expected == body
 
@@ -150,7 +150,7 @@ def test_fail_token_expired(client_api, user):
 
         body = resp.json()
 
-        expected = {'errors': ['Token de verificação inválido ou expirado para esse usuário.']}
+        expected = {'errors': ['Token de verificação inválido ou expirado para este usuário.']}
 
         assert expected == body
 
@@ -182,4 +182,4 @@ def test_user_in_url_is_different_to_user_in_jwt(client_api, user):
 
     body = resp.json()
 
-    assert {'errors': ['Conflito no id do usuario.']} == body
+    assert {'errors': ['Conflito no ID do usuário.']} == body

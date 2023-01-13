@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model, password_validation
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 
@@ -48,7 +48,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
     def validate_old_password(self, value):
         user = self.instance
         if not user.check_password(value):
-            raise serializers.ValidationError('Password antigo não está correto.')
+            raise serializers.ValidationError(_('Old password is not correct.'))
         return value
 
 

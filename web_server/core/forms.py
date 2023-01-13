@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ValidationError
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from web_server.core.models import CustomUser, UserProfile
 
@@ -97,9 +97,7 @@ class MyUserCreationForm(UserCreationForm):
         confimed_email = self.cleaned_data['confirmed_email']
 
         if email != confimed_email:
-            # TODO: Translation:
-            # raise forms.ValidationError(['The two email fields didn’t match.'], code='email_match')
-            raise forms.ValidationError(['Os campos emails não correspondem.'], code='email_match')
+            raise forms.ValidationError([_("The two e-mail fields didn't match.")], code='email_match')
 
 
 # TODO: Testar de forma unitaria o form.

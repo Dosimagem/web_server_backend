@@ -43,7 +43,7 @@ def test_passwords_dont_mach(client_api_auth, user, payload):
 
     body = resp.json()
 
-    assert body['errors'] == ['new_password2: Os dois campos da palavra-passe não coincidem.']
+    assert body['errors'] == ['new_password2: Os dois campos de senha não correspondem.']
 
 
 @pytest.mark.parametrize(

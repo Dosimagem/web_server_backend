@@ -83,7 +83,7 @@ def test_fail_order_must_have_payment_confirmed(client_api_auth, clinic_order, f
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    assert ['O pagamento desse pedido não foi confirmado.'] == body['errors']
+    assert ['O pagamento deste pedido não foi confirmado.'] == body['errors']
 
 
 def test_fail_wrong_administration_datetime(client_api_auth, clinic_order, form_data_clinic_dosimetry):
@@ -182,7 +182,7 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_cl
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['Todas as análises para essa pedido já foram usadas.']
+    assert body['errors'] == ['Todas as análises deste pedido já foram usadas.']
 
 
 def test_fail_missing_calibration_id(client_api_auth, clinic_order, form_data_clinic_dosimetry):
@@ -220,7 +220,7 @@ def test_fail_wrong_calibration_id(client_api_auth, clinic_order, form_data_clin
 
     body = resp.json()
 
-    assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
+    assert body['errors'] == ['Calibração com este id não existe para este usuário.']
 
 
 def test_fail_wrong_order_id(client_api_auth, clinic_order, form_data_clinic_dosimetry):
@@ -277,7 +277,7 @@ def test_fail_whith_calibration_of_another_user(
 
     assert not ClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
+    assert body['errors'] == ['Calibração com este id não existe para este usuário.']
 
 
 @pytest.mark.parametrize(

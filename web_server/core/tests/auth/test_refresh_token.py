@@ -52,7 +52,7 @@ def test_refresh_token_expired(client, user):
 
     body = resp.json()
 
-    expected = {'code': 'token_not_valid', 'detail': 'Token is invalid or expired'}
+    expected = {'code': 'token_not_valid', 'detail': 'O token é inválido ou expirou'}
 
     assert expected == body
 

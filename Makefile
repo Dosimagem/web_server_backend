@@ -93,6 +93,14 @@ PHONNY: venv
 venv:
 	@source .venv/bin/activate
 
+PHONNY: makemessages
+makemessages:
+	@.venv/bin/python manage.py makemessages -l pt_BR -l es
+
+PHONNY: compilemessages
+compilemessages:
+	@.venv/bin/python manage.py compilemessages -l pt_BR -l es
+
 clean:
 	@find ./web_server/ -name '*.pyc' -exec rm -f {} \;
 	@find ./web_server/ -name '__pycache__' -exec rm -rf {} \;

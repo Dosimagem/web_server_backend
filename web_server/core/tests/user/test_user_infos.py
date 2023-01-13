@@ -140,8 +140,8 @@ def test_read_update_user_wrong_token(client_api, user, second_user):
 
     expected = {
         'code': 'token_not_valid',
-        'detail': 'Given token not valid for any token type',
-        'messages': [{'message': 'Token is invalid or expired', 'tokenClass': 'AccessToken', 'tokenType': 'access'}],
+        'detail': 'O token fornecido não é válido para nenhum tipo de token',
+        'messages': [{'message': 'O token é inválido ou expirou', 'tokenClass': 'AccessToken', 'tokenType': 'access'}],
     }
 
     assert response.json() == expected

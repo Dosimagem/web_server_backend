@@ -33,7 +33,7 @@ class CreateOrderForm(forms.ModelForm):
 
         if (quantity_of_analyzes is not None) and (remaining_of_analyzes > quantity_of_analyzes):
             raise ValidationError(
-                _('Must be lower with the field quantity of analyzes.'),
+                _('The remaining analysis must be less than the analysis field number.'),
                 code='lower_or_equal',
             )
 
@@ -69,7 +69,7 @@ class IsotopeForm(forms.Form):
 
         isotope = self.cleaned_data['isotope']
         if isotope not in isotopes_list:
-            raise ValidationError('Isotopo não registrado.', code='invalid_isotope')
+            raise ValidationError(_('Isotope not registered.'), code='invalid_isotope')
 
         return isotope
 
