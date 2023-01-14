@@ -21,7 +21,7 @@ def test_successful(client_api_auth, first_calibration):
 
     body = response.json()
 
-    assert 'Calibração deletada com sucesso!' == body['message']
+    assert 'Calibração excluída com sucesso!' == body['message']
 
 
 def test_fail_wrong_calibration_id(client_api_auth, first_calibration):
@@ -76,8 +76,8 @@ def test_fail_delete_calibration_used_in_a_clinic_analysis(client_api_auth, clin
     body = response.json()
 
     expected = (
-        'Apenas calibrações associadas com análises com o status '
-        "'Informações inválidas' ou 'Dados enviados' podem ser atualizadas/deletadas."
+        'Somente as calibrações associadas a análises com o status '
+        "'Informações inválidas' ou 'Dados enviados' podem ser atualizados/excluídos."
     )
 
     assert [expected] == body['errors']
@@ -103,8 +103,8 @@ def test_fail_delete_calibration_used_in_a_preclinic_analysis(client_api_auth, p
     body = response.json()
 
     expected = (
-        'Apenas calibrações associadas com análises com o status '
-        "'Informações inválidas' ou 'Dados enviados' podem ser atualizadas/deletadas."
+        'Somente as calibrações associadas a análises com o status '
+        "'Informações inválidas' ou 'Dados enviados' podem ser atualizados/excluídos."
     )
 
     assert [expected] == body['errors']
@@ -130,4 +130,4 @@ def test_successful_delete_calibration_used_in_a_analysis(client_api_auth, clini
 
     body = response.json()
 
-    assert 'Calibração deletada com sucesso!' == body['message']
+    assert 'Calibração excluída com sucesso!' == body['message']

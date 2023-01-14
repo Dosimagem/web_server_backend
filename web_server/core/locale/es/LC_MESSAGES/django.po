@@ -1,0 +1,188 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-14 03:05+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: web_server/core/admin.py:37
+msgid "Main data"
+msgstr "Datos principales"
+
+#: web_server/core/admin.py:39
+msgid "Permissions"
+msgstr "Permisos"
+
+#: web_server/core/admin.py:47
+msgid "Important dates"
+msgstr "Fechas importantes"
+
+#: web_server/core/admin.py:155
+#, python-format
+msgid "%(name)s object with primary key %(key)r does not exist."
+msgstr "El objeto %(name)s con la clave principal %(key)r no existe."
+
+#: web_server/core/admin.py:167
+msgid "Password changed successfully."
+msgstr "Contraseña cambiada con éxito"
+
+#: web_server/core/admin.py:188
+#, python-format
+msgid "Change password: %s"
+msgstr "Cambiar contraseña: %s"
+
+#: web_server/core/auth.py:12
+msgid "Token is invalid or expired"
+msgstr "El token no es válido o ha caducado"
+
+#: web_server/core/auth.py:37
+msgid "Given token not valid for any token type"
+msgstr ""
+
+#: web_server/core/errors_msg.py:3
+msgid "Token and user ID do not match."
+msgstr ""
+
+#: web_server/core/errors_msg.py:4
+msgid "This user does not have this resource registered."
+msgstr ""
+
+#: web_server/core/errors_msg.py:5
+msgid "Calibration with this id does not exist for this user."
+msgstr ""
+
+#: web_server/core/forms.py:49
+msgid "CPF already exists"
+msgstr ""
+
+#: web_server/core/forms.py:100
+#, fuzzy
+msgid "The two e-mail fields didn't match."
+msgstr "Os dois campos de e-mail não correspondem."
+
+#: web_server/core/models.py:23
+msgid "Creation Date and Time"
+msgstr ""
+
+#: web_server/core/models.py:24
+msgid "Modificatioin Date and Time"
+msgstr ""
+
+#: web_server/core/models.py:68
+msgid "email address"
+msgstr "dirección de correo electrónico"
+
+#: web_server/core/models.py:70
+msgid "staff status"
+msgstr "estado del personal"
+
+#: web_server/core/models.py:72
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+"Designa si el usuario puede iniciar sesión en este sitio de administración."
+
+#: web_server/core/models.py:75
+msgid "active"
+msgstr "activo"
+
+#: web_server/core/models.py:78
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: web_server/core/models.py:89
+msgid "date joined"
+msgstr ""
+
+#: web_server/core/models.py:98
+msgid "user"
+msgstr ""
+
+#: web_server/core/models.py:99
+msgid "users"
+msgstr ""
+
+#: web_server/core/models.py:143
+msgid "Name"
+msgstr "Nombre"
+
+#: web_server/core/models.py:147
+msgid "Clinic"
+msgstr "Clínica"
+
+#: web_server/core/models.py:148
+msgid "Role"
+msgstr "Role"
+
+#: web_server/core/serializers.py:21 web_server/core/serializers.py:41
+msgid "The two password fields didn't match."
+msgstr "Los dos campos de contraseña no coincidían."
+
+#: web_server/core/serializers.py:51
+msgid "Old password is not correct."
+msgstr "La contraseña anterior no es correcta."
+
+#: web_server/core/tests/auth/test_login.py:52
+#: web_server/core/tests/auth/test_login.py:68
+msgid "Unable to log in with provided credentials."
+msgstr ""
+
+#: web_server/core/views/auth.py:119
+msgid "Updated password."
+msgstr ""
+
+#: web_server/core/views/auth.py:135
+msgid "This e-mail is not registered."
+msgstr "Este correo electrónico no está registrado."
+
+#: web_server/core/views/auth.py:140
+msgid "E-mail not sent."
+msgstr "Correo electrónico no enviado."
+
+#: web_server/core/views/auth.py:142
+msgid "E-mail sent."
+msgstr "Email enviado."
+
+#: web_server/core/views/auth.py:162 web_server/core/views/auth.py:173
+#: web_server/core/views/users.py:105 web_server/core/views/users.py:119
+msgid "Invalid or expired verification token for this user."
+msgstr "Token de verificación no válido o caducado para este usuario."
+
+#: web_server/core/views/auth.py:167 web_server/core/views/register.py:75
+#: web_server/core/views/users.py:78 web_server/core/views/users.py:142
+msgid "Verification e-mail was not sent."
+msgstr "No se envió el correo electrónico de verificación."
+
+#: web_server/core/views/auth.py:178 web_server/core/views/users.py:124
+msgid "Conflict in user id."
+msgstr "Conflicto en la identificación del usuario."
+
+#: web_server/core/views/index.py:9
+msgid "Welcome to Dosiamge API !"
+msgstr "¡Bienvenido a la API de Dosiamge!"
+
+#: web_server/core/views/users.py:110
+msgid "Verification email has not yet been sent."
+msgstr "Aún no se ha enviado el correo electrónico de verificación."
+
+#: web_server/core/views/users.py:113
+msgid "Email has already been verified."
+msgstr "El correo electrónico ya ha sido verificado."
+
+#: web_server/core/views/users.py:130
+msgid "Email verified."
+msgstr "Correo verificado."

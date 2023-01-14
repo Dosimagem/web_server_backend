@@ -20,7 +20,7 @@ def test_send_reset_password(client_api, user):
 
     body = resp.json()
 
-    assert body['message'] == 'Email enviado.'
+    assert body['message'] == 'E-mail enviado.'
 
     email = mail.outbox[0]
 
@@ -84,7 +84,7 @@ def test_rest_password_email_not_register(client_api, db):
 
     body = resp.json()
 
-    assert body['errors'] == ['Este email não esta cadastrado.']
+    assert body['errors'] == ['Este e-mail não está registrado.']
 
 
 def test_not_allowed_method(client_api):

@@ -125,7 +125,7 @@ def test_fail_isotope_invalid(client_api_auth, user, form_data):
 
     assert not Calibration.objects.exists()
 
-    expected = ['isotope: Isotopo não registrado.']
+    expected = ['isotope: Isótopo não registrado.']
 
     assert body['errors'] == expected
 

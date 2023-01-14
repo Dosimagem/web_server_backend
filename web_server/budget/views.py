@@ -3,6 +3,7 @@ from http import HTTPStatus
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.utils.translation import gettext as _
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -21,7 +22,7 @@ def general_budget_mail(request, user_id):
     user = request.user
 
     if user.email_not_verified():
-        return Response(data={'error': 'O usuario não teve o email verificado ainda.'}, status=HTTPStatus.CONFLICT)
+        return Response(data={'error': _('The user does not have a verified email yet.')}, status=HTTPStatus.CONFLICT)
 
     serializer = GeneralBudgetSerializer(data=request.data)
 

@@ -3,7 +3,6 @@ from uuid import uuid4
 
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
-from django.utils.translation import gettext as _
 
 from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
@@ -126,7 +125,7 @@ def test_read_update_user_without_token(client_api):
     response = client_api.get(url)
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
-    assert response.json() == {'detail': _('Authentication credentials were not provided.')}
+    assert response.json() == {'detail': 'As credenciais de autenticação não foram fornecidas.'}
 
 
 def test_read_update_user_wrong_token(client_api, user, second_user):
@@ -140,8 +139,8 @@ def test_read_update_user_wrong_token(client_api, user, second_user):
 
     expected = {
         'code': 'token_not_valid',
-        'detail': 'Given token not valid for any token type',
-        'messages': [{'message': 'Token is invalid or expired', 'tokenClass': 'AccessToken', 'tokenType': 'access'}],
+        'detail': 'O token fornecido não é válido para nenhum tipo de token',
+        'messages': [{'message': 'O token é inválido ou expirou', 'tokenClass': 'AccessToken', 'tokenType': 'access'}],
     }
 
     assert response.json() == expected

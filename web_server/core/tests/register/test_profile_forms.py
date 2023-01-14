@@ -1,6 +1,5 @@
 import pytest
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext as _
 
 from web_server.core.forms import ProfileCreateForm, ProfileUpdateForm
 from web_server.core.models import UserProfile
@@ -32,7 +31,7 @@ def test_cnpj_missing(profile_infos):
 
     assert not form.is_valid()
 
-    expected = [_('This field is required.')]
+    expected = ['Este campo é obrigatório.']
     assert form.errors['cnpj'] == expected
 
 
@@ -58,7 +57,7 @@ def test_field_missing(api_cnpj_successfull, profile_infos, field):
 
     assert not form.is_valid()
 
-    expected = [_('This field is required.')]
+    expected = ['Este campo é obrigatório.']
     assert form.errors[field] == expected
 
 
@@ -101,7 +100,7 @@ def test_cpf_must_be_unique(api_cnpj_fail, user, second_register_infos):
 
     assert not form.is_valid()
 
-    assert form.errors['cpf'] == ['CPF already exists']
+    assert form.errors['cpf'] == ['CPF já existe']
 
 
 # TODO: Should the CNPJ be unique ?

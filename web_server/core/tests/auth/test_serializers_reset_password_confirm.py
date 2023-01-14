@@ -58,4 +58,4 @@ def test_invalid_field(user):
 
     assert not serializer.is_valid()
 
-    assert serializer.errors['new_password2'] == ['Os dois campos da palavra-passe não coincidem.']
+    assert serializer.errors['new_password2'] == ['Os dois campos de senha não correspondem.']

@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from django.utils.translation import gettext as _
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -65,12 +66,13 @@ def _delete_analysis(request, user_id, order_id, analysis_id):
     else:
         invalid_infos, data_sent = Model.Status.INVALID_INFOS.label, Model.Status.DATA_SENT.label
         msg = [
-            'Não foi possivel deletar/atualizar essa análise.'
-            f' Apenas análises com os status {invalid_infos} ou {data_sent} podem ser deletadas'
+            _('It was not possible to delete/update this analysis.')
+            + _(' Only analyzes with the status %(invalid_infos)s or %(data_sent)s can be deleted.')
+            % {'invalid_infos': invalid_infos, 'data_sent': data_sent}
         ]
         return Response(data={'errors': msg}, status=HTTPStatus.CONFLICT)
 
-    data = {'id': analysis_id, 'message': 'Análise deletada com sucesso!'}
+    data = {'id': analysis_id, 'message': _('Analysis deleted successfully!')}
 
     return Response(data=data)
 
@@ -155,8 +157,9 @@ def _update_analysis(request, user_id, order_id, analysis_id):
     if analysis.status not in (Model.Status.INVALID_INFOS, Model.Status.DATA_SENT):
         invalid_infos, data_sent = Model.Status.INVALID_INFOS.label, Model.Status.DATA_SENT.label
         msg = [
-            'Não foi possivel deletar/atualizar essa análise.'
-            f' Apenas análises com os status {invalid_infos} ou {data_sent} podem ser deletadas'
+            _('It was not possible to delete/update this analysis.')
+            + _(' Only analyzes with the status %(invalid_infos)s or %(data_sent)s can be deleted.')
+            % ({'invalid_infos': invalid_infos, 'data_sent': data_sent})
         ]
         return Response(data={'errors': msg}, status=HTTPStatus.CONFLICT)
 
@@ -185,11 +188,13 @@ def _create_analysis(request, user_id, order_id):
     order_infos = OrderInfos(order)
 
     if not order_infos.are_analyzes_available():
-        return Response({'errors': ['Todas as análises para essa pedido já foram usadas.']}, status=HTTPStatus.CONFLICT)
+        return Response(
+            {'errors': [_('All analytics for this order have already been used.')]}, status=HTTPStatus.CONFLICT
+        )
 
     if not order_infos.has_payment_confirmed():
         return Response(
-            {'errors': ['O pagamento desse pedido não foi confirmado.']}, status=HTTPStatus.PAYMENT_REQUIRED
+            {'errors': [_('Payment for this order has not been confirmed.')]}, status=HTTPStatus.PAYMENT_REQUIRED
         )
 
     # TODO: Codigo repetido com o update

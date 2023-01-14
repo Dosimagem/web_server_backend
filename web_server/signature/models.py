@@ -44,10 +44,10 @@ class Signature(CreationModificationBase):
         if (self.hired_period_initial and self.hired_period_end) and (
             self.hired_period_initial > self.hired_period_end
         ):
-            raise ValidationError({'hired_period_end': 'The start date must be after the end date.'})
+            raise ValidationError({'hired_period_end': _('The start date must be after the end date.')})
 
         if (self.test_period_initial and self.test_period_end) and (self.test_period_initial > self.test_period_end):
-            raise ValidationError({'test_period_end': 'The start date must be after the end date.'})
+            raise ValidationError({'test_period_end': _('The start date must be after the end date.')})
 
     @property
     def hired_period(self):

@@ -1,5 +1,4 @@
 import pytest
-from django.utils.translation import gettext as _
 
 from web_server.service.forms import ClinicDosimetryAnalysisCreateForm
 
@@ -30,7 +29,7 @@ def test_missing_fields(field, clinic_dosimetry_info, clinic_dosimetry_file):
 
     assert not form.is_valid()
 
-    assert form.errors == {field: [_('This field is required.')]}
+    assert form.errors == {field: ['Este campo é obrigatório.']}
 
 
 def test_invalid_order_of_wrong_service(preclinic_order, clinic_dosimetry_info, clinic_dosimetry_file):
@@ -52,9 +51,7 @@ def test_invalid_create_form_field_must_be_positive(clinic_dosimetry_info, calib
 
     assert not form.is_valid()
 
-    msg = _('Ensure this value is greater than or equal to %(limit_value)s.')
-
-    msg = msg % {'limit_value': 0.0}
+    msg = 'Certifique-se que este valor seja maior ou igual a 0.0.'
 
     assert form.errors == {'injected_activity': [msg]}
 

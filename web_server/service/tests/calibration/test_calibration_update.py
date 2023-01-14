@@ -77,7 +77,7 @@ def test_fai_isotope_invalid(client_api_auth, first_calibration, form_data):
 
     body = response.json()
 
-    expected = ['isotope: Isotopo não registrado.']
+    expected = ['isotope: Isótopo não registrado.']
 
     assert body['errors'] == expected
 
@@ -168,8 +168,8 @@ def test_fail_calibration_used_in_a_analysis(client_api_auth, clinic_dosimetry, 
     body = response.json()
 
     expected = (
-        'Apenas calibrações associadas com análises com o status '
-        "'Informações inválidas' ou 'Dados enviados' podem ser atualizadas/deletadas."
+        'Somente as calibrações associadas a análises com o status '
+        "'Informações inválidas' ou 'Dados enviados' podem ser atualizados/excluídos."
     )
 
     assert [expected] == body['errors']

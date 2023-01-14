@@ -1,6 +1,4 @@
 import pytest
-from django.utils.translation import gettext as _
-from django.utils.translation import ngettext
 
 from web_server.core.serializers import ChangePasswordSerializer
 
@@ -56,14 +54,7 @@ def test_passwords_dont_mach(user, register_infos):
 
     errors = serializer.errors
 
-    assert errors['new_password2'] == ['Os dois campos da palavra-passe não coincidem.']
-
-
-MSG_PASSWORD = ngettext(
-    'This password is too short. It must contain at least %(min_length)d character.',
-    'This password is too short. It must contain at least %(min_length)d characters.',
-    8,
-) % {'min_length': 8}
+    assert errors['new_password2'] == ['Os dois campos de senha não correspondem.']
 
 
 @pytest.mark.parametrize(
@@ -72,19 +63,19 @@ MSG_PASSWORD = ngettext(
         (
             '1',
             [
-                MSG_PASSWORD,
-                _('This password is too common.'),
-                _('This password is entirely numeric.'),
+                'Esta senha é muito curta. Ela precisa conter pelo menos 8 caracteres.',
+                'Esta senha é muito comum.',
+                'Esta senha é inteiramente numérica.',
             ],
         ),
         (
             '12345678',
             [
-                _('This password is too common.'),
-                _('This password is entirely numeric.'),
+                'Esta senha é muito comum.',
+                'Esta senha é inteiramente numérica.',
             ],
         ),
-        ('45268748', [_('This password is entirely numeric.')]),
+        ('45268748', ['Esta senha é inteiramente numérica.']),
     ],
 )
 def test_password_validation(password, error_validation, user, register_infos):

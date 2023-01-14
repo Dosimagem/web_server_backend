@@ -8,21 +8,23 @@ Especificação: [link](https://github.com/Dosimagem/web_server/tree/main/spec)
 
 # Index
 
-  - [1) Status](#1-status)
-  - [2) Rotas](#2-rotas)
-  - [3) Desenvolvimento](#3-desenvolvimento)
-    - [3.1) Setup inicial](#31-setup-inicial)
-    - [3.2) Rodando o servido](#32-rodando-o-servidor)
-    - [3.3) Rodando os teste](#33-rodando-os-teste)
-    - [3.4) Área adminstrativa](#34-área-adminstrativa)
-  - [4) Banco de dados](#4-banco-de-dados)
-    - [4.1) Usando o postgres via docker](#41-usando-o-postgres-via-docker)
-    - [4.2) Backup do banco](#42-backup-do-banco)
-  - [5) Python decouple](#5-python-decouple)
-  - [6) Docker](#6-docker)
-    - [6.1) Simulando ambiente de produção](#61-simulando-um-ambiente-de-produção)
-    - [6.2) Ambiente de desenvolvimento](#62-docker-em-desenvolvimento)
-  - [7) Verificação de Email]()
+- [web\_server](#web_server)
+- [Index](#index)
+- [1) Status](#1-status)
+- [2) Rotas](#2-rotas)
+- [3) Desenvolvimento](#3-desenvolvimento)
+  - [3.1) Setup inicial](#31-setup-inicial)
+  - [3.2) Rodando o servidor de desenvolvimento](#32-rodando-o-servidor-de-desenvolvimento)
+  - [3.3) Rodando os teste](#33-rodando-os-teste)
+  - [3.4) Área adminstrativa](#34-área-adminstrativa)
+- [4) Banco de dados](#4-banco-de-dados)
+  - [4.1) Usando o postgres via docker](#41-usando-o-postgres-via-docker)
+  - [4.2) Backup do banco:](#42-backup-do-banco)
+- [5) Python decouple](#5-python-decouple)
+- [6) Docker](#6-docker)
+  - [6.1) Simulando um ambiente de produção](#61-simulando-um-ambiente-de-produção)
+  - [6.2) Docker em desenvolvimento](#62-docker-em-desenvolvimento)
+    - [7) Verificação de email](#7-verificação-de-email)
 
 # 1) Status
 
@@ -48,12 +50,7 @@ Desenvolvimento das funcionalidades
 O setup incicial necessário fazer apenas `uma vez`.
 
 ```console
-python -m venv .venv --upgrade-deps
-source .venv/bin/activate
-pip install pip-tools
-pip-sync requirements.txt requirements.dev.txt
-precommit install
-cp contrib/env-sample .env
+make init
 ```
 
 Para usar o `sqlite` o arquivo `.env` fica assim:

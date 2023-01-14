@@ -63,7 +63,7 @@ def test_user_not_have_email_verified(client_api_auth, user):
 
     assert HTTPStatus.CONFLICT == resp.status_code
 
-    assert 'O usuario não teve o email verificado ainda.' == body['error']
+    assert 'O usuário ainda não possui um e-mail verificado.' == body['error']
 
 
 def test_token_id_and_user_id_dont_match(client_api_auth, user):

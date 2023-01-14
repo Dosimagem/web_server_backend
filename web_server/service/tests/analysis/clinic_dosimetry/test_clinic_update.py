@@ -107,8 +107,8 @@ def test_fail_successfull_invalid_status(client_api_auth, second_calibration, cl
     assert resp.status_code == HTTPStatus.CONFLICT
 
     expected = [
-        'Não foi possivel deletar/atualizar essa análise.'
-        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+        'Não foi possível excluir/atualizar esta análise.'
+        ' Somente análises com o status Informações inválidas ou Dados enviados podem ser excluidas.'
     ]
 
     assert expected == body['errors']
@@ -134,7 +134,7 @@ def test_fail_wrong_calibration_id(client_api_auth, clinic_dosi_update_or_del_is
     body = resp.json()
 
     assert resp.status_code == HTTPStatus.NOT_FOUND
-    assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
+    assert body['errors'] == ['Calibração com este id não existe para este usuário.']
 
     _verified_unchanged_information_db(clinic_dosi_update_or_del_is_possible)
 

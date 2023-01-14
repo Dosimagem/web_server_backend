@@ -14,6 +14,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.utils.crypto import constant_time_compare
+from django.utils.translation import gettext as _
 from jwt import decode
 from jwt.exceptions import ExpiredSignatureError
 from rest_framework.decorators import (
@@ -115,7 +116,7 @@ def change_password(request, user_id):
     user.set_password(password)
     user.save()
 
-    return Response(data={'message': 'Senha atualizada.'})
+    return Response(data={'message': _('Updated password.')})
 
 
 @api_view(['POST'])
@@ -131,14 +132,14 @@ def reset_password(request):
     try:
         user = User.objects.get(email=serializer.validated_data['email'])
     except ObjectDoesNotExist:
-        return Response({'errors': ['Este email não esta cadastrado.']}, status=HTTPStatus.BAD_REQUEST)
+        return Response({'errors': [_('This e-mail is not registered.')]}, status=HTTPStatus.BAD_REQUEST)
 
     try:
         send_reset_password(user)
     except SMTPException:
-        return Response({'errors': ['Email de verificação não foi enviado.']}, status=HTTPStatus.FAILED_DEPENDENCY)
+        return Response({'errors': [_('E-mail not sent.')]}, status=HTTPStatus.FAILED_DEPENDENCY)
 
-    return Response({'message': 'Email enviado.'})
+    return Response({'message': _('E-mail sent.')})
 
 
 @api_view(['POST'])
@@ -158,23 +159,23 @@ def reset_password_confirm(request, user_id):
         user = User.objects.get(uuid=user_id, reset_password_secret=token)
     except ObjectDoesNotExist:
         return Response(
-            data={'errors': ['Token de verificação inválido ou expirado para esse usuário.']},
+            data={'errors': [_('Invalid or expired verification token for this user.')]},
             status=HTTPStatus.BAD_REQUEST,
         )
 
     if not user.sent_reset_password_email:
-        return Response(data={'errors': ['Email ainda não foi enviado.']}, status=HTTPStatus.CONFLICT)
+        return Response(data={'errors': [_('Verification e-mail was not sent.')]}, status=HTTPStatus.CONFLICT)
 
     try:
         payload = decode(token, settings.SIGNING_KEY, algorithms=['HS256'])
     except ExpiredSignatureError:
         return Response(
-            data={'errors': ['Token de verificação inválido ou expirado para esse usuário.']},
+            data={'errors': [_('Invalid or expired verification token for this user.')]},
             status=HTTPStatus.CONFLICT,
         )
 
     if not constant_time_compare(user_id, payload['id']):
-        return Response(data={'errors': ['Conflito no id do usuario.']}, status=HTTPStatus.CONFLICT)
+        return Response(data={'errors': [_('Conflict in user id.')]}, status=HTTPStatus.CONFLICT)
 
     user.set_password(new_password)
     user.reset_password_secret = None

@@ -79,7 +79,7 @@ def test_fail_order_must_have_payment_confirmed(client_api_auth, segmentation_or
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert ['O pagamento desse pedido não foi confirmado.'] == body['errors']
+    assert ['O pagamento deste pedido não foi confirmado.'] == body['errors']
 
 
 def test_fail_analisys_name_must_be_unique_per_order(
@@ -133,7 +133,7 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_se
 
     assert resp.status_code == HTTPStatus.CONFLICT
 
-    assert body['errors'] == ['Todas as análises para essa pedido já foram usadas.']
+    assert body['errors'] == ['Todas as análises deste pedido já foram usadas.']
 
 
 def test_fail_wrong_order_id(client_api_auth, segmentation_order, form_data_segmentation_analysis):

@@ -85,7 +85,7 @@ def test_fail_order_must_have_payment_confirmed(client_api_auth, radiosyno_order
 
     assert not RadiosynoAnalysis.objects.exists()
 
-    assert ['O pagamento desse pedido não foi confirmado.'] == body['errors']
+    assert ['O pagamento deste pedido não foi confirmado.'] == body['errors']
 
 
 def test_fail_analisys_name_must_be_unique_per_order(
@@ -145,7 +145,7 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_ra
 
     assert not RadiosynoAnalysis.objects.exists()
 
-    assert body['errors'] == ['Todas as análises para essa pedido já foram usadas.']
+    assert body['errors'] == ['Todas as análises deste pedido já foram usadas.']
 
 
 def test_fail_wrong_(client_api_auth, radiosyno_order, form_data_radiosyno_analysis):
@@ -221,7 +221,7 @@ def test_fail_missing_fields(field, error, client_api_auth, radiosyno_order, for
         (
             'isotope',
             'ss',
-            ['isotope: Isotopo não registrado.'],
+            ['isotope: Isótopo não registrado.'],
         ),
     ],
 )
