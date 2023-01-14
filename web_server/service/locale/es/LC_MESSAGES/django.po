@@ -20,16 +20,16 @@ msgstr ""
 
 #: web_server/service/forms.py:36
 msgid "The remaining analysis must be less than the analysis field number."
-msgstr ""
+msgstr "El análisis restante debe ser menor que el número del campo de análisis."
 
 #: web_server/service/forms.py:72
 msgid "Isotope not registered."
-msgstr ""
+msgstr "Isótopo no registrado."
 
 #: web_server/service/views/analysis.py:69
 #: web_server/service/views/analysis.py:160
 msgid "It was not possible to delete/update this analysis."
-msgstr ""
+msgstr "No fue posible eliminar/actualizar este análisis."
 
 #: web_server/service/views/analysis.py:70
 #: web_server/service/views/analysis.py:161
@@ -38,30 +38,32 @@ msgid ""
 " Only analyzes with the status %(invalid_infos)s or %(data_sent)s can be "
 "deleted."
 msgstr ""
+" Solo se pueden realizar análisis con el estado %(invalid_infos)s o %(data_sent)s. "
+"eliminada."
 
 #: web_server/service/views/analysis.py:75
 msgid "Analysis deleted successfully!"
-msgstr ""
+msgstr "¡Análisis eliminado con éxito!"
 
 #: web_server/service/views/analysis.py:191
 msgid "All analytics for this order have already been used."
-msgstr ""
+msgstr "Ya se han utilizado todos los análisis de este pedido."
 
 #: web_server/service/views/analysis.py:195
 msgid "Payment for this order has not been confirmed."
-msgstr ""
+msgstr "El pago de este pedido no ha sido confirmado."
 
 #: web_server/service/views/calibrations.py:72
 #: web_server/service/views/calibrations.py:124
 msgid "Only calibrations associated with analyzes with the "
-msgstr ""
+msgstr "Sólo las calibraciones asociadas a análisis con el "
 
 #: web_server/service/views/calibrations.py:73
 #: web_server/service/views/calibrations.py:125
 #, python-format
 msgid "status '%(invalid_infos)s' or '%(data_sent)s' can be updated/deleted."
-msgstr ""
+msgstr "el estado '%(invalid_infos)s' o '%(data_sent)s' se puede actualizar/eliminar."
 
 #: web_server/service/views/calibrations.py:136
 msgid "Calibration successfully deleted!"
-msgstr ""
+msgstr "¡La calibración se eliminó con éxito!"

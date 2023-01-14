@@ -23,7 +23,7 @@ def test_invalid_form_negative_quantity_of_analyzes(create_order_data):
 
     assert not form.is_valid()
 
-    msg = 'Ensure this value is greater than or equal to 0.'
+    msg = 'Certifique-se que este valor seja maior ou igual a 0.'
 
     assert form.errors == {'quantity_of_analyzes': [msg]}
 
@@ -36,7 +36,7 @@ def test_invalid_form_quantity_of_analyzes(create_order_data):
 
     assert not form.is_valid()
 
-    assert form.errors == {'quantity_of_analyzes': ['Enter a whole number.']}
+    assert form.errors == {'quantity_of_analyzes': ['Informe um número inteiro.']}
 
 
 def test_invalid_form_remaining_of_analyzes_must_be_lower_that_quantity_of_analyzes(
@@ -50,7 +50,9 @@ def test_invalid_form_remaining_of_analyzes_must_be_lower_that_quantity_of_analy
 
     assert not form.is_valid()
 
-    assert form.errors == {'remaining_of_analyzes': ['Must be lower with the field quantity of analyzes.']}
+    assert form.errors == {
+        'remaining_of_analyzes': ['A análise restante deve ser menor que o número do campo de análise.']
+    }
 
 
 def test_invalid_form_price(create_order_data):

@@ -82,8 +82,8 @@ def test_fail_successfull_invalid_status(client_api_auth, segmentation_analysis)
     assert resp.status_code == HTTPStatus.CONFLICT
 
     expected = [
-        'Não foi possivel deletar/atualizar essa análise.'
-        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+        'Não foi possível excluir/atualizar esta análise.'
+        ' Somente análises com o status Informações inválidas ou Dados enviados podem ser excluidas.'
     ]
 
     assert expected == body['errors']

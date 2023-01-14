@@ -193,7 +193,7 @@ def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_pr
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['Todas as análises para essa pedido já foram usadas.']
+    assert body['errors'] == ['Todas as análises deste pedido já foram usadas.']
 
 
 def test_fail_wrong_calibration_id(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
@@ -216,7 +216,7 @@ def test_fail_wrong_calibration_id(client_api_auth, preclinic_order, form_data_p
 
     body = resp.json()
 
-    assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
+    assert body['errors'] == ['Calibração com este id não existe para este usuário.']
 
 
 def test_fail_wrong__order_id(client_api_auth, preclinic_order, form_data_preclinic_dosimetry):
@@ -313,7 +313,7 @@ def test_fail_with_calibration_of_another_user(
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body['errors'] == ['Calibração com esse id não existe para esse usuário.']
+    assert body['errors'] == ['Calibração com este id não existe para este usuário.']
 
 
 @pytest.mark.parametrize(

@@ -1,5 +1,4 @@
 import pytest
-from django.utils.translation import ngettext
 
 from web_server.core.serializers import ChangePasswordSerializer
 

@@ -1,5 +1,4 @@
 import pytest
-from django.utils.translation import gettext as _
 
 from web_server.service.forms import ClinicDosimetryAnalysisCreateForm
 

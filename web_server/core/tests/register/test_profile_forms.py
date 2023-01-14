@@ -1,6 +1,5 @@
 import pytest
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext as _
 
 from web_server.core.forms import ProfileCreateForm, ProfileUpdateForm
 from web_server.core.models import UserProfile

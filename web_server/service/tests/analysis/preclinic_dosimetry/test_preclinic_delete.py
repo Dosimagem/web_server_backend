@@ -38,7 +38,7 @@ def test_successfull(client_api_auth, preclinic_dosi_update_del_is_possible):
 
     assert not PreClinicDosimetryAnalysis.objects.exists()
 
-    assert body == {'id': str(analysis_uuid), 'message': 'Análise deletada com sucesso!'}
+    assert body == {'id': str(analysis_uuid), 'message': 'Análise excluída com sucesso!'}
 
 
 def test_fail_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
@@ -69,8 +69,8 @@ def test_fail_successfull_invalid_status(client_api_auth, preclinic_dosimetry):
     assert PreClinicDosimetryAnalysis.objects.exists()
 
     expected = [
-        'Não foi possivel deletar/atualizar essa análise.'
-        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+        'Não foi possível excluir/atualizar esta análise.'
+        ' Somente análises com o status Informações inválidas ou Dados enviados podem ser excluidas.'
     ]
 
     assert expected == body['errors']

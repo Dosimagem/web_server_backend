@@ -3,9 +3,9 @@ from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.utils.translation import gettext as _
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.utils.translation import gettext as _
 
 from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE, list_errors
@@ -69,9 +69,9 @@ def _update_calibration(request, user_id, calibration_id):
             data = {
                 'errors': [
                     (
-                        _('Only calibrations associated with analyzes with the ') +
-                        _("status '%(invalid_infos)s' or '%(data_sent)s' can be updated/deleted.") %
-                        {'invalid_infos': invalid_infos, 'data_sent': data_sent}
+                        _('Only calibrations associated with analyzes with the ')
+                        + _("status '%(invalid_infos)s' or '%(data_sent)s' can be updated/deleted.")
+                        % {'invalid_infos': invalid_infos, 'data_sent': data_sent}
                     )
                 ]
             }
@@ -121,9 +121,9 @@ def _delete_calibration(request, user_id, calibration_id):
             data = {
                 'errors': [
                     (
-                        _('Only calibrations associated with analyzes with the ') +
-                        _("status '%(invalid_infos)s' or '%(data_sent)s' can be updated/deleted.") %
-                        {'invalid_infos': invalid_infos, 'data_sent': data_sent}
+                        _('Only calibrations associated with analyzes with the ')
+                        + _("status '%(invalid_infos)s' or '%(data_sent)s' can be updated/deleted.")
+                        % {'invalid_infos': invalid_infos, 'data_sent': data_sent}
                     )
                 ]
             }

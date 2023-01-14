@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-13 06:12+0000\n"
+"POT-Creation-Date: 2023-01-14 03:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,33 +20,33 @@ msgstr ""
 
 #: web_server/core/admin.py:37
 msgid "Main data"
-msgstr ""
+msgstr "Datos principales"
 
 #: web_server/core/admin.py:39
 msgid "Permissions"
-msgstr ""
+msgstr "Permisos"
 
 #: web_server/core/admin.py:47
 msgid "Important dates"
-msgstr ""
+msgstr "Fechas importantes"
 
 #: web_server/core/admin.py:155
 #, python-format
 msgid "%(name)s object with primary key %(key)r does not exist."
-msgstr ""
+msgstr "El objeto %(name)s con la clave principal %(key)r no existe."
 
 #: web_server/core/admin.py:167
 msgid "Password changed successfully."
-msgstr ""
+msgstr "Contraseña cambiada con éxito"
 
 #: web_server/core/admin.py:188
 #, python-format
 msgid "Change password: %s"
-msgstr ""
+msgstr "Cambiar contraseña: %s"
 
 #: web_server/core/auth.py:12
 msgid "Token is invalid or expired"
-msgstr ""
+msgstr "El token no es válido o ha caducado"
 
 #: web_server/core/auth.py:37
 msgid "Given token not valid for any token type"
@@ -83,19 +83,20 @@ msgstr ""
 
 #: web_server/core/models.py:68
 msgid "email address"
-msgstr ""
+msgstr "dirección de correo electrónico"
 
 #: web_server/core/models.py:70
 msgid "staff status"
-msgstr ""
+msgstr "estado del personal"
 
 #: web_server/core/models.py:72
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
+"Designa si el usuario puede iniciar sesión en este sitio de administración."
 
 #: web_server/core/models.py:75
 msgid "active"
-msgstr ""
+msgstr "activo"
 
 #: web_server/core/models.py:78
 msgid ""
@@ -117,31 +118,27 @@ msgstr ""
 
 #: web_server/core/models.py:143
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: web_server/core/models.py:147
 msgid "Clinic"
-msgstr ""
+msgstr "Clínica"
 
 #: web_server/core/models.py:148
 msgid "Role"
-msgstr ""
+msgstr "Role"
 
 #: web_server/core/serializers.py:21 web_server/core/serializers.py:41
 msgid "The two password fields didn't match."
-msgstr ""
+msgstr "Los dos campos de contraseña no coincidían."
 
 #: web_server/core/serializers.py:51
 msgid "Old password is not correct."
-msgstr ""
+msgstr "La contraseña anterior no es correcta."
 
 #: web_server/core/tests/auth/test_login.py:52
 #: web_server/core/tests/auth/test_login.py:68
 msgid "Unable to log in with provided credentials."
-msgstr ""
-
-#: web_server/core/tests/user/test_user_infos.py:129
-msgid "Authentication credentials were not provided."
 msgstr ""
 
 #: web_server/core/views/auth.py:119
@@ -150,42 +147,42 @@ msgstr ""
 
 #: web_server/core/views/auth.py:135
 msgid "This e-mail is not registered."
-msgstr ""
+msgstr "Este correo electrónico no está registrado."
 
 #: web_server/core/views/auth.py:140
 msgid "E-mail not sent."
-msgstr ""
+msgstr "Correo electrónico no enviado."
 
 #: web_server/core/views/auth.py:142
 msgid "E-mail sent."
-msgstr ""
+msgstr "Email enviado."
 
 #: web_server/core/views/auth.py:162 web_server/core/views/auth.py:173
 #: web_server/core/views/users.py:105 web_server/core/views/users.py:119
 msgid "Invalid or expired verification token for this user."
-msgstr ""
+msgstr "Token de verificación no válido o caducado para este usuario."
 
 #: web_server/core/views/auth.py:167 web_server/core/views/register.py:75
 #: web_server/core/views/users.py:78 web_server/core/views/users.py:142
 msgid "Verification e-mail was not sent."
-msgstr ""
+msgstr "No se envió el correo electrónico de verificación."
 
 #: web_server/core/views/auth.py:178 web_server/core/views/users.py:124
 msgid "Conflict in user id."
-msgstr ""
+msgstr "Conflicto en la identificación del usuario."
 
 #: web_server/core/views/index.py:9
 msgid "Welcome to Dosiamge API !"
-msgstr ""
+msgstr "¡Bienvenido a la API de Dosiamge!"
 
 #: web_server/core/views/users.py:110
 msgid "Verification email has not yet been sent."
-msgstr ""
+msgstr "Aún no se ha enviado el correo electrónico de verificación."
 
 #: web_server/core/views/users.py:113
 msgid "Email has already been verified."
-msgstr ""
+msgstr "El correo electrónico ya ha sido verificado."
 
 #: web_server/core/views/users.py:130
 msgid "Email verified."
-msgstr ""
+msgstr "Correo verificado."

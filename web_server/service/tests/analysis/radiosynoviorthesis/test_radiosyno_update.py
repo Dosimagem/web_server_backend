@@ -83,8 +83,8 @@ def test_fail_successfull_invalid_status(client_api_auth, radiosyno_analysis, up
     assert resp.status_code == HTTPStatus.CONFLICT
 
     expected = [
-        'Não foi possivel deletar/atualizar essa análise.'
-        ' Apenas análises com os status Informações inválidas ou Dados enviados podem ser deletadas'
+        'Não foi possível excluir/atualizar esta análise.'
+        ' Somente análises com o status Informações inválidas ou Dados enviados podem ser excluidas.'
     ]
 
     assert expected == body['errors']
@@ -192,7 +192,7 @@ def test_fail_missing_fields(
 @pytest.mark.parametrize(
     'field, value, error',
     [
-        ('isotope', 'll-12', ['isotope: Isotopo não registrado.']),
+        ('isotope', 'll-12', ['isotope: Isótopo não registrado.']),
     ],
 )
 def test_fail_invalid_fields(

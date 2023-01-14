@@ -2,11 +2,13 @@ SHELL := /bin/bash
 
 PHONNY: init
 init:
-	@python -m venv .venv --upgrade-deps
+	@python -m venv .venv
 	@source .venv/bin/activate
+	@.venv/bin/python -m pip -U
 	@pip install pip-tools
 	@pip-sync requirements.txt requirements.dev.txt --pip-args --no-deps
 	@precommit install
+	@.venv/bin/python manage.py compilemessages -l pt_BR -l es
 	@cp contrib/env-sample .env
 
 
@@ -104,6 +106,7 @@ compilemessages:
 clean:
 	@find ./web_server/ -name '*.pyc' -exec rm -f {} \;
 	@find ./web_server/ -name '__pycache__' -exec rm -rf {} \;
+	@find ./web_server/ -name '*.mo' -exec rm -rf {} \;
 	@rm -rf .cache
 	@rm -rf .pytest_cache
 	@rm -rf htmlcov

@@ -33,7 +33,7 @@ def test_invalid_create_form_field_must_be_positive(field, calibration_infos, ca
 
     assert not form.is_valid()
 
-    msg = 'Ensure this value is greater than or equal to 0.0.'
+    msg = 'Certifique-se que este valor seja maior ou igual a 0.0.'
 
     assert form.errors == {field: [msg]}
 
@@ -60,7 +60,7 @@ def test_invalid_missing_fields(field, calibration_infos, calibration_file):
 
     assert not form.is_valid()
 
-    assert form.errors == {field: ['This field is required.']}
+    assert form.errors == {field: ['Este campo é obrigatório.']}
 
 
 def test_invalid_isotope(calibration_infos, calibration_file):
@@ -71,7 +71,7 @@ def test_invalid_isotope(calibration_infos, calibration_file):
 
     assert not form.is_valid()
 
-    assert form.errors == {'isotope': ['Select a valid choice. That choice is not one of the available choices.']}
+    assert form.errors == {'isotope': ['Faça uma escolha válida. Sua escolha não é uma das disponíveis.']}
 
 
 def test_valid_create_form_field_save(calibration_infos, calibration_file):
