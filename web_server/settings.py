@@ -296,6 +296,7 @@ SENTRY_DSN = config('SENTRY_DSN', default=None)
 if SENTRY_DSN:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.logging import ignore_logger
 
     sentry_sdk.init(
         dsn=SENTRY_DSN,
@@ -303,6 +304,8 @@ if SENTRY_DSN:
         traces_sample_rate=1.0,
         send_default_pii=True,
     )
+    ignore_logger('django.security.DisallowedHost')
+
 
 pt_BR_formats.DATETIME_FORMAT = 'd/m/Y H:i:s'
 
