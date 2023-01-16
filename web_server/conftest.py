@@ -111,6 +111,24 @@ def second_user_profile_info(second_register_infos):
 
 
 @pytest.fixture
+def register_infos_without_cpf_and_cnpj():
+    email = fake.email()
+    password = fake.password()
+    return dict(
+        # User
+        email=email,
+        confirmed_email=email,
+        password1=password,
+        password2=password,
+        # Profile
+        clinic=fake.company()[:30],
+        name=fake.name(),
+        phone='+552123612766',
+        role=fake.job()[:30],
+    )
+
+
+@pytest.fixture
 def user(django_user_model, user_info, user_profile_info):
     user = django_user_model.objects.create_user(**user_info)
     user.email_verified = True

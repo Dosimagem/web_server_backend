@@ -24,15 +24,26 @@ def test_valid_form(api_cnpj_successfull, profile_infos):
     assert form.is_valid()
 
 
-def test_cnpj_missing(profile_infos):
+def test_valid_form_without_cpf_and_cnpf(register_infos_without_cpf_and_cnpj, user_info, db):
 
-    profile_infos.pop('cnpj')
+    user = User.objects.create_user(**user_info)
+    profile_infos = register_infos_without_cpf_and_cnpj
+    profile_infos['user'] = user
+
     form = ProfileCreateForm(data=profile_infos, instance=profile_infos['user'].profile)
 
-    assert not form.is_valid()
+    assert form.is_valid()
 
-    expected = ['Este campo é obrigatório.']
-    assert form.errors['cnpj'] == expected
+
+# def test_cnpj_missing(profile_infos):
+
+#     profile_infos.pop('cnpj')
+#     form = ProfileCreateForm(data=profile_infos, instance=profile_infos['user'].profile)
+
+#     assert not form.is_valid()
+
+#     expected = ['Este campo é obrigatório.']
+#     assert form.errors['cnpj'] == expected
 
 
 @pytest.mark.parametrize(
@@ -43,7 +54,6 @@ def test_cnpj_missing(profile_infos):
         'phone',
         'clinic',
         'role',
-        'cpf',
     ],
 )
 def test_field_missing(api_cnpj_successfull, profile_infos, field):
@@ -136,7 +146,7 @@ def test_cnpj_invalid(second_register_infos, db):
     assert form.errors['cnpj'] == ['CNPJ inválido.']
 
 
-def test_phone_invalid():
+def test_phone_invalid(db):
 
     form = ProfileCreateForm({'phone': '222222222'})
 
