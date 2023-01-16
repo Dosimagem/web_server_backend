@@ -49,6 +49,36 @@ def test_successfull_register(api_cnpj_successfull, client_api, register_infos):
     asserts_cookie_tokens(resp)
 
 
+@freeze_time('2022-01-01 00:00:00')
+def test_successfull_register_without_cpf_and_cnpj(client_api, register_infos_without_cpf_and_cnpj):
+
+    resp = client_api.post(URL_REGISTER, data=register_infos_without_cpf_and_cnpj, format='json')
+
+    user = User.objects.get(email=register_infos_without_cpf_and_cnpj['email'])
+
+    body = resp.json()
+
+    assert body == {
+        'id': str(user.uuid),
+        'isStaff': user.is_staff,
+    }
+
+    assert resp.status_code == HTTPStatus.CREATED
+
+    email = mail.outbox[0]
+
+    assert 'Verificação de email da sua conta Dosimagem' == email.subject
+    assert DOSIMAGEM_EMAIL == email.from_email
+    assert [user.email] == email.to
+
+    assert f'/users/{user.uuid}/email-confirm/?token={user.verification_email_secret}' in email.body
+    assert user.sent_verification_email
+    assert user.is_active
+    assert not user.email_verified
+
+    asserts_cookie_tokens(resp)
+
+
 def test_fail_user_unique_fields(client_api, user, register_infos):
     """
     Email
@@ -201,7 +231,6 @@ def test_register_missing_fields(client_api, field, error, register_infos):
         ('phone', ['phone: Este campo é obrigatório.']),
         ('clinic', ['clinic: Este campo é obrigatório.']),
         ('role', ['role: Este campo é obrigatório.']),
-        ('cpf', ['cpf: Este campo é obrigatório.']),
     ],
 )
 def test_register_missing_profile_fields(api_cnpj_successfull, client_api, field, error, register_infos):

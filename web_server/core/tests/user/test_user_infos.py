@@ -34,11 +34,11 @@ def test_read_user_info_by_id(client_api_auth, user):
 def test_update_user_infos(api_cnpj_successfull, client_api_auth, user):
 
     url = resolve_url(END_POINT, user_id=user.uuid)
-
     payload = {
         'name': 'João Sliva Carvalho',
         'role': 'médico',
         'cnpj': '42438610000111',
+        'cpf': '52450318097',
         'clinic': 'Clinica A',
     }
 
@@ -49,6 +49,7 @@ def test_update_user_infos(api_cnpj_successfull, client_api_auth, user):
     user_db = User.objects.first()
 
     assert user_db.profile.name == 'João Sliva Carvalho'
+    assert user_db.profile.cpf == '52450318097'
 
 
 def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
@@ -69,6 +70,28 @@ def test_fail_update_user_infos_cnpj_with_mask(client_api_auth, user):
     body = response.json()
 
     expected = ['cnpj: Certifique-se de que o valor tenha no máximo 14 caracteres (ele possui 18).']
+
+    assert body['errors'] == expected
+
+
+def test_fail_update_user_infos_cpf_with_mask(api_cnpj_successfull, client_api_auth, user):
+
+    url = resolve_url(END_POINT, user_id=user.uuid)
+
+    payload = {
+        'name': 'João Sliva Carvalho',
+        'role': 'médico',
+        'cpf': '524.503.180-97',
+        'clinic': 'Clinica A',
+    }
+
+    response = client_api_auth.patch(url, payload, format='json')
+
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    body = response.json()
+
+    expected = ['cpf: Certifique-se de que o valor tenha no máximo 11 caracteres (ele possui 14).']
 
     assert body['errors'] == expected
 

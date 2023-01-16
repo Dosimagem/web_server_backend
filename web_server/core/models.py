@@ -146,19 +146,23 @@ class UserProfile(CreationModificationBase, models.Model):
 
     clinic = models.CharField(_('Clinic'), max_length=30)
     role = models.CharField(_('Role'), max_length=30)
-    cpf = models.CharField('CPF', max_length=11, validators=[validate_cpf])
-    cnpj = models.CharField('CNPJ', max_length=14, validators=[validate_cnpj])
+    cpf = models.CharField('CPF', max_length=11, validators=[validate_cpf], default='', blank=True)
+    cnpj = models.CharField('CNPJ', max_length=14, validators=[validate_cnpj], default='', blank=True)
 
     def __str__(self):
         return self.clinic
 
     def _cnpj_mask(self):
-        cnpj = CNPJ()
-        return cnpj.mask(self.cnpj)
+        if self.cnpj:
+            cnpj = CNPJ()
+            return cnpj.mask(self.cnpj)
+        return self.cnpj
 
     def _cpf_mask(self):
-        cpf = CPF()
-        return cpf.mask(self.cpf)
+        if self.cpf:
+            cpf = CPF()
+            return cpf.mask(self.cpf)
+        return self.cpf
 
     @property
     def phone_str(self):

@@ -77,6 +77,7 @@ class ProfileUpdateForm(ProfileCreateForm):
             'clinic',
             'role',
             'cnpj',
+            'cpf',
         )
 
 
