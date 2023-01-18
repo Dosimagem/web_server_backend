@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-14 03:05+0000\n"
+"POT-Creation-Date: 2023-01-18 18:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,26 +50,25 @@ msgstr "El token no es válido o ha caducado"
 
 #: web_server/core/auth.py:37
 msgid "Given token not valid for any token type"
-msgstr ""
+msgstr "El token dado no es válido para ningún tipo de token"
 
 #: web_server/core/errors_msg.py:3
 msgid "Token and user ID do not match."
-msgstr ""
+msgstr "El token y el ID de usuario no coinciden."
 
 #: web_server/core/errors_msg.py:4
 msgid "This user does not have this resource registered."
-msgstr ""
+msgstr "Este usuario no tiene registrado este recurso."
 
 #: web_server/core/errors_msg.py:5
 msgid "Calibration with this id does not exist for this user."
-msgstr ""
+msgstr "La calibración con esta identificación no existe para este usuario."
 
 #: web_server/core/forms.py:49
 msgid "CPF already exists"
-msgstr ""
+msgstr "CPF ya existe"
 
-#: web_server/core/forms.py:100
-#, fuzzy
+#: web_server/core/forms.py:101
 msgid "The two e-mail fields didn't match."
 msgstr "Os dois campos de e-mail não correspondem."
 
@@ -136,14 +135,17 @@ msgstr "Los dos campos de contraseña no coincidían."
 msgid "Old password is not correct."
 msgstr "La contraseña anterior no es correcta."
 
-#: web_server/core/tests/auth/test_login.py:52
-#: web_server/core/tests/auth/test_login.py:68
-msgid "Unable to log in with provided credentials."
-msgstr ""
+#: web_server/core/validators.py:13
+msgid "CPF invalid."
+msgstr "CPF inválido."
+
+#: web_server/core/validators.py:21
+msgid "CNPJ invalid."
+msgstr "CNPJ inválida."
 
 #: web_server/core/views/auth.py:119
 msgid "Updated password."
-msgstr ""
+msgstr "Contraseña actualizada."
 
 #: web_server/core/views/auth.py:135
 msgid "This e-mail is not registered."
