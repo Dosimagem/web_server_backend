@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-13 16:10+0000\n"
+"POT-Creation-Date: 2023-01-18 18:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
 #: web_server/service/forms.py:36
 msgid "The remaining analysis must be less than the analysis field number."
 msgstr "A análise restante deve ser menor que o número do campo de análise."
@@ -44,11 +45,11 @@ msgstr ""
 msgid "Analysis deleted successfully!"
 msgstr "Análise excluída com sucesso!"
 
-#: web_server/service/views/analysis.py:191
+#: web_server/service/views/analysis.py:192
 msgid "All analytics for this order have already been used."
 msgstr "Todas as análises deste pedido já foram usadas."
 
-#: web_server/service/views/analysis.py:195
+#: web_server/service/views/analysis.py:197
 msgid "Payment for this order has not been confirmed."
 msgstr "O pagamento deste pedido não foi confirmado."
 

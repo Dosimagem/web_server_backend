@@ -3,7 +3,6 @@ from http import HTTPStatus
 import pytest
 from django.contrib.auth import get_user_model
 from django.shortcuts import resolve_url
-from django.utils.translation import gettext as _
 from freezegun import freeze_time
 
 from web_server.conftest import HTTP_METHODS
@@ -49,7 +48,7 @@ def test_fail_wrong_username(client_api, user_info, user):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body == {'errors': [_('Unable to log in with provided credentials.')]}
+    assert body == {'errors': ['Impossível fazer login com as credenciais fornecidas.']}
 
 
 def test_fail_wrong_email(client_api, user_info, user):
@@ -65,7 +64,7 @@ def test_fail_wrong_email(client_api, user_info, user):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body == {'errors': [_('Unable to log in with provided credentials.')]}
+    assert body == {'errors': ['Impossível fazer login com as credenciais fornecidas.']}
 
 
 def test_fail_login_missing_password(client_api, user_info):

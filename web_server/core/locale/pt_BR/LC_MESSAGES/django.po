@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-14 03:05+0000\n"
+"POT-Creation-Date: 2023-01-18 18:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,7 +68,7 @@ msgstr "Calibração com este id não existe para este usuário."
 msgid "CPF already exists"
 msgstr "CPF já existe"
 
-#: web_server/core/forms.py:100
+#: web_server/core/forms.py:101
 msgid "The two e-mail fields didn't match."
 msgstr "Os dois campos de e-mail não correspondem."
 
@@ -134,10 +134,13 @@ msgstr "Os dois campos de senha não correspondem."
 msgid "Old password is not correct."
 msgstr "Password antigo não está correto."
 
-#: web_server/core/tests/auth/test_login.py:52
-#: web_server/core/tests/auth/test_login.py:68
-msgid "Unable to log in with provided credentials."
-msgstr ""
+#: web_server/core/validators.py:13
+msgid "CPF invalid."
+msgstr "CPF inválido."
+
+#: web_server/core/validators.py:21
+msgid "CNPJ invalid."
+msgstr "CNPJ inválido."
 
 #: web_server/core/views/auth.py:119
 msgid "Updated password."
@@ -184,6 +187,3 @@ msgstr "O e-mail já foi verificado."
 #: web_server/core/views/users.py:130
 msgid "Email verified."
 msgstr "Email verificado."
-
-#~ msgid "Authentication credentials were not provided."
-#~ msgstr "As credenciais de autenticação não foram fornecidas."

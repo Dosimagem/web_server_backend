@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-13 16:10+0000\n"
+"POT-Creation-Date: 2023-01-18 18:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,18 +38,18 @@ msgid ""
 " Only analyzes with the status %(invalid_infos)s or %(data_sent)s can be "
 "deleted."
 msgstr ""
-" Solo se pueden realizar análisis con el estado %(invalid_infos)s o %(data_sent)s. "
-"eliminada."
+" Solo se pueden realizar análisis con el estado %(invalid_infos)s o "
+"%(data_sent)s. eliminada."
 
 #: web_server/service/views/analysis.py:75
 msgid "Analysis deleted successfully!"
 msgstr "¡Análisis eliminado con éxito!"
 
-#: web_server/service/views/analysis.py:191
+#: web_server/service/views/analysis.py:192
 msgid "All analytics for this order have already been used."
 msgstr "Ya se han utilizado todos los análisis de este pedido."
 
-#: web_server/service/views/analysis.py:195
+#: web_server/service/views/analysis.py:197
 msgid "Payment for this order has not been confirmed."
 msgstr "El pago de este pedido no ha sido confirmado."
 
