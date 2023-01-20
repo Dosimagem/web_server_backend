@@ -9,10 +9,12 @@ def notification(user, faker):
 
 
 @pytest.fixture
-def list_notifications(user, faker):
+def list_notifications(user, second_user, faker):
     list_ = [
         Notification(user=user, checked=True, message=faker.sentence(nb_words=10), kind=Notification.Kind.SUCCESS),
         Notification(user=user, message=faker.sentence(nb_words=10), kind=Notification.Kind.ERROR),
         Notification(user=user, message=faker.sentence(nb_words=10), kind=Notification.Kind.PROCESSING),
+        Notification(user=user, message=faker.sentence(nb_words=10), kind=Notification.Kind.PROCESSING),
+        Notification(user=second_user, message=faker.sentence(nb_words=10), kind=Notification.Kind.PROCESSING),
     ]
     return Notification.objects.bulk_create(list_)

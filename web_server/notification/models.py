@@ -14,6 +14,9 @@ class Notification(CreationModificationBase):
         ERROR = ('ER', 'error')
         SUCCESS = ('SU', 'success')
 
+    class Meta:
+        ordering = ('-created_at',)
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)

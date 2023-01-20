@@ -20,9 +20,11 @@ def test_list(client_api_auth, user, list_notifications):
 
     body = resp.json()
 
-    assert len(list_notifications) == body['count']
+    list_notifications.pop()
 
-    for from_db, from_response in zip(list_notifications, body['row']):
+    assert 4 == body['count']
+
+    for from_db, from_response in zip(reversed(list_notifications), body['row']):
         assert str(from_db.uuid) == from_response['id']
         assert from_db.checked == from_response['checked']
         assert from_db.message == from_response['message']
