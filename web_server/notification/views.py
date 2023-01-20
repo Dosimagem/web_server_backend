@@ -13,7 +13,7 @@ from web_server.notification.notification_svc import toogle
 @user_from_token_and_user_from_url
 def notification_list(request, user_id):
 
-    notifications = Notification.objects.all()
+    notifications = Notification.objects.filter(user=request.user)
 
     data = {'count': len(notifications), 'row': [noti.to_dict() for noti in notifications]}
 
