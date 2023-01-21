@@ -9,6 +9,7 @@ from rest_framework.response import Response
 
 from web_server.budget.serializers import GeneralBudgetSerializer
 from web_server.core.decorators import user_from_token_and_user_from_url
+from web_server.core.errors_msg import list_errors
 
 from .budget_svc import BudgetChoice
 
@@ -22,12 +23,14 @@ def general_budget_mail(request, user_id):
     user = request.user
 
     if user.email_not_verified():
-        return Response(data={'error': _('The user does not have a verified email yet.')}, status=HTTPStatus.CONFLICT)
+        return Response(
+            data={'errors': [_('The user does not have a verified email yet.')]}, status=HTTPStatus.CONFLICT
+        )
 
     serializer = GeneralBudgetSerializer(data=request.data)
 
     if not serializer.is_valid():
-        return Response(data={'error': serializer.errors}, status=HTTPStatus.BAD_REQUEST)
+        return Response(data={'errors': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
 
     service = serializer.data['service']
 
@@ -37,7 +40,7 @@ def general_budget_mail(request, user_id):
     serializer = serializerClass(data=request.data)
 
     if not serializer.is_valid():
-        return Response(data={'error': serializer.errors}, status=HTTPStatus.BAD_REQUEST)
+        return Response(data={'errors': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
 
     context = serializer.data
     context['service'] = service

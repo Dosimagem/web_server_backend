@@ -51,9 +51,9 @@ def test_send_sucessfull(client_api_auth, user, payload):
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('service', {'service': ['Este campo é obrigatório.']}),
-        ('researchLine', {'researchLine': ['Este campo é obrigatório.']}),
-        ('projectDescription', {'projectDescription': ['Este campo é obrigatório.']}),
+        ('service', ['service: Este campo é obrigatório.']),
+        ('researchLine', ['research_line: Este campo é obrigatório.']),
+        ('projectDescription', ['project_description: Este campo é obrigatório.']),
     ],
 )
 def test_missing_fields(field, error, client_api_auth, user, payload):
@@ -67,6 +67,6 @@ def test_missing_fields(field, error, client_api_auth, user, payload):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert error == body['error']
+    assert error == body['errors']
 
     assert not len(mail.outbox)
