@@ -19,7 +19,7 @@ def test_wrong_service_name(client_api_auth, user):
     assert HTTPStatus.BAD_REQUEST == resp.status_code
 
     body = resp.json()
-    assert {'service': ['"Service wrong" não é um escolha válido.']} == body['error']
+    assert ['service: "Service wrong" não é um escolha válido.'] == body['errors']
 
 
 def test_not_allowed_method(client_api_auth):
@@ -63,7 +63,7 @@ def test_user_not_have_email_verified(client_api_auth, user):
 
     assert HTTPStatus.CONFLICT == resp.status_code
 
-    assert 'O usuário ainda não possui um e-mail verificado.' == body['error']
+    assert ['O usuário ainda não possui um e-mail verificado.'] == body['errors']
 
 
 def test_token_id_and_user_id_dont_match(client_api_auth, user):

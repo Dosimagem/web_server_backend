@@ -19,8 +19,8 @@ def payload():
     return {
         'service': 'Radiosinoviortese',
         'treatmentType': 'Tratamento do tipo 1',
-        'numberOfSamples': '5',
-        'frequency': '10',
+        'numberOfPatients': '5',
+        'frequency': 'Mensal',
         'comments': comments,
     }
 
@@ -48,7 +48,7 @@ def test_sucessfull(client_api_auth, user, payload):
 
     assert payload['service'] in email.body
     assert payload['treatmentType'] in email.body
-    assert payload['numberOfSamples'] in email.body
+    assert payload['numberOfPatients'] in email.body
     assert payload['frequency'] in email.body
     assert payload['comments'] in email.body
 
@@ -56,11 +56,10 @@ def test_sucessfull(client_api_auth, user, payload):
 @pytest.mark.parametrize(
     'field, error',
     [
-        ('service', {'service': ['Este campo é obrigatório.']}),
-        ('treatmentType', {'treatmentType': ['Este campo é obrigatório.']}),
-        ('numberOfSamples', {'numberOfSamples': ['Este campo é obrigatório.']}),
-        ('frequency', {'frequency': ['Este campo é obrigatório.']}),
-        ('comments', {'comments': ['Este campo é obrigatório.']}),
+        ('service', ['service: Este campo é obrigatório.']),
+        ('treatmentType', ['treatment_type: Este campo é obrigatório.']),
+        ('numberOfPatients', ['number_of_patients: Este campo é obrigatório.']),
+        ('comments', ['comments: Este campo é obrigatório.']),
     ],
 )
 def test_missing_fields(field, error, client_api_auth, user, payload):
@@ -74,7 +73,7 @@ def test_missing_fields(field, error, client_api_auth, user, payload):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert error == body['error']
+    assert error == body['errors']
 
     assert not len(mail.outbox)
 
@@ -82,8 +81,7 @@ def test_missing_fields(field, error, client_api_auth, user, payload):
 @pytest.mark.parametrize(
     'field, value, error',
     [
-        ('numberOfSamples', -1, {'numberOfSamples': ['Certifque-se de que este valor seja maior ou igual a 0.']}),
-        ('frequency', -1, {'frequency': ['Certifque-se de que este valor seja maior ou igual a 0.']}),
+        ('numberOfPatients', -1, ['number_of_patients: Certifque-se de que este valor seja maior ou igual a 0.']),
     ],
 )
 def test_invalid(field, value, error, client_api_auth, user, payload):
@@ -97,4 +95,4 @@ def test_invalid(field, value, error, client_api_auth, user, payload):
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert error == body['error']
+    assert error == body['errors']

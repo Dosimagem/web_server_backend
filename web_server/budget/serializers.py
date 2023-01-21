@@ -9,15 +9,15 @@ class GeneralBudgetSerializer(serializers.Serializer):
 
 class ClinicDosimetryBudgetSerializer(serializers.Serializer):
     treatment_type = serializers.CharField(max_length=60)
-    number_of_samples = serializers.IntegerField(min_value=0)
-    frequency = serializers.IntegerField(min_value=0)
+    number_of_patients = serializers.IntegerField(min_value=0)
+    frequency = serializers.CharField(max_length=60, required=False)
     comments = serializers.CharField(max_length=100000)
 
 
 class PreClinicDosimetryBudgetSerializer(serializers.Serializer):
     research_line = serializers.CharField(max_length=60)
-    number_of_samples = serializers.IntegerField(min_value=0)
-    frequency = serializers.IntegerField(min_value=0)
+    number_of_patients = serializers.IntegerField(min_value=0)
+    frequency = serializers.CharField(max_length=60, required=False)
     comments = serializers.CharField(max_length=100000)
 
 
