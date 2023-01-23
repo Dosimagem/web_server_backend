@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-18 18:38+0000\n"
+"POT-Creation-Date: 2023-01-23 02:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,6 +43,10 @@ msgstr "Senha alterada com sucesso"
 #, python-format
 msgid "Change password: %s"
 msgstr "Alterar senha: %s"
+
+#: web_server/core/apps.py:8
+msgid "accounts"
+msgstr "contas"
 
 #: web_server/core/auth.py:12
 msgid "Token is invalid or expired"
@@ -126,6 +130,14 @@ msgstr "Clínica"
 msgid "Role"
 msgstr "Cargo"
 
+#: web_server/core/models.py:153
+msgid "User Profile"
+msgstr "Perfil do usuário"
+
+#: web_server/core/models.py:154
+msgid "User Profiles"
+msgstr "Perfis de usuário"
+
 #: web_server/core/serializers.py:21 web_server/core/serializers.py:41
 msgid "The two password fields didn't match."
 msgstr "Os dois campos de senha não correspondem."
@@ -134,11 +146,11 @@ msgstr "Os dois campos de senha não correspondem."
 msgid "Old password is not correct."
 msgstr "Password antigo não está correto."
 
-#: web_server/core/validators.py:13
+#: web_server/core/validators.py:12
 msgid "CPF invalid."
 msgstr "CPF inválido."
 
-#: web_server/core/validators.py:21
+#: web_server/core/validators.py:20
 msgid "CNPJ invalid."
 msgstr "CNPJ inválido."
 

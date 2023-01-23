@@ -18,6 +18,8 @@ class Benefit(CreationModificationBase):
         return self.name
 
     class Meta:
+        verbose_name = _('Benefit')
+        verbose_name_plural = _('Benefits')
         ordering = ['-created_at']
 
 
@@ -35,6 +37,10 @@ class Signature(CreationModificationBase):
     test_period_end = models.DateField(null=True, blank=True)
 
     activated = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _('Signature')
+        verbose_name_plural = _('Signatures')
 
     def __str__(self):
         return self.name

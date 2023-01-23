@@ -145,7 +145,7 @@ def test_fail_calibration_name_must_be_unique_per_user(
 
     body = response.json()
 
-    expected = ['Calibration com este User e Calibration Name já existe.']
+    expected = ['Calibração com este User e Calibration Name já existe.']
 
     assert body['errors'] == expected
 

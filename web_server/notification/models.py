@@ -2,6 +2,7 @@ from uuid import uuid4
 
 from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from web_server.core.models import CreationModificationBase
 
@@ -10,11 +11,13 @@ from web_server.core.models import CreationModificationBase
 
 class Notification(CreationModificationBase):
     class Kind(models.TextChoices):
-        PROCESSING = ('PR', 'processing')
-        ERROR = ('ER', 'error')
-        SUCCESS = ('SU', 'success')
+        PROCESSING = ('PR', _('processing'))
+        ERROR = ('ER', _('error'))
+        SUCCESS = ('SU', _('success'))
 
     class Meta:
+        verbose_name = _('Notification')
+        verbose_name_plural = _('Notifications')
         ordering = ('-created_at',)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')

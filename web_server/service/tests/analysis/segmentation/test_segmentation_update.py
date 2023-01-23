@@ -245,6 +245,6 @@ def test_fail_analysis_name_must_be_unique(client_api_auth, segmentation_order, 
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body['errors'] == ['Segmentation Analysis com este Order e Analysis Name já existe.']
+    assert body['errors'] == ['Análise de Segmentação com este Order e Analysis Name já existe.']
 
     _verified_unchanged_information_db(seg_analysis_update_or_del_is_possible)
