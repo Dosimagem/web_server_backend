@@ -9,6 +9,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
 
 from web_server.core.models import CreationModificationBase
 from web_server.notification.models import Notification
@@ -52,8 +53,8 @@ class Order(CreationModificationBase):
         return self.code
 
     class Meta:
-        verbose_name = 'Order'
-        verbose_name_plural = 'Orders'
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
         ordering = ['-created_at']
 
     def save(self, *args, **kwargs):
@@ -87,6 +88,11 @@ class Order(CreationModificationBase):
 class Isotope(CreationModificationBase):
 
     name = models.CharField(max_length=6, unique=True)
+
+    class Meta:
+        verbose_name = _('Isotope')
+        verbose_name_plural = _('Isotopes')
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.name
@@ -142,6 +148,8 @@ class Calibration(CreationModificationBase):
     images = models.FileField('Calibration Images', upload_to=upload_calibration_to, null=False)
 
     class Meta:
+        verbose_name = _('Calibration')
+        verbose_name_plural = _('Calibrations')
         unique_together = ('user', 'calibration_name')
         ordering = ['-created_at']
 
@@ -321,8 +329,8 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     class Meta:
         db_table = 'clinic_dosimetry_analysis'
-        verbose_name = 'Clinic Dosimetry'
-        verbose_name_plural = 'Clinic Dosimetries'
+        verbose_name = _('Clinic Dosimetry')
+        verbose_name_plural = _('Clinic Dosimetries')
         unique_together = (
             'order',
             'analysis_name',
@@ -345,8 +353,8 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     class Meta:
         db_table = 'preclinic_dosimetry_analysis'
-        verbose_name = 'Preclinic Dosimetry'
-        verbose_name_plural = 'Preclinic Dosimetries'
+        verbose_name = _('Preclinic Dosimetry')
+        verbose_name_plural = _('Preclinic Dosimetries')
         unique_together = (
             'order',
             'analysis_name',
@@ -366,12 +374,9 @@ class SegmentationAnalysis(AnalysisBase):
 
     class Meta:
         db_table = 'segmentation_analysis'
-        verbose_name = 'Segmentation Analysis'
-        verbose_name_plural = 'Segmentation Analyzes'
-        unique_together = (
-            'order',
-            'analysis_name',
-        )
+        verbose_name = _('Segmentation Analysis')
+        verbose_name_plural = _('Segmentation Analyzes')
+        unique_together = ('order', 'analysis_name')
         ordering = ['-created_at']
 
     def _generate_code(self):
@@ -400,12 +405,9 @@ class RadiosynoAnalysis(AnalysisBase):
 
     class Meta:
         db_table = 'radiosyno_analysis'
-        verbose_name = 'Radiosynoviorthesis Analysis'
-        verbose_name_plural = 'Radiosynoviorthesis Analyzes'
-        unique_together = (
-            'order',
-            'analysis_name',
-        )
+        verbose_name = _('Radiosynoviorthesis Analysis')
+        verbose_name_plural = _('Radiosynoviorthesis Analyzes')
+        unique_together = ('order', 'analysis_name')
         ordering = ['-created_at']
 
     def to_dict(self, request):

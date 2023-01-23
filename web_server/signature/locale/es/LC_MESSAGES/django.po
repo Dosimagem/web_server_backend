@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-13 04:21+0000\n"
+"POT-Creation-Date: 2023-01-23 02:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: web_server/signature/models.py:47 web_server/signature/models.py:50
+#: web_server/signature/apps.py:8
+msgid "signature"
+msgstr ""
+
+#: web_server/signature/models.py:21
+msgid "Benefit"
+msgstr ""
+
+#: web_server/signature/models.py:22
+msgid "Benefits"
+msgstr ""
+
+#: web_server/signature/models.py:42
+msgid "Signature"
+msgstr ""
+
+#: web_server/signature/models.py:43
+msgid "Signatures"
+msgstr ""
+
+#: web_server/signature/models.py:53 web_server/signature/models.py:56
 msgid "The start date must be after the end date."
 msgstr "La fecha de inicio debe ser posterior a la fecha de finalización."
 
-#: web_server/signature/models.py:70
+#: web_server/signature/models.py:76
 msgid "Creation Date and Time"
 msgstr "Fecha y hora de creación"
 

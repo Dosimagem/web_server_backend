@@ -117,7 +117,7 @@ def test_fail_analisys_name_must_be_unique_per_order(
 
     assert RadiosynoAnalysis.objects.count() == 1
 
-    assert body['errors'] == ['Radiosynoviorthesis Analysis com este Order e Analysis Name já existe.']
+    assert body['errors'] == ['Análise de Radiosinoviortese com este Order e Analysis Name já existe.']
 
 
 def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_radiosyno_analysis):

@@ -48,7 +48,7 @@ def test_invalid_create_form_analysis_name_must_be_unique_per_order(
 
     assert not form.is_valid()
 
-    assert form.errors == {'__all__': ['Segmentation Analysis com este Order e Analysis Name já existe.']}
+    assert form.errors == {'__all__': ['Análise de Segmentação com este Order e Analysis Name já existe.']}
 
 
 def test_invalid_analysis_name_length_must_least_3(segmentation_analysis_info, segmentation_analysis_file):

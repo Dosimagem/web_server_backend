@@ -154,7 +154,7 @@ def test_fail_analisys_name_must_be_unique_per_order(
 
     assert ClinicDosimetryAnalysis.objects.count() == 1
 
-    assert body['errors'] == ['Clinic Dosimetry com este Order e Analysis Name já existe.']
+    assert body['errors'] == ['Dosimetria clínica com este Order e Analysis Name já existe.']
 
 
 def test_fail_not_have_remaining_of_analyzes(client_api_auth, user, form_data_clinic_dosimetry):

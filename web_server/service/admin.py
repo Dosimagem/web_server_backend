@@ -62,7 +62,7 @@ class OrderModelAdmin(admin.ModelAdmin):
     readonly_fields = (
         'id',
         'uuid',
-        'remaining_of_analyzes',
+        # 'remaining_of_analyzes',
         'created_at',
         'modified_at',
         'code',

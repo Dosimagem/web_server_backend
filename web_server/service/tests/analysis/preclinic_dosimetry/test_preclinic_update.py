@@ -340,6 +340,6 @@ def test_fail_analysis_name_must_be_unique(
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body['errors'] == ['Preclinic Dosimetry com este Order e Analysis Name já existe.']
+    assert body['errors'] == ['Dosimetria preclínica com este Order e Analysis Name já existe.']
 
     _verified_unchanged_information_db(preclinic_dosi_update_del_is_possible)

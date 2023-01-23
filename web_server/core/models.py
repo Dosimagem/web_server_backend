@@ -149,6 +149,11 @@ class UserProfile(CreationModificationBase, models.Model):
     cpf = models.CharField('CPF', max_length=11, validators=[validate_cpf], default='', blank=True)
     cnpj = models.CharField('CNPJ', max_length=14, validators=[validate_cnpj], default='', blank=True)
 
+    class Meta:
+        verbose_name = _('User Profile')
+        verbose_name_plural = _('User Profiles')
+        abstract = False
+
     def __str__(self):
         return self.clinic
 
