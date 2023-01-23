@@ -154,6 +154,6 @@ def test_get_absolute_url(clinic_dosimetry):
     user_id = clinic_dosimetry.order.user.uuid
     order_id = clinic_dosimetry.order.uuid
 
-    expected = f'/api/v1/users/{user_id}/orders/{order_id}/analysis/{clinic_dosimetry.uuid}'
+    expected = f'/api/v1/users/{user_id}/orders/{order_id}/analysis/{clinic_dosimetry.uuid}/'
 
     assert expected == clinic_dosimetry.get_absolute_url()

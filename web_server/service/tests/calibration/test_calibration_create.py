@@ -25,7 +25,7 @@ def test_successful(client_api_auth, user, form_data, calibration_infos, calibra
 
     cali_db = Calibration.objects.first()
 
-    expected = f'/api/v1/users/{ cali_db.user.uuid}/calibrations/{cali_db.uuid}'
+    expected = f'/api/v1/users/{ cali_db.user.uuid}/calibrations/{cali_db.uuid}/'
 
     assert expected == response.headers['Location']
 

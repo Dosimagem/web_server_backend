@@ -43,7 +43,7 @@ def test_successful(client_api_auth, clinic_order, form_data_clinic_dosimetry):
 
     clinic_dosi_db = ClinicDosimetryAnalysis.objects.first()
 
-    expected = f'/api/v1/users/{clinic_order.user.uuid}/orders/{clinic_order.uuid}/analysis/{clinic_dosi_db.uuid}'
+    expected = f'/api/v1/users/{clinic_order.user.uuid}/orders/{clinic_order.uuid}/analysis/{clinic_dosi_db.uuid}/'
 
     assert expected == resp.headers['Location']
 

@@ -51,7 +51,7 @@ def test_successfull(client_api_auth, preclinic_order, form_data_preclinic_dosim
     user_id = preclinic_db.order.user.uuid
     order_id = preclinic_db.order.uuid
 
-    expected = f'/api/v1/users/{user_id}/orders/{order_id}/analysis/{preclinic_db.uuid}'
+    expected = f'/api/v1/users/{user_id}/orders/{order_id}/analysis/{preclinic_db.uuid}/'
 
     assert expected == resp.headers['Location']
 
