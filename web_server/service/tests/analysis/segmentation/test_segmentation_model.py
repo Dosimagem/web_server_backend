@@ -125,6 +125,6 @@ def test_get_absolute_url(segmentation_analysis):
     user_id = segmentation_analysis.order.user.uuid
     order_id = segmentation_analysis.order.uuid
 
-    expected = f'/api/v1/users/{user_id}/orders/{order_id}/analysis/{segmentation_analysis.uuid}'
+    expected = f'/api/v1/users/{user_id}/orders/{order_id}/analysis/{segmentation_analysis.uuid}/'
 
     assert expected == segmentation_analysis.get_absolute_url()
