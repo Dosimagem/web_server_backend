@@ -24,6 +24,29 @@ def test_valid_form(api_cnpj_successfull, profile_infos):
     assert form.is_valid()
 
 
+def test_only_check_the_uniqueness_of_the_cpf_if_it_is_not_empty(user_info, second_user_login_info, register_infos, db):
+
+    del register_infos['cnpj']
+    del register_infos['cpf']
+
+    user = User.objects.create_user(**user_info)
+    profile_infos = register_infos
+    profile_infos['user'] = user
+
+    form = ProfileCreateForm(data=profile_infos, instance=profile_infos['user'].profile)
+
+    assert form.is_valid()
+
+    form.save()
+
+    user = User.objects.create_user(**second_user_login_info)
+    profile_infos = register_infos
+    profile_infos['user'] = user
+
+    form = ProfileCreateForm(data=profile_infos, instance=user)
+    assert form.is_valid()
+
+
 def test_valid_form_without_cpf_and_cnpf(register_infos_without_cpf_and_cnpj, user_info, db):
 
     user = User.objects.create_user(**user_info)

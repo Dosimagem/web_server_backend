@@ -54,7 +54,7 @@ def register_infos():
 
 
 @pytest.fixture
-def user_info(register_infos):
+def user_info(register_infos):   # TODO: chamar de second_user_login_info
     return dict(email=register_infos['email'], password=register_infos['password1'])
 
 
