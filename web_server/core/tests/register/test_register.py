@@ -79,6 +79,23 @@ def test_successfull_register_without_cpf_and_cnpj(client_api, register_infos_wi
     asserts_cookie_tokens(resp)
 
 
+def test_successfull_register_two_user_without_cpf(client_api, register_infos, second_register_infos):
+
+    del register_infos['cpf']
+    del register_infos['cnpj']
+
+    resp = client_api.post(URL_REGISTER, data=register_infos, format='json')
+
+    assert resp.status_code == HTTPStatus.CREATED
+
+    del second_register_infos['cpf']
+    del second_register_infos['cnpj']
+
+    resp = client_api.post(URL_REGISTER, data=second_register_infos, format='json')
+
+    assert resp.status_code == HTTPStatus.CREATED
+
+
 def test_fail_user_unique_fields(client_api, user, register_infos):
     """
     Email

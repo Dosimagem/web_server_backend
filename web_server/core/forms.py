@@ -46,7 +46,8 @@ class ProfileCreateForm(forms.ModelForm):
 
         cpf = self.cleaned_data['cpf']
 
-        self._unique({'cpf': cpf}, _('CPF already exists'))
+        if cpf:
+            self._unique({'cpf': cpf}, _('CPF already exists'))
 
         return cpf
 
