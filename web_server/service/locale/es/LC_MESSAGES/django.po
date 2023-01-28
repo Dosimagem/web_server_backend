@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 02:10+0000\n"
+"POT-Creation-Date: 2023-01-28 03:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: web_server/service/admin.py:22
+msgid "Main data"
+msgstr ""
+
+#: web_server/service/admin.py:35 web_server/service/admin.py:132
+#: web_server/service/admin.py:178 web_server/service/admin.py:207
+#: web_server/service/admin.py:242
+msgid "Other data"
+msgstr ""
+
+#: web_server/service/admin.py:89
+msgid "Calibration data"
+msgstr ""
+
+#: web_server/service/admin.py:119 web_server/service/admin.py:165
+#: web_server/service/admin.py:203 web_server/service/admin.py:238
+msgid "Analysis data"
+msgstr ""
+
+#: web_server/service/admin.py:129 web_server/service/admin.py:175
+msgid "Feedback"
+msgstr ""
+
+#: web_server/service/admin.py:130 web_server/service/admin.py:176
+#: web_server/service/admin.py:205 web_server/service/admin.py:240
+msgid "Files"
+msgstr ""
+
+#: web_server/service/admin.py:131 web_server/service/admin.py:177
+msgid "Order & Calibration"
+msgstr ""
+
+#: web_server/service/admin.py:204 web_server/service/admin.py:239
+msgid "Extra information"
+msgstr ""
+
+#: web_server/service/admin.py:206 web_server/service/admin.py:241
+#: web_server/service/models.py:56
+msgid "Order"
+msgstr ""
 
 #: web_server/service/apps.py:8
 msgid "service"
@@ -30,10 +71,6 @@ msgstr ""
 #: web_server/service/forms.py:72
 msgid "Isotope not registered."
 msgstr "Isótopo no registrado."
-
-#: web_server/service/models.py:56
-msgid "Order"
-msgstr ""
 
 #: web_server/service/models.py:57
 msgid "Orders"

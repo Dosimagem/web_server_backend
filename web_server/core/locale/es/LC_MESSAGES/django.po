@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 02:13+0000\n"
+"POT-Creation-Date: 2023-01-28 03:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,11 +68,11 @@ msgstr "Este usuario no tiene registrado este recurso."
 msgid "Calibration with this id does not exist for this user."
 msgstr "La calibración con esta identificación no existe para este usuario."
 
-#: web_server/core/forms.py:49
+#: web_server/core/forms.py:50
 msgid "CPF already exists"
 msgstr "CPF ya existe"
 
-#: web_server/core/forms.py:101
+#: web_server/core/forms.py:102
 msgid "The two e-mail fields didn't match."
 msgstr "Os dois campos de e-mail não correspondem."
 

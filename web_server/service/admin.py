@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from web_server.service.forms import CreateOrderForm
 from web_server.service.models import (
@@ -17,7 +18,7 @@ class OrderModelAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
-            'Order data',
+            _('Main data'),
             {
                 'fields': (
                     'service_name',
@@ -30,15 +31,16 @@ class OrderModelAdmin(admin.ModelAdmin):
             },
         ),
         (
-            'Other data',
+            _('Other data'),
             {
+                'classes': ('collapse',),
                 'fields': (
                     'remaining_of_analyzes',
                     'id',
                     'uuid',
                     'created_at',
                     'modified_at',
-                )
+                ),
             },
         ),
     )
@@ -62,7 +64,6 @@ class OrderModelAdmin(admin.ModelAdmin):
     readonly_fields = (
         'id',
         'uuid',
-        # 'remaining_of_analyzes',
         'created_at',
         'modified_at',
         'code',
@@ -84,7 +85,7 @@ class CalibrationModelAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
-            'Calibration data',
+            _('Calibration data'),
             {
                 'fields': (
                     'calibration_name',
@@ -94,11 +95,12 @@ class CalibrationModelAdmin(admin.ModelAdmin):
                     'measurement_datetime',
                     'phantom_volume',
                     'acquisition_time',
+                    'user',
                 )
             },
         ),
-        ('Files', {'fields': ('images',)}),
-        ('Other data', {'fields': ('id', 'uuid', 'user')}),
+        (_('Files'), {'fields': ('images',)}),
+        (_('Other data'), {'classes': ('collapse',), 'fields': ('id', 'uuid')}),
     )
 
     list_display = ('id', 'calibration_name', 'user', 'isotope', 'images')
@@ -114,20 +116,21 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
-            'Analysis data',
+            _('Analysis data'),
             {
                 'fields': (
                     'analysis_name',
                     'injected_activity',
                     'administration_datetime',
                     'status',
+                    'active',
                 )
             },
         ),
-        ('Feedback', {'fields': ('message_to_user',)}),
-        ('Files', {'fields': ('report', 'images')}),
-        ('Order & Calibration', {'fields': ('order', 'calibration')}),
-        ('Other data', {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
+        (_('Files'), {'fields': ('report', 'images')}),
+        (_('Order & Calibration'), {'fields': ('order', 'calibration')}),
+        (_('Feedback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
+        (_('Other data'), {'classes': ('collapse',), 'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
     )
 
     list_display = (
@@ -160,20 +163,21 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
-            'Analysis data',
+            _('Analysis data'),
             {
                 'fields': (
                     'analysis_name',
                     'injected_activity',
                     'administration_datetime',
                     'status',
+                    'active',
                 )
             },
         ),
-        ('Feedback', {'fields': ('message_to_user',)}),
-        ('Files', {'fields': ('report', 'images')}),
-        ('Order & Calibration', {'fields': ('order', 'calibration')}),
-        ('Other data', {'fields': ('uuid', 'active', 'created_at', 'modified_at')}),
+        (_('Files'), {'fields': ('report', 'images')}),
+        (_('Order & Calibration'), {'fields': ('order', 'calibration')}),
+        (_('Feedback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
+        (_('Other data'), {'classes': ('collapse',), 'fields': ('uuid', 'created_at', 'modified_at')}),
     )
 
     list_display = (
@@ -198,11 +202,11 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
 class SegmentationAnalysisAdmin(admin.ModelAdmin):
 
     fieldsets = (
-        ('Analysis data', {'fields': ('analysis_name', 'status')}),
-        ('Extra information', {'fields': ('message_to_user',)}),
-        ('Files', {'fields': ('report', 'images')}),
-        ('Order', {'fields': ('order',)}),
-        ('Other data', {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
+        (_('Analysis data'), {'fields': ('analysis_name', 'status', 'active')}),
+        (_('Files'), {'fields': ('report', 'images')}),
+        (_('Order'), {'fields': ('order',)}),
+        (_('Feeback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
+        (_('Other data'), {'classes': ('collapse',), 'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
     )
 
     list_display = (
@@ -233,11 +237,11 @@ class SegmentationAnalysisAdmin(admin.ModelAdmin):
 class RadiosynoviorthesisAdmin(admin.ModelAdmin):
 
     fieldsets = (
-        ('Analysis data', {'fields': ('analysis_name', 'isotope', 'status')}),
-        ('Extra information', {'fields': ('message_to_user',)}),
-        ('Files', {'fields': ('report', 'images')}),
-        ('Order', {'fields': ('order',)}),
-        ('Other data', {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
+        (_('Analysis data'), {'fields': ('analysis_name', 'isotope', 'status')}),
+        (_('Files'), {'fields': ('report', 'images')}),
+        (_('Order'), {'fields': ('order',)}),
+        (_('Feeback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
+        (_('Other data'), {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
     )
 
     list_display = (
