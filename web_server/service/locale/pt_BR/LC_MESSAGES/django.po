@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-28 03:38+0000\n"
+"POT-Creation-Date: 2023-02-09 02:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,48 +18,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: web_server/service/admin.py:22
+#: web_server/service/admin.py:21
 msgid "Main data"
 msgstr "Dados principais"
 
-#: web_server/service/admin.py:35 web_server/service/admin.py:132
-#: web_server/service/admin.py:178 web_server/service/admin.py:207
-#: web_server/service/admin.py:242
+#: web_server/service/admin.py:34 web_server/service/admin.py:103
+#: web_server/service/admin.py:133 web_server/service/admin.py:180
+#: web_server/service/admin.py:209 web_server/service/admin.py:244
 msgid "Other data"
 msgstr "Outros dados"
 
-#: web_server/service/admin.py:89
+#: web_server/service/admin.py:88
 #, fuzzy
 #| msgid "Calibration"
 msgid "Calibration data"
 msgstr "Calibração"
 
-#: web_server/service/admin.py:119 web_server/service/admin.py:165
-#: web_server/service/admin.py:203 web_server/service/admin.py:238
-msgid "Analysis data"
-msgstr "Dados da Analase"
-
-#: web_server/service/admin.py:129 web_server/service/admin.py:175
-msgid "Feedback"
-msgstr ""
-
-#: web_server/service/admin.py:130 web_server/service/admin.py:176
-#: web_server/service/admin.py:205 web_server/service/admin.py:240
+#: web_server/service/admin.py:102 web_server/service/admin.py:130
+#: web_server/service/admin.py:177 web_server/service/admin.py:206
+#: web_server/service/admin.py:241
 msgid "Files"
 msgstr "Arquivos"
 
-#: web_server/service/admin.py:131 web_server/service/admin.py:177
+#: web_server/service/admin.py:119 web_server/service/admin.py:166
+#: web_server/service/admin.py:205 web_server/service/admin.py:240
+msgid "Analysis data"
+msgstr "Dados da Analase"
+
+#: web_server/service/admin.py:131 web_server/service/admin.py:178
 msgid "Order & Calibration"
 msgstr "Pedido e Calibração"
 
-#: web_server/service/admin.py:204 web_server/service/admin.py:239
-msgid "Extra information"
-msgstr "Informações extras"
+#: web_server/service/admin.py:132 web_server/service/admin.py:179
+msgid "Feedback"
+msgstr ""
 
-#: web_server/service/admin.py:206 web_server/service/admin.py:241
+#: web_server/service/admin.py:207 web_server/service/admin.py:242
 #: web_server/service/models.py:56
 msgid "Order"
 msgstr "Pedido"
+
+#: web_server/service/admin.py:208 web_server/service/admin.py:243
+msgid "Feeback"
+msgstr ""
 
 #: web_server/service/apps.py:8
 msgid "service"
@@ -168,3 +169,6 @@ msgstr ""
 #: web_server/service/views/calibrations.py:136
 msgid "Calibration successfully deleted!"
 msgstr "Calibração excluída com sucesso!"
+
+#~ msgid "Extra information"
+#~ msgstr "Informações extras"
