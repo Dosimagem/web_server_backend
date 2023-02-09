@@ -1,4 +1,4 @@
-Soliciatação de orçamento
+Solicitação de orçamento
 
 Dados o usuario:
 

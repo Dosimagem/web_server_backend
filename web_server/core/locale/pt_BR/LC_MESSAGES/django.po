@@ -78,11 +78,11 @@ msgstr "Os dois campos de e-mail não correspondem."
 
 #: web_server/core/models.py:23
 msgid "Creation Date and Time"
-msgstr ""
+msgstr "Data e Hora de Criação"
 
 #: web_server/core/models.py:24
 msgid "Modificatioin Date and Time"
-msgstr "Data e Hora de Criação"
+msgstr "Data e Modificação"
 
 #: web_server/core/models.py:68
 msgid "email address"
