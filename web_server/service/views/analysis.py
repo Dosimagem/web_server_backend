@@ -18,7 +18,7 @@ from web_server.service.forms import (
     PreClinicAndClinicDosimetryAnalysisUpdateFormApi,
     RadiosynoAnalysisCreateFormApi,
 )
-from web_server.service.models import Calibration, Isotope, Order
+from web_server.service.models import Calibration, IsotopeRadiosyno, Order
 from web_server.service.order_svc import OrderInfos
 
 
@@ -140,7 +140,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
         if not form.is_valid():
             return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-        isotope = Isotope.objects.get(name=form.cleaned_data['isotope'])
+        isotope = IsotopeRadiosyno.objects.get(name=form.cleaned_data['isotope'])
 
         data['isotope'] = isotope
 
@@ -222,7 +222,7 @@ def _create_analysis(request, user_id, order_id):
         if not form.is_valid():
             return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-        isotope = Isotope.objects.get(name=form.cleaned_data['isotope'])
+        isotope = IsotopeRadiosyno.objects.get(name=form.cleaned_data['isotope'])
 
         data['isotope'] = isotope
 

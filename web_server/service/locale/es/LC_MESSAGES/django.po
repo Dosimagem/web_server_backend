@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-09 02:24+0000\n"
+"POT-Creation-Date: 2023-02-11 18:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,58 +18,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: web_server/service/admin.py:21
+#: web_server/service/admin.py:22
 msgid "Main data"
 msgstr ""
 
-#: web_server/service/admin.py:34 web_server/service/admin.py:103
-#: web_server/service/admin.py:133 web_server/service/admin.py:180
-#: web_server/service/admin.py:209 web_server/service/admin.py:244
+#: web_server/service/admin.py:35 web_server/service/admin.py:109
+#: web_server/service/admin.py:139 web_server/service/admin.py:186
+#: web_server/service/admin.py:215 web_server/service/admin.py:250
 msgid "Other data"
 msgstr ""
 
-#: web_server/service/admin.py:88
+#: web_server/service/admin.py:94
 msgid "Calibration data"
 msgstr ""
 
-#: web_server/service/admin.py:102 web_server/service/admin.py:130
-#: web_server/service/admin.py:177 web_server/service/admin.py:206
-#: web_server/service/admin.py:241
+#: web_server/service/admin.py:108 web_server/service/admin.py:136
+#: web_server/service/admin.py:183 web_server/service/admin.py:212
+#: web_server/service/admin.py:247
 msgid "Files"
 msgstr ""
 
-#: web_server/service/admin.py:119 web_server/service/admin.py:166
-#: web_server/service/admin.py:205 web_server/service/admin.py:240
+#: web_server/service/admin.py:125 web_server/service/admin.py:172
+#: web_server/service/admin.py:211 web_server/service/admin.py:246
 msgid "Analysis data"
 msgstr ""
 
-#: web_server/service/admin.py:131 web_server/service/admin.py:178
+#: web_server/service/admin.py:137 web_server/service/admin.py:184
 msgid "Order & Calibration"
 msgstr ""
 
-#: web_server/service/admin.py:132 web_server/service/admin.py:179
+#: web_server/service/admin.py:138 web_server/service/admin.py:185
+#: web_server/service/admin.py:214 web_server/service/admin.py:249
 msgid "Feedback"
 msgstr ""
 
-#: web_server/service/admin.py:207 web_server/service/admin.py:242
+#: web_server/service/admin.py:213 web_server/service/admin.py:248
 #: web_server/service/models.py:56
 msgid "Order"
-msgstr ""
-
-#: web_server/service/admin.py:208 web_server/service/admin.py:243
-msgid "Feeback"
 msgstr ""
 
 #: web_server/service/apps.py:8
 msgid "service"
 msgstr ""
 
-#: web_server/service/forms.py:36
+#: web_server/service/forms.py:37
 msgid "The remaining analysis must be less than the analysis field number."
 msgstr ""
 "El análisis restante debe ser menor que el número del campo de análisis."
 
-#: web_server/service/forms.py:72
+#: web_server/service/forms.py:73 web_server/service/forms.py:132
 msgid "Isotope not registered."
 msgstr "Isótopo no registrado."
 
@@ -78,50 +75,58 @@ msgid "Orders"
 msgstr ""
 
 #: web_server/service/models.py:93
-msgid "Isotope"
+msgid "Isotope for dosimetry"
 msgstr ""
 
 #: web_server/service/models.py:94
-msgid "Isotopes"
+msgid "Isotopes for dosimetry"
 msgstr ""
 
-#: web_server/service/models.py:151
+#: web_server/service/models.py:105
+msgid "Isotope for radiosunoviorthesis"
+msgstr ""
+
+#: web_server/service/models.py:106
+msgid "Isotopes for radiosunoviorthesis"
+msgstr ""
+
+#: web_server/service/models.py:163
 msgid "Calibration"
 msgstr ""
 
-#: web_server/service/models.py:152
+#: web_server/service/models.py:164
 msgid "Calibrations"
 msgstr ""
 
-#: web_server/service/models.py:332
+#: web_server/service/models.py:344
 msgid "Clinic Dosimetry"
 msgstr ""
 
-#: web_server/service/models.py:333
+#: web_server/service/models.py:345
 msgid "Clinic Dosimetries"
 msgstr ""
 
-#: web_server/service/models.py:356
+#: web_server/service/models.py:368
 msgid "Preclinic Dosimetry"
 msgstr ""
 
-#: web_server/service/models.py:357
+#: web_server/service/models.py:369
 msgid "Preclinic Dosimetries"
 msgstr ""
 
-#: web_server/service/models.py:377
+#: web_server/service/models.py:389
 msgid "Segmentation Analysis"
 msgstr ""
 
-#: web_server/service/models.py:378
+#: web_server/service/models.py:390
 msgid "Segmentation Analyzes"
 msgstr ""
 
-#: web_server/service/models.py:408
+#: web_server/service/models.py:420
 msgid "Radiosynoviorthesis Analysis"
 msgstr ""
 
-#: web_server/service/models.py:409
+#: web_server/service/models.py:421
 msgid "Radiosynoviorthesis Analyzes"
 msgstr ""
 

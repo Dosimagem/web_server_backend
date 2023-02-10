@@ -2,10 +2,15 @@ from http import HTTPStatus
 
 from django.shortcuts import resolve_url
 
+from web_server.service.models import IsotopeRadiosyno
+
 END_POINT = 'radiosyn:isotopes'
 
 
-def test_calculator_isotopes(client_api):
+def test_calculator_isotopes(client_api, db):
+
+    IsotopeRadiosyno.objects.create(name='Y-90')
+    IsotopeRadiosyno.objects.create(name='L-177')
 
     url = resolve_url(END_POINT)
 
@@ -13,8 +18,7 @@ def test_calculator_isotopes(client_api):
 
     assert resp.status_code == HTTPStatus.OK
 
-    expected = ['Y-90', 'P-32', 'Re-188', 'Re-186', 'Sm-153', 'Lu-177']
-
+    expected = ['L-177', 'Y-90']
     body = resp.json()
 
     assert len(expected) == body['count']

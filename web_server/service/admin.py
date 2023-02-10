@@ -6,6 +6,7 @@ from web_server.service.models import (
     Calibration,
     ClinicDosimetryAnalysis,
     Isotope,
+    IsotopeRadiosyno,
     Order,
     PreClinicDosimetryAnalysis,
     RadiosynoAnalysis,
@@ -77,6 +78,11 @@ class OrderModelAdmin(admin.ModelAdmin):
 
 @admin.register(Isotope)
 class IstopeModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'created_at', 'modified_at')
+
+
+@admin.register(IsotopeRadiosyno)
+class IsotopeRadiosynoModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'created_at', 'modified_at')
 
 
@@ -205,7 +211,7 @@ class SegmentationAnalysisAdmin(admin.ModelAdmin):
         (_('Analysis data'), {'fields': ('analysis_name', 'status', 'active')}),
         (_('Files'), {'fields': ('report', 'images')}),
         (_('Order'), {'fields': ('order',)}),
-        (_('Feeback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
+        (_('Feedback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
         (_('Other data'), {'classes': ('collapse',), 'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
     )
 
@@ -240,7 +246,7 @@ class RadiosynoviorthesisAdmin(admin.ModelAdmin):
         (_('Analysis data'), {'fields': ('analysis_name', 'isotope', 'status')}),
         (_('Files'), {'fields': ('report', 'images')}),
         (_('Order'), {'fields': ('order',)}),
-        (_('Feeback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
+        (_('Feedback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
         (_('Other data'), {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
     )
 
