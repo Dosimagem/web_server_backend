@@ -9,6 +9,7 @@ from web_server.service.models import (
     Calibration,
     ClinicDosimetryAnalysis,
     Isotope,
+    IsotopeRadiosyno,
     Order,
     PreClinicDosimetryAnalysis,
     RadiosynoAnalysis,
@@ -79,12 +80,12 @@ def form_data_segmentation_analysis(segmentation_analysis_info, segmentation_ana
 
 
 @pytest.fixture
-def form_data_radiosyno_analysis(radiosyno_analysis_info, radiosyno_analysis_file, lu_177):
+def form_data_radiosyno_analysis(radiosyno_analysis_info, radiosyno_analysis_file, y_90):
 
     return {
         'images': radiosyno_analysis_file['images'],
         'analysisName': radiosyno_analysis_info['analysis_name'],
-        'isotope': lu_177,
+        'isotope': y_90,
     }
 
 
@@ -201,6 +202,11 @@ def lu_177(db):
 def lu_177_and_cu_64(lu_177):
     Isotope.objects.create(name='Cu-64')
     return list(Isotope.objects.all())
+
+
+@pytest.fixture
+def y_90(db):
+    return IsotopeRadiosyno.objects.create(name='Y-90')
 
 
 DATETIME_TIMEZONE = make_aware(datetime(2016, 12, 14, 11, 2, 51))
@@ -346,8 +352,8 @@ def segmentation_analysis_info(segmentation_order):
 
 
 @pytest.fixture
-def radiosyno_analysis_info(radiosyno_order, lu_177):
-    return {'order': radiosyno_order, 'analysis_name': 'Analysis 1', 'isotope': lu_177}
+def radiosyno_analysis_info(radiosyno_order, y_90):
+    return {'order': radiosyno_order, 'analysis_name': 'Analysis 1', 'isotope': y_90}
 
 
 @pytest.fixture

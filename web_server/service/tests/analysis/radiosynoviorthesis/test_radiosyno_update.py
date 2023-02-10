@@ -11,8 +11,8 @@ from web_server.service.models import Order, RadiosynoAnalysis
 
 
 @pytest.fixture
-def update_form_data(lu_177):
-    return {'analysisName': 'New analsysis name', 'isotope': lu_177.name}
+def update_form_data(y_90):
+    return {'analysisName': 'New analsysis name', 'isotope': y_90.name}
 
 
 def _verified_unchanged_information_db(analysis):
@@ -222,19 +222,19 @@ def test_fail_analysis_name_must_be_unique(
     client_api_auth,
     radiosyno_order,
     radiosyno_analysis_update_or_del_is_possible,
-    lu_177,
+    y_90,
 ):
 
     other_analysis = RadiosynoAnalysis.objects.create(
         order=radiosyno_order,
         analysis_name='Analysis 2',
-        isotope=lu_177,
+        isotope=y_90,
         images=ContentFile(b'CT e SPET files 1', name='images.zip'),
     )
 
     update_form_data = {}
     update_form_data['analysisName'] = other_analysis.analysis_name
-    update_form_data['isotope'] = 'Lu-177'
+    update_form_data['isotope'] = y_90.name
 
     user_uuid = radiosyno_analysis_update_or_del_is_possible.order.user.uuid
     order_uuid = radiosyno_analysis_update_or_del_is_possible.order.uuid

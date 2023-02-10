@@ -90,8 +90,20 @@ class Isotope(CreationModificationBase):
     name = models.CharField(max_length=6, unique=True)
 
     class Meta:
-        verbose_name = _('Isotope')
-        verbose_name_plural = _('Isotopes')
+        verbose_name = _('Isotope for dosimetry')
+        verbose_name_plural = _('Isotopes for dosimetry')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.name
+
+
+class IsotopeRadiosyno(CreationModificationBase):
+    name = models.CharField(max_length=6, unique=True)
+
+    class Meta:
+        verbose_name = _('Isotope for radiosunoviorthesis')
+        verbose_name_plural = _('Isotopes for radiosunoviorthesis')
         ordering = ['-created_at']
 
     def __str__(self):
@@ -399,7 +411,7 @@ class RadiosynoAnalysis(AnalysisBase):
     SERVICE_NAME_CODE = Order.ServicesName.RADIOSYNOVIORTHESIS.value
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
-    isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='radiosyno_analysis')
+    isotope = models.ForeignKey('IsotopeRadiosyno', on_delete=models.CASCADE, related_name='radiosyno_analysis')
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='radiosyno_analysis')
     images = models.FileField('Images', upload_to=upload_radiosyno_analysis_to)
 

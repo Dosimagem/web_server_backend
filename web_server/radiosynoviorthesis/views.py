@@ -9,11 +9,9 @@ from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.core.errors_msg import list_errors
-from web_server.radiosynoviorthesis.calculator import (
-    list_isotopes,
-    radiosysnoviorthesis,
-)
+from web_server.radiosynoviorthesis.calculator import radiosysnoviorthesis
 from web_server.radiosynoviorthesis.forms import CalculatorForm
+from web_server.service.models import IsotopeRadiosyno
 
 
 @api_view(['POST'])
@@ -37,6 +35,6 @@ def calulator_radiosynoviorthesis(request, user_id):
 @permission_classes([])
 def isotopes(request):
 
-    list_ = list_isotopes()
+    list_ = [isotope.name for isotope in IsotopeRadiosyno.objects.all()]
 
     return Response(data={'count': len(list_), 'row': list_})

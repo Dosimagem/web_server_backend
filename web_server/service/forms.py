@@ -6,6 +6,7 @@ from web_server.service.models import (
     Calibration,
     ClinicDosimetryAnalysis,
     Isotope,
+    IsotopeRadiosyno,
     Order,
     PreClinicDosimetryAnalysis,
     RadiosynoAnalysis,
@@ -123,7 +124,14 @@ class PreClinicAndClinicDosimetryAnalysisUpdateFormApi(PreClinicAndClinicDosimet
 
 
 class RadiosynoAnalysisCreateFormApi(IsotopeForm):
-    ...
+    def clean_isotope(self):
+        isotopes_list = [isotope.name for isotope in IsotopeRadiosyno.objects.all()]
+
+        isotope = self.cleaned_data['isotope']
+        if isotope not in isotopes_list:
+            raise ValidationError(_('Isotope not registered.'), code='invalid_isotope')
+
+        return isotope
 
 
 class RadiosynoAnalysisUpdateFormApi(RadiosynoAnalysisCreateFormApi):

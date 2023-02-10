@@ -42,18 +42,18 @@ def test_delete_radiosyno_analysis_must_not_delete_order(radiosyno_order, radios
     assert Order.objects.exists()
 
 
-def test_radiosyno_analysis_one_to_many_relation(user, radiosyno_order, lu_177):
+def test_radiosyno_analysis_one_to_many_relation(user, radiosyno_order, y_90):
     analyis_1 = RadiosynoAnalysis.objects.create(
         order=radiosyno_order,
         analysis_name='Analysis 1',
-        isotope=lu_177,
+        isotope=y_90,
         images=ContentFile(b'CT e SPET files', name='images.zip'),
     )
 
     analyis_2 = RadiosynoAnalysis.objects.create(
         order=radiosyno_order,
         analysis_name='Analysis 2',
-        isotope=lu_177,
+        isotope=y_90,
         images=ContentFile(b'CT e SPET files', name='images.zip'),
     )
 
@@ -63,11 +63,11 @@ def test_radiosyno_analysis_one_to_many_relation(user, radiosyno_order, lu_177):
     assert analyis_2.order == radiosyno_order
 
 
-def test_default_values(user, radiosyno_order, lu_177):
+def test_default_values(user, radiosyno_order, y_90):
 
     analyis = RadiosynoAnalysis.objects.create(
         order=radiosyno_order,
-        isotope=lu_177,
+        isotope=y_90,
         analysis_name='Analysis 1',
         images=ContentFile(b'CT e SPET files', name='images.zip'),
     )
