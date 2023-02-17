@@ -78,10 +78,11 @@ class OrderInfos:
         return self.order.status_payment == self.order.PaymentStatus.CONFIRMED
 
 
-def order_to_dict(order):
+def order_to_dict(order, request):
 
     analysis_infos = OrderInfos(order).analysis_status_count()
-    return {
+
+    dict_ = {
         'id': order.uuid,
         'user_id': order.user.uuid,
         'quantity_of_analyzes': order.quantity_of_analyzes,
@@ -90,7 +91,14 @@ def order_to_dict(order):
         'service_name': order.get_service_name_display(),
         'status_payment': order.get_status_payment_display(),
         'active': order.active,
-        'created_at': order.created_at.date(),
         'analysis_status': analysis_infos,
         'code': order.code,
+        'created_at': order.created_at.date(),
     }
+
+    if order.payment_slip.name:
+        dict_['payment_slip_url'] = request.build_absolute_uri(order.payment_slip.url)
+    else:
+        dict_['payment_slip_url'] = None
+
+    return dict_

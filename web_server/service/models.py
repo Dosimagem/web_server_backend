@@ -17,6 +17,40 @@ from web_server.notification.models import Notification
 FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
 
+def upload_to(instance, filename, type):
+
+    datetime_now = now()
+    time = _timestamp(datetime_now)
+
+    _, extension = os.path.splitext(filename)
+
+    if type == 'calibration':
+        id = instance.user.id
+        prefix = f'{id}'
+    elif type == 'payment_slip':
+        id = instance.user.id
+        order_code = slugify(instance.code)
+        prefix = f'{id}/{order_code}'
+    else:
+        id = instance.order.user.id
+        order_code = slugify(instance.order.code)
+        number = instance.order.quantity_of_analyzes - instance.order.remaining_of_analyzes + 1
+        prefix = f'{id}/{order_code}/{number}'
+
+    filename = f'{type}_{time}{extension}'
+
+    return f'{prefix}/{filename}'
+
+
+upload_calibration_to = partial(upload_to, type='calibration')
+upload_clinic_dosimetry_to = partial(upload_to, type='clinic_dosimetry')
+upload_preclinic_dosimetry_to = partial(upload_to, type='preclinic_dosimetry')
+upload_segmentation_analysis_to = partial(upload_to, type='segmentation_analysis')
+upload_radiosyno_analysis_to = partial(upload_to, type='radiosyno_analysis')
+upload_report_to = partial(upload_to, type='report')
+upload_payment_slip_to = partial(upload_to, type='payment_slip')
+
+
 class Order(CreationModificationBase):
     class ServicesName(models.TextChoices):
         CLINIC_DOSIMETRY = ('DC', 'Dosimetria Clínica')
@@ -48,6 +82,7 @@ class Order(CreationModificationBase):
     service_name = models.CharField('Service name', max_length=3, choices=ServicesName.choices)
     active = models.BooleanField('Active', default=True)
     code = models.CharField('Code', max_length=20)
+    payment_slip = models.FileField('Payment slip', upload_to=upload_payment_slip_to, blank=True, null=True)
 
     def __str__(self):
         return self.code
@@ -113,35 +148,6 @@ class IsotopeRadiosyno(CreationModificationBase):
 def _timestamp(datetime):
 
     return datetime.strftime('%d%m%y%H%M%S')
-
-
-def upload_to(instance, filename, type):
-
-    datetime_now = now()
-    time = _timestamp(datetime_now)
-
-    _, extension = os.path.splitext(filename)
-
-    if type == 'calibration':
-        id = instance.user.id
-        prefix = f'{id}'
-    else:
-        id = instance.order.user.id
-        order_code = slugify(instance.order.code)
-        number = instance.order.quantity_of_analyzes - instance.order.remaining_of_analyzes + 1
-        prefix = f'{id}/{order_code}/{number}'
-
-    filename = f'{type}_{time}{extension}'
-
-    return f'{prefix}/{filename}'
-
-
-upload_calibration_to = partial(upload_to, type='calibration')
-upload_clinic_dosimetry_to = partial(upload_to, type='clinic_dosimetry')
-upload_preclinic_dosimetry_to = partial(upload_to, type='preclinic_dosimetry')
-upload_segmentation_analysis_to = partial(upload_to, type='segmentation_analysis')
-upload_radiosyno_analysis_to = partial(upload_to, type='radiosyno_analysis')
-upload_report_to = partial(upload_to, type='report')
 
 
 class Calibration(CreationModificationBase):

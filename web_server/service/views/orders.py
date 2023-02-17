@@ -45,14 +45,14 @@ def orders_read(request, user_id, order_id):
 
 
 def _read_order(request, order):
-    return Response(data=order_to_dict(order))
+    return Response(data=order_to_dict(order, request))
 
 
 def _list_orders(request, user_id):
 
     order = Order.objects.filter(user=request.user)
 
-    order_list = [order_to_dict(q) for q in order]
+    order_list = [order_to_dict(q, request) for q in order]
 
     data = {'count': len(order_list), 'row': order_list}
 
