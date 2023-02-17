@@ -43,7 +43,7 @@ def test_list_orders_of_user(client_api_auth, user, clinic_order, preclinic_orde
         assert order_response['createdAt'] == str(order_db.created_at.date())
         assert order_response['active'] == order_db.active
         assert order_response['code'] == order_db.code
-        assert order_response['paymentSlipUrl'] is None
+        assert order_response['billUrl'] is None
 
         assert order_response['analysisStatus']['concluded'] == order_analysis_infos['concluded']
         assert order_response['analysisStatus']['processing'] == order_analysis_infos['processing']
@@ -128,7 +128,7 @@ def test_read_order_by_id(client_api_auth, clinic_order):
     assert body['createdAt'] == str(order_db.created_at.date())
     assert body['active'] == order_db.active
     assert body['code'] == order_db.code
-    assert body['paymentSlipUrl'] is None
+    assert body['billUrl'] is None
 
     assert body['analysisStatus']['concluded'] == order_analysis_infos['concluded']
     assert body['analysisStatus']['processing'] == order_analysis_infos['processing']

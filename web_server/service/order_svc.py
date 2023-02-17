@@ -96,9 +96,9 @@ def order_to_dict(order, request):
         'created_at': order.created_at.date(),
     }
 
-    if order.payment_slip.name:
-        dict_['payment_slip_url'] = request.build_absolute_uri(order.payment_slip.url)
+    if order.bill.name:
+        dict_['bill_url'] = request.build_absolute_uri(order.bill.url)
     else:
-        dict_['payment_slip_url'] = None
+        dict_['bill_url'] = None
 
     return dict_
