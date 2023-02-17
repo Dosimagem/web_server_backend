@@ -27,7 +27,7 @@ class OrderModelAdmin(admin.ModelAdmin):
                     'price',
                     'status_payment',
                     'user',
-                    'payment_slip',
+                    'bill',
                     'active',
                 )
             },

@@ -27,7 +27,7 @@ def upload_to(instance, filename, type):
     if type == 'calibration':
         id = instance.user.id
         prefix = f'{id}'
-    elif type == 'payment_slip':
+    elif type == 'bill':
         id = instance.user.id
         order_code = slugify(instance.code)
         prefix = f'{id}/{order_code}'
@@ -48,7 +48,7 @@ upload_preclinic_dosimetry_to = partial(upload_to, type='preclinic_dosimetry')
 upload_segmentation_analysis_to = partial(upload_to, type='segmentation_analysis')
 upload_radiosyno_analysis_to = partial(upload_to, type='radiosyno_analysis')
 upload_report_to = partial(upload_to, type='report')
-upload_payment_slip_to = partial(upload_to, type='payment_slip')
+upload_bill_to = partial(upload_to, type='bill')
 
 
 class Order(CreationModificationBase):
@@ -82,7 +82,7 @@ class Order(CreationModificationBase):
     service_name = models.CharField('Service name', max_length=3, choices=ServicesName.choices)
     active = models.BooleanField('Active', default=True)
     code = models.CharField('Code', max_length=20)
-    payment_slip = models.FileField('Payment slip', upload_to=upload_payment_slip_to, blank=True, null=True)
+    bill = models.FileField('Bill', upload_to=upload_bill_to, blank=True, null=True)
 
     def __str__(self):
         return self.code

@@ -5,9 +5,9 @@ from django.utils.text import slugify
 
 from web_server.service.models import (
     _timestamp,
+    upload_bill_to,
     upload_calibration_to,
     upload_clinic_dosimetry_to,
-    upload_payment_slip_to,
     upload_preclinic_dosimetry_to,
     upload_report_to,
     upload_segmentation_analysis_to,
@@ -98,7 +98,7 @@ def test_report_name(mocker, clinic_dosimetry, datetime_now):
     assert upload_report_to(clinic_dosimetry, filename='filename.zip') == expected
 
 
-def test_payment_slip_name(mocker, clinic_order, datetime_now):
+def test_bill_name(mocker, clinic_order, datetime_now):
 
     t = datetime_now
 
@@ -107,6 +107,6 @@ def test_payment_slip_name(mocker, clinic_order, datetime_now):
     id = clinic_order.user.id
     order_code = slugify(clinic_order.code)
 
-    expected = f'{id}/{order_code}/payment_slip_{DATE_STR}.pdf'
+    expected = f'{id}/{order_code}/bill_{DATE_STR}.pdf'
 
-    assert upload_payment_slip_to(clinic_order, filename='filename.pdf') == expected
+    assert upload_bill_to(clinic_order, filename='filename.pdf') == expected
