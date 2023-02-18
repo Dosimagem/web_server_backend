@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import calulator_radiosynoviorthesis, isotopes
+from .views import calulator_radiosynoviorthesis
 
 app_name = 'radiosyn'
 urlpatterns = [
@@ -9,5 +9,4 @@ urlpatterns = [
         calulator_radiosynoviorthesis,
         name='calculator',
     ),
-    path('radiosynoviorthesis-calulator/isotopes/', isotopes, name='isotopes'),
 ]

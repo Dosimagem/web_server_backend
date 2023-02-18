@@ -9,11 +9,8 @@ from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.core.errors_msg import MSG_ERROR_RESOURCE, list_errors
-from web_server.service.forms import (
-    CreateCalibrationForm,
-    IsotopeForm,
-    UpdateCalibrationForm,
-)
+from web_server.isotope.forms import IsotopeDosimetryForm
+from web_server.service.forms import CreateCalibrationForm, UpdateCalibrationForm
 from web_server.service.models import Calibration, DosimetryAnalysisBase, Isotope
 
 User = get_user_model()
@@ -80,7 +77,7 @@ def _update_calibration(request, user_id, calibration_id):
         # TODO: codigo repetido
         data = request.data
 
-        form_isopote = IsotopeForm(data)
+        form_isopote = IsotopeDosimetryForm(data)
 
         if not form_isopote.is_valid():
             return Response(data={'errors': list_errors(form_isopote.errors)}, status=HTTPStatus.BAD_REQUEST)
@@ -156,7 +153,7 @@ def _create_calibrations(request, user_id):
 
     data = request.data
 
-    form_isopote = IsotopeForm(data)
+    form_isopote = IsotopeDosimetryForm(data)
 
     if not form_isopote.is_valid():
         return Response(

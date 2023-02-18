@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'web_server.signature',
     'web_server.budget',
     'web_server.notification',
+    'web_server.isotope',
     #
     'rest_framework',
     #

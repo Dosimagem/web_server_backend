@@ -171,7 +171,7 @@ Todo o banco
 Apenas dos `Isotopos` cadastrados.
 
 ```console
-./manage.py ./manage.py dumpdata service.Isotope --indent 2 > isotope.json
+./manage.py ./manage.py dumpdata isotopo.Isotope --indent 2 > isotope.json
 ```
 
 

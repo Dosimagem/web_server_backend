@@ -12,6 +12,7 @@ from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
 from web_server.core.models import CreationModificationBase
+from web_server.isotope.models import Isotope
 from web_server.notification.models import Notification
 
 FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
@@ -120,31 +121,6 @@ class Order(CreationModificationBase):
         return self.SERVICES_CODES[self.service_name]
 
 
-class Isotope(CreationModificationBase):
-
-    name = models.CharField(max_length=6, unique=True)
-
-    class Meta:
-        verbose_name = _('Isotope for dosimetry')
-        verbose_name_plural = _('Isotopes for dosimetry')
-        ordering = ['-created_at']
-
-    def __str__(self):
-        return self.name
-
-
-class IsotopeRadiosyno(CreationModificationBase):
-    name = models.CharField(max_length=6, unique=True)
-
-    class Meta:
-        verbose_name = _('Isotope for radiosunoviorthesis')
-        verbose_name_plural = _('Isotopes for radiosunoviorthesis')
-        ordering = ['-created_at']
-
-    def __str__(self):
-        return self.name
-
-
 def _timestamp(datetime):
 
     return datetime.strftime('%d%m%y%H%M%S')
@@ -154,7 +130,7 @@ class Calibration(CreationModificationBase):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calibrations')
-    isotope = models.ForeignKey('Isotope', on_delete=models.CASCADE, related_name='calibrations')
+    isotope = models.ForeignKey(Isotope, on_delete=models.CASCADE, related_name='calibrations')
 
     calibration_name = models.CharField('Calibration Name', max_length=24, validators=[MinLengthValidator(3)])
     syringe_activity = models.FloatField('Syringe Activity', validators=[MinValueValidator(0.0)])
@@ -417,7 +393,7 @@ class RadiosynoAnalysis(AnalysisBase):
     SERVICE_NAME_CODE = Order.ServicesName.RADIOSYNOVIORTHESIS.value
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
-    isotope = models.ForeignKey('IsotopeRadiosyno', on_delete=models.CASCADE, related_name='radiosyno_analysis')
+    isotope = models.ForeignKey(Isotope, on_delete=models.CASCADE, related_name='radiosyno_analysis')
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='radiosyno_analysis')
     images = models.FileField('Images', upload_to=upload_radiosyno_analysis_to)
 

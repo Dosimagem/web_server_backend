@@ -8,8 +8,6 @@ from django.utils.timezone import make_aware
 from web_server.service.models import (
     Calibration,
     ClinicDosimetryAnalysis,
-    Isotope,
-    IsotopeRadiosyno,
     Order,
     PreClinicDosimetryAnalysis,
     RadiosynoAnalysis,
@@ -191,22 +189,6 @@ def tree_orders_of_two_diff_users(user, second_user):
     )
 
     return list(Order.objects.all())
-
-
-@pytest.fixture
-def lu_177(db):
-    return Isotope.objects.create(name='Lu-177')
-
-
-@pytest.fixture
-def lu_177_and_cu_64(lu_177):
-    Isotope.objects.create(name='Cu-64')
-    return list(Isotope.objects.all())
-
-
-@pytest.fixture
-def y_90(db):
-    return IsotopeRadiosyno.objects.create(name='Y-90')
 
 
 DATETIME_TIMEZONE = make_aware(datetime(2016, 12, 14, 11, 2, 51))
