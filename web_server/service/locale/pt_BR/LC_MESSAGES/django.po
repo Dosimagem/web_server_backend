@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-11 18:32+0000\n"
+"POT-Creation-Date: 2023-02-18 06:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,42 +18,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: web_server/service/admin.py:22
+#: web_server/service/admin.py:20
 msgid "Main data"
 msgstr "Dados principais"
 
-#: web_server/service/admin.py:35 web_server/service/admin.py:109
-#: web_server/service/admin.py:139 web_server/service/admin.py:186
-#: web_server/service/admin.py:215 web_server/service/admin.py:250
+#: web_server/service/admin.py:34 web_server/service/admin.py:98
+#: web_server/service/admin.py:128 web_server/service/admin.py:175
+#: web_server/service/admin.py:204 web_server/service/admin.py:239
 msgid "Other data"
 msgstr "Outros dados"
 
-#: web_server/service/admin.py:94
+#: web_server/service/admin.py:83
 msgid "Calibration data"
 msgstr "Dados da Calibração"
 
-#: web_server/service/admin.py:108 web_server/service/admin.py:136
-#: web_server/service/admin.py:183 web_server/service/admin.py:212
-#: web_server/service/admin.py:247
+#: web_server/service/admin.py:97 web_server/service/admin.py:125
+#: web_server/service/admin.py:172 web_server/service/admin.py:201
+#: web_server/service/admin.py:236
 msgid "Files"
 msgstr "Arquivos"
 
-#: web_server/service/admin.py:125 web_server/service/admin.py:172
-#: web_server/service/admin.py:211 web_server/service/admin.py:246
+#: web_server/service/admin.py:114 web_server/service/admin.py:161
+#: web_server/service/admin.py:200 web_server/service/admin.py:235
 msgid "Analysis data"
 msgstr "Dados da Analase"
 
-#: web_server/service/admin.py:137 web_server/service/admin.py:184
+#: web_server/service/admin.py:126 web_server/service/admin.py:173
 msgid "Order & Calibration"
 msgstr "Pedido e Calibração"
 
-#: web_server/service/admin.py:138 web_server/service/admin.py:185
-#: web_server/service/admin.py:214 web_server/service/admin.py:249
+#: web_server/service/admin.py:127 web_server/service/admin.py:174
+#: web_server/service/admin.py:203 web_server/service/admin.py:238
 msgid "Feedback"
 msgstr ""
 
-#: web_server/service/admin.py:213 web_server/service/admin.py:248
-#: web_server/service/models.py:56
+#: web_server/service/admin.py:202 web_server/service/admin.py:237
+#: web_server/service/models.py:92
 msgid "Order"
 msgstr "Pedido"
 
@@ -61,81 +61,61 @@ msgstr "Pedido"
 msgid "service"
 msgstr "Serviço"
 
-#: web_server/service/forms.py:37
+#: web_server/service/forms.py:36
 msgid "The remaining analysis must be less than the analysis field number."
 msgstr "A análise restante deve ser menor que o número do campo de análise."
 
-#: web_server/service/forms.py:73 web_server/service/forms.py:132
-msgid "Isotope not registered."
-msgstr "Isótopo não registrado."
-
-#: web_server/service/models.py:57
+#: web_server/service/models.py:93
 msgid "Orders"
 msgstr "Pedidos"
 
-#: web_server/service/models.py:93
-msgid "Isotope for dosimetry"
-msgstr "Isótopo para dosimetria"
-
-#: web_server/service/models.py:94
-msgid "Isotopes for dosimetry"
-msgstr "Isótopos para dosimetria"
-
-#: web_server/service/models.py:105
-msgid "Isotope for radiosunoviorthesis"
-msgstr "Isotopo para Radiosinoviortese"
-
-#: web_server/service/models.py:106
-msgid "Isotopes for radiosunoviorthesis"
-msgstr "Isótopos para Radiosinoviortese"
-
-#: web_server/service/models.py:163
+#: web_server/service/models.py:146
 msgid "Calibration"
 msgstr "Calibração"
 
-#: web_server/service/models.py:164
+#: web_server/service/models.py:147
 msgid "Calibrations"
 msgstr "Calibrações"
 
-#: web_server/service/models.py:344
+#: web_server/service/models.py:327
 msgid "Clinic Dosimetry"
 msgstr "Dosimetria clínica"
 
-#: web_server/service/models.py:345
+#: web_server/service/models.py:328
 msgid "Clinic Dosimetries"
 msgstr "Dosimetrias clínicas"
 
-#: web_server/service/models.py:368
+#: web_server/service/models.py:351
 msgid "Preclinic Dosimetry"
 msgstr "Dosimetria preclínica"
 
-#: web_server/service/models.py:369
+#: web_server/service/models.py:352
 msgid "Preclinic Dosimetries"
 msgstr "Dosimetrias preclínicas"
 
-#: web_server/service/models.py:389
+#: web_server/service/models.py:372
 msgid "Segmentation Analysis"
 msgstr "Análise de Segmentação"
 
-#: web_server/service/models.py:390
+#: web_server/service/models.py:373
 msgid "Segmentation Analyzes"
 msgstr "Análises de Segmentação"
 
-#: web_server/service/models.py:420
+#: web_server/service/models.py:403
 msgid "Radiosynoviorthesis Analysis"
 msgstr "Análise de Radiosinoviortese"
 
-#: web_server/service/models.py:421
+#: web_server/service/models.py:404
 msgid "Radiosynoviorthesis Analyzes"
 msgstr "Análises de Radiosinoviortese"
 
-#: web_server/service/views/analysis.py:69
-#: web_server/service/views/analysis.py:160
+#: web_server/service/views/analysis.py:70
+#: web_server/service/views/analysis.py:159
 msgid "It was not possible to delete/update this analysis."
 msgstr "Não foi possível excluir/atualizar esta análise."
 
-#: web_server/service/views/analysis.py:70
-#: web_server/service/views/analysis.py:161
+#: web_server/service/views/analysis.py:71
+#: web_server/service/views/analysis.py:160
 #, python-format
 msgid ""
 " Only analyzes with the status %(invalid_infos)s or %(data_sent)s can be "
@@ -144,15 +124,15 @@ msgstr ""
 " Somente análises com o status %(invalid_infos)s ou %(data_sent)s podem ser "
 "excluidas."
 
-#: web_server/service/views/analysis.py:75
+#: web_server/service/views/analysis.py:76
 msgid "Analysis deleted successfully!"
 msgstr "Análise excluída com sucesso!"
 
-#: web_server/service/views/analysis.py:192
+#: web_server/service/views/analysis.py:191
 msgid "All analytics for this order have already been used."
 msgstr "Todas as análises deste pedido já foram usadas."
 
-#: web_server/service/views/analysis.py:197
+#: web_server/service/views/analysis.py:196
 msgid "Payment for this order has not been confirmed."
 msgstr "O pagamento deste pedido não foi confirmado."
 

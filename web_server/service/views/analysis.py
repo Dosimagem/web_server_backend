@@ -12,13 +12,14 @@ from web_server.core.errors_msg import (
     MSG_ERROR_RESOURCE,
     list_errors,
 )
+from web_server.isotope.models import Isotope
 from web_server.service.analysis_svc import AnalisysChoice
 from web_server.service.forms import (
     PreClinicAndClinicDosimetryAnalysisCreateFormApi,
     PreClinicAndClinicDosimetryAnalysisUpdateFormApi,
     RadiosynoAnalysisCreateFormApi,
 )
-from web_server.service.models import Calibration, IsotopeRadiosyno, Order
+from web_server.service.models import Calibration, Order
 from web_server.service.order_svc import OrderInfos
 
 
@@ -140,9 +141,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
         if not form.is_valid():
             return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-        isotope = IsotopeRadiosyno.objects.get(name=form.cleaned_data['isotope'])
-
-        data['isotope'] = isotope
+        data['isotope'] = Isotope.objects.get(name=form.cleaned_data['isotope'], radiosyno=True)
 
     data['order'] = order
 
@@ -222,9 +221,7 @@ def _create_analysis(request, user_id, order_id):
         if not form.is_valid():
             return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-        isotope = IsotopeRadiosyno.objects.get(name=form.cleaned_data['isotope'])
-
-        data['isotope'] = isotope
+        data['isotope'] = Isotope.objects.get(name=form.cleaned_data['isotope'], radiosyno=True)
 
     data['order'] = order
 

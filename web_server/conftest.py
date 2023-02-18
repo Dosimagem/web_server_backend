@@ -4,6 +4,7 @@ from faker import Faker
 from rest_framework.test import APIClient
 
 from web_server.core.models import UserProfile
+from web_server.isotope.models import Isotope
 
 fake = Faker(locale='pt_BR')
 fake.seed_instance(4321)
@@ -161,3 +162,31 @@ def client_api_auth_access_refresh(client_api, user):
     client_api.cookies.load({'jwt-access-token': access_token})
     client_api.cookies.load({'jwt-refresh-token': refresh_token})
     return client_api
+
+
+@pytest.fixture
+def lu_177(db):
+    return Isotope.objects.create(name='Lu-177', dosimetry=True)
+
+
+@pytest.fixture
+def lu_177_and_cu_64(lu_177):
+    Isotope.objects.create(name='Cu-64', dosimetry=True)
+    return list(Isotope.objects.all())
+
+
+@pytest.fixture
+def y_90(db):
+    return Isotope.objects.create(name='Y-90', radiosyno=True)
+
+
+@pytest.fixture
+def isotopes(db):
+
+    list_ = [
+        Isotope(name='Lu-177', dosimetry=True),
+        Isotope(name='Y-90', dosimetry=True, radiosyno=True),
+        Isotope(name='Re-188', radiosyno=True),
+    ]
+
+    return Isotope.objects.bulk_create(list_)

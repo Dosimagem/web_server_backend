@@ -5,7 +5,6 @@ from .views.calibrations import (
     calibrations_list_create,
     calibrations_read_update_delete,
 )
-from .views.isotopes import isotope
 from .views.orders import orders_list, orders_read
 
 app_name = 'service'
@@ -13,8 +12,6 @@ urlpatterns = [
     #
     path('users/<uuid:user_id>/orders/', orders_list, name='order-list'),
     path('users/<uuid:user_id>/orders/<uuid:order_id>/', orders_read, name='order-read'),
-    #
-    path('isotopes/', isotope, name='isotopes-list'),
     #
     path('users/<uuid:user_id>/calibrations/', calibrations_list_create, name='calibration-list-create'),
     path(

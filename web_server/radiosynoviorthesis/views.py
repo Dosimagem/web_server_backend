@@ -1,17 +1,12 @@
 from http import HTTPStatus
 
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    permission_classes,
-)
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
 from web_server.core.errors_msg import list_errors
 from web_server.radiosynoviorthesis.calculator import radiosysnoviorthesis
 from web_server.radiosynoviorthesis.forms import CalculatorForm
-from web_server.service.models import IsotopeRadiosyno
 
 
 @api_view(['POST'])
@@ -23,18 +18,8 @@ def calulator_radiosynoviorthesis(request, user_id):
     form = CalculatorForm(data)
 
     if not form.is_valid():
-        return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.OK)
+        return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
     data = radiosysnoviorthesis(**form.cleaned_data)
 
     return Response(data)
-
-
-@api_view(['GET'])
-@authentication_classes([])
-@permission_classes([])
-def isotopes(request):
-
-    list_ = [isotope.name for isotope in IsotopeRadiosyno.objects.all()]
-
-    return Response(data={'count': len(list_), 'row': list_})

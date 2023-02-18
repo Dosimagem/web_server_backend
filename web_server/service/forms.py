@@ -2,11 +2,10 @@ from django import forms
 from django.forms import ValidationError
 from django.utils.translation import gettext as _
 
+from web_server.isotope.forms import IsotopeRadiosynoForm
 from web_server.service.models import (
     Calibration,
     ClinicDosimetryAnalysis,
-    Isotope,
-    IsotopeRadiosyno,
     Order,
     PreClinicDosimetryAnalysis,
     RadiosynoAnalysis,
@@ -61,20 +60,6 @@ class UpdateCalibrationForm(CreateCalibrationForm):
     ...
 
 
-class IsotopeForm(forms.Form):
-
-    isotope = forms.CharField(max_length=6)
-
-    def clean_isotope(self):
-        isotopes_list = [isotope.name for isotope in Isotope.objects.all()]
-
-        isotope = self.cleaned_data['isotope']
-        if isotope not in isotopes_list:
-            raise ValidationError(_('Isotope not registered.'), code='invalid_isotope')
-
-        return isotope
-
-
 class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
     class Meta:
         model = ClinicDosimetryAnalysis
@@ -123,15 +108,8 @@ class PreClinicAndClinicDosimetryAnalysisUpdateFormApi(PreClinicAndClinicDosimet
     ...
 
 
-class RadiosynoAnalysisCreateFormApi(IsotopeForm):
-    def clean_isotope(self):
-        isotopes_list = [isotope.name for isotope in IsotopeRadiosyno.objects.all()]
-
-        isotope = self.cleaned_data['isotope']
-        if isotope not in isotopes_list:
-            raise ValidationError(_('Isotope not registered.'), code='invalid_isotope')
-
-        return isotope
+class RadiosynoAnalysisCreateFormApi(IsotopeRadiosynoForm):
+    ...
 
 
 class RadiosynoAnalysisUpdateFormApi(RadiosynoAnalysisCreateFormApi):

@@ -5,8 +5,6 @@ from web_server.service.forms import CreateOrderForm
 from web_server.service.models import (
     Calibration,
     ClinicDosimetryAnalysis,
-    Isotope,
-    IsotopeRadiosyno,
     Order,
     PreClinicDosimetryAnalysis,
     RadiosynoAnalysis,
@@ -75,16 +73,6 @@ class OrderModelAdmin(admin.ModelAdmin):
     list_per_page = 20
 
     form = CreateOrderForm
-
-
-@admin.register(Isotope)
-class IstopeModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'created_at', 'modified_at')
-
-
-@admin.register(IsotopeRadiosyno)
-class IsotopeRadiosynoModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'created_at', 'modified_at')
 
 
 @admin.register(Calibration)

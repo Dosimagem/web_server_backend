@@ -53,7 +53,7 @@ def test_fail_invalid(client_api_auth, user, calculator_input, field, value, err
 
     body = resp.json()
 
-    assert resp.status_code == HTTPStatus.OK
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
 
     assert error == body['errors']
 
@@ -79,7 +79,7 @@ def test_fail_missing_fields(client_api_auth, user, calculator_input, field, err
 
     body = resp.json()
 
-    assert resp.status_code == HTTPStatus.OK
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
 
     assert error == body['errors']
 
