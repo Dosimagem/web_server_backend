@@ -34,3 +34,19 @@ def user_other_signature(user, benefit_list):
     sig.benefits.add(benefit_list[0])
 
     return sig
+
+
+@pytest.fixture
+def signature_payload(benefit_list):
+    return {
+        "plan": "Custom RSV",
+        "modality": "monthly",
+        "trialTime": "30 days",
+        "price": "60.00",
+        "discount": "0.00",
+        "benefits": [
+            "B1",
+            "B2",
+            "B3",
+        ]
+    }

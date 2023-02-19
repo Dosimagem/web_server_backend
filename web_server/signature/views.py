@@ -1,17 +1,46 @@
 from http import HTTPStatus
+from datetime import timedelta, date
 
 from django.utils.translation import gettext as _
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from web_server.core.decorators import user_from_token_and_user_from_url
-from web_server.signature.models import Signature
-from web_server.signature.serializers import SignatureByUserSerializer
+from web_server.signature.models import Benefit, Signature
+from web_server.signature.serializers import SignatureByUserSerializer, SignatureCreateSerizaliser
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 @user_from_token_and_user_from_url
-def signature_list(request, user_id):
+def signature_list_create(request, user_id):
+
+    dispatcher = {
+        'GET': _signature_list,
+        'POST': _signature_create,
+    }
+
+    view = dispatcher[request.method]
+
+    return view(request, user_id)
+
+
+def _signature_create(request, user_id):
+
+    user = request.user
+
+    serializer = SignatureCreateSerizaliser(data=request.data)
+
+    if not serializer.is_valid():
+        return None
+
+    sig = serializer.save(user=user)
+
+    serializer = SignatureByUserSerializer(instance=sig)
+
+    return Response(data=serializer.data, status=HTTPStatus.CREATED)
+
+
+def _signature_list(request, user_id):
 
     user = request.user
 

@@ -20,7 +20,7 @@ class Benefit(CreationModificationBase):
     class Meta:
         verbose_name = _('Benefit')
         verbose_name_plural = _('Benefits')
-        ordering = ['-created_at']
+        ordering = ['created_at']
 
 
 class Signature(CreationModificationBase):
@@ -41,6 +41,7 @@ class Signature(CreationModificationBase):
     class Meta:
         verbose_name = _('Signature')
         verbose_name_plural = _('Signatures')
+        ordering = ['created_at']
 
     def __str__(self):
         return self.name

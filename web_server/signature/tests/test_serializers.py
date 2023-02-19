@@ -1,9 +1,26 @@
+import pytest
 from datetime import datetime
 
 from web_server.signature.serializers import (
     BenefitSerializer,
     SignatureByUserSerializer,
+    SignatureCreateSerizaliser,
 )
+
+
+@pytest.fixture
+def signature_create_data(signature_payload):
+
+    return {
+        "plan": "Custom RSV",
+        "trial_time": signature_payload['trialTime'],
+        "price": "60.00",
+        "benefits": [
+            "B1",
+            "B2",
+            "B3",
+        ]
+    }
 
 
 def test_benefit_serializer(benefit):
@@ -79,3 +96,51 @@ def test_signature_serializer_without_test_or_hired_period(user_signature):
         assert ser['uuid'] == str(db.uuid)
         assert ser['name'] == db.name
         assert ser['uri'] == db.uri
+
+
+def test_signature_create_serializer(signature_create_data):
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+    assert serializer.is_valid()
+
+
+def test_positive_signature_create_serializer_trial_time_transform(signature_create_data):
+    """
+    Must be able to transform '30 day' for 30
+    """
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+    assert serializer.is_valid()
+    assert serializer.validated_data['trial_time'] == 30
+
+
+def test_negative_signature_create_serializer_trial_time_not_a_int(signature_create_data):
+
+    signature_create_data['trial_time'] = 'erwer days'
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+    serializer.is_valid()
+
+    assert not serializer.is_valid()
+    assert serializer.errors['trial_time'] == ['Not a valid trial period. Example: 30 days.']
+
+
+def test_negative_signature_create_serializer_trial_time_not_in_days(signature_create_data):
+
+    signature_create_data['trial_time'] = '30 year'
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+    serializer.is_valid()
+
+    assert not serializer.is_valid()
+    assert serializer.errors['trial_time'] == ['Not a valid trial period. Example: 30 days.']
+
+
+def test_signature_create_serializer_save(signature_create_data, user):
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+    assert serializer.is_valid()
+
+    sig = serializer.save(user=user)
+
+    assert sig.pk
