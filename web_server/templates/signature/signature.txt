@@ -1,0 +1,23 @@
+Assinatura de plano
+
+Dados do usuário:
+
+Clínica: {{user.profile.clinic}}
+Nome: {{user.profile.name}}
+Email: {{user.email}}
+Telefone: {{user.profile.phone}}
+CNPJ: {{user.profile.cnpj}}
+CPF: {{user.profile.cpf}}
+
+Dados da assinatura:
+
+Plano: {{signature.plan}}
+Modalidade: {{signature.modality}}
+Preço:  {{signature.price}}
+Desconto:  {{signature.discount}}
+Período de teste: {{signature.trial_time}} dias
+
+Benefícios:
+{%for ben in signature.benefits%}
+    - {{ben.name}}
+{%endfor%}

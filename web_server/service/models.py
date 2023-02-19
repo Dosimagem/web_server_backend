@@ -18,6 +18,11 @@ from web_server.notification.models import Notification
 FORMAT_DATE = '%Y-%m-%d %H:%M:%S'
 
 
+# TODO: Codigo repetido
+def _timestamp(datetime):
+    return datetime.strftime('%d%m%y%H%M%S')
+
+
 def upload_to(instance, filename, type):
 
     datetime_now = now()
@@ -119,11 +124,6 @@ class Order(CreationModificationBase):
 
     def _code_service(self):
         return self.SERVICES_CODES[self.service_name]
-
-
-def _timestamp(datetime):
-
-    return datetime.strftime('%d%m%y%H%M%S')
 
 
 class Calibration(CreationModificationBase):

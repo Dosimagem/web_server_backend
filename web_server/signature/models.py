@@ -1,11 +1,35 @@
+import os
+from decimal import Decimal
 from uuid import uuid4
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.text import slugify
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
 from web_server.core.models import CreationModificationBase
+
+
+# TODO: Codigo repetido
+def _timestamp(datetime):
+    return datetime.strftime('%d%m%y%H%M%S')
+
+
+def upload_to(instance, filename):
+
+    datetime_now = now()
+    time = _timestamp(datetime_now)
+
+    _, extension = os.path.splitext(filename)
+
+    id = instance.user.pk
+    prefix = f'{id}/signatures/{slugify(instance.plan)}'
+
+    filename = f'bill_{time}{extension}'
+
+    return f'{prefix}/{filename}'
 
 
 class Benefit(CreationModificationBase):
@@ -20,14 +44,19 @@ class Benefit(CreationModificationBase):
     class Meta:
         verbose_name = _('Benefit')
         verbose_name_plural = _('Benefits')
-        ordering = ['-created_at']
+        ordering = ['created_at']
 
 
 class Signature(CreationModificationBase):
+    class Modality(models.TextChoices):
+        MONTHLY = ('M', 'monthly')
+        YEARLY = ('Y', 'yearly')
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='signatures')
-    name = models.CharField(max_length=160)
+    plan = models.CharField(max_length=160)
+    modality = models.CharField('Modality', max_length=2, choices=Modality.choices, default=Modality.YEARLY)
+    discount = models.DecimalField('Discount', max_digits=14, decimal_places=2, default=Decimal('0.00'))
     price = models.DecimalField('Price', max_digits=14, decimal_places=2)
     benefits = models.ManyToManyField(Benefit, related_name='signatures', through='SignatureBenefit')
 
@@ -38,12 +67,16 @@ class Signature(CreationModificationBase):
 
     activated = models.BooleanField(default=False)
 
+    bill = models.FileField('Bill', upload_to=upload_to, blank=True, null=True)
+
     class Meta:
         verbose_name = _('Signature')
         verbose_name_plural = _('Signatures')
+        ordering = ('created_at',)
+        unique_together = ('user', 'plan')
 
     def __str__(self):
-        return self.name
+        return self.plan
 
     def clean(self):
 

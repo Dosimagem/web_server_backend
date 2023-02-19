@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-18 06:02+0000\n"
+"POT-Creation-Date: 2023-02-21 04:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgid "Feedback"
 msgstr ""
 
 #: web_server/service/admin.py:202 web_server/service/admin.py:237
-#: web_server/service/models.py:92
+#: web_server/service/models.py:95
 msgid "Order"
 msgstr ""
 
@@ -66,47 +66,47 @@ msgid "The remaining analysis must be less than the analysis field number."
 msgstr ""
 "El análisis restante debe ser menor que el número del campo de análisis."
 
-#: web_server/service/models.py:93
+#: web_server/service/models.py:96
 msgid "Orders"
 msgstr ""
 
-#: web_server/service/models.py:146
+#: web_server/service/models.py:145
 msgid "Calibration"
 msgstr ""
 
-#: web_server/service/models.py:147
+#: web_server/service/models.py:146
 msgid "Calibrations"
 msgstr ""
 
-#: web_server/service/models.py:327
+#: web_server/service/models.py:326
 msgid "Clinic Dosimetry"
 msgstr ""
 
-#: web_server/service/models.py:328
+#: web_server/service/models.py:327
 msgid "Clinic Dosimetries"
 msgstr ""
 
-#: web_server/service/models.py:351
+#: web_server/service/models.py:350
 msgid "Preclinic Dosimetry"
 msgstr ""
 
-#: web_server/service/models.py:352
+#: web_server/service/models.py:351
 msgid "Preclinic Dosimetries"
 msgstr ""
 
-#: web_server/service/models.py:372
+#: web_server/service/models.py:371
 msgid "Segmentation Analysis"
 msgstr ""
 
-#: web_server/service/models.py:373
+#: web_server/service/models.py:372
 msgid "Segmentation Analyzes"
 msgstr ""
 
-#: web_server/service/models.py:403
+#: web_server/service/models.py:402
 msgid "Radiosynoviorthesis Analysis"
 msgstr ""
 
-#: web_server/service/models.py:404
+#: web_server/service/models.py:403
 msgid "Radiosynoviorthesis Analyzes"
 msgstr ""
 
@@ -137,19 +137,19 @@ msgstr "Ya se han utilizado todos los análisis de este pedido."
 msgid "Payment for this order has not been confirmed."
 msgstr "El pago de este pedido no ha sido confirmado."
 
-#: web_server/service/views/calibrations.py:72
-#: web_server/service/views/calibrations.py:124
+#: web_server/service/views/calibrations.py:69
+#: web_server/service/views/calibrations.py:121
 msgid "Only calibrations associated with analyzes with the "
 msgstr "Sólo las calibraciones asociadas a análisis con el "
 
-#: web_server/service/views/calibrations.py:73
-#: web_server/service/views/calibrations.py:125
+#: web_server/service/views/calibrations.py:70
+#: web_server/service/views/calibrations.py:122
 #, python-format
 msgid "status '%(invalid_infos)s' or '%(data_sent)s' can be updated/deleted."
 msgstr ""
 "el estado '%(invalid_infos)s' o '%(data_sent)s' se puede actualizar/eliminar."
 
-#: web_server/service/views/calibrations.py:136
+#: web_server/service/views/calibrations.py:133
 msgid "Calibration successfully deleted!"
 msgstr "¡La calibración se eliminó con éxito!"
 

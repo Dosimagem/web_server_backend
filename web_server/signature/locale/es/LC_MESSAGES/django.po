@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 02:07+0000\n"
+"POT-Creation-Date: 2023-02-21 04:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,30 +22,56 @@ msgstr ""
 msgid "signature"
 msgstr ""
 
-#: web_server/signature/models.py:21
+#: web_server/signature/models.py:45
 msgid "Benefit"
 msgstr ""
 
-#: web_server/signature/models.py:22
+#: web_server/signature/models.py:46
 msgid "Benefits"
 msgstr ""
 
-#: web_server/signature/models.py:42
+#: web_server/signature/models.py:53
+msgid "monthly"
+msgstr ""
+
+#: web_server/signature/models.py:54
+msgid "yearly"
+msgstr ""
+
+#: web_server/signature/models.py:74
 msgid "Signature"
 msgstr ""
 
-#: web_server/signature/models.py:43
+#: web_server/signature/models.py:75
 msgid "Signatures"
 msgstr ""
 
-#: web_server/signature/models.py:53 web_server/signature/models.py:56
+#: web_server/signature/models.py:87 web_server/signature/models.py:90
 msgid "The start date must be after the end date."
 msgstr "La fecha de inicio debe ser posterior a la fecha de finalización."
 
-#: web_server/signature/models.py:76
+#: web_server/signature/models.py:110
 msgid "Creation Date and Time"
 msgstr "Fecha y hora de creación"
 
-#: web_server/signature/views.py:36
+#: web_server/signature/serializers.py:15
+#, python-brace-format
+msgid "\"{input}\" is not a valid modality."
+msgstr ""
+
+#: web_server/signature/serializers.py:72
+msgid "Not a valid trial period. Example: 30 days."
+msgstr ""
+
+#: web_server/signature/serializers.py:108
+#, python-format
+msgid "The benefit %(ben)s is not registered."
+msgstr ""
+
+#: web_server/signature/views.py:40
+msgid "The user has already subscribed to this plan."
+msgstr ""
+
+#: web_server/signature/views.py:81
 msgid "Subscription not found for this user"
 msgstr "Suscripción no encontrada para este usuario"

@@ -19,7 +19,7 @@ def benefit_list(db):
 @pytest.fixture
 def user_signature(user, benefit_list):
 
-    sig = Signature.objects.create(user=user, name='Pacote Dosimagem mensal', price='60.00')
+    sig = Signature.objects.create(user=user, plan='Pacote Dosimagem mensal', price='60.00')
 
     sig.benefits.add(*benefit_list)
 
@@ -29,8 +29,24 @@ def user_signature(user, benefit_list):
 @pytest.fixture
 def user_other_signature(user, benefit_list):
 
-    sig = Signature.objects.create(user=user, name='Pacote Dosimagem Anual', price='600.00')
+    sig = Signature.objects.create(user=user, plan='Pacote Dosimagem Anual', price='600.00')
 
     sig.benefits.add(benefit_list[0])
 
     return sig
+
+
+@pytest.fixture
+def signature_payload(benefit_list):
+    return {
+        'plan': 'Custom RSV',
+        'modality': 'monthly',
+        'trialTime': '30 days',
+        'price': '60.00',
+        'discount': '10.00',
+        'benefits': [
+            'B1',
+            'B2',
+            'B3',
+        ],
+    }

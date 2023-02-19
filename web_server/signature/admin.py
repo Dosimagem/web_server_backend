@@ -35,16 +35,32 @@ class SignatureModelAdmin(admin.ModelAdmin):
     inlines = [BenefitInline]
 
     fieldsets = (
-        ('Data', {'fields': ('user', 'name', 'price', 'activated')}),
-        ('Hired Period', {'fields': (('hired_period_initial', 'hired_period_end'),)}),
-        ('Test Period', {'fields': (('test_period_initial', 'test_period_end'),)}),
-        ('Other data', {'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
+        (
+            'Data',
+            {
+                'fields': (
+                    'user',
+                    'plan',
+                    'price',
+                    'discount',
+                    'modality',
+                    'bill',
+                    'activated',
+                )
+            },
+        ),
+        ('Hired Period', {'classes': ('collapse',), 'fields': (('hired_period_initial', 'hired_period_end'),)}),
+        ('Test Period', {'classes': ('collapse',), 'fields': (('test_period_initial', 'test_period_end'),)}),
+        ('Other data', {'classes': ('collapse',), 'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
     )
 
     list_display = (
+        'id',
         'user',
-        'name',
+        'plan',
         'price',
+        'discount',
+        'modality',
         'hired_period_initial',
         'hired_period_end',
         'test_period_initial',
@@ -60,5 +76,5 @@ class SignatureModelAdmin(admin.ModelAdmin):
     )
 
     search_fields = ('user__profile__clinic',)
-    list_filter = ('user', 'name')
+    list_filter = ('user', 'plan')
     list_per_page = 20
