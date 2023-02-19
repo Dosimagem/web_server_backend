@@ -44,11 +44,13 @@ def test_signature_serializer_with_test_period(user_signature):
     data = serializer.data
 
     assert data['uuid'] == str(user_signature.uuid)
-    assert data['name'] == user_signature.name
+    assert data['plan'] == user_signature.plan
     assert data['price'] == user_signature.price
     assert data['hired_period'] is None
     assert data['test_period'] == {'initial': user_signature.test_period_initial, 'end': user_signature.test_period_end}
     assert data['activated'] == user_signature.activated
+    assert data['modality'] == user_signature.get_modality_display()
+    assert data['discount'] == str(user_signature.discount)
 
     for ser, db in zip(data['benefits'], user_signature.benefits.all()):
         assert ser['uuid'] == str(db.uuid)
@@ -66,7 +68,7 @@ def test_signature_serializer_with_hired_period(user_signature):
     data = serializer.data
 
     assert data['uuid'] == str(user_signature.uuid)
-    assert data['name'] == user_signature.name
+    assert data['plan'] == user_signature.plan
     assert data['price'] == user_signature.price
     assert data['hired_period'] == {
         'initial': user_signature.hired_period_initial,
@@ -87,7 +89,7 @@ def test_signature_serializer_without_test_or_hired_period(user_signature):
     data = serializer.data
 
     assert data['uuid'] == str(user_signature.uuid)
-    assert data['name'] == user_signature.name
+    assert data['plan'] == user_signature.plan
     assert data['price'] == user_signature.price
     assert data['hired_period'] is None
     assert data['test_period'] is None
@@ -99,7 +101,6 @@ def test_signature_serializer_without_test_or_hired_period(user_signature):
 
 
 def test_signature_create_serializer(signature_create_data):
-
     serializer = SignatureCreateSerizaliser(data=signature_create_data)
     assert serializer.is_valid()
 
@@ -144,3 +145,21 @@ def test_signature_create_serializer_save(signature_create_data, user):
     sig = serializer.save(user=user)
 
     assert sig.pk
+
+
+@pytest.mark.parametrize(
+    'field',
+    [
+        'plan',
+        'price',
+        'benefits',
+        'trial_time',
+    ],
+)
+def test_negative_signature_create_serializer_missing_fields(field, signature_create_data):
+
+    del  signature_create_data[field]
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+    assert not serializer.is_valid()
+    assert serializer.errors[field] == ['Este campo é obrigatório.']

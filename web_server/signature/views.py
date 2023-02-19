@@ -1,13 +1,16 @@
 from http import HTTPStatus
-from datetime import timedelta, date
 
 from django.utils.translation import gettext as _
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
 
+from web_server.core.email import DOSIMAGEM_EMAIL
 from web_server.core.decorators import user_from_token_and_user_from_url
-from web_server.signature.models import Benefit, Signature
+from web_server.signature.models import Signature
 from web_server.signature.serializers import SignatureByUserSerializer, SignatureCreateSerizaliser
+from web_server.core.errors_msg import list_errors
 
 
 @api_view(['GET', 'POST'])
@@ -31,11 +34,21 @@ def _signature_create(request, user_id):
     serializer = SignatureCreateSerizaliser(data=request.data)
 
     if not serializer.is_valid():
-        return None
+        return Response(data={'errors': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
 
     sig = serializer.save(user=user)
 
     serializer = SignatureByUserSerializer(instance=sig)
+
+    context = {
+        'user': user,
+        'signature': serializer.data,
+    }
+
+    body_txt = render_to_string("signature/signature.txt", context)
+    # body_html = render_to_string(email_template_html, context)
+
+    send_mail('Nova assinatura', body_txt, DOSIMAGEM_EMAIL, [DOSIMAGEM_EMAIL], html_message=None)
 
     return Response(data=serializer.data, status=HTTPStatus.CREATED)
 

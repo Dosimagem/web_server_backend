@@ -1,3 +1,4 @@
+from decimal import Decimal
 from uuid import uuid4
 
 from django.contrib.auth import get_user_model
@@ -25,9 +26,15 @@ class Benefit(CreationModificationBase):
 
 class Signature(CreationModificationBase):
 
+    class Modality(models.TextChoices):
+        MONTHLY = ('M', _('monthly'))
+        YEARLY = ('Y', _('yearly'))
+
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='signatures')
-    name = models.CharField(max_length=160)
+    plan = models.CharField(max_length=160)
+    modality = models.CharField('Modality', max_length=2, choices=Modality.choices, default=Modality.YEARLY)
+    discount = models.DecimalField('Discount', max_digits=14, decimal_places=2, default=Decimal("0.00"))
     price = models.DecimalField('Price', max_digits=14, decimal_places=2)
     benefits = models.ManyToManyField(Benefit, related_name='signatures', through='SignatureBenefit')
 
@@ -44,7 +51,7 @@ class Signature(CreationModificationBase):
         ordering = ['created_at']
 
     def __str__(self):
-        return self.name
+        return self.plan
 
     def clean(self):
 

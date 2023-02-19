@@ -21,17 +21,19 @@ def test_successfull(client_api_auth, user, user_signature):
 
     assert resp.status_code == HTTPStatus.OK
 
-    assert str(user_signature.uuid) == body['uuid']
-    assert user_signature.name == body['name']
-    assert user_signature.hired_period == body['hiredPeriod']
-    assert user_signature.test_period == body['testPeriod']
-    assert user_signature.price == body['price']
-    assert user_signature.activated == body['activated']
+    assert body['uuid'] == str(user_signature.uuid)
+    assert body['plan'] == user_signature.plan
+    assert body['hiredPeriod'] == user_signature.hired_period
+    assert body['testPeriod'] == user_signature.test_period
+    assert body['price'] == user_signature.price
+    assert body['activated'] == user_signature.activated
+    assert body['modality'] == user_signature.get_modality_display()
+    assert body['discount'] == str(user_signature.discount)
 
-    for e_b, e_r in zip(user_signature.benefits.all(), body['benefits']):
-        assert str(e_b.uuid) == e_r['uuid']
-        assert e_b.name == e_r['name']
-        assert e_b.uri == e_r['uri']
+    for e_db, e_resp in zip(user_signature.benefits.all(), body['benefits']):
+        assert e_resp['uuid'] == str(e_db.uuid)
+        assert e_resp['name'] == e_db.name
+        assert e_resp['uri'] == e_db.uri
 
     # TODO: colocar a data de criação e update
 
@@ -51,7 +53,7 @@ def test_wrong_signature_id(client_api_auth, user):
 
 def test_signature_of_other_user(client_api_auth, user, second_user):
 
-    sig = Signature.objects.create(user=second_user, name='Pacote Dosimagem Anual', price='600.00')
+    sig = Signature.objects.create(user=second_user, plan='Pacote Dosimagem Anual', price='600.00')
 
     url = resolve_url(END_POINT, user.uuid, sig.uuid)
 

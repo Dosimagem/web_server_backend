@@ -12,10 +12,7 @@ def user_from_token_and_user_from_url(view):
         user_from_token = request.user.uuid
         user_from_url = kwargs['user_id']
         if user_from_token != user_from_url:
-            return Response(
-                {'errors': MSG_ERROR_TOKEN_USER},
-                status=HTTPStatus.UNAUTHORIZED,
-            )
+            return Response({'errors': MSG_ERROR_TOKEN_USER}, status=HTTPStatus.UNAUTHORIZED,)
 
         return view(request, *args, **kwargs)
 
