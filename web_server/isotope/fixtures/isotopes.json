@@ -1,0 +1,178 @@
+[
+{
+  "model": "isotope.isotope",
+  "pk": 1,
+  "fields": {
+    "created_at": "2023-02-18T04:38:03.131Z",
+    "modified_at": "2023-02-18T04:42:46.852Z",
+    "name": "Lu-177",
+    "dosimetry": true,
+    "radiosyno": true
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 2,
+  "fields": {
+    "created_at": "2023-02-18T04:38:16.345Z",
+    "modified_at": "2023-02-18T04:38:16.345Z",
+    "name": "Cu-64",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 3,
+  "fields": {
+    "created_at": "2023-02-18T04:38:26.470Z",
+    "modified_at": "2023-02-18T04:38:26.470Z",
+    "name": "Cu-67",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 4,
+  "fields": {
+    "created_at": "2023-02-18T04:38:42.792Z",
+    "modified_at": "2023-02-18T04:38:42.792Z",
+    "name": "F-18",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 5,
+  "fields": {
+    "created_at": "2023-02-18T04:38:55.851Z",
+    "modified_at": "2023-02-18T04:38:55.851Z",
+    "name": "Ga-68",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 6,
+  "fields": {
+    "created_at": "2023-02-18T04:39:15.710Z",
+    "modified_at": "2023-02-18T04:39:15.710Z",
+    "name": "Ho-166",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 7,
+  "fields": {
+    "created_at": "2023-02-18T04:39:27.509Z",
+    "modified_at": "2023-02-18T04:40:04.598Z",
+    "name": "I-124",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 8,
+  "fields": {
+    "created_at": "2023-02-18T04:39:39.408Z",
+    "modified_at": "2023-02-18T04:39:39.408Z",
+    "name": "I-131",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 9,
+  "fields": {
+    "created_at": "2023-02-18T04:39:50.573Z",
+    "modified_at": "2023-02-18T04:39:50.573Z",
+    "name": "In-111",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 10,
+  "fields": {
+    "created_at": "2023-02-18T04:40:18.896Z",
+    "modified_at": "2023-02-18T04:42:32.755Z",
+    "name": "Sm-153",
+    "dosimetry": true,
+    "radiosyno": true
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 11,
+  "fields": {
+    "created_at": "2023-02-18T04:40:33.306Z",
+    "modified_at": "2023-02-18T04:40:33.306Z",
+    "name": "Tb-161",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 12,
+  "fields": {
+    "created_at": "2023-02-18T04:40:48.192Z",
+    "modified_at": "2023-02-18T04:40:48.192Z",
+    "name": "Tc-99m",
+    "dosimetry": true,
+    "radiosyno": false
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 13,
+  "fields": {
+    "created_at": "2023-02-18T04:41:18.074Z",
+    "modified_at": "2023-02-18T04:41:18.074Z",
+    "name": "Y-90",
+    "dosimetry": true,
+    "radiosyno": true
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 14,
+  "fields": {
+    "created_at": "2023-02-18T04:41:34.165Z",
+    "modified_at": "2023-02-18T04:41:34.165Z",
+    "name": "P-32",
+    "dosimetry": false,
+    "radiosyno": true
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 15,
+  "fields": {
+    "created_at": "2023-02-18T04:41:48.230Z",
+    "modified_at": "2023-02-18T04:41:48.230Z",
+    "name": "Re-188",
+    "dosimetry": false,
+    "radiosyno": true
+  }
+},
+{
+  "model": "isotope.isotope",
+  "pk": 16,
+  "fields": {
+    "created_at": "2023-02-18T04:41:56.474Z",
+    "modified_at": "2023-02-18T04:41:56.474Z",
+    "name": "Re-186",
+    "dosimetry": false,
+    "radiosyno": true
+  }
+}
+]
