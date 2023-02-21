@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-21 04:24+0000\n"
+"POT-Creation-Date: 2023-02-21 23:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgid "Feedback"
 msgstr ""
 
 #: web_server/service/admin.py:202 web_server/service/admin.py:237
-#: web_server/service/models.py:95
+#: web_server/service/models.py:97
 msgid "Order"
 msgstr "Pedido"
 
@@ -65,7 +65,7 @@ msgstr "Serviço"
 msgid "The remaining analysis must be less than the analysis field number."
 msgstr "A análise restante deve ser menor que o número do campo de análise."
 
-#: web_server/service/models.py:96
+#: web_server/service/models.py:98
 msgid "Orders"
 msgstr "Pedidos"
 

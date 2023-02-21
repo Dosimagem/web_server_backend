@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 02:13+0000\n"
+"POT-Creation-Date: 2023-02-21 23:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,18 +21,6 @@ msgstr ""
 #: web_server/notification/apps.py:8 web_server/notification/models.py:19
 msgid "Notification"
 msgstr "Notificação"
-
-#: web_server/notification/models.py:14
-msgid "processing"
-msgstr "processando"
-
-#: web_server/notification/models.py:15
-msgid "error"
-msgstr "erro"
-
-#: web_server/notification/models.py:16
-msgid "success"
-msgstr "sucesso"
 
 #: web_server/notification/models.py:20
 msgid "Notifications"

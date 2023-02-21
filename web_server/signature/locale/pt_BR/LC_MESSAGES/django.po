@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-21 04:24+0000\n"
+"POT-Creation-Date: 2023-02-21 23:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,48 +30,46 @@ msgstr "Benefício"
 msgid "Benefits"
 msgstr "Benefícios"
 
-#: web_server/signature/models.py:53
-msgid "monthly"
-msgstr "Mensal"
-
-#: web_server/signature/models.py:54
-msgid "yearly"
-msgstr "Anual"
-
-#: web_server/signature/models.py:74
+#: web_server/signature/models.py:73
 msgid "Signature"
 msgstr "Assinatura"
 
-#: web_server/signature/models.py:75
+#: web_server/signature/models.py:74
 msgid "Signatures"
 msgstr "Assinaturas"
 
-#: web_server/signature/models.py:87 web_server/signature/models.py:90
+#: web_server/signature/models.py:86 web_server/signature/models.py:89
 msgid "The start date must be after the end date."
 msgstr "A data de início deve ser posterior à data de término."
 
-#: web_server/signature/models.py:110
+#: web_server/signature/models.py:109
 msgid "Creation Date and Time"
 msgstr "Data e Hora de Criação"
 
-#: web_server/signature/serializers.py:15
+#: web_server/signature/serializers.py:11
 #, python-brace-format
 msgid "\"{input}\" is not a valid modality."
 msgstr "\"{input}\" não é uma modalidade válida."
 
-#: web_server/signature/serializers.py:72
+#: web_server/signature/serializers.py:64
 msgid "Not a valid trial period. Example: 30 days."
 msgstr "Não é um periodo de teste válido. Exemplo: 30 days."
 
-#: web_server/signature/serializers.py:108
+#: web_server/signature/serializers.py:99
 #, python-format
 msgid "The benefit %(ben)s is not registered."
 msgstr "O benefício %(ben)s não está registrado."
 
-#: web_server/signature/views.py:40
+#: web_server/signature/views.py:44
 msgid "The user has already subscribed to this plan."
 msgstr "O usuário já assinou esse plano."
 
-#: web_server/signature/views.py:81
+#: web_server/signature/views.py:86
 msgid "Subscription not found for this user"
 msgstr "Assinatura não encontrada para esse usuário"
+
+#~ msgid "monthly"
+#~ msgstr "Mensal"
+
+#~ msgid "yearly"
+#~ msgstr "Anual"
