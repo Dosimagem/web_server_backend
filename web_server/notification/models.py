@@ -11,9 +11,9 @@ from web_server.core.models import CreationModificationBase
 
 class Notification(CreationModificationBase):
     class Kind(models.TextChoices):
-        PROCESSING = ('PR', _('processing'))
-        ERROR = ('ER', _('error'))
-        SUCCESS = ('SU', _('success'))
+        PROCESSING = ('PR', 'processing')
+        ERROR = ('ER', 'error')
+        SUCCESS = ('SU', 'success')
 
     class Meta:
         verbose_name = _('Notification')
