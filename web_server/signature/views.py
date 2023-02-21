@@ -1,16 +1,19 @@
 from http import HTTPStatus
 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.template.loader import render_to_string
-from django.core.mail import send_mail
 
-from web_server.core.email import DOSIMAGEM_EMAIL
 from web_server.core.decorators import user_from_token_and_user_from_url
-from web_server.signature.models import Signature
-from web_server.signature.serializers import SignatureByUserSerializer, SignatureCreateSerizaliser
+from web_server.core.email import DOSIMAGEM_EMAIL
 from web_server.core.errors_msg import list_errors
+from web_server.signature.models import Signature
+from web_server.signature.serializers import (
+    SignatureByUserSerializer,
+    SignatureCreateSerizaliser,
+)
 
 
 @api_view(['GET', 'POST'])
@@ -31,24 +34,29 @@ def _signature_create(request, user_id):
 
     user = request.user
 
-    serializer = SignatureCreateSerizaliser(data=request.data)
+    serializer_create = SignatureCreateSerizaliser(data=request.data)
 
-    if not serializer.is_valid():
-        return Response(data={'errors': list_errors(serializer.errors)}, status=HTTPStatus.BAD_REQUEST)
+    if not serializer_create.is_valid():
+        return Response(data={'errors': list_errors(serializer_create.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-    sig = serializer.save(user=user)
+    if Signature.objects.filter(user=user, plan=serializer_create.validated_data['plan']):
+        return Response(
+            data={'errors': [_('The user has already subscribed to this plan.')]}, status=HTTPStatus.CONFLICT
+        )
+
+    sig = serializer_create.save(user=user)
 
     serializer = SignatureByUserSerializer(instance=sig)
 
     context = {
         'user': user,
-        'signature': serializer.data,
+        'signature': {**serializer.data, 'trial_time': serializer_create.validated_data['trial_time']},
     }
 
-    body_txt = render_to_string("signature/signature.txt", context)
-    # body_html = render_to_string(email_template_html, context)
+    body_txt = render_to_string('signature/signature.txt', context)
+    body_html = render_to_string('signature/signature.html', context)
 
-    send_mail('Nova assinatura', body_txt, DOSIMAGEM_EMAIL, [DOSIMAGEM_EMAIL], html_message=None)
+    send_mail('Nova assinatura', body_txt, DOSIMAGEM_EMAIL, [DOSIMAGEM_EMAIL], html_message=body_html)
 
     return Response(data=serializer.data, status=HTTPStatus.CREATED)
 

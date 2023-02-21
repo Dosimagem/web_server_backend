@@ -1,8 +1,8 @@
-import pytest
 from datetime import datetime
 
+import pytest
+
 from web_server.signature.serializers import (
-    BenefitSerializer,
     SignatureByUserSerializer,
     SignatureCreateSerizaliser,
 )
@@ -11,27 +11,10 @@ from web_server.signature.serializers import (
 @pytest.fixture
 def signature_create_data(signature_payload):
 
-    return {
-        "plan": "Custom RSV",
-        "trial_time": signature_payload['trialTime'],
-        "price": "60.00",
-        "benefits": [
-            "B1",
-            "B2",
-            "B3",
-        ]
-    }
+    dict_ = signature_payload.copy()
+    dict_['trial_time'] = dict_.pop('trialTime')
 
-
-def test_benefit_serializer(benefit):
-
-    serializer = BenefitSerializer(instance=benefit)
-
-    data = serializer.data
-
-    assert data['uuid'] == str(benefit.uuid)
-    assert data['name'] == 'RSV'
-    assert data['uri'] == '/dashboard/my-signatures/Benefit/calculator'
+    return dict_
 
 
 def test_signature_serializer_with_test_period(user_signature):
@@ -105,6 +88,25 @@ def test_signature_create_serializer(signature_create_data):
     assert serializer.is_valid()
 
 
+def test_signature_create_serializer_without_discount_and_modality(signature_create_data):
+    del signature_create_data['discount']
+    del signature_create_data['modality']
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+
+    assert serializer.is_valid()
+
+
+def test_positive_signature_create_serializer_save(signature_create_data, user):
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+    assert serializer.is_valid()
+
+    sig = serializer.save(user=user)
+
+    assert sig.pk
+
+
 def test_positive_signature_create_serializer_trial_time_transform(signature_create_data):
     """
     Must be able to transform '30 day' for 30
@@ -120,10 +122,9 @@ def test_negative_signature_create_serializer_trial_time_not_a_int(signature_cre
     signature_create_data['trial_time'] = 'erwer days'
 
     serializer = SignatureCreateSerizaliser(data=signature_create_data)
-    serializer.is_valid()
 
     assert not serializer.is_valid()
-    assert serializer.errors['trial_time'] == ['Not a valid trial period. Example: 30 days.']
+    assert serializer.errors['trial_time'] == ['Não é um periodo de teste válido. Exemplo: 30 days.']
 
 
 def test_negative_signature_create_serializer_trial_time_not_in_days(signature_create_data):
@@ -131,20 +132,29 @@ def test_negative_signature_create_serializer_trial_time_not_in_days(signature_c
     signature_create_data['trial_time'] = '30 year'
 
     serializer = SignatureCreateSerizaliser(data=signature_create_data)
-    serializer.is_valid()
 
     assert not serializer.is_valid()
-    assert serializer.errors['trial_time'] == ['Not a valid trial period. Example: 30 days.']
+    assert serializer.errors['trial_time'] == ['Não é um periodo de teste válido. Exemplo: 30 days.']
 
 
-def test_signature_create_serializer_save(signature_create_data, user):
+def test_negative_signature_create_serializer_trial_time_wrong_format(signature_create_data):
+
+    signature_create_data['trial_time'] = '30'
 
     serializer = SignatureCreateSerizaliser(data=signature_create_data)
-    assert serializer.is_valid()
 
-    sig = serializer.save(user=user)
+    assert not serializer.is_valid()
+    assert serializer.errors['trial_time'] == ['Não é um periodo de teste válido. Exemplo: 30 days.']
 
-    assert sig.pk
+
+def test_negative_signature_create_serializer_trial_time_wrong_modality(signature_create_data):
+
+    signature_create_data['modality'] = 'wrong'
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+
+    assert not serializer.is_valid()
+    assert serializer.errors['modality'] == ['"wrong" não é uma modalidade válida.']
 
 
 @pytest.mark.parametrize(
@@ -158,7 +168,7 @@ def test_signature_create_serializer_save(signature_create_data, user):
 )
 def test_negative_signature_create_serializer_missing_fields(field, signature_create_data):
 
-    del  signature_create_data[field]
+    del signature_create_data[field]
 
     serializer = SignatureCreateSerizaliser(data=signature_create_data)
     assert not serializer.is_valid()

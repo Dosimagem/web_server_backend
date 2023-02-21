@@ -7,6 +7,7 @@ from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 
 END_POINT = 'signatures:signature-list-create'
 
+
 def test_list_not_allowed_method(client_api_auth, user):
 
     url = resolve_url(END_POINT, user.uuid)

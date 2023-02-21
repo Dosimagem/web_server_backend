@@ -1,7 +1,7 @@
-from datetime import timedelta, date
+from datetime import date, timedelta
 
 
-def new_test_period(days: int=30) -> dict:
+def new_test_period(days: int = 30) -> dict:
     """
     New trial period using now with start date
     """
@@ -9,7 +9,4 @@ def new_test_period(days: int=30) -> dict:
     day = date.today()
     delta = timedelta(days=days)
 
-    return {
-        "test_period_initial": day,
-        "test_period_end": day + delta
-    }
+    return {'test_period_initial': day, 'test_period_end': day + delta}

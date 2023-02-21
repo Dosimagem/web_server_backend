@@ -35,7 +35,6 @@ def test_successfull(client_api_auth, user, user_signature, user_other_signature
         assert body_response['modality'] == expected.get_modality_display()
         assert body_response['discount'] == str(expected.discount)
 
-
         for e_db, e_resp in zip(expected.benefits.all(), body_response['benefits']):
             assert e_resp['uuid'] == str(e_db.uuid)
             assert e_resp['name'] == e_db.name

@@ -1,8 +1,8 @@
-Assinatura do plano Solicitação de orçamento
+Assinatura de plano
 
 Dados do usuário:
 
-Clinica: {{user.profile.clinic}}
+Clínica: {{user.profile.clinic}}
 Nome: {{user.profile.name}}
 Email: {{user.email}}
 Telefone: {{user.profile.phone}}
@@ -12,10 +12,10 @@ CPF: {{user.profile.cpf}}
 Dados da assinatura:
 
 Plano: {{signature.plan}}
-Modalidade: {{signature.get_modality_display}}
+Modalidade: {{signature.modality}}
 Preço:  {{signature.price}}
 Desconto:  {{signature.discount}}
-Período de teste: {{signature.trial_time}}
+Período de teste: {{signature.trial_time}} dias
 
 Benefícios:
 {%for ben in signature.benefits%}

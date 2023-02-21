@@ -2,7 +2,7 @@ Solicitação de orçamento
 
 Dados do usuário:
 
-Clinica: {{user.profile.clinic}}
+Clínica: {{user.profile.clinic}}
 Nome: {{user.profile.name}}
 Email: {{user.email}}
 Telefone: {{user.profile.phone}}

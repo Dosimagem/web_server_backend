@@ -1,18 +1,17 @@
 from http import HTTPStatus
 
 import pytest
-from django.shortcuts import resolve_url
 from django.core import mail
+from django.shortcuts import resolve_url
 
 from web_server.core.email import DOSIMAGEM_EMAIL
-from web_server.core.errors_msg import MSG_ERROR_TOKEN_USER
 from web_server.signature.models import Signature
-
 
 END_POINT = 'signatures:signature-list-create'
 
 
 # /api/v1/users/<uuid>/signatures/ - POST
+
 
 def test_successfull(client_api_auth, user, signature_payload):
 
@@ -24,19 +23,19 @@ def test_successfull(client_api_auth, user, signature_payload):
 
     body = resp.json()
 
-    signature = Signature.objects.get(user=user, plan=signature_payload["plan"])
+    signature = Signature.objects.get(user=user, plan=signature_payload['plan'])
     benefit_list = signature.benefits.all()
 
-    assert signature_payload["plan"] == signature.plan
-    assert signature_payload["price"] == str(signature.price)
-    for ben_payload, ben_db in zip(signature_payload["benefits"], benefit_list):
+    assert signature_payload['plan'] == signature.plan
+    assert signature_payload['price'] == str(signature.price)
+    for ben_payload, ben_db in zip(signature_payload['benefits'], benefit_list):
         assert ben_payload == ben_db.name
 
     assert body['plan'] == signature.plan
     assert body['hiredPeriod'] is None
     assert body['testPeriod']['end'] == str(signature.test_period['end'])
     assert body['testPeriod']['initial'] == str(signature.test_period['initial'])
-    assert body['price'] ==  str(signature.price)
+    assert body['price'] == str(signature.price)
     assert body['activated'] == signature.activated
     assert body['modality'] == signature.get_modality_display()
     assert body['discount'] == str(signature.discount)
@@ -55,7 +54,7 @@ def test_successfull(client_api_auth, user, signature_payload):
     assert signature_payload['plan'] in email.body
     assert signature_payload['price'] in email.body
     assert signature_payload['discount'] in email.body
-    for ben in signature_payload["benefits"]:
+    for ben in signature_payload['benefits']:
         assert ben in email.body
 
 
@@ -73,11 +72,15 @@ def test_negative_user_can_only_one_signature_per_plan(client_api_auth, user, si
 
     body = resp.json()
 
-    assert body == ''
+    assert body['errors'] == ['O usuário já assinou esse plano.']
+
+    assert Signature.objects.count() == 1
 
 
-
-def test_negative_invalid_benfits(client_api_auth, user, signature_payload):
+def test_negative_not_register_benfits(client_api_auth, user, signature_payload):
+    """
+    The benefits A2 is not register.
+    """
 
     signature_payload['benefits'] = ['B1', 'A2']
 
@@ -91,7 +94,7 @@ def test_negative_invalid_benfits(client_api_auth, user, signature_payload):
 
     assert not Signature.objects.exists()
 
-    assert body['errors'] == ['benefits: Benefit not registered.']
+    assert body['errors'] == ['benefits: The benefit A2 is not registered.']
 
 
 @pytest.mark.parametrize(
@@ -130,7 +133,7 @@ def test_negative_trial_time_not_a_int(client_api_auth, user, signature_payload)
 
     body = resp.json()
 
-    assert body['errors'] == ['trial_time: Not a valid trial period. Example: 30 days.']
+    assert body['errors'] == ['trial_time: Não é um periodo de teste válido. Exemplo: 30 days.']
 
 
 def test_negative_trial_time_not_in_days(client_api_auth, user, signature_payload):
@@ -145,4 +148,4 @@ def test_negative_trial_time_not_in_days(client_api_auth, user, signature_payloa
 
     body = resp.json()
 
-    assert body['errors'] == ['trial_time: Not a valid trial period. Example: 30 days.']
+    assert body['errors'] == ['trial_time: Não é um periodo de teste válido. Exemplo: 30 days.']

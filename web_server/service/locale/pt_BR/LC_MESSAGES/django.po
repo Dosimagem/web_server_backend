@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-18 06:02+0000\n"
+"POT-Creation-Date: 2023-02-21 04:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgid "Feedback"
 msgstr ""
 
 #: web_server/service/admin.py:202 web_server/service/admin.py:237
-#: web_server/service/models.py:92
+#: web_server/service/models.py:95
 msgid "Order"
 msgstr "Pedido"
 
@@ -65,47 +65,47 @@ msgstr "Serviço"
 msgid "The remaining analysis must be less than the analysis field number."
 msgstr "A análise restante deve ser menor que o número do campo de análise."
 
-#: web_server/service/models.py:93
+#: web_server/service/models.py:96
 msgid "Orders"
 msgstr "Pedidos"
 
-#: web_server/service/models.py:146
+#: web_server/service/models.py:145
 msgid "Calibration"
 msgstr "Calibração"
 
-#: web_server/service/models.py:147
+#: web_server/service/models.py:146
 msgid "Calibrations"
 msgstr "Calibrações"
 
-#: web_server/service/models.py:327
+#: web_server/service/models.py:326
 msgid "Clinic Dosimetry"
 msgstr "Dosimetria clínica"
 
-#: web_server/service/models.py:328
+#: web_server/service/models.py:327
 msgid "Clinic Dosimetries"
 msgstr "Dosimetrias clínicas"
 
-#: web_server/service/models.py:351
+#: web_server/service/models.py:350
 msgid "Preclinic Dosimetry"
 msgstr "Dosimetria preclínica"
 
-#: web_server/service/models.py:352
+#: web_server/service/models.py:351
 msgid "Preclinic Dosimetries"
 msgstr "Dosimetrias preclínicas"
 
-#: web_server/service/models.py:372
+#: web_server/service/models.py:371
 msgid "Segmentation Analysis"
 msgstr "Análise de Segmentação"
 
-#: web_server/service/models.py:373
+#: web_server/service/models.py:372
 msgid "Segmentation Analyzes"
 msgstr "Análises de Segmentação"
 
-#: web_server/service/models.py:403
+#: web_server/service/models.py:402
 msgid "Radiosynoviorthesis Analysis"
 msgstr "Análise de Radiosinoviortese"
 
-#: web_server/service/models.py:404
+#: web_server/service/models.py:403
 msgid "Radiosynoviorthesis Analyzes"
 msgstr "Análises de Radiosinoviortese"
 
@@ -136,19 +136,19 @@ msgstr "Todas as análises deste pedido já foram usadas."
 msgid "Payment for this order has not been confirmed."
 msgstr "O pagamento deste pedido não foi confirmado."
 
-#: web_server/service/views/calibrations.py:72
-#: web_server/service/views/calibrations.py:124
+#: web_server/service/views/calibrations.py:69
+#: web_server/service/views/calibrations.py:121
 msgid "Only calibrations associated with analyzes with the "
 msgstr "Somente as calibrações associadas a análises com o "
 
-#: web_server/service/views/calibrations.py:73
-#: web_server/service/views/calibrations.py:125
+#: web_server/service/views/calibrations.py:70
+#: web_server/service/views/calibrations.py:122
 #, python-format
 msgid "status '%(invalid_infos)s' or '%(data_sent)s' can be updated/deleted."
 msgstr ""
 "status '%(invalid_infos)s' ou '%(data_sent)s' podem ser atualizados/"
 "excluídos."
 
-#: web_server/service/views/calibrations.py:136
+#: web_server/service/views/calibrations.py:133
 msgid "Calibration successfully deleted!"
 msgstr "Calibração excluída com sucesso!"
