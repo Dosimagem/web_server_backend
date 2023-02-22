@@ -6,7 +6,7 @@ Backend e API da plataforma web da Dosimagem.
 
 # Plataformas utilizadas:
 
-- [Email de adminitração](https://mail.google.com/)
+- [Gmail](https://mail.google.com/)
   -  Email de administração.
 - [Cloudflare](https://dash.cloudflare.com/)
   - Certificado e configuralções dos subdominios
@@ -15,8 +15,8 @@ Backend e API da plataforma web da Dosimagem.
 - [Sentry](https://sentry.io/)
   - Log de erros do ambiente de produção.
 - [AWS](https://aws.amazon.com/pt/)
-  -
+  - Deploy
 
 # Desenvolvimento
 
-  As caractaristicas da plataforma podem ser vista [aqui]](CONTRIBUTING.md)
+  As caractaristicas da plataforma para os desenvolvedore podem ser vista [aqui](CONTRIBUTING.md).
