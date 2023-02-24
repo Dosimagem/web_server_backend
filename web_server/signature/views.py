@@ -1,7 +1,9 @@
 from http import HTTPStatus
 
 from django.core.mail import send_mail
+from django.db.models import Q
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -65,7 +67,9 @@ def _signature_list(request, user_id):
 
     user = request.user
 
-    qs = user.signatures.all()
+    now = timezone.now()
+
+    qs = user.signatures.filter(Q(test_period_end__gt=now) | Q(hired_period_end__gt=now))
 
     serializer = SignatureByUserSerializer(qs, many=True)
 

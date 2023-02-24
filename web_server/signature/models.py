@@ -91,13 +91,19 @@ class Signature(CreationModificationBase):
     @property
     def hired_period(self):
         if self.hired_period_initial and self.hired_period_end:
-            return {'initial': self.hired_period_initial, 'end': self.hired_period_end}
+            return {
+                'initial': self.hired_period_initial.strftime('%Y-%m-%d'),
+                'end': self.hired_period_end.strftime('%Y-%m-%d'),
+            }
         return None
 
     @property
     def test_period(self):
         if self.test_period_initial and self.test_period_end:
-            return {'initial': self.test_period_initial, 'end': self.test_period_end}
+            return {
+                'initial': self.test_period_initial.strftime('%Y-%m-%d'),
+                'end': self.test_period_end.strftime('%Y-%m-%d'),
+            }
         return None
 
 

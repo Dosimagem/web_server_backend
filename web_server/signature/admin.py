@@ -56,8 +56,8 @@ class SignatureModelAdmin(admin.ModelAdmin):
 
     list_display = (
         'id',
-        'user',
         'plan',
+        'user',
         'price',
         'discount',
         'modality',
@@ -76,5 +76,6 @@ class SignatureModelAdmin(admin.ModelAdmin):
     )
 
     search_fields = ('user__profile__clinic',)
+    list_display_links = ('id', 'plan', 'user')
     list_filter = ('user', 'plan')
     list_per_page = 20

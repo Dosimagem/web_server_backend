@@ -30,7 +30,10 @@ def test_signature_serializer_with_test_period(user_signature):
     assert data['plan'] == user_signature.plan
     assert data['price'] == user_signature.price
     assert data['hired_period'] is None
-    assert data['test_period'] == {'initial': user_signature.test_period_initial, 'end': user_signature.test_period_end}
+    assert data['test_period'] == {
+        'initial': user_signature.test_period_initial.strftime('%Y-%m-%d'),
+        'end': user_signature.test_period_end.strftime('%Y-%m-%d'),
+    }
     assert data['activated'] == user_signature.activated
     assert data['modality'] == user_signature.get_modality_display()
     assert data['discount'] == str(user_signature.discount)
@@ -54,8 +57,8 @@ def test_signature_serializer_with_hired_period(user_signature):
     assert data['plan'] == user_signature.plan
     assert data['price'] == user_signature.price
     assert data['hired_period'] == {
-        'initial': user_signature.hired_period_initial,
-        'end': user_signature.hired_period_end,
+        'initial': user_signature.hired_period_initial.strftime('%Y-%m-%d'),
+        'end': user_signature.hired_period_end.strftime('%Y-%m-%d'),
     }
     assert data['test_period'] is None
     assert data['activated'] == user_signature.activated
