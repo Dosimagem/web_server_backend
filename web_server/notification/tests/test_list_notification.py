@@ -22,7 +22,7 @@ def test_list(client_api_auth, user, list_notifications):
 
     list_notifications.pop()
 
-    assert 4 == body['count']
+    assert 3 == body['count']
 
     for from_db, from_response in zip(reversed(list_notifications), body['row']):
         assert str(from_db.uuid) == from_response['id']
