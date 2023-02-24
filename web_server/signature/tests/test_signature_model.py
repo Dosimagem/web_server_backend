@@ -119,7 +119,7 @@ def test_hired_period_info(user):
         hired_period_end=datetime(2002, 1, 2),
     )
 
-    assert sig.hired_period == {'initial': datetime(2001, 1, 2), 'end': datetime(2002, 1, 2)}
+    assert sig.hired_period == {'initial': '2001-01-02', 'end': '2002-01-02'}
 
     sig = Signature(
         plan='Pacote Dosimagem Anual',
@@ -139,7 +139,7 @@ def test_test_period_info(user):
         test_period_end=datetime(2002, 1, 2),
     )
 
-    assert sig.test_period == {'initial': datetime(2001, 1, 2), 'end': datetime(2002, 1, 2)}
+    assert sig.test_period == {'initial': '2001-01-02', 'end': '2002-01-02'}
 
     sig = Signature(
         plan='Pacote Dosimagem Anual',
