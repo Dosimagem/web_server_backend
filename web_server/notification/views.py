@@ -9,11 +9,12 @@ from web_server.notification.models import Notification
 from web_server.notification.notification_svc import toogle
 
 
+# TODO: Bom candidata para começar a migrar par APIView
 @api_view(['GET'])
 @user_from_token_and_user_from_url
 def notification_list(request, user_id):
 
-    notifications = Notification.objects.filter(user=request.user)
+    notifications = Notification.objects.filter(user=request.user, checked=False)
 
     data = {'count': len(notifications), 'row': [noti.to_dict() for noti in notifications]}
 
