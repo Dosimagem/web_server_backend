@@ -11,6 +11,8 @@ from web_server.service.models import (
     SegmentationAnalysis,
 )
 
+TEXT = 'A mensagem só aparecerá para o usuário para o status <strong>Informações inválidas</strong>'
+
 
 @admin.register(Order)
 class OrderModelAdmin(admin.ModelAdmin):
@@ -150,6 +152,7 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
             {
                 'classes': ('collapse',),
                 'fields': ('message_to_user',),
+                'description': TEXT,
             },
         ),
         (
@@ -226,6 +229,7 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
             {
                 'classes': ('collapse',),
                 'fields': ('message_to_user',),
+                'description': TEXT,
             },
         ),
         (
@@ -289,6 +293,7 @@ class SegmentationAnalysisAdmin(admin.ModelAdmin):
             {
                 'classes': ('collapse',),
                 'fields': ('message_to_user',),
+                'description': TEXT,
             },
         ),
         (
@@ -358,6 +363,7 @@ class RadiosynoviorthesisAdmin(admin.ModelAdmin):
             {
                 'classes': ('collapse',),
                 'fields': ('message_to_user',),
+                'description': TEXT,
             },
         ),
         (
