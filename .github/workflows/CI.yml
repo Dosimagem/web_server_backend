@@ -81,7 +81,7 @@ jobs:
       run: python manage.py compilemessages -l pt_BR -l es
 
     - name: Tests
-      run: pytest web_server --junitxml=test-result.xml
+      run: pytest -n 2 web_server --junitxml=test-result.xml
 
     - name: publish junit results
       uses: EnricoMi/publish-unit-test-result-action@v2
