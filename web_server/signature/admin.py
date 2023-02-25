@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext as _
 
 from web_server.signature.models import Benefit, Signature
 
@@ -6,7 +7,7 @@ from web_server.signature.models import Benefit, Signature
 class BenefitInline(admin.StackedInline):
     model = Signature.benefits.through
     extra = 1
-    verbose_name = 'Signature Benefit'
+    verbose_name = _('Benefits')
 
 
 @admin.register(Benefit)
@@ -14,7 +15,7 @@ class BenefitModelAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
-            'Benefit Data',
+            _('Main data'),
             {
                 'fields': (
                     'name',
@@ -22,7 +23,13 @@ class BenefitModelAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ('Other data', {'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
+        (
+            _('Other data'),
+            {
+                'classes': ('collapse',),
+                'fields': ('id', 'uuid', 'created_at', 'modified_at'),
+            },
+        ),
     )
 
     list_display = ('name', 'uri')
@@ -36,7 +43,7 @@ class SignatureModelAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
-            'Data',
+            _('Main data'),
             {
                 'fields': (
                     'user',
@@ -49,9 +56,27 @@ class SignatureModelAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ('Hired Period', {'classes': ('collapse',), 'fields': (('hired_period_initial', 'hired_period_end'),)}),
-        ('Test Period', {'classes': ('collapse',), 'fields': (('test_period_initial', 'test_period_end'),)}),
-        ('Other data', {'classes': ('collapse',), 'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
+        (
+            _('Hired Period'),
+            {
+                'classes': ('collapse',),
+                'fields': (('hired_period_initial', 'hired_period_end'),),
+            },
+        ),
+        (
+            _('Test Period'),
+            {
+                'classes': ('collapse',),
+                'fields': (('test_period_initial', 'test_period_end'),),
+            },
+        ),
+        (
+            _('Other data'),
+            {
+                'classes': ('collapse',),
+                'fields': ('id', 'uuid', 'created_at', 'modified_at'),
+            },
+        ),
     )
 
     list_display = (
