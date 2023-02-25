@@ -16,6 +16,6 @@ requests
 sentry-sdk
 pyjwt
 djangorestframework-simplejwt
-dj-rest-auth
+dj-rest-auth<3.0
 freezegun
 django-phonenumber-field[phonenumberslite]
