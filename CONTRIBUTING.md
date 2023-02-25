@@ -1,6 +1,5 @@
 # Index
 
-- [web\_server](#web_server)
 - [Index](#index)
 - [1) Rotas](#1-rotas)
 - [2) Desenvolvimento](#2-desenvolvimento)
