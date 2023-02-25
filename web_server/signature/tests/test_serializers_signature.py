@@ -3,8 +3,8 @@ from datetime import datetime
 import pytest
 
 from web_server.signature.serializers import (
-    SignatureByUserSerializer,
     SignatureCreateSerizaliser,
+    SignatureSerializer,
 )
 
 
@@ -22,7 +22,7 @@ def test_signature_serializer_with_test_period(user_signature):
     user_signature.test_period_initial = datetime(2001, 1, 2)
     user_signature.test_period_end = datetime(2002, 1, 2)
 
-    serializer = SignatureByUserSerializer(instance=user_signature)
+    serializer = SignatureSerializer(instance=user_signature)
 
     data = serializer.data
 
@@ -37,6 +37,7 @@ def test_signature_serializer_with_test_period(user_signature):
     assert data['activated'] == user_signature.activated
     assert data['modality'] == user_signature.get_modality_display()
     assert data['discount'] == str(user_signature.discount)
+    assert data['bill_url'] is None
 
     for ser, db in zip(data['benefits'], user_signature.benefits.all()):
         assert ser['uuid'] == str(db.uuid)
@@ -49,7 +50,7 @@ def test_signature_serializer_with_hired_period(user_signature):
     user_signature.hired_period_initial = datetime(2001, 1, 2)
     user_signature.hired_period_end = datetime(2002, 1, 2)
 
-    serializer = SignatureByUserSerializer(instance=user_signature)
+    serializer = SignatureSerializer(instance=user_signature)
 
     data = serializer.data
 
@@ -62,6 +63,7 @@ def test_signature_serializer_with_hired_period(user_signature):
     }
     assert data['test_period'] is None
     assert data['activated'] == user_signature.activated
+    assert data['bill_url'] is None
     for ser, db in zip(data['benefits'], user_signature.benefits.all()):
         assert ser['uuid'] == str(db.uuid)
         assert ser['name'] == db.name
@@ -70,7 +72,7 @@ def test_signature_serializer_with_hired_period(user_signature):
 
 def test_signature_serializer_without_test_or_hired_period(user_signature):
 
-    serializer = SignatureByUserSerializer(instance=user_signature)
+    serializer = SignatureSerializer(instance=user_signature)
 
     data = serializer.data
 
@@ -80,6 +82,7 @@ def test_signature_serializer_without_test_or_hired_period(user_signature):
     assert data['hired_period'] is None
     assert data['test_period'] is None
     assert data['activated'] == user_signature.activated
+    assert data['bill_url'] is None
     for ser, db in zip(data['benefits'], user_signature.benefits.all()):
         assert ser['uuid'] == str(db.uuid)
         assert ser['name'] == db.name

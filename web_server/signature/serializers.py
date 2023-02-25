@@ -28,10 +28,11 @@ class BenefitSerializer(serializers.ModelSerializer):
         read_only_fields = ('uuid', 'name', 'uri')
 
 
-class SignatureByUserSerializer(serializers.ModelSerializer):
+class SignatureSerializer(serializers.ModelSerializer):
 
     benefits = BenefitSerializer(many=True, read_only=True)
     modality = serializers.CharField(source='get_modality_display')
+    bill_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Signature
@@ -45,6 +46,7 @@ class SignatureByUserSerializer(serializers.ModelSerializer):
             'hired_period',
             'test_period',
             'activated',
+            'bill_url',
         )
         read_only_fields = (
             'uuid',
@@ -57,6 +59,12 @@ class SignatureByUserSerializer(serializers.ModelSerializer):
             'test_period',
             'activated',
         )
+
+    def get_bill_url(self, obj):
+        request = self.context.get('request')
+        if obj.bill.name and request:
+            return request.build_absolute_uri(obj.bill.url)
+        return None
 
 
 class SignatureCreateSerizaliser(serializers.ModelSerializer):

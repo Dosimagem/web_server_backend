@@ -40,6 +40,7 @@ def signature_list(user, benefit_list):
         price='600.00',
         test_period_initial=DATE_START_2,
         test_period_end=DATE_END_2,
+        bill='bill.pdf',
     )
     sig1_yet_valid.benefits.add(*benefit_list)
 
@@ -90,6 +91,10 @@ def test_successfull(client_api_auth_fix_time, user, signature_list):
         assert body_response['activated'] == from_db.activated
         assert body_response['modality'] == from_db.get_modality_display()
         assert body_response['discount'] == str(from_db.discount)
+        if from_db.bill.name:
+            assert body_response['billUrl'] == 'http://testserver/media/bill.pdf'
+        else:
+            assert body_response['billUrl'] is None
 
         for e_db, e_resp in zip(from_db.benefits.all(), body_response['benefits']):
             assert e_resp['uuid'] == str(e_db.uuid)
