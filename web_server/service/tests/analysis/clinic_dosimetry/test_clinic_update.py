@@ -338,6 +338,6 @@ def test_fail_analysis_name_must_be_unique(
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body['errors'] == ['Dosimetria clínica com este Order e Analysis Name já existe.']
+    assert body['errors'] == ['Dosimetria clínica com este Order e Nome da análise já existe.']
 
     _verified_unchanged_information_db(clinic_dosi_update_or_del_is_possible)

@@ -57,10 +57,7 @@ class OrderModelAdmin(admin.ModelAdmin):
         'active',
     )
 
-    list_display_links = (
-        'code',
-        'user',
-    )
+    list_display_links = ('code',)
     readonly_fields = (
         'id',
         'uuid',
@@ -94,8 +91,20 @@ class CalibrationModelAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        (_('Files'), {'fields': ('images',)}),
-        (_('Other data'), {'classes': ('collapse',), 'fields': ('id', 'uuid')}),
+        (
+            _('Files'),
+            {
+                'classes': ('collapse',),
+                'fields': ('images',),
+            },
+        ),
+        (
+            _('Other data'),
+            {
+                'classes': ('collapse',),
+                'fields': ('id', 'uuid', 'created_at', 'modified_at'),
+            },
+        ),
     )
 
     list_display = ('id', 'calibration_name', 'user', 'isotope', 'images')
@@ -122,16 +131,41 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        (_('Files'), {'fields': ('report', 'images')}),
-        (_('Order & Calibration'), {'fields': ('order', 'calibration')}),
-        (_('Feedback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
-        (_('Other data'), {'classes': ('collapse',), 'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
+        (
+            _('Files'),
+            {
+                'classes': ('collapse',),
+                'fields': ('report', 'images'),
+            },
+        ),
+        (
+            _('Order & Calibration'),
+            {
+                'classes': ('collapse',),
+                'fields': ('order', 'calibration'),
+            },
+        ),
+        (
+            _('Feedback'),
+            {
+                'classes': ('collapse',),
+                'fields': ('message_to_user',),
+            },
+        ),
+        (
+            _('Other data'),
+            {
+                'classes': ('collapse',),
+                'fields': ('id', 'uuid', 'created_at', 'modified_at'),
+            },
+        ),
     )
 
     list_display = (
         'id',
         'code',
         'analysis_name',
+        'user',
         'order',
         'calibration',
         'status',
@@ -152,6 +186,10 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     #     #     kwargs["queryset"] = Calibration.objects.filter(user=self.model.order.user)
     #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+    @admin.display(description='user')
+    def user(self, obj):
+        return obj.order.user
+
 
 @admin.register(PreClinicDosimetryAnalysis)
 class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
@@ -169,16 +207,41 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        (_('Files'), {'fields': ('report', 'images')}),
-        (_('Order & Calibration'), {'fields': ('order', 'calibration')}),
-        (_('Feedback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
-        (_('Other data'), {'classes': ('collapse',), 'fields': ('uuid', 'created_at', 'modified_at')}),
+        (
+            _('Files'),
+            {
+                'classes': ('collapse',),
+                'fields': ('report', 'images'),
+            },
+        ),
+        (
+            _('Order & Calibration'),
+            {
+                'classes': ('collapse',),
+                'fields': ('order', 'calibration'),
+            },
+        ),
+        (
+            _('Feedback'),
+            {
+                'classes': ('collapse',),
+                'fields': ('message_to_user',),
+            },
+        ),
+        (
+            _('Other data'),
+            {
+                'classes': ('collapse',),
+                'fields': ('uuid', 'created_at', 'modified_at'),
+            },
+        ),
     )
 
     list_display = (
         'id',
         'code',
         'analysis_name',
+        'user',
         'order',
         'calibration',
         'status',
@@ -192,22 +255,56 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_filter = ('order__user', 'status', 'active', 'order')
 
+    @admin.display(description='user')
+    def user(self, obj):
+        return obj.order.user
+
 
 @admin.register(SegmentationAnalysis)
 class SegmentationAnalysisAdmin(admin.ModelAdmin):
 
     fieldsets = (
-        (_('Analysis data'), {'fields': ('analysis_name', 'status', 'active')}),
-        (_('Files'), {'fields': ('report', 'images')}),
-        (_('Order'), {'fields': ('order',)}),
-        (_('Feedback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
-        (_('Other data'), {'classes': ('collapse',), 'fields': ('id', 'uuid', 'created_at', 'modified_at')}),
+        (
+            _('Analysis data'),
+            {
+                'fields': ('analysis_name', 'status', 'active'),
+            },
+        ),
+        (
+            _('Files'),
+            {
+                'classes': ('collapse',),
+                'fields': ('report', 'images'),
+            },
+        ),
+        (
+            _('Order'),
+            {
+                'classes': ('collapse',),
+                'fields': ('order',),
+            },
+        ),
+        (
+            _('Feedback'),
+            {
+                'classes': ('collapse',),
+                'fields': ('message_to_user',),
+            },
+        ),
+        (
+            _('Other data'),
+            {
+                'classes': ('collapse',),
+                'fields': ('id', 'uuid', 'created_at', 'modified_at'),
+            },
+        ),
     )
 
     list_display = (
         'id',
         'code',
         'analysis_name',
+        'user',
         'order',
         'status',
         'images',
@@ -227,22 +324,56 @@ class SegmentationAnalysisAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_filter = ('order__user', 'status', 'active', 'order')
 
+    @admin.display(description='user')
+    def user(self, obj):
+        return obj.order.user
+
 
 @admin.register(RadiosynoAnalysis)
 class RadiosynoviorthesisAdmin(admin.ModelAdmin):
 
     fieldsets = (
-        (_('Analysis data'), {'fields': ('analysis_name', 'isotope', 'status')}),
-        (_('Files'), {'fields': ('report', 'images')}),
-        (_('Order'), {'fields': ('order',)}),
-        (_('Feedback'), {'classes': ('collapse',), 'fields': ('message_to_user',)}),
-        (_('Other data'), {'fields': ('id', 'uuid', 'active', 'created_at', 'modified_at')}),
+        (
+            _('Analysis data'),
+            {
+                'fields': ('analysis_name', 'isotope', 'status', 'active'),
+            },
+        ),
+        (
+            _('Files'),
+            {
+                'classes': ('collapse',),
+                'fields': ('report', 'images'),
+            },
+        ),
+        (
+            _('Order'),
+            {
+                'classes': ('collapse',),
+                'fields': ('order',),
+            },
+        ),
+        (
+            _('Feedback'),
+            {
+                'classes': ('collapse',),
+                'fields': ('message_to_user',),
+            },
+        ),
+        (
+            _('Other data'),
+            {
+                'classes': ('collapse',),
+                'fields': ('id', 'uuid', 'created_at', 'modified_at'),
+            },
+        ),
     )
 
     list_display = (
         'id',
         'code',
         'analysis_name',
+        'user',
         'order',
         'status',
         'isotope',
@@ -255,3 +386,7 @@ class RadiosynoviorthesisAdmin(admin.ModelAdmin):
     search_fields = ('analysis_name',)
     list_per_page = 20
     list_filter = ('order__user', 'status', 'active', 'order')
+
+    @admin.display(description='user')
+    def user(self, obj):
+        return obj.order.user
