@@ -64,7 +64,7 @@ def test_invalid_create_form_analysis_name_must_be_unique_per_order(
 
     assert not form.is_valid()
 
-    assert form.errors == {'__all__': ['Dosimetria clínica com este Order e Analysis Name já existe.']}
+    assert form.errors == {'__all__': ['Dosimetria clínica com este Order e Nome da análise já existe.']}
 
 
 def test_invalid_analysis_name_length_must_least_3(clinic_dosimetry_info, clinic_dosimetry_file):

@@ -248,6 +248,6 @@ def test_fail_analysis_name_must_be_unique(
 
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
-    assert body['errors'] == ['Análise de Radiosinoviortese com este Order e Analysis Name já existe.']
+    assert body['errors'] == ['Análise de Radiosinoviortese com este Order e Nome da análise já existe.']
 
     _verified_unchanged_information_db(radiosyno_analysis_update_or_del_is_possible)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-21 23:05+0000\n"
+"POT-Creation-Date: 2023-02-25 04:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,37 +22,37 @@ msgstr ""
 msgid "Main data"
 msgstr ""
 
-#: web_server/service/admin.py:34 web_server/service/admin.py:98
-#: web_server/service/admin.py:128 web_server/service/admin.py:175
-#: web_server/service/admin.py:204 web_server/service/admin.py:239
+#: web_server/service/admin.py:34 web_server/service/admin.py:103
+#: web_server/service/admin.py:138 web_server/service/admin.py:190
+#: web_server/service/admin.py:224 web_server/service/admin.py:264
 msgid "Other data"
 msgstr ""
 
-#: web_server/service/admin.py:83
+#: web_server/service/admin.py:82
 msgid "Calibration data"
 msgstr ""
 
-#: web_server/service/admin.py:97 web_server/service/admin.py:125
-#: web_server/service/admin.py:172 web_server/service/admin.py:201
-#: web_server/service/admin.py:236
+#: web_server/service/admin.py:97 web_server/service/admin.py:135
+#: web_server/service/admin.py:187 web_server/service/admin.py:221
+#: web_server/service/admin.py:261
 msgid "Files"
 msgstr ""
 
-#: web_server/service/admin.py:114 web_server/service/admin.py:161
-#: web_server/service/admin.py:200 web_server/service/admin.py:235
+#: web_server/service/admin.py:124 web_server/service/admin.py:176
+#: web_server/service/admin.py:220 web_server/service/admin.py:260
 msgid "Analysis data"
 msgstr ""
 
-#: web_server/service/admin.py:126 web_server/service/admin.py:173
+#: web_server/service/admin.py:136 web_server/service/admin.py:188
 msgid "Order & Calibration"
 msgstr ""
 
-#: web_server/service/admin.py:127 web_server/service/admin.py:174
-#: web_server/service/admin.py:203 web_server/service/admin.py:238
+#: web_server/service/admin.py:137 web_server/service/admin.py:189
+#: web_server/service/admin.py:223 web_server/service/admin.py:263
 msgid "Feedback"
 msgstr ""
 
-#: web_server/service/admin.py:202 web_server/service/admin.py:237
+#: web_server/service/admin.py:222 web_server/service/admin.py:262
 #: web_server/service/models.py:97
 msgid "Order"
 msgstr ""
@@ -66,6 +66,38 @@ msgid "The remaining analysis must be less than the analysis field number."
 msgstr ""
 "El análisis restante debe ser menor que el número del campo de análisis."
 
+#: web_server/service/models.py:82
+msgid "Amount of analysis"
+msgstr ""
+
+#: web_server/service/models.py:83
+msgid "Remaning of analysis"
+msgstr ""
+
+#: web_server/service/models.py:84
+msgid "Price"
+msgstr ""
+
+#: web_server/service/models.py:86
+msgid "Status payment"
+msgstr ""
+
+#: web_server/service/models.py:88
+msgid "Service name"
+msgstr ""
+
+#: web_server/service/models.py:89
+msgid "Active"
+msgstr ""
+
+#: web_server/service/models.py:90 web_server/service/models.py:212
+msgid "Code"
+msgstr ""
+
+#: web_server/service/models.py:91
+msgid "Bill"
+msgstr ""
+
 #: web_server/service/models.py:98
 msgid "Orders"
 msgstr ""
@@ -76,6 +108,27 @@ msgstr ""
 
 #: web_server/service/models.py:146
 msgid "Calibrations"
+msgstr ""
+
+#: web_server/service/models.py:206
+msgid "Analysis Name"
+msgstr ""
+
+#: web_server/service/models.py:208
+msgid "Status"
+msgstr ""
+
+#: web_server/service/models.py:209
+msgid "Report"
+msgstr ""
+
+#: web_server/service/models.py:214
+msgid "Message to user"
+msgstr ""
+
+#: web_server/service/models.py:322 web_server/service/models.py:346
+#: web_server/service/models.py:367 web_server/service/models.py:398
+msgid "Images"
 msgstr ""
 
 #: web_server/service/models.py:326

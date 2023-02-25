@@ -79,16 +79,16 @@ class Order(CreationModificationBase):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
-    quantity_of_analyzes = models.PositiveIntegerField('Amount of analysis', default=0)
-    remaining_of_analyzes = models.PositiveIntegerField('Remaning of analysis', default=0)
-    price = models.DecimalField('Price', max_digits=14, decimal_places=2)
+    quantity_of_analyzes = models.PositiveIntegerField(_('Amount of analysis'), default=0)
+    remaining_of_analyzes = models.PositiveIntegerField(_('Remaning of analysis'), default=0)
+    price = models.DecimalField(_('Price'), max_digits=14, decimal_places=2)
     status_payment = models.CharField(
-        'Status payment', max_length=3, choices=PaymentStatus.choices, default=PaymentStatus.AWAITING_PAYMENT
+        _('Status payment'), max_length=3, choices=PaymentStatus.choices, default=PaymentStatus.AWAITING_PAYMENT
     )
-    service_name = models.CharField('Service name', max_length=3, choices=ServicesName.choices)
-    active = models.BooleanField('Active', default=True)
-    code = models.CharField('Code', max_length=20)
-    bill = models.FileField('Bill', upload_to=upload_bill_to, blank=True, null=True)
+    service_name = models.CharField(_('Service name'), max_length=3, choices=ServicesName.choices)
+    active = models.BooleanField(_('Active'), default=True)
+    code = models.CharField(_('Code'), max_length=20)
+    bill = models.FileField(_('Bill'), upload_to=upload_bill_to, blank=True, null=True)
 
     def __str__(self):
         return self.code
@@ -203,15 +203,15 @@ class AnalysisBase(CreationModificationBase):
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
 
-    analysis_name = models.CharField('Analysis Name', max_length=24, validators=[MinLengthValidator(3)])
+    analysis_name = models.CharField(_('Analysis Name'), max_length=24, validators=[MinLengthValidator(3)])
 
-    status = models.CharField('Status', max_length=3, choices=Status.choices, default=Status.DATA_SENT)
-    report = models.FileField('Report', blank=True, null=True, upload_to=upload_report_to)
+    status = models.CharField(_('Status'), max_length=3, choices=Status.choices, default=Status.DATA_SENT)
+    report = models.FileField(_('Report'), blank=True, null=True, upload_to=upload_report_to)
     active = models.BooleanField('Active', default=True)
 
-    code = models.CharField('Code', max_length=30)
+    code = models.CharField(_('Code'), max_length=30)
 
-    message_to_user = models.TextField('Message to user', default='', blank=True)
+    message_to_user = models.TextField(_('Message to user'), default='', blank=True)
 
     class Meta:
         abstract = True
@@ -319,7 +319,7 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     calibration = models.ForeignKey('Calibration', on_delete=models.CASCADE, related_name='clinic_dosimetry_analysis')
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='clinic_dosimetry_analysis')
-    images = models.FileField('Images', upload_to=upload_clinic_dosimetry_to)
+    images = models.FileField(_('Images'), upload_to=upload_clinic_dosimetry_to)
 
     class Meta:
         db_table = 'clinic_dosimetry_analysis'
@@ -343,7 +343,7 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
 
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='preclinic_dosimetry_analysis')
 
-    images = models.FileField('Images', upload_to=upload_preclinic_dosimetry_to)
+    images = models.FileField(_('Images'), upload_to=upload_preclinic_dosimetry_to)
 
     class Meta:
         db_table = 'preclinic_dosimetry_analysis'
@@ -364,7 +364,7 @@ class SegmentationAnalysis(AnalysisBase):
     # TODO: Talvez esse relacionamento pode ficar na classe Abstrata
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='segmentation_analysis')
 
-    images = models.FileField('Images', upload_to=upload_segmentation_analysis_to)
+    images = models.FileField(_('Images'), upload_to=upload_segmentation_analysis_to)
 
     class Meta:
         db_table = 'segmentation_analysis'
@@ -395,7 +395,7 @@ class RadiosynoAnalysis(AnalysisBase):
 
     isotope = models.ForeignKey(Isotope, on_delete=models.CASCADE, related_name='radiosyno_analysis')
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='radiosyno_analysis')
-    images = models.FileField('Images', upload_to=upload_radiosyno_analysis_to)
+    images = models.FileField(_('Images'), upload_to=upload_radiosyno_analysis_to)
 
     class Meta:
         db_table = 'radiosyno_analysis'
