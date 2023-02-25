@@ -13,8 +13,8 @@ from web_server.core.email import DOSIMAGEM_EMAIL
 from web_server.core.errors_msg import list_errors
 from web_server.signature.models import Signature
 from web_server.signature.serializers import (
-    SignatureByUserSerializer,
     SignatureCreateSerizaliser,
+    SignatureSerializer,
 )
 
 
@@ -48,7 +48,7 @@ def _signature_create(request, user_id):
 
     sig = serializer_create.save(user=user)
 
-    serializer = SignatureByUserSerializer(instance=sig)
+    serializer = SignatureSerializer(instance=sig)
 
     context = {
         'user': user,
@@ -71,7 +71,7 @@ def _signature_list(request, user_id):
 
     qs = user.signatures.filter(Q(test_period_end__gt=now) | Q(hired_period_end__gt=now))
 
-    serializer = SignatureByUserSerializer(qs, many=True)
+    serializer = SignatureSerializer(qs, many=True, context={'request': request})
 
     list_ = serializer.data
 
@@ -89,6 +89,6 @@ def signature_read(request, user_id, signature_id):
     except Signature.DoesNotExist:
         return Response(data={'errors': _('Subscription not found for this user')}, status=HTTPStatus.NOT_FOUND)
 
-    serializer = SignatureByUserSerializer(signature)
+    serializer = SignatureSerializer(signature, context={'request': request})
 
     return Response(data=serializer.data)

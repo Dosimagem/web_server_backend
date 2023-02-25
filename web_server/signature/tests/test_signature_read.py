@@ -29,6 +29,7 @@ def test_successfull(client_api_auth, user, user_signature):
     assert body['activated'] == user_signature.activated
     assert body['modality'] == user_signature.get_modality_display()
     assert body['discount'] == str(user_signature.discount)
+    assert body['billUrl'] is None
 
     for e_db, e_resp in zip(user_signature.benefits.all(), body['benefits']):
         assert e_resp['uuid'] == str(e_db.uuid)
@@ -36,6 +37,34 @@ def test_successfull(client_api_auth, user, user_signature):
         assert e_resp['uri'] == e_db.uri
 
     # TODO: colocar a data de criação e update
+
+
+def test_successfull_with_bill_file(client_api_auth, user, user_signature):
+
+    user_signature.bill = 'bill.pdf'
+    user_signature.save()
+
+    url = resolve_url(END_POINT, user.uuid, user_signature.uuid)
+
+    resp = client_api_auth.get(url)
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.OK
+
+    assert body['uuid'] == str(user_signature.uuid)
+    assert body['plan'] == user_signature.plan
+    assert body['hiredPeriod'] == user_signature.hired_period
+    assert body['testPeriod'] == user_signature.test_period
+    assert body['price'] == user_signature.price
+    assert body['activated'] == user_signature.activated
+    assert body['modality'] == user_signature.get_modality_display()
+    assert body['discount'] == str(user_signature.discount)
+    assert body['billUrl'] == 'http://testserver/media/bill.pdf'
+
+    for e_db, e_resp in zip(user_signature.benefits.all(), body['benefits']):
+        assert e_resp['uuid'] == str(e_db.uuid)
+        assert e_resp['name'] == e_db.name
+        assert e_resp['uri'] == e_db.uri
 
 
 def test_wrong_signature_id(client_api_auth, user):
