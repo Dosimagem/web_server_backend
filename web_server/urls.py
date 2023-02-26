@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/v1/', include('web_server.budget.urls')),
     path('api/v1/', include('web_server.notification.urls')),
     path('api/v1/', include('web_server.isotope.urls')),
+    path('api/v1/', include('web_server.contact.urls')),
     # For teste sentry
     path('sentry-debug/', trigger_error),
 ]
