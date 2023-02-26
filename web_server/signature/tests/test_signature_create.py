@@ -149,3 +149,18 @@ def test_negative_trial_time_not_in_days(client_api_auth, user, signature_payloa
     body = resp.json()
 
     assert body['errors'] == ['trial_time: Não é um periodo de teste válido. Exemplo: 30 days.']
+
+
+def test_negative_trial_time_negative(client_api_auth, user, signature_payload):
+
+    signature_payload['trialTime'] = '-30 days'
+
+    url = resolve_url(END_POINT, user.uuid)
+
+    resp = client_api_auth.post(url, data=signature_payload, format='json')
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+    body = resp.json()
+
+    assert body['errors'] == ['trial_time: Não é um periodo de teste válido. Exemplo: 30 days.']

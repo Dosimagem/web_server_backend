@@ -153,6 +153,16 @@ def test_negative_signature_create_serializer_trial_time_wrong_format(signature_
     assert serializer.errors['trial_time'] == ['Não é um periodo de teste válido. Exemplo: 30 days.']
 
 
+def test_negative_signature_create_serializer_trial_time_negative(signature_create_data):
+
+    signature_create_data['trial_time'] = '-30 days'
+
+    serializer = SignatureCreateSerizaliser(data=signature_create_data)
+
+    assert not serializer.is_valid()
+    assert serializer.errors['trial_time'] == ['Não é um periodo de teste válido. Exemplo: 30 days.']
+
+
 def test_negative_signature_create_serializer_trial_time_wrong_modality(signature_create_data):
 
     signature_create_data['modality'] = 'wrong'
