@@ -83,7 +83,6 @@ class SignatureCreateSerizaliser(serializers.ModelSerializer):
         """
         Must be some like '30 days'
         """
-
         try:
             day, period = value.split()
         except ValueError:
@@ -95,6 +94,9 @@ class SignatureCreateSerizaliser(serializers.ModelSerializer):
         try:
             value = int(day)
         except ValueError:
+            raise serializers.ValidationError(self.trial_time_error)
+
+        if value < 0:
             raise serializers.ValidationError(self.trial_time_error)
 
         return value
