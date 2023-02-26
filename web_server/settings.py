@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'web_server.budget',
     'web_server.notification',
     'web_server.isotope',
+    'web_server.contact',
     #
     'rest_framework',
     #

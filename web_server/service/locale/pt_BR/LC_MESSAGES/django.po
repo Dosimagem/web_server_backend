@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-25 04:09+0000\n"
+"POT-Creation-Date: 2023-02-26 05:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: web_server/service/admin.py:20
+#: web_server/service/admin.py:22
 msgid "Main data"
 msgstr "Dados principais"
 
-#: web_server/service/admin.py:34 web_server/service/admin.py:103
-#: web_server/service/admin.py:138 web_server/service/admin.py:190
-#: web_server/service/admin.py:224 web_server/service/admin.py:264
+#: web_server/service/admin.py:36 web_server/service/admin.py:104
+#: web_server/service/admin.py:159 web_server/service/admin.py:236
+#: web_server/service/admin.py:300 web_server/service/admin.py:370
 msgid "Other data"
 msgstr "Outros dados"
 
@@ -32,27 +32,27 @@ msgstr "Outros dados"
 msgid "Calibration data"
 msgstr "Dados da Calibração"
 
-#: web_server/service/admin.py:97 web_server/service/admin.py:135
-#: web_server/service/admin.py:187 web_server/service/admin.py:221
-#: web_server/service/admin.py:261
+#: web_server/service/admin.py:97 web_server/service/admin.py:137
+#: web_server/service/admin.py:214 web_server/service/admin.py:278
+#: web_server/service/admin.py:348
 msgid "Files"
 msgstr "Arquivos"
 
-#: web_server/service/admin.py:124 web_server/service/admin.py:176
-#: web_server/service/admin.py:220 web_server/service/admin.py:260
+#: web_server/service/admin.py:125 web_server/service/admin.py:202
+#: web_server/service/admin.py:272 web_server/service/admin.py:342
 msgid "Analysis data"
 msgstr "Dados da Analase"
 
-#: web_server/service/admin.py:136 web_server/service/admin.py:188
+#: web_server/service/admin.py:144 web_server/service/admin.py:221
 msgid "Order & Calibration"
 msgstr "Pedido e Calibração"
 
-#: web_server/service/admin.py:137 web_server/service/admin.py:189
-#: web_server/service/admin.py:223 web_server/service/admin.py:263
+#: web_server/service/admin.py:151 web_server/service/admin.py:228
+#: web_server/service/admin.py:292 web_server/service/admin.py:362
 msgid "Feedback"
 msgstr ""
 
-#: web_server/service/admin.py:222 web_server/service/admin.py:262
+#: web_server/service/admin.py:285 web_server/service/admin.py:355
 #: web_server/service/models.py:97
 msgid "Order"
 msgstr "Pedido"
@@ -116,7 +116,6 @@ msgid "Calibrations"
 msgstr "Calibrações"
 
 #: web_server/service/models.py:206
-#| msgid "Analysis data"
 msgid "Analysis Name"
 msgstr "Nome da análise"
 
