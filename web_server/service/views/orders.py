@@ -50,6 +50,9 @@ def _read_order(request, order):
 
 def _list_orders(request, user_id):
 
+    # TODO:
+    # select_related('user')
+
     order = Order.objects.filter(user=request.user)
 
     order_list = [order_to_dict(q, request) for q in order]

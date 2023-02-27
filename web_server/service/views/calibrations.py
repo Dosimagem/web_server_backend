@@ -140,6 +140,10 @@ def _delete_calibration(request, user_id, calibration_id):
 
 def _list_calibrations(request, user_id):
 
+
+    # TODO:
+    # select_related('user', 'isotope')
+
     calibration = Calibration.objects.filter(user=request.user)
 
     calibration_list = [q.to_dict(request) for q in calibration]

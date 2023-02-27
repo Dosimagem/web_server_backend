@@ -97,6 +97,11 @@ def _list_analysis(request, user_id, order_id):
     except ObjectDoesNotExist:
         return Response(status=HTTPStatus.NOT_FOUND)
 
+    # TODO:
+    # select_related('order', 'isotope') para Radio
+    # select_related('order') para SegmentationAnalysis
+    # select_relared('order', 'calibration') para dosimatry
+
     Model = AnalisysChoice(order=order).model
     list_ = Model.objects.filter(order=order)
 
