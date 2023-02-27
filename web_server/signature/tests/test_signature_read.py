@@ -9,7 +9,7 @@ from web_server.signature.models import Signature
 END_POINT = 'signatures:signature-read'
 
 
-# /api/v1/users/<uuid>/signatures/<uuid> - GET
+# /api/v1/users/<uuid>/signatures/<uuid>/ - GET
 
 
 def test_successfull(client_api_auth, user, user_signature):
@@ -30,6 +30,7 @@ def test_successfull(client_api_auth, user, user_signature):
     assert body['modality'] == user_signature.get_modality_display()
     assert body['discount'] == str(user_signature.discount)
     assert body['billUrl'] is None
+    assert body['statusPayment'] == 'Aguardando pagamento'
 
     for e_db, e_resp in zip(user_signature.benefits.all(), body['benefits']):
         assert e_resp['uuid'] == str(e_db.uuid)
@@ -60,6 +61,7 @@ def test_successfull_with_bill_file(client_api_auth, user, user_signature):
     assert body['modality'] == user_signature.get_modality_display()
     assert body['discount'] == str(user_signature.discount)
     assert body['billUrl'] == 'http://testserver/media/bill.pdf'
+    assert body['statusPayment'] == 'Aguardando pagamento'
 
     for e_db, e_resp in zip(user_signature.benefits.all(), body['benefits']):
         assert e_resp['uuid'] == str(e_db.uuid)

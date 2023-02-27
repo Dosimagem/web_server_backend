@@ -91,6 +91,7 @@ def test_successfull(client_api_auth_fix_time, user, signature_list):
         assert body_response['activated'] == from_db.activated
         assert body_response['modality'] == from_db.get_modality_display()
         assert body_response['discount'] == str(from_db.discount)
+        assert body_response['statusPayment'] == 'Aguardando pagamento'
         if from_db.bill.name:
             assert body_response['billUrl'] == 'http://testserver/media/bill.pdf'
         else:

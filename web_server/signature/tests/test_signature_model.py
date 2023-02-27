@@ -57,6 +57,7 @@ def test_detault_values(user_signature):
     assert user_signature.activated is False
     assert user_signature.modality == Signature.Modality.YEARLY
     assert user_signature.discount == Decimal('0.00')
+    assert user_signature.status_payment == 'APG'
     # assert signature1.bill_file == ''
 
 

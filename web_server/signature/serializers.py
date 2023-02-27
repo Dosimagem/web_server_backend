@@ -32,6 +32,7 @@ class SignatureSerializer(serializers.ModelSerializer):
 
     benefits = BenefitSerializer(many=True, read_only=True)
     modality = serializers.CharField(source='get_modality_display')
+    status_payment = serializers.CharField(source='get_status_payment_display')
     bill_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -47,6 +48,7 @@ class SignatureSerializer(serializers.ModelSerializer):
             'test_period',
             'activated',
             'bill_url',
+            'status_payment',
         )
         read_only_fields = (
             'uuid',
@@ -58,6 +60,8 @@ class SignatureSerializer(serializers.ModelSerializer):
             'hired_period',
             'test_period',
             'activated',
+            'bill_url',
+            'status_payment',
         )
 
     def get_bill_url(self, obj):
