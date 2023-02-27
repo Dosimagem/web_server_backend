@@ -51,6 +51,7 @@ class SignatureModelAdmin(admin.ModelAdmin):
                     'price',
                     'discount',
                     'modality',
+                    'status_payment',
                     'bill',
                     'activated',
                 )

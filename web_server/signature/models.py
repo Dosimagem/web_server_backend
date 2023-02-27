@@ -48,6 +48,10 @@ class Benefit(CreationModificationBase):
 
 
 class Signature(CreationModificationBase):
+    class PaymentStatus(models.TextChoices):
+        AWAITING_PAYMENT = ('APG', 'Aguardando pagamento')
+        CONFIRMED = ('CON', 'Confirmado')
+
     class Modality(models.TextChoices):
         MONTHLY = ('M', 'monthly')
         YEARLY = ('Y', 'yearly')
@@ -72,6 +76,10 @@ class Signature(CreationModificationBase):
     activated = models.BooleanField(_('Activated'), default=False)
 
     bill = models.FileField(_('Bill'), upload_to=upload_to, blank=True, null=True)
+
+    status_payment = models.CharField(
+        _('Status payment'), max_length=3, choices=PaymentStatus.choices, default=PaymentStatus.AWAITING_PAYMENT
+    )
 
     class Meta:
         verbose_name = _('Signature')

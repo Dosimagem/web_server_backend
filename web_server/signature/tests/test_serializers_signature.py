@@ -38,6 +38,7 @@ def test_signature_serializer_with_test_period(user_signature):
     assert data['modality'] == user_signature.get_modality_display()
     assert data['discount'] == str(user_signature.discount)
     assert data['bill_url'] is None
+    assert data['status_payment'] == 'Aguardando pagamento'
 
     for ser, db in zip(data['benefits'], user_signature.benefits.all()):
         assert ser['uuid'] == str(db.uuid)
@@ -64,6 +65,8 @@ def test_signature_serializer_with_hired_period(user_signature):
     assert data['test_period'] is None
     assert data['activated'] == user_signature.activated
     assert data['bill_url'] is None
+    assert data['status_payment'] == 'Aguardando pagamento'
+
     for ser, db in zip(data['benefits'], user_signature.benefits.all()):
         assert ser['uuid'] == str(db.uuid)
         assert ser['name'] == db.name
@@ -83,6 +86,8 @@ def test_signature_serializer_without_test_or_hired_period(user_signature):
     assert data['test_period'] is None
     assert data['activated'] == user_signature.activated
     assert data['bill_url'] is None
+    assert data['status_payment'] == 'Aguardando pagamento'
+
     for ser, db in zip(data['benefits'], user_signature.benefits.all()):
         assert ser['uuid'] == str(db.uuid)
         assert ser['name'] == db.name
