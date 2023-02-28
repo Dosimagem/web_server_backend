@@ -11,17 +11,21 @@ ENV PYTHONUNBUFFERED=1
 
 #
 RUN apt-get update && apt-get install -y\
-    libpq-dev\
     gcc\
+    libpq-dev\
+    wait-for-it\
     && rm -rf /var/lib/apt/lists/*
 
-# copy project
-COPY . .
+# copy dependencies
+COPY requirements.txt requirements.txt
 
 # install dependencies
 RUN set -ex && \
     pip install -U pip &&\
     pip install --no-cache-dir -r requirements.txt --no-deps &&\
     pip cache purge
+
+# copy project
+COPY . .
 
 EXPOSE 8000

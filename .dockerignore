@@ -28,6 +28,7 @@ mediafiles
 .pytest_cache
 .python-version
 README.md
+CONTRIBUTIONG.md
 requirements.dev.in
 requirements.in
 spec

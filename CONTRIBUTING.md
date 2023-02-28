@@ -76,6 +76,12 @@ python manage.py loaddata benefits
 python manage.py loaddata isotopes
 ```
 
+ou
+
+```console
+make docker_loaddata
+```
+
 ---
 
 ## 2.2) Rodando o servidor de desenvolvimento
