@@ -13,7 +13,7 @@ Dados do orçamento:
 
 Serviço: {{service}}
 Linha de Pesquisa: {{research_line}}
-Número de modelos: {{number_of_samples}}
+Número de modelos: {{number_of_patients}}
 Ferquência: {{frequency}}
 
 Comentário:

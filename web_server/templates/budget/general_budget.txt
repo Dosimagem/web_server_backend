@@ -13,7 +13,7 @@ Dados do orçamento:
 
 Serviço: {{service}}
 Tipo de tratamento: {{treatment_type}}
-Número de paciente: {{number_of_samples}}
+Número de paciente: {{number_of_patients}}
 Ferquência: {{frequency}}
 
 Comentário:
