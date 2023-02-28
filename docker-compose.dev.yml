@@ -28,7 +28,7 @@ services:
     image: postgres:14.5-alpine
     restart: 'no'
     volumes:
-      - ./db/pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     environment:
       - LC_ALL=C.UTF-8
       - POSTGRES_PASSWORD=dosimagem
@@ -42,3 +42,6 @@ services:
 networks:
   dosimagem_nw:
     driver: bridge
+
+volumes:
+  pgdata:

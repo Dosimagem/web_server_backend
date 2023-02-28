@@ -20,61 +20,68 @@ create_admin:
 
 PHONNY: docker_up_db
 docker_up_db:
-	@docker-compose up -d database
+	@docker compose up -d database
 
 # Docker Prod
 
 PHONNY: docker_build_prod
 docker_build_prod:
-	@docker-compose build
+	@docker compose build
 
 PHONNY: docker_build_and_up_prod
 docker_build_and_up_prod:
-	@docker-compose build
-	@docker-compose up -d
+	@docker compose build
+	@docker compose up -d
 
 PHONNY: docker_up_prod
 docker_up_prod:
-	@docker-compose up -d
+	@docker compose up -d
 
 
 PHONNY: docker_down_prod
 docker_down_prod:
-	@docker-compose down
+	@docker compose down
 
 # Docker Dev
 
 
 PHONNY: docker_build_dev
 docker_build_dev:
-	@docker-compose -f docker-compose.dev.yml build
+	@docker compose -f docker-compose.dev.yml build
 
 PHONNY: docker_build_and_up_dev
 docker_build_and_up_dev:
-	@docker-compose -f docker-compose.dev.yml build
-	@docker-compose -f docker-compose.dev.yml up -d
+	@docker compose -f docker-compose.dev.yml build
+	@docker compose -f docker-compose.dev.yml up -d
 
 PHONNY: docker_up_dev
 docker_up_dev:
-	@docker-compose -f docker-compose.dev.yml up -d
+	@docker compose -f docker-compose.dev.yml up -d
 
 PHONNY: docker_down_dev
 docker_down_dev:
-	@docker-compose -f docker-compose.dev.yml down
+	@docker compose -f docker-compose.dev.yml down
 
 PHONNY: docker_migrate
 docker_migrate:
-	@docker exec dosimagem_api ./manage.py migrate
+	@docker compose exec api ./manage.py migrate
+
+
+PHONNY: docker_loaddata
+docker_loaddata:
+	@docker compose exec api ./manage.py loaddata benefits
+	@docker compose exec api ./manage.py loaddata isotopes
+
 
 PHONNY: docker_create_admin
 docker_create_admin:
-	@docker exec -it dosimagem_api ./manage.py createsuperuser
+	@docker compose exec -it api ./manage.py createsuperuser
 
 # Docker pytest
 
 PHONNY: docker_pytest
 docker_pytest:
-	@docker-compose -f docker-compose.dev.yml run api pytest -n 4
+	@docker compose -f docker-compose.dev.yml run api pytest -n 4
 
 #
 PHONNY: linter
