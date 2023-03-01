@@ -57,6 +57,7 @@ class OrderModelAdmin(admin.ModelAdmin):
         'status_payment',
         'service_name',
         'active',
+        'created_at',
     )
 
     list_display_links = ('code',)
@@ -109,7 +110,14 @@ class CalibrationModelAdmin(admin.ModelAdmin):
         ),
     )
 
-    list_display = ('id', 'calibration_name', 'user', 'isotope', 'images')
+    list_display = (
+        'id',
+        'calibration_name',
+        'user',
+        'isotope',
+        'images',
+        'created_at',
+    )
     list_display_links = ('calibration_name',)
     readonly_fields = ('id', 'uuid', 'created_at', 'modified_at')
     search_fields = ('calibration_name',)
@@ -175,6 +183,7 @@ class ClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
         'images',
         'report',
         'active',
+        'created_at',
     )
     list_display_links = ('code', 'analysis_name')
     readonly_fields = ('code', 'id', 'uuid', 'order', 'calibration', 'created_at', 'modified_at')
@@ -252,6 +261,7 @@ class PreClinicDosimetryAnalysisAdmin(admin.ModelAdmin):
         'images',
         'report',
         'active',
+        'created_at',
     )
     list_display_links = ('code', 'analysis_name')
     readonly_fields = ('code', 'id', 'uuid', 'order', 'calibration', 'created_at', 'modified_at')
@@ -315,6 +325,7 @@ class SegmentationAnalysisAdmin(admin.ModelAdmin):
         'images',
         'report',
         'active',
+        'created_at',
     )
     list_display_links = ('code', 'analysis_name')
     readonly_fields = (
@@ -386,6 +397,7 @@ class RadiosynoviorthesisAdmin(admin.ModelAdmin):
         'images',
         'report',
         'active',
+        'created_at',
     )
     list_display_links = ('code', 'analysis_name')
     readonly_fields = ('code', 'id', 'order', 'uuid', 'created_at', 'modified_at')

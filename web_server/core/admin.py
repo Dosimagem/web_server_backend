@@ -64,6 +64,7 @@ class UserAdmin(admin.ModelAdmin):
         'uuid',
         'is_staff',
         'email_verified',
+        'date_joined',
     )
     readonly_fields = (
         'id',
