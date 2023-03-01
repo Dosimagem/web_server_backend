@@ -63,7 +63,7 @@ class Order(CreationModificationBase):
         PRECLINIC_DOSIMETRY = ('PCD', 'Dosimetria Pré-Clínica')
         SEGMENTANTION_QUANTIFICATION = ('SQ', 'Segmentação e Quantificação')
         RADIOSYNOVIORTHESIS = ('RA', 'Radiosinoviortese')
-        COMPUTATIONAL_MODELLING = ('MC', 'Modelagem Computacional')
+        # COMPUTATIONAL_MODELLING = ('MC', 'Modelagem Computacional')
 
     class PaymentStatus(models.TextChoices):
         AWAITING_PAYMENT = ('APG', 'Aguardando pagamento')
@@ -74,7 +74,7 @@ class Order(CreationModificationBase):
         ServicesName.PRECLINIC_DOSIMETRY: '02',
         ServicesName.SEGMENTANTION_QUANTIFICATION: '03',
         ServicesName.RADIOSYNOVIORTHESIS: '04',
-        ServicesName.COMPUTATIONAL_MODELLING: '05',
+        # ServicesName.COMPUTATIONAL_MODELLING: '05',
     }
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
