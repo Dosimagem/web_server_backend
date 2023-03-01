@@ -18,7 +18,7 @@ from web_server.service.models import Order
         (PreClinicDosimetryBudgetSerializer, Order.ServicesName.PRECLINIC_DOSIMETRY.label),
         (SegmentantioQuantificationSerialier, Order.ServicesName.SEGMENTANTION_QUANTIFICATION.label),
         (RadiosinoSerialier, Order.ServicesName.RADIOSYNOVIORTHESIS.label),
-        (CompModelBudgetSerilizer, Order.ServicesName.COMPUTATIONAL_MODELLING.label),
+        (CompModelBudgetSerilizer, 'Modelagem Computacional'),
     ],
 )
 def test_get_serializer(serializerClass, service_name):
@@ -56,7 +56,7 @@ def test_get_serializer(serializerClass, service_name):
         (
             'budget/comp_model_budget.txt',
             'budget/comp_model_budget.html',
-            Order.ServicesName.COMPUTATIONAL_MODELLING.label,
+            'Modelagem Computacional',
         ),
     ],
 )

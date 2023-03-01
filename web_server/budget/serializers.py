@@ -2,9 +2,11 @@ from rest_framework import serializers
 
 from web_server.service.models import Order
 
+LIST = [e.label for e in Order.ServicesName] + ['Modelagem Computacional']   # TODO: Resolver isso
+
 
 class GeneralBudgetSerializer(serializers.Serializer):
-    service = serializers.ChoiceField(choices=[e.label for e in Order.ServicesName])
+    service = serializers.ChoiceField(choices=LIST)
 
 
 class ClinicDosimetryBudgetSerializer(serializers.Serializer):

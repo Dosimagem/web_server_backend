@@ -13,7 +13,7 @@ class BudgetChoice:
         self.service_name = service_name
 
     serializer = {
-        Order.ServicesName.COMPUTATIONAL_MODELLING.label: CompModelBudgetSerilizer,
+        'Modelagem Computacional': CompModelBudgetSerilizer,  # TODO: Colocar isso no choice models depois
         Order.ServicesName.PRECLINIC_DOSIMETRY.label: PreClinicDosimetryBudgetSerializer,
         Order.ServicesName.CLINIC_DOSIMETRY.label: ClinicDosimetryBudgetSerializer,
         Order.ServicesName.SEGMENTANTION_QUANTIFICATION.label: SegmentantioQuantificationSerialier,
@@ -21,7 +21,7 @@ class BudgetChoice:
     }
 
     email_template = {
-        Order.ServicesName.COMPUTATIONAL_MODELLING.label: 'budget/comp_model_budget',
+        'Modelagem Computacional': 'budget/comp_model_budget',  # TODO: Colocar isso no choice models depois
         Order.ServicesName.PRECLINIC_DOSIMETRY.label: 'budget/preclinic_dosi_budget',
         Order.ServicesName.CLINIC_DOSIMETRY.label: 'budget/general_budget',
         Order.ServicesName.SEGMENTANTION_QUANTIFICATION.label: 'budget/general_budget',
