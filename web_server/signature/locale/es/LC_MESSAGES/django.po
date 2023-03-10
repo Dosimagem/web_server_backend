@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-26 05:06+0000\n"
+"POT-Creation-Date: 2023-03-10 00:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,15 +26,15 @@ msgstr ""
 msgid "Main data"
 msgstr ""
 
-#: web_server/signature/admin.py:27 web_server/signature/admin.py:74
+#: web_server/signature/admin.py:27 web_server/signature/admin.py:75
 msgid "Other data"
 msgstr ""
 
-#: web_server/signature/admin.py:60
+#: web_server/signature/admin.py:61
 msgid "Hired Period"
 msgstr ""
 
-#: web_server/signature/admin.py:67
+#: web_server/signature/admin.py:68
 msgid "Test Period"
 msgstr ""
 
@@ -50,59 +50,63 @@ msgstr ""
 msgid "Benefit"
 msgstr ""
 
-#: web_server/signature/models.py:59
+#: web_server/signature/models.py:63
 msgid "Plan"
 msgstr ""
 
-#: web_server/signature/models.py:60
+#: web_server/signature/models.py:64
 msgid "Modality"
 msgstr ""
 
-#: web_server/signature/models.py:61
+#: web_server/signature/models.py:65
 msgid "Discount"
 msgstr ""
 
-#: web_server/signature/models.py:62
+#: web_server/signature/models.py:66
 msgid "Price"
 msgstr ""
 
-#: web_server/signature/models.py:67
+#: web_server/signature/models.py:71
 msgid "Start of contracted period"
 msgstr ""
 
-#: web_server/signature/models.py:68
+#: web_server/signature/models.py:72
 msgid "End of contract period"
 msgstr ""
 
-#: web_server/signature/models.py:69
+#: web_server/signature/models.py:73
 msgid "Start of test period"
 msgstr ""
 
-#: web_server/signature/models.py:70
+#: web_server/signature/models.py:74
 msgid "End of test period"
 msgstr ""
 
-#: web_server/signature/models.py:72
+#: web_server/signature/models.py:76
 msgid "Activated"
 msgstr ""
 
-#: web_server/signature/models.py:74
+#: web_server/signature/models.py:78
 msgid "Bill"
 msgstr ""
 
-#: web_server/signature/models.py:77
+#: web_server/signature/models.py:81
+msgid "Status payment"
+msgstr ""
+
+#: web_server/signature/models.py:85
 msgid "Signature"
 msgstr ""
 
-#: web_server/signature/models.py:78
+#: web_server/signature/models.py:86
 msgid "Signatures"
 msgstr ""
 
-#: web_server/signature/models.py:90 web_server/signature/models.py:93
+#: web_server/signature/models.py:98 web_server/signature/models.py:101
 msgid "The start date must be after the end date."
 msgstr "La fecha de inicio debe ser posterior a la fecha de finalización."
 
-#: web_server/signature/models.py:119
+#: web_server/signature/models.py:127
 msgid "Creation Date and Time"
 msgstr "Fecha y hora de creación"
 
@@ -111,11 +115,11 @@ msgstr "Fecha y hora de creación"
 msgid "\"{input}\" is not a valid modality."
 msgstr ""
 
-#: web_server/signature/serializers.py:72
+#: web_server/signature/serializers.py:76
 msgid "Not a valid trial period. Example: 30 days."
 msgstr ""
 
-#: web_server/signature/serializers.py:109
+#: web_server/signature/serializers.py:113
 #, python-format
 msgid "The benefit %(ben)s is not registered."
 msgstr ""
