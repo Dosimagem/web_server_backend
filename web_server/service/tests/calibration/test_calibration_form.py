@@ -48,7 +48,7 @@ def test_invalid_create_form_field_must_be_positive(field, calibration_infos, ca
         'residual_syringe_activity',
         'measurement_datetime',
         'phantom_volume',
-        'acquisition_time',
+        # 'acquisition_time', # TODO: Verificar se vai realmente tirar esse campo ou não
         'images',
     ],
 )

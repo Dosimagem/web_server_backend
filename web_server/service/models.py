@@ -137,7 +137,11 @@ class Calibration(CreationModificationBase):
     residual_syringe_activity = models.FloatField('Residual Syringe Activity', validators=[MinValueValidator(0.0)])
     measurement_datetime = models.DateTimeField('Measurement Datetime')
     phantom_volume = models.FloatField('Phantom Volume', validators=[MinValueValidator(0.0)])
-    acquisition_time = models.FloatField('Acquisition Time', validators=[MinValueValidator(0.0)])
+
+    # TODO: Verificar se vai realmente tirar esse campo ou não
+    acquisition_time = models.FloatField(
+        'Acquisition Time', validators=[MinValueValidator(0.0)], default=0.0, blank=True
+    )
 
     images = models.FileField('Calibration Images', upload_to=upload_calibration_to, null=False)
 

@@ -89,7 +89,7 @@ class CalibrationModelAdmin(admin.ModelAdmin):
                     'residual_syringe_activity',
                     'measurement_datetime',
                     'phantom_volume',
-                    'acquisition_time',
+                    # 'acquisition_time',  # TODO: Verificar se vai realmente tirar esse campo ou não
                     'user',
                 )
             },
