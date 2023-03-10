@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-28 03:38+0000\n"
+"POT-Creation-Date: 2023-03-10 00:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,16 +30,16 @@ msgstr "Permisos"
 msgid "Important dates"
 msgstr "Fechas importantes"
 
-#: web_server/core/admin.py:155
+#: web_server/core/admin.py:156
 #, python-format
 msgid "%(name)s object with primary key %(key)r does not exist."
 msgstr "El objeto %(name)s con la clave principal %(key)r no existe."
 
-#: web_server/core/admin.py:167
+#: web_server/core/admin.py:168
 msgid "Password changed successfully."
 msgstr "Contraseña cambiada con éxito"
 
-#: web_server/core/admin.py:188
+#: web_server/core/admin.py:189
 #, python-format
 msgid "Change password: %s"
 msgstr "Cambiar contraseña: %s"

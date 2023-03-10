@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-28 03:38+0000\n"
+"POT-Creation-Date: 2023-03-10 00:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,16 +30,16 @@ msgstr "Permissões"
 msgid "Important dates"
 msgstr "Important dates"
 
-#: web_server/core/admin.py:155
+#: web_server/core/admin.py:156
 #, python-format
 msgid "%(name)s object with primary key %(key)r does not exist."
 msgstr ""
 
-#: web_server/core/admin.py:167
+#: web_server/core/admin.py:168
 msgid "Password changed successfully."
 msgstr "Senha alterada com sucesso"
 
-#: web_server/core/admin.py:188
+#: web_server/core/admin.py:189
 #, python-format
 msgid "Change password: %s"
 msgstr "Alterar senha: %s"
@@ -186,7 +186,7 @@ msgstr "Conflito no ID do usuário."
 
 #: web_server/core/views/index.py:9
 msgid "Welcome to Dosiamge API !"
-msgstr "Bem-vindo à API Dosiamge!"
+msgstr "Bem-vindo à API Dosimagem!"
 
 #: web_server/core/views/users.py:110
 msgid "Verification email has not yet been sent."
