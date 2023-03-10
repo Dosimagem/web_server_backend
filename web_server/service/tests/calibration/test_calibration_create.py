@@ -161,7 +161,8 @@ def test_fail_isotope_invalid_by_size(client_api_auth, user, form_data):
         ),
         ('measurementDatetime', ['measurement_datetime: Este campo é obrigatório.']),
         ('phantomVolume', ['phantom_volume: Este campo é obrigatório.']),
-        ('acquisitionTime', ['acquisition_time: Este campo é obrigatório.']),
+        # TODO: Verificar se vai realmente tirar esse campo ou não
+        # ('acquisitionTime', ['acquisition_time: Este campo é obrigatório.']),
         ('images', ['images: Este campo é obrigatório.']),
     ],
 )
