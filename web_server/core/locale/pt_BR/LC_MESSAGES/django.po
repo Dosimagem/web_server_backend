@@ -186,7 +186,7 @@ msgstr "Conflito no ID do usuário."
 
 #: web_server/core/views/index.py:9
 msgid "Welcome to Dosiamge API !"
-msgstr "Bem-vindo à API Dosiamge!"
+msgstr "Bem-vindo à API Dosimagem!"
 
 #: web_server/core/views/users.py:110
 msgid "Verification email has not yet been sent."
