@@ -9,7 +9,7 @@ Backend e API da plataforma web da Dosimagem.
 - [Gmail](https://mail.google.com/)
   -  Email de administração.
 - [Cloudflare](https://dash.cloudflare.com/)
-  - Certificado e configuralções dos subdominios
+  - Certificado e configurações dos subdominios
 - [GoDaddy](https://www.godaddy.com/pt-br)
   - Dominio dosimangem.com
 - [Sentry](https://sentry.io/)
