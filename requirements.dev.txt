@@ -155,10 +155,6 @@ click==8.1.3 \
     --hash=sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e \
     --hash=sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48
     # via black
-codecov==2.1.12 \
-    --hash=sha256:585dc217dc3d8185198ceb402f85d5cb5dbfa0c5f350a5abcdf9e347776a5b47 \
-    --hash=sha256:a0da46bb5025426da895af90938def8ee12d37fcbcbbbc15b6dc64cf7ebc51c1
-    # via -r requirements.dev.in
 coverage[toml]==7.2.0 \
     --hash=sha256:049806ae2df69468c130f04f0fab4212c46b34ba5590296281423bb1ae379df2 \
     --hash=sha256:08e3dd256b8d3e07bb230896c8c96ec6c5dffbe5a133ba21f8be82b275b900e8 \
@@ -212,7 +208,7 @@ coverage[toml]==7.2.0 \
     --hash=sha256:f3ff4205aff999164834792a3949f82435bc7c7655c849226d5836c3242d7451 \
     --hash=sha256:ffa637a2d5883298449a5434b699b22ef98dd8e2ef8a1d9e60fa9cfe79813411
     # via
-    #   codecov
+    #   -r requirements.dev.in
     #   pytest-codecov
     #   pytest-cov
 cyclonedx-python-lib==3.1.5 \
@@ -550,7 +546,6 @@ requests==2.28.2 \
     # via
     #   -c requirements.txt
     #   cachecontrol
-    #   codecov
     #   pytest-codecov
     #   responses
 resolvelib==0.9.0 \
