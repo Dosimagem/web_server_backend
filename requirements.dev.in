@@ -2,9 +2,9 @@
 flake8
 ipython
 pytest-django
-codecov
 pytest-codecov
 pytest-xdist
+coverage
 pre_commit
 pip-audit
 pytest-responses
