@@ -2,6 +2,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import dj_database_url
+from corsheaders.defaults import default_headers
 from decouple import Csv, config
 from django.conf.locale.pt_BR import formats as pt_BR_formats
 
@@ -195,6 +196,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS config
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default=[], cast=Csv())
+
+CORS_ALLOW_HEADERS = (*default_headers, 'accept-language')
 
 # FRONT DOMAIN
 FRONT_DOMAIN = config('FRONT_DOMAIN')
