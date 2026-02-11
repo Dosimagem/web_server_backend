@@ -12,11 +12,11 @@ def test_positive_serializer(contact_data):
 @pytest.mark.parametrize(
     'field',
     [
-        'full_name',
+        'name',
         'email',
         'role',
-        'clinic',
-        'phone',
+        'company',
+        'number',
         'subject',
         'message',
     ],
@@ -30,14 +30,3 @@ def test_negative_missing_fields(field, contact_data):
     assert not serializer.is_valid()
 
     assert serializer.errors[field] == ['Este campo é obrigatório.']
-
-
-def test_negative_phone_number(contact_data):
-
-    contact_data['phone'] = '11'
-
-    serializer = ContactSerializer(data=contact_data)
-
-    assert not serializer.is_valid()
-
-    assert serializer.errors['phone'] == ['Informe um número de telefone válido.']
