@@ -11,10 +11,10 @@ def benefit(db):
 
 @pytest.fixture
 def benefit_list(db):
-    b1 = Benefit(name='B1', uri='/Benefit/B1')
-    b2 = Benefit(name='B2', uri='/Benefit/B2')
-    b3 = Benefit(name='B3', uri='/Benefit/B3')
-    return Benefit.objects.bulk_create([b1, b2, b3])
+    b1 = Benefit.objects.create(name='B1', uri='/Benefit/B1')
+    b2 = Benefit.objects.create(name='B2', uri='/Benefit/B2')
+    b3 = Benefit.objects.create(name='B3', uri='/Benefit/B3')
+    return [b1, b2, b3]
 
 
 @pytest.fixture

@@ -18,6 +18,8 @@ def payload():
 
     return {
         'service': 'Dosimetria Clínica',
+        'equipmentType': 'SPECT',
+        'equipmentModality': 'SPECT_CT',
         'treatmentType': 'Tratamento do tipo 1',
         'numberOfPatients': '5',
         'frequency': 'Semanal',
@@ -47,6 +49,8 @@ def test_sucessfull(client_api_auth, user, payload):
     assert user.profile.cpf in email.body
 
     assert payload['service'] in email.body
+    assert payload['equipmentType'] in email.body
+    assert payload['equipmentModality'] in email.body
     assert payload['treatmentType'] in email.body
     assert payload['numberOfPatients'] in email.body
     assert payload['frequency'] in email.body
@@ -57,6 +61,8 @@ def test_sucessfull(client_api_auth, user, payload):
     'field, error',
     [
         ('service', ['service: Este campo é obrigatório.']),
+        ('equipmentType', ['equipment_type: Este campo é obrigatório.']),
+        ('equipmentModality', ['equipment_modality: Este campo é obrigatório.']),
         ('treatmentType', ['treatment_type: Este campo é obrigatório.']),
         ('numberOfPatients', ['number_of_patients: Este campo é obrigatório.']),
         ('comments', ['comments: Este campo é obrigatório.']),
@@ -96,3 +102,16 @@ def test_invalid(field, value, error, client_api_auth, user, payload):
     assert resp.status_code == HTTPStatus.BAD_REQUEST
 
     assert error == body['errors']
+
+
+def test_invalid_equipment_modality_match(client_api_auth, user, payload):
+    payload['equipmentType'] = 'SPECT'
+    payload['equipmentModality'] = 'PET_CT'
+
+    url = resolve_url(END_POINT, user.uuid)
+
+    resp = client_api_auth.post(url, data=payload)
+    body = resp.json()
+
+    assert resp.status_code == HTTPStatus.BAD_REQUEST
+    assert 'A modalidade do equipamento deve ser SPECT, SPECT_CT ou SPECT_MRI se o tipo for SPECT.' in body['errors'][0]

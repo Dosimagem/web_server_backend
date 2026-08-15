@@ -19,3 +19,4 @@ djangorestframework-simplejwt
 dj-rest-auth<3.0
 freezegun
 django-phonenumber-field[phonenumberslite]
+rarfile

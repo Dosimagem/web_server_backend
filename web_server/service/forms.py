@@ -3,6 +3,7 @@ from django.forms import ValidationError
 from django.utils.translation import gettext as _
 
 from web_server.isotope.forms import IsotopeRadiosynoForm
+from web_server.service.archive_utils import validate_and_sanitize_archive
 from web_server.service.models import (
     Calibration,
     ClinicDosimetryAnalysis,
@@ -11,6 +12,17 @@ from web_server.service.models import (
     RadiosynoAnalysis,
     SegmentationAnalysis,
 )
+
+
+class SecureCompressedImagesFormMixin:
+    def clean_images(self):
+        images = self.cleaned_data.get('images')
+        if not images:
+            return images
+        from django.db.models.fields.files import FieldFile
+        if isinstance(images, FieldFile):
+            return images
+        return validate_and_sanitize_archive(images)
 
 
 class CreateOrderForm(forms.ModelForm):
@@ -22,6 +34,8 @@ class CreateOrderForm(forms.ModelForm):
             'remaining_of_analyzes',
             'price',
             'service_name',
+            'equipment_type',
+            'equipment_modality',
             'status_payment',
             'active',
         )
@@ -40,7 +54,7 @@ class CreateOrderForm(forms.ModelForm):
         return remaining_of_analyzes
 
 
-class CreateCalibrationForm(forms.ModelForm):
+class CreateCalibrationForm(SecureCompressedImagesFormMixin, forms.ModelForm):
     class Meta:
         model = Calibration
         fields = (
@@ -60,7 +74,7 @@ class UpdateCalibrationForm(CreateCalibrationForm):
     ...
 
 
-class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
+class ClinicDosimetryAnalysisCreateForm(SecureCompressedImagesFormMixin, forms.ModelForm):
     class Meta:
         model = ClinicDosimetryAnalysis
         fields = (
@@ -70,7 +84,22 @@ class ClinicDosimetryAnalysisCreateForm(forms.ModelForm):
             'analysis_name',
             'injected_activity',
             'administration_datetime',
+            'isotope',
         )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        order = cleaned_data.get('order')
+        calibration = cleaned_data.get('calibration')
+        isotope = cleaned_data.get('isotope')
+
+        if order:
+            if order.requires_calibration and not calibration:
+                self.add_error('calibration', _('This field is required.'))
+            elif not order.requires_calibration and not isotope:
+                self.add_error('isotope', _('This field is required.'))
+
+        return cleaned_data
 
 
 class ClinicDosimetryAnalysisUpdateForm(ClinicDosimetryAnalysisCreateForm):
@@ -80,7 +109,7 @@ class ClinicDosimetryAnalysisUpdateForm(ClinicDosimetryAnalysisCreateForm):
         return self.instance
 
 
-class PreClinicDosimetryAnalysisCreateForm(forms.ModelForm):
+class PreClinicDosimetryAnalysisCreateForm(SecureCompressedImagesFormMixin, forms.ModelForm):
     class Meta:
         model = PreClinicDosimetryAnalysis
         fields = (
@@ -101,7 +130,26 @@ class PreClinicDosimetryAnalysisUpdateForm(PreClinicDosimetryAnalysisCreateForm)
 
 
 class PreClinicAndClinicDosimetryAnalysisCreateFormApi(forms.Form):
-    calibration_id = forms.UUIDField()
+    calibration_id = forms.UUIDField(required=False)
+    isotope = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.requires_calibration = kwargs.pop('requires_calibration', True)
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        calibration_id = cleaned_data.get('calibration_id')
+        isotope = cleaned_data.get('isotope')
+
+        if self.requires_calibration:
+            if 'calibration_id' not in self.errors and not calibration_id:
+                self.add_error('calibration_id', _('This field is required.'))
+        else:
+            if 'isotope' not in self.errors and not isotope:
+                self.add_error('isotope', _('This field is required.'))
+
+        return cleaned_data
 
 
 class PreClinicAndClinicDosimetryAnalysisUpdateFormApi(PreClinicAndClinicDosimetryAnalysisCreateFormApi):
@@ -116,7 +164,7 @@ class RadiosynoAnalysisUpdateFormApi(RadiosynoAnalysisCreateFormApi):
     ...
 
 
-class SegmentationAnalysisCreateForm(forms.ModelForm):
+class SegmentationAnalysisCreateForm(SecureCompressedImagesFormMixin, forms.ModelForm):
     class Meta:
         model = SegmentationAnalysis
         fields = ('order', 'analysis_name', 'images')
@@ -129,7 +177,7 @@ class SegmentationAnalysisUpdateForm(SegmentationAnalysisCreateForm):
         return self.instance
 
 
-class RadiosynoAnalysisCreateForm(forms.ModelForm):
+class RadiosynoAnalysisCreateForm(SecureCompressedImagesFormMixin, forms.ModelForm):
     class Meta:
         model = RadiosynoAnalysis
         fields = ('order', 'analysis_name', 'images', 'isotope')
