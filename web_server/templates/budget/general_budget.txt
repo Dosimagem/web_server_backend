@@ -12,7 +12,9 @@ CPF: {{user.profile.cpf}}
 Dados do orçamento:
 
 Serviço: {{service}}
-Tipo de tratamento: {{treatment_type}}
+{% if equipment_type %}Tipo de equipamento: {{equipment_type}}
+Modalidade do equipamento: {{equipment_modality}}
+{% endif %}Tipo de tratamento: {{treatment_type}}
 Número de paciente: {{number_of_patients}}
 Ferquência: {{frequency}}
 

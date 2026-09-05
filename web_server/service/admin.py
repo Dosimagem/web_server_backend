@@ -23,6 +23,8 @@ class OrderModelAdmin(admin.ModelAdmin):
             {
                 'fields': (
                     'service_name',
+                    'equipment_type',
+                    'equipment_modality',
                     'quantity_of_analyzes',
                     'price',
                     'status_payment',
@@ -56,6 +58,8 @@ class OrderModelAdmin(admin.ModelAdmin):
         'price',
         'status_payment',
         'service_name',
+        'equipment_type',
+        'equipment_modality',
         'active',
         'created_at',
     )
@@ -69,7 +73,7 @@ class OrderModelAdmin(admin.ModelAdmin):
         'code',
     )
     search_fields = ('user__profile__clinic',)
-    list_filter = ('user', 'service_name', 'status_payment')
+    list_filter = ('user', 'service_name', 'status_payment', 'equipment_type')
     list_per_page = 20
 
     form = CreateOrderForm

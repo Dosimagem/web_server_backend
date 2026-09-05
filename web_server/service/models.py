@@ -77,6 +77,18 @@ class Order(CreationModificationBase):
         # ServicesName.COMPUTATIONAL_MODELLING: '05',
     }
 
+    class EquipmentType(models.TextChoices):
+        SPECT = ('SPECT', 'SPECT')
+        PET = ('PET', 'PET')
+
+    class EquipmentModality(models.TextChoices):
+        SPECT = ('SPECT', 'SPECT')
+        SPECT_CT = ('SPECT_CT', 'SPECT/CT')
+        SPECT_MRI = ('SPECT_MRI', 'SPECT/MRI')
+        PET = ('PET', 'PET')
+        PET_CT = ('PET_CT', 'PET/CT')
+        PET_MRI = ('PET_MRI', 'PET/MRI')
+
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
     quantity_of_analyzes = models.PositiveIntegerField(_('Amount of analysis'), default=0)
@@ -86,9 +98,29 @@ class Order(CreationModificationBase):
         _('Status payment'), max_length=3, choices=PaymentStatus.choices, default=PaymentStatus.AWAITING_PAYMENT
     )
     service_name = models.CharField(_('Service name'), max_length=3, choices=ServicesName.choices)
+    equipment_type = models.CharField(
+        _('Equipment type'), max_length=10, choices=EquipmentType.choices, blank=True, null=True
+    )
+    equipment_modality = models.CharField(
+        _('Equipment modality'), max_length=20, choices=EquipmentModality.choices, blank=True, null=True
+    )
     active = models.BooleanField(_('Active'), default=True)
     code = models.CharField(_('Code'), max_length=20)
     bill = models.FileField(_('Bill'), upload_to=upload_bill_to, blank=True, null=True)
+
+    @property
+    def requires_calibration(self):
+        if self.equipment_type == self.EquipmentType.PET:
+            return False
+        return True
+
+    def clean(self):
+        super().clean()
+        if self.equipment_type and self.equipment_modality:
+            if self.equipment_type == self.EquipmentType.SPECT and not self.equipment_modality.startswith('SPECT'):
+                raise ValidationError({'equipment_modality': _('Modality does not match equipment type SPECT.')})
+            if self.equipment_type == self.EquipmentType.PET and not self.equipment_modality.startswith('PET'):
+                raise ValidationError({'equipment_modality': _('Modality does not match equipment type PET.')})
 
     def __str__(self):
         return self.code
@@ -292,6 +324,7 @@ class DosimetryAnalysisBase(AnalysisBase):
 
     injected_activity = models.FloatField('Injected Activity', validators=[MinValueValidator(0.0)])
     administration_datetime = models.DateTimeField('Administration Datetime')
+    isotope = models.ForeignKey(Isotope, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -300,7 +333,8 @@ class DosimetryAnalysisBase(AnalysisBase):
 
         dict_ = super().to_dict(request)
 
-        dict_['calibration_id'] = self.calibration.uuid
+        dict_['calibration_id'] = self.calibration.uuid if self.calibration else None
+        dict_['isotope'] = self.isotope.name if self.isotope else (self.calibration.isotope.name if self.calibration else None)
         dict_['injected_activity'] = self.injected_activity
         dict_['administration_datetime'] = self.administration_datetime.strftime(FORMAT_DATE)
 
@@ -309,7 +343,7 @@ class DosimetryAnalysisBase(AnalysisBase):
     def _generate_code(self):
         clinic_id = self.order.user.pk
         year = str(self.created_at.year)[2:]
-        isotope = self.calibration.isotope
+        isotope = self.isotope if self.isotope else (self.calibration.isotope if self.calibration else 'UNKNOWN')
         order_id = self.order.pk
         id = self.pk
         code = self.CODE
@@ -321,7 +355,7 @@ class ClinicDosimetryAnalysis(DosimetryAnalysisBase):
     SERVICE_NAME_CODE = Order.ServicesName.CLINIC_DOSIMETRY.value
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
-    calibration = models.ForeignKey('Calibration', on_delete=models.CASCADE, related_name='clinic_dosimetry_analysis')
+    calibration = models.ForeignKey('Calibration', on_delete=models.CASCADE, related_name='clinic_dosimetry_analysis', null=True, blank=True)
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='clinic_dosimetry_analysis')
     images = models.FileField(_('Images'), upload_to=upload_clinic_dosimetry_to)
 

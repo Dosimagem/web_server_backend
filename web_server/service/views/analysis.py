@@ -127,17 +127,28 @@ def _update_analysis(request, user_id, order_id, analysis_id):
         or order.service_name == Order.ServicesName.CLINIC_DOSIMETRY.value
     ):
 
-        form = PreClinicAndClinicDosimetryAnalysisUpdateFormApi(data)
+        form = PreClinicAndClinicDosimetryAnalysisUpdateFormApi(data, requires_calibration=order.requires_calibration)
 
         if not form.is_valid():
             return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-        try:
-            calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'], user=user)
-        except ObjectDoesNotExist:
-            return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.NOT_FOUND)
+        calibration_id = form.cleaned_data.get('calibration_id')
+        isotope_name = form.cleaned_data.get('isotope')
 
-        data['calibration'] = calibration
+        if order.requires_calibration:
+            try:
+                calibration = Calibration.objects.get(uuid=calibration_id, user=user)
+            except ObjectDoesNotExist:
+                return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.NOT_FOUND)
+            data['calibration'] = calibration
+            data['isotope'] = calibration.isotope
+        else:
+            data['calibration'] = None
+            try:
+                isotope = Isotope.objects.get(name=isotope_name, dosimetry=True)
+            except ObjectDoesNotExist:
+                return Response(data={'errors': [_('Isotope not found.')]}, status=HTTPStatus.NOT_FOUND)
+            data['isotope'] = isotope
 
     elif order.service_name == Order.ServicesName.RADIOSYNOVIORTHESIS.value:
 
@@ -207,17 +218,28 @@ def _create_analysis(request, user_id, order_id):
         or order.service_name == Order.ServicesName.CLINIC_DOSIMETRY.value
     ):
 
-        form = PreClinicAndClinicDosimetryAnalysisCreateFormApi(data)
+        form = PreClinicAndClinicDosimetryAnalysisCreateFormApi(data, requires_calibration=order.requires_calibration)
 
         if not form.is_valid():
             return Response(data={'errors': list_errors(form.errors)}, status=HTTPStatus.BAD_REQUEST)
 
-        try:
-            calibration = Calibration.objects.get(uuid=form.cleaned_data['calibration_id'], user__uuid=user_id)
-        except ObjectDoesNotExist:
-            return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.BAD_REQUEST)
+        calibration_id = form.cleaned_data.get('calibration_id')
+        isotope_name = form.cleaned_data.get('isotope')
 
-        data['calibration'] = calibration
+        if order.requires_calibration:
+            try:
+                calibration = Calibration.objects.get(uuid=calibration_id, user__uuid=user_id)
+            except ObjectDoesNotExist:
+                return Response(data={'errors': ERROR_CALIBRATION_ID}, status=HTTPStatus.BAD_REQUEST)
+            data['calibration'] = calibration
+            data['isotope'] = calibration.isotope
+        else:
+            data['calibration'] = None
+            try:
+                isotope = Isotope.objects.get(name=isotope_name, dosimetry=True)
+            except ObjectDoesNotExist:
+                return Response(data={'errors': [_('Isotope not found.')]}, status=HTTPStatus.BAD_REQUEST)
+            data['isotope'] = isotope
 
     elif order.service_name == Order.ServicesName.RADIOSYNOVIORTHESIS.value:
 

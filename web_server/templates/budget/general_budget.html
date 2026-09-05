@@ -25,6 +25,10 @@
         <h2>Dados do orçamento:</h2>
         <ul>
             <li>Serviço: {{service}}</li>
+            {% if equipment_type %}
+            <li>Tipo de equipamento: {{equipment_type}}</li>
+            <li>Modalidade do equipamento: {{equipment_modality}}</li>
+            {% endif %}
             <li>Tipo de tratamento: {{treatment_type}}</li>
             <li>Número de paciente: {{number_of_patients}}</li>
             <li>Ferquência: {{frequency}}</li>
