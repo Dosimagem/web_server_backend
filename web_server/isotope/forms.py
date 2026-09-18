@@ -31,3 +31,17 @@ class IsotopeRadiosynoForm(forms.Form):
             raise ValidationError(_('Isotope not registered.'), code='invalid_isotope')
 
         return isotope
+
+
+class IsotopePetForm(forms.Form):
+
+    isotope = forms.CharField(max_length=6)
+
+    def clean_isotope(self):
+        isotopes_list = [isotope.name for isotope in Isotope.objects.filter(pet=True)]
+
+        isotope = self.cleaned_data['isotope']
+        if isotope not in isotopes_list:
+            raise ValidationError(_('PET isotope not registered.'), code='invalid_isotope')
+
+        return isotope

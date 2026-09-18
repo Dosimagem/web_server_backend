@@ -11,7 +11,7 @@ from django.core.files.base import ContentFile
 
 # Set rarfile to use unar tool as backend
 try:
-    rarfile.UNRAR_TOOL = 'unar'
+    rarfile.UNRAR_TOOL = 'unrar'
 except Exception:
     pass
 
@@ -252,20 +252,6 @@ def validate_and_sanitize_archive(uploaded_file):
 
     fmt = detect_format(header)
     if not fmt:
-        # Check if it is a dummy test file
-        try:
-            size = uploaded_file.size
-        except AttributeError:
-            try:
-                uploaded_file.seek(0, 2)
-                size = uploaded_file.tell()
-                uploaded_file.seek(0)
-            except Exception:
-                size = len(header)
-        
-        if size < 1000:
-            return uploaded_file
-
         raise ValidationError("Formato de arquivo compactado não suportado ou inválido.")
 
     # Create temporary directory for extraction

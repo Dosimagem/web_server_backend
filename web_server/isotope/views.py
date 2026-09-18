@@ -20,6 +20,8 @@ def isotope(request):
         queryset = queryset.filter(dosimetry=True)
     elif query == 'radiosyno':
         queryset = queryset.filter(radiosyno=True)
+    elif query == 'pet':
+        queryset = queryset.filter(pet=True)
 
     isotopes = [i.name for i in queryset]
 

@@ -27,11 +27,11 @@
             <li>Serviço: {{service}}</li>
             {% if equipment_type %}
             <li>Tipo de equipamento: {{equipment_type}}</li>
-            <li>Modalidade do equipamento: {{equipment_modality}}</li>
+            <li>Modalidade do equipamento: {% if equipment_modality == "PET_CT" %}PET/CT{% elif equipment_modality == "PET_MRI" %}PET/MRI{% elif equipment_modality == "SPECT_CT" %}SPECT/CT{% elif equipment_modality == "SPECT_MRI" %}SPECT/MRI{% else %}{{equipment_modality}}{% endif %}</li>
             {% endif %}
             <li>Tipo de tratamento: {{treatment_type}}</li>
             <li>Número de paciente: {{number_of_patients}}</li>
-            <li>Ferquência: {{frequency}}</li>
+            <li>Frequência: {{frequency}}</li>
         </ul>
     </div>
 

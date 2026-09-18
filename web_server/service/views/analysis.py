@@ -145,7 +145,7 @@ def _update_analysis(request, user_id, order_id, analysis_id):
         else:
             data['calibration'] = None
             try:
-                isotope = Isotope.objects.get(name=isotope_name, dosimetry=True)
+                isotope = Isotope.objects.get(name=isotope_name, pet=True)
             except ObjectDoesNotExist:
                 return Response(data={'errors': [_('Isotope not found.')]}, status=HTTPStatus.NOT_FOUND)
             data['isotope'] = isotope
@@ -236,7 +236,7 @@ def _create_analysis(request, user_id, order_id):
         else:
             data['calibration'] = None
             try:
-                isotope = Isotope.objects.get(name=isotope_name, dosimetry=True)
+                isotope = Isotope.objects.get(name=isotope_name, pet=True)
             except ObjectDoesNotExist:
                 return Response(data={'errors': [_('Isotope not found.')]}, status=HTTPStatus.BAD_REQUEST)
             data['isotope'] = isotope

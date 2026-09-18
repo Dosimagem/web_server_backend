@@ -10,6 +10,7 @@ class Isotope(CreationModificationBase):
 
     dosimetry = models.BooleanField(default=False)
     radiosyno = models.BooleanField(default=False)
+    pet = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _('Isotope')
