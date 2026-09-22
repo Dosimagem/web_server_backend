@@ -119,7 +119,22 @@ class PreClinicDosimetryAnalysisCreateForm(SecureCompressedImagesFormMixin, form
             'analysis_name',
             'injected_activity',
             'administration_datetime',
+            'isotope',
         )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        order = cleaned_data.get('order')
+        calibration = cleaned_data.get('calibration')
+        isotope = cleaned_data.get('isotope')
+
+        if order:
+            if order.requires_calibration and not calibration:
+                self.add_error('calibration', _('This field is required.'))
+            elif not order.requires_calibration and not isotope:
+                self.add_error('isotope', _('This field is required.'))
+
+        return cleaned_data
 
 
 class PreClinicDosimetryAnalysisUpdateForm(PreClinicDosimetryAnalysisCreateForm):

@@ -13,6 +13,8 @@ Dados do orçamento:
 
 Serviço: {{service}}
 Linha de Pesquisa: {{research_line}}
+Tipo de equipamento: {{equipment_type}}
+Modalidade do equipamento: {{equipment_modality}}
 Número de modelos: {{number_of_patients}}
 Frequência: {{frequency}}
 

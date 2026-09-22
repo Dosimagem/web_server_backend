@@ -1,5 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
+from io import BytesIO
+from zipfile import ZipFile
 
 import pytest
 from django.core.files.base import ContentFile
@@ -287,7 +289,13 @@ def clinic_dosimetry_file():
 
 @pytest.fixture
 def preclinic_dosimetry_file():
-    fp = ContentFile(b'CT e SPET files', name='images.zip')
+    buffer = BytesIO()
+
+    with ZipFile(buffer, 'w') as zip_file:
+        zip_file.writestr('image.dcm', b'DICOM test data')
+
+    buffer.seek(0)
+    fp = ContentFile(buffer.read(), name='images.zip')
     return {'images': fp}
 
 

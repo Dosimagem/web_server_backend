@@ -36,9 +36,29 @@ class ClinicDosimetryBudgetSerializer(BaseClinicBudgetSerializer):
 
 class PreClinicDosimetryBudgetSerializer(serializers.Serializer):
     research_line = serializers.CharField(max_length=60)
+    equipment_type = serializers.ChoiceField(choices=['SPECT', 'PET'])
+    equipment_modality = serializers.ChoiceField(
+        choices=['MICROSPECT_CT', 'MICROPET_CT']
+    )
     number_of_patients = serializers.IntegerField(min_value=0)
     frequency = serializers.CharField(max_length=60, required=False)
     comments = serializers.CharField(max_length=100000)
+
+    def validate(self, attrs):
+        eq_type = attrs.get('equipment_type')
+        eq_mod = attrs.get('equipment_modality')
+
+        if eq_type == 'SPECT' and eq_mod != 'MICROSPECT_CT':
+            raise serializers.ValidationError(
+                {'equipment_modality': 'A modalidade do equipamento deve ser MICROSPECT_CT se o tipo for SPECT.'}
+            )
+
+        if eq_type == 'PET' and eq_mod != 'MICROPET_CT':
+            raise serializers.ValidationError(
+                {'equipment_modality': 'A modalidade do equipamento deve ser MICROPET_CT se o tipo for PET.'}
+            )
+
+        return attrs
 
 
 class SegmentantioQuantificationSerialier(BaseClinicBudgetSerializer):

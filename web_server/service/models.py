@@ -88,6 +88,8 @@ class Order(CreationModificationBase):
         PET = ('PET', 'PET')
         PET_CT = ('PET_CT', 'PET/CT')
         PET_MRI = ('PET_MRI', 'PET/MRI')
+        MICROSPECT_CT = ('MICROSPECT_CT', 'microSPECT/CT')
+        MICROPET_CT = ('MICROPET_CT', 'microPET/CT')
 
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
@@ -117,9 +119,23 @@ class Order(CreationModificationBase):
     def clean(self):
         super().clean()
         if self.equipment_type and self.equipment_modality:
-            if self.equipment_type == self.EquipmentType.SPECT and not self.equipment_modality.startswith('SPECT'):
+            spect_modalities = {
+                self.EquipmentModality.SPECT,
+                self.EquipmentModality.SPECT_CT,
+                self.EquipmentModality.SPECT_MRI,
+                self.EquipmentModality.MICROSPECT_CT,
+            }
+            pet_modalities = {
+                self.EquipmentModality.PET,
+                self.EquipmentModality.PET_CT,
+                self.EquipmentModality.PET_MRI,
+                self.EquipmentModality.MICROPET_CT,
+            }
+
+            if self.equipment_type == self.EquipmentType.SPECT and self.equipment_modality not in spect_modalities:
                 raise ValidationError({'equipment_modality': _('Modality does not match equipment type SPECT.')})
-            if self.equipment_type == self.EquipmentType.PET and not self.equipment_modality.startswith('PET'):
+
+            if self.equipment_type == self.EquipmentType.PET and self.equipment_modality not in pet_modalities:
                 raise ValidationError({'equipment_modality': _('Modality does not match equipment type PET.')})
 
     def __str__(self):
@@ -376,7 +392,11 @@ class PreClinicDosimetryAnalysis(DosimetryAnalysisBase):
     CODE = Order.SERVICES_CODES[SERVICE_NAME_CODE]
 
     calibration = models.ForeignKey(
-        'Calibration', on_delete=models.CASCADE, related_name='preclinic_dosimetry_analysis'
+        'Calibration',
+        on_delete=models.CASCADE,
+        related_name='preclinic_dosimetry_analysis',
+        null=True,
+        blank=True,
     )
 
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='preclinic_dosimetry_analysis')

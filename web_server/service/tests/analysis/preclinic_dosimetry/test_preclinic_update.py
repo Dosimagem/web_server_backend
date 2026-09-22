@@ -2,6 +2,8 @@ from datetime import datetime
 from decimal import Decimal
 from http import HTTPStatus
 from uuid import uuid4
+from zipfile import ZipFile
+from zipfile import ZipFile
 
 import pytest
 from dj_rest_auth.utils import jwt_encode
@@ -27,7 +29,7 @@ def _verified_unchanged_information_db(preclinic_dosimetry):
 # /api/v1/users/<uuid>/order/<uuid>/analysis/<uuid> - PUT
 
 
-def test_successfull(client_api_auth, second_calibration, preclinic_dosi_update_del_is_possible):
+def test_successfull(client_api_auth, second_calibration, preclinic_dosi_update_del_is_possible, preclinic_dosimetry_file):
 
     update_form_data = {}
 
@@ -35,7 +37,9 @@ def test_successfull(client_api_auth, second_calibration, preclinic_dosi_update_
     update_form_data['administrationDatetime'] = make_aware(datetime(2018, 12, 14, 11, 2, 51))
     update_form_data['injectedActivity'] = 100.0
     update_form_data['analysisName'] = 'New analsysis name'
-    update_form_data['images'] = ContentFile(b'New File Update', name='images.zip')
+    preclinic_dosimetry_file['images'].seek(0)
+    zip_content = preclinic_dosimetry_file['images'].read()
+    update_form_data['images'] = ContentFile(zip_content, name='images.zip')
 
     user_uuid = preclinic_dosi_update_del_is_possible.order.user.uuid
     order_uuid = preclinic_dosi_update_del_is_possible.order.uuid
@@ -52,7 +56,8 @@ def test_successfull(client_api_auth, second_calibration, preclinic_dosi_update_
     assert analysis_db.injected_activity == update_form_data['injectedActivity']
     assert analysis_db.analysis_name == update_form_data['analysisName']
     assert analysis_db.administration_datetime == update_form_data['administrationDatetime']
-    assert analysis_db.images.file.read() == b'New File Update'
+    with ZipFile(analysis_db.images.file, 'r') as stored_zip:
+        assert 'image.dcm' in stored_zip.namelist()
     assert analysis_db.status == PreClinicDosimetryAnalysis.Status.DATA_SENT
 
 
